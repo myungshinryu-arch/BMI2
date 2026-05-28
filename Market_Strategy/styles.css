@@ -610,44 +610,59 @@ body {
 }
 
 .swot-box {
-    background: rgba(10, 14, 28, 0.55);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
-    padding: 16px;
+    /* 한국타이어 고유 오렌지 무드를 감싼 화사하고 고급스러운 주황색 바탕 */
+    background: #fff7ed;
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 12px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    transition: transform var(--transition-fast), border-color var(--transition-fast);
+    gap: 10px;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.03);
 }
 
 .swot-box:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+    border-color: var(--color-hankook);
+    background-color: #ffedd5;
+    box-shadow: 0 10px 25px rgba(249, 115, 22, 0.12);
 }
 
-.swot-box.swot-strength { border-left: 3px solid var(--color-emerald); }
-.swot-box.swot-weakness { border-left: 3px solid var(--color-hankook); }
-.swot-box.swot-opportunity { border-left: 3px solid var(--color-blue); }
-.swot-box.swot-threat { border-left: 3px solid var(--color-purple); }
+.swot-box.swot-strength { 
+    border-left: 4px solid var(--color-emerald); 
+}
+.swot-box.swot-weakness { 
+    border-left: 4px solid var(--color-hankook);
+    background-color: #ffedd5; /* 약점(R&D) 과제는 주황 무드를 좀 더 활성화 */
+}
+.swot-box.swot-opportunity { 
+    border-left: 4px solid var(--color-blue); 
+}
+.swot-box.swot-threat { 
+    border-left: 4px solid var(--color-purple); 
+}
 
 .swot-title {
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: 800;
     display: flex;
     align-items: center;
     gap: 8px;
+    letter-spacing: -0.2px;
 }
 
 .swot-letter {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    font-size: 0.72rem;
-    font-weight: 800;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 900;
     color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .swot-strength .swot-letter { background-color: var(--color-emerald); }
@@ -655,15 +670,16 @@ body {
 .swot-opportunity .swot-letter { background-color: var(--color-blue); }
 .swot-threat .swot-letter { background-color: var(--color-purple); }
 
-.swot-strength .swot-title { color: var(--color-emerald); }
-.swot-weakness .swot-title { color: var(--color-hankook); }
-.swot-opportunity .swot-title { color: var(--color-blue); }
-.swot-threat .swot-title { color: var(--color-purple); }
+.swot-strength .swot-title { color: #047857 !important; } /* 에메랄드 시인성 보정 */
+.swot-weakness .swot-title { color: #c2410c !important; } /* 한국타이어 오렌지 시인성 보정 */
+.swot-opportunity .swot-title { color: #1d4ed8 !important; } /* 블루 시인성 보정 */
+.swot-threat .swot-title { color: #6d28d9 !important; } /* 퍼플 시인성 보정 */
 
 .swot-box p {
     font-size: 0.75rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
+    color: #334155 !important; /* 주황색 배경 위에서 최고의 가독성을 가지는 세련된 진회색 */
+    font-weight: 600;
+    line-height: 1.6;
     flex: 1;
 }
 
