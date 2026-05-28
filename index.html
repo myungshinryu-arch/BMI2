@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BM-Intelligence Hub Portal v3.1</title>
+  <meta name="description" content="타이어 출시 타임라인 PLC Map 및 제조사별 컴파운드 물성을 한 화면에서 직접 관제하는 네이버 스타일 프리미엄 통합 포털">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Pretendard Korean Font -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Core Portal Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Safety CORS Local File Floating Toast (Premium style, 우측 하단 배치) -->
+  <div id="cors-warning-banner" class="cors-floating-toast" style="display: none;">
+    <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+    <div class="toast-content">
+      <div class="toast-title">CORS 로컬 파일 실행 감지</div>
+      <p>브라우저 보안 정책에 의해 정적 파일 fetch 기능이 로컬 오프라인 환경에서 일부 제한됩니다. 대신 기본 제공되는 신뢰할 수 있는 모형 통계 데이터를 사용하여 대시보드를 안정적으로 구동합니다. 실시간 동적 통계 로드를 위해서는 정적 로컬 서버 실행을 추천합니다.</p>
+    </div>
+    <button class="toast-close-btn" id="toast-close-btn" title="알림 닫기"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <!-- Decorative Glow Background Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <!-- Portal 3.1 Main Centered Container (1-Column 하이브리드 포털) -->
+  <div class="portal-container">
+    
+    <!-- HEADER AREA -->
+    <header class="portal-header">
+      <div class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
+        <h1 class="logo-text">BM-Intelligence</h1>
+      </div>
+    </header>
+
+    <!-- HERO SEARCH AREA (네이버 메인 스타일 대형 검색 바) -->
+    <section class="portal-hero">
+      <div class="hero-content">
+        <h2 class="hero-title">INTEGRATED BM SEARCH</h2>
+        <p class="hero-subtitle">타이어 모델, 브랜드, 컴파운드 물성 및 인덱스 데이터를 한 번에 검색하세요.</p>
+        
+        <!-- Large Search Bar -->
+        <div class="search-bar-wrapper">
+          <i class="fa-solid fa-magnifying-glass search-main-icon"></i>
+          <input type="text" id="integrated-search" placeholder="타이어명, 컴파운드 원료, 브랜드, PLC 세그먼트 입력..." autocomplete="off">
+          <button id="search-clear-btn" class="search-clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+          
+          <!-- Live Integrated Search Results Dropdown -->
+          <div id="search-results-dropdown" class="search-results-dropdown" style="display: none;">
+            <div class="results-category" id="res-tires-cat">
+              <div class="cat-header"><i class="fa-solid fa-ring"></i> 타이어 BM 데이터 (<span id="count-tires">0</span>)</div>
+              <ul class="results-list" id="res-tires-list"></ul>
+            </div>
+            <div class="results-category" id="res-compounds-cat">
+              <div class="cat-header"><i class="fa-solid fa-flask"></i> 컴파운드 BM 데이터 (<span id="count-compounds">0</span>)</div>
+              <ul class="results-list" id="res-compounds-list"></ul>
+            </div>
+            <div class="no-results-msg" id="no-results-message" style="display: none;">
+              <i class="fa-solid fa-magnifying-glass"></i> 일치하는 데이터가 없습니다.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HORIZONTAL ACTIVE MODULES BAND (검색창과 PLC 모니터 사이에 수평 가로 배치) -->
+    <section class="portal-modules-band">
+      
+      <!-- Module Link 1: 시장/상품전략 -->
+      <a href="Market_Strategy/index.html" class="module-compact-card card-active">
+        <div class="m-card-header">
+          <span class="m-title"><i class="fa-solid fa-globe"></i> 시장/상품전략</span>
+          <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+      </a>
+
+      <!-- Module Link 2: Tire BM -->
+      <div class="module-compact-card card-active">
+        <div class="m-card-header">
+          <a href="Tire_BM_UI_FINAL/index.html" class="m-title-link" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+            <span class="m-title"><i class="fa-solid fa-chart-line"></i> Tire BM Report</span>
+            <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+        </div>
+        
+        <!-- 하부 중제목 다이렉트 바로가기 메뉴 리스트 -->
+        <div class="m-submenus">
+          <a href="Tire_BM_UI_FINAL/index.html#tab-dashboard" class="m-submenu-item"><i class="fa-solid fa-circle-nodes"></i> 종합 분석 대시보드</a>
+          <a href="Tire_BM_UI_FINAL/index.html#tab-timeline" class="m-submenu-item"><i class="fa-solid fa-timeline"></i> PLC Timeline 매트릭스</a>
+          <a href="Tire_BM_UI_FINAL/index.html#tab-ev" class="m-submenu-item"><i class="fa-solid fa-leaf"></i> EV 친환경 특화 보드</a>
+          <a href="Tire_BM_UI_FINAL/index.html#tab-reports" class="m-submenu-item"><i class="fa-solid fa-book-bookmark"></i> 보고서 라이브러리</a>
+        </div>
+      </div>
+
+      <!-- Module Link 3: Compound BM -->
+      <div class="module-compact-card card-active">
+        <div class="m-card-header">
+          <a href="Compd BM/index.html" class="m-title-link" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+            <span class="m-title"><i class="fa-solid fa-flask-vial"></i> Comp'd BM Report</span>
+            <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+        </div>
+        
+        <!-- 하부 중제목 다이렉트 바로가기 메뉴 리스트 -->
+        <div class="m-submenus">
+          <a href="Compd BM/index.html#tab-dashboard" class="m-submenu-item"><i class="fa-solid fa-chart-pie"></i> 종합 분석 대시보드</a>
+          <a href="Compd BM/index.html#tab-explorer" class="m-submenu-item"><i class="fa-solid fa-table-list"></i> 컴파운드 탐색기</a>
+          <a href="Compd BM/index.html#tab-report" class="m-submenu-item"><i class="fa-solid fa-file-invoice"></i> BM Report 생성기</a>
+          <a href="Compd BM/index.html#tab-pattern-compare" class="m-submenu-item"><i class="fa-solid fa-code-compare"></i> Maker 상품 비교</a>
+        </div>
+      </div>
+
+      <!-- Module Link 4: AI Simulator -->
+      <a href="AI_Simulator/index.html" class="module-compact-card card-active">
+        <div class="m-card-header">
+          <span class="m-title"><i class="fa-solid fa-robot"></i> AI Simulator</span>
+          <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- MAIN CONSOLE LAYOUT: 1단 풀-너비 관제 대시보드 (100% 가로 확장) -->
+    <main class="portal-main-layout">
+      
+      <!-- WIDGET 1: PLC TIMELINE MATRIX DIRECT MONITOR -->
+      <section class="dashboard-widget-section">
+        <div class="widget-header-row">
+          <div class="widget-header-title">
+            <h2 class="widget-title"><i class="fa-solid fa-timeline"></i> Tire BM Matrix</h2>
+            <p class="widget-subtitle">자사 타이어 출시 연도 및 세그먼트 매트릭스 로드맵 (제품 클릭 시 해당 상세 대시보드로 이동)</p>
+          </div>
+          
+          <!-- Sheet filter Tab Buttons -->
+          <div class="plc-sheet-tabs" id="plc-sheet-tabs-container">
+            <button class="sheet-tab active" data-sheet="Summer">Summer</button>
+            <button class="sheet-tab" data-sheet="SUV">SUV</button>
+            <button class="sheet-tab" data-sheet="Winter-Alpin">Winter-Alpin</button>
+            <button class="sheet-tab" data-sheet="All Weather">All Weather</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Table Viewport -->
+        <div class="plc-table-viewport-wrapper">
+          <div class="plc-table-loading" id="plc-table-loader" style="display: none;">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> 타임라인 매트릭스를 연산 중입니다...
+          </div>
+          <div class="plc-table-container" id="plc-table-viewport">
+            <!-- Table will be rendered dynamically by app.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- WIDGET 2: MAKER COMPOUND COMPARISON GAUGE CHART -->
+      <section class="dashboard-widget-section" style="margin-bottom: 0;">
+        <div class="widget-header-row">
+          <div class="widget-header-title">
+            <h2 class="widget-title"><i class="fa-solid fa-chart-bar"></i> Maker 별 제품 성능 비교</h2>
+            <p class="widget-subtitle">실시간 트레드 컴파운드 물성 빅데이터 가공 제조사별 기술 비교 지표</p>
+          </div>
+        </div>
+
+        <!-- Custom HTML5/CSS Progress-Bar Gauge Widgets Grid -->
+        <div class="maker-compare-grid" id="maker-compare-viewport">
+          <!-- Live Gauges will be rendered dynamically by app.js -->
+          <div class="plc-table-loading">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> 물성 데이터를 분석 집계 중입니다...
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- PORTAL FOOTER -->
+    <footer class="portal-footer">
+      <div class="footer-meta">
+        <p>© 2026 <strong>BM-Intelligence Hub</strong></p>
+        <p class="system-meta">v3.1 HYBRID PORTAL • CONNECTIVITY OK</p>
+      </div>
+      <div class="status-indicator">
+        <span class="pulse-dot"></span> Realtime Engine Active
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Inline Stable CORS-safe Data Assets from Tire BM System -->
+  <script src="Tire_BM_UI_FINAL/data/plc_data.js"></script>
+  <script src="Tire_BM_UI_FINAL/data/plc_images_map.js"></script>
+
+  <!-- Inline Stable CORS-safe Data Assets from Compound BM System -->
+  <script src="Compd BM/data/tread_data.js"></script>
+
+  <!-- History.png Popup Modal -->
+  <div id="history-popup-modal" class="portal-modal-overlay" style="display: none;">
+    <div class="portal-modal-content">
+      <div class="portal-modal-header">
+        <h3><i class="fa-solid fa-lightbulb" style="color: var(--primary); margin-right: 8px;"></i>BM-Intelligence 개발 이유</h3>
+        <button id="close-history-modal-btn" class="modal-close-icon" title="닫기"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="portal-modal-body">
+        <img src="History.png" alt="History" class="popup-history-img">
+      </div>
+      <div class="portal-modal-footer">
+        <button id="dont-show-again-btn" class="dont-show-btn">
+          <i class="fa-regular fa-square" id="dont-show-checkbox" style="margin-right: 6px;"></i>
+          <span>다시 보지 않기</span>
+        </button>
+        <button id="close-history-modal-bottom-btn" class="close-btn">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core App JS -->
+  <script src="app.js"></script>
+</body>
+</html>

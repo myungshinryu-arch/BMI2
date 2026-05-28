@@ -1,0 +1,1953 @@
+/* ==========================================================================
+   Tire BM System - Premium Cybernetic Dark Aesthetic Stylesheet
+   ========================================================================== */
+ 
+/* Design System Variables */
+:root {
+  --bg-primary: #fffcf9;          /* Warm light cream canvas */
+  --bg-secondary: rgba(255, 255, 255, 0.45); /* Highly translucent white sidebar base */
+  --card-bg: rgba(255, 255, 255, 0.6);       /* Base translucent white glass fill */
+  --card-border: rgba(249, 115, 22, 0.1);    /* Soft orange frosted border */
+  --card-hover-border: rgba(249, 115, 22, 0.45); /* Energetic orange focused glass border */
+  
+  /* Cyber Vibrant Orange Glow Accents */
+  --primary: #f97316;             /* Vibrant Orange */
+  --secondary: #fd974f;           /* Warm Soft Peach */
+  --accent-green: #10b981;        /* Eco Mint Green */
+  --accent-orange: #ea580c;       /* Point Deep Orange */
+  --danger: #ef4444;              /* Rose Red */
+  
+  /* Typography Colors - Slate for Light Theme */
+  --text-primary: #1e293b;        /* Slate 800 */
+  --text-muted: #64748b;          /* Slate 500 */
+  --text-dark: #0f172a;           /* Slate 900 */
+  
+  /* Layout Dimensions */
+  --sidebar-width: 260px;
+  --header-height: 80px;
+  
+  /* Effects - Soft Orange light frosted shadow and glow */
+  --shadow: 0 8px 32px 0 rgba(249, 115, 22, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  --glow-cyan: 0 0 20px rgba(249, 115, 22, 0.25);
+  --glow-green: 0 0 20px rgba(16, 185, 129, 0.2);
+  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --font-sans: 'Inter', 'Roboto', 'Source Sans 3', 'Source Sans Pro', 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Inter', 'Roboto', 'Source Sans 3', 'Source Sans Pro', 'Pretendard', sans-serif;
+}
+
+ 
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+ 
+/* Custom Webkit Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.3);
+}
+ 
+/* Main Layout Structure */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+ 
+/* Left Sidebar Navigation */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--bg-secondary);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-right: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  transform: translateX(-245px); /* 15px만 남기고 숨김 */
+  opacity: 0.15;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar:hover,
+.sidebar.active {
+  transform: translateX(0);
+  opacity: 1;
+  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.15), var(--shadow);
+}
+ 
+.sidebar-brand {
+  height: var(--header-height);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--card-border);
+}
+ 
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+  font-size: 1.15rem;
+  font-weight: 800;
+  box-shadow: var(--glow-cyan);
+}
+ 
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--primary);
+}
+
+.nav-shortcut-btn {
+  transition: var(--transition) !important;
+}
+.nav-shortcut-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 15px rgba(249, 115, 22, 0.15) !important;
+  border-color: var(--primary) !important;
+}
+.nav-shortcut-btn.active:hover {
+  box-shadow: 0 6px 15px rgba(249, 115, 22, 0.3) !important;
+}
+ 
+.sidebar-menu {
+  list-style: none;
+  padding: 24px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+ 
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+ 
+.menu-item:hover {
+  color: var(--primary);
+  background: rgba(249, 115, 22, 0.05);
+}
+ 
+.menu-item i {
+  font-size: 1.05rem;
+  width: 20px;
+  text-align: center;
+  transition: var(--transition);
+}
+ 
+.menu-item.active {
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  color: var(--primary);
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.05);
+}
+ 
+.menu-item.active i {
+  color: var(--primary);
+  filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.45));
+}
+ 
+.sidebar-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+ 
+/* Right Main Content Area */
+.main-content {
+  margin-left: 0; /* 사이드바 기본 숨김으로 마진 제거 */
+  padding-left: 15px; /* 왼쪽 숨김 힌트 바를 위한 패딩 */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--card-border);
+  color: var(--primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-right: 16px;
+  box-shadow: var(--shadow);
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: var(--card-hover-border);
+  transform: scale(1.05);
+}
+
+.sidebar-toggle-btn i {
+  font-size: 1.2rem;
+}
+ 
+/* Sticky Top Header */
+.main-header {
+  height: var(--header-height);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+ 
+.header-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+ 
+/* Realtime Search Box Wrapper */
+.search-box-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 300px;
+}
+ 
+.search-box-wrapper input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: 20px;
+  padding: 8px 16px 8px 38px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  transition: var(--transition);
+}
+ 
+.search-box-wrapper input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+}
+ 
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+ 
+.search-clear-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  outline: none;
+}
+ 
+.search-clear-btn:hover {
+  color: #fff;
+}
+ 
+/* Content Body Outer */
+.content-body {
+  padding: 32px;
+  flex: 1;
+}
+ 
+/* Tab Content Visibility Controller */
+.tab-content {
+  display: none;
+}
+ 
+.tab-content.active {
+  display: block;
+}
+ 
+/* Cards Aesthetics */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--transition);
+}
+ 
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+ 
+.card-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--card-border);
+}
+ 
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+ 
+.card-title h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+ 
+.card-title h3 i {
+  color: var(--primary);
+}
+ 
+.card-body {
+  padding: 24px;
+}
+ 
+/* Layout Columns */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+ 
+.col-12 { grid-column: span 12; }
+.col-8 { grid-column: span 8; }
+.col-4 { grid-column: span 4; }
+ 
+/* Stats widgets row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+ 
+.stat-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.3));
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+ 
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--card-hover-border);
+}
+ 
+.stat-card.card-ev-glow:hover {
+  box-shadow: var(--glow-green);
+  border-color: rgba(0, 230, 118, 0.3);
+}
+ 
+.stat-info h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+ 
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+}
+ 
+.stat-icon {
+  font-size: 1.8rem;
+  color: var(--primary);
+  opacity: 0.8;
+}
+ 
+/* Welcome Card Jumbotron */
+.welcome-card-gradient {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border-color: transparent;
+}
+ 
+.welcome-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+ 
+.welcome-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+ 
+.welcome-guide-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+ 
+.btn-guide-primary, .btn-guide-secondary {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+ 
+.btn-guide-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  color: var(--text-dark);
+  box-shadow: var(--glow-cyan);
+}
+ 
+.btn-guide-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+ 
+.btn-guide-secondary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  color: #fff;
+}
+ 
+.btn-guide-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+ 
+/* Category Distribution List */
+.category-distribution-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+ 
+.category-dist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+ 
+.cat-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  width: 90px;
+  color: var(--text-muted);
+}
+ 
+.cat-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+ 
+.cat-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+ 
+.cat-count-badge {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  width: 35px;
+  text-align: right;
+}
+ 
+/* Data Table Styles (Used on recent reports & Library) */
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+ 
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+ 
+.data-table th, .data-table td {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--card-border);
+}
+ 
+.data-table th {
+  background-color: rgba(255,255,255,0.01);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+ 
+.data-table tbody tr {
+  transition: var(--transition);
+}
+ 
+.data-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+ 
+.data-table td {
+  font-size: 0.85rem;
+}
+ 
+.badge-brand {
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  color: var(--primary);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 5px rgba(249, 115, 22, 0.1);
+}
+ 
+.badge-spec {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+ 
+.btn-report-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(253, 186, 116, 0.15);
+  border: 1px solid rgba(253, 186, 116, 0.3);
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+}
+ 
+.btn-report-circle:hover {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+  transform: scale(1.08);
+}
+ 
+ 
+/* ==========================================
+   2D PLC MATRIX TIMELINE TABLE STYLES
+   ========================================== */
+ 
+/* Sub Tabs Inside Timeline Tab */
+.plc-sub-tabs-container {
+  display: flex;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--card-border);
+  padding: 6px;
+  border-radius: 12px;
+}
+ 
+.plc-sub-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+ 
+.plc-sub-tab:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+}
+ 
+.plc-sub-tab.active {
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  color: var(--primary);
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.05);
+}
+ 
+/* Legend in Map Card Header */
+.plc-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+ 
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+ 
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+}
+ 
+.dot-img {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--primary);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+}
+ 
+.dot-rep {
+  background: rgba(253, 186, 116, 0.12);
+  color: var(--accent-orange);
+  border: 1px solid rgba(253, 186, 116, 0.25);
+}
+ 
+/* 2D Matrix Grid Scroller Viewport */
+.plc-timeline-viewport {
+  overflow-x: auto;
+  max-width: 100%;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: rgba(13, 20, 36, 0.2);
+}
+ 
+.plc-matrix-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+ 
+.plc-matrix-table th, .plc-matrix-table td {
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  padding: 10px 14px;
+  min-width: 135px;
+}
+ 
+.plc-matrix-table th:last-child, .plc-matrix-table td:last-child {
+  border-right: none;
+}
+ 
+.plc-matrix-table tr:last-child td {
+  border-bottom: none;
+}
+ 
+/* Sticky Segment Category Left Column */
+.plc-matrix-table th.sticky-col, .plc-matrix-table td.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #ffffff;
+  z-index: 10;
+  min-width: 160px;
+  max-width: 180px;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-right: 2px solid var(--card-border);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+}
+ 
+.plc-matrix-table th.sticky-col {
+  z-index: 12;
+  background: #fdfcf9;
+}
+ 
+/* Matrix Column Header (Years) */
+.plc-matrix-table thead tr th {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  color: var(--text-muted);
+  font-weight: 700;
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 12px;
+}
+ 
+.plc-matrix-table thead tr th.active-year {
+  color: var(--primary);
+  background: rgba(249, 115, 22, 0.05);
+  border-bottom: 2px solid var(--primary);
+}
+ 
+.plc-segment-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+ 
+.plc-segment-label .seg-name {
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 700;
+}
+ 
+.plc-segment-label .seg-desc {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: normal;
+}
+ 
+/* Matrix Cells */
+.plc-matrix-cell {
+  background: rgba(255, 255, 255, 0.005);
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px !important;
+}
+ 
+.plc-cell-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+ 
+/* Premium Tire Node Card */
+.plc-tire-card {
+  width: 100%;
+  min-width: 125px;
+  max-width: 160px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+ 
+.plc-tire-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--text-muted);
+  transition: var(--transition);
+}
+ 
+.plc-tire-card.has-image::before {
+  background: var(--primary);
+}
+ 
+.plc-tire-card.has-report::before {
+  background: var(--secondary);
+}
+ 
+.plc-tire-card.has-image.has-report::before {
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+}
+ 
+.plc-tire-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.04), 0 0 12px rgba(249, 115, 22, 0.08);
+}
+ 
+.plc-tire-card:hover::before {
+  width: 4px;
+}
+ 
+.plc-card-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+ 
+.plc-card-maker {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+ 
+.plc-card-icons {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 0.65rem;
+}
+ 
+.plc-icon-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+ 
+.plc-icon-indicator.img {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--primary);
+}
+ 
+.plc-icon-indicator.rep {
+  background: rgba(253, 186, 116, 0.12);
+  color: var(--accent-orange);
+}
+ 
+/* ==========================================================================
+   STUNNING NEON PULSE SEARCH HIGHLIGHT EFFECT (For Realtime Highlight search)
+   ========================================================================== */
+.pulsing-highlight {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 20px var(--primary) !important;
+  transform: scale(1.05) translateY(-2px) !important;
+  z-index: 5;
+  animation: neon-pulse 1.6s infinite alternate;
+}
+ 
+@keyframes neon-pulse {
+  0% {
+    box-shadow: 0 0 8px rgba(249, 115, 22, 0.4), inset 0 0 4px rgba(249, 115, 22, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 22px rgba(249, 115, 22, 0.95), inset 0 0 10px rgba(249, 115, 22, 0.5);
+    border-color: var(--primary) !important;
+  }
+}
+ 
+/* Semi-opaque non-highlight items when searching */
+.faded-non-match {
+  opacity: 0.22 !important;
+  filter: grayscale(0.5);
+}
+ 
+ 
+/* ==========================================
+   3. EV SPECIAL BOARD KANBAN LAYOUT
+   ========================================== */
+ 
+.plc-ev-board-viewport {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+ 
+.ev-maker-column {
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow);
+}
+ 
+.ev-maker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 10px;
+}
+ 
+.ev-maker-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+ 
+.ev-maker-badge {
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: var(--text-muted);
+}
+ 
+.ev-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+ 
+.ev-items-list::-webkit-scrollbar {
+  width: 4px;
+}
+ 
+.ev-items-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+}
+ 
+/* EV Product card */
+.ev-product-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: var(--transition);
+}
+ 
+.ev-product-card:hover {
+  border-color: rgba(249, 115, 22, 0.25);
+  background: rgba(249, 115, 22, 0.02);
+  transform: translateX(3px);
+}
+ 
+.ev-product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+ 
+.ev-product-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ 
+.ev-type-badge {
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+ 
+.ev-type-exclusive {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+ 
+.ev-type-compatible {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+ 
+.ev-product-details {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+ 
+.ev-status-badge {
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+ 
+.ev-status-done {
+  color: var(--accent-green);
+}
+ 
+.ev-status-progress {
+  color: var(--accent-orange);
+}
+ 
+.ev-status-todo {
+  color: var(--text-muted);
+}
+ 
+ 
+/* ==========================================
+   4. SLIDING RIGHT GLASSMORPHIC DRAWER
+   ========================================== */
+ 
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+}
+ 
+.drawer-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+ 
+.detail-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px;
+  max-width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-left: 1px solid rgba(249, 115, 22, 0.15);
+  box-shadow: -10px 0 40px rgba(249, 115, 22, 0.05);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+ 
+.detail-drawer.active {
+  transform: translateX(0);
+}
+ 
+.drawer-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 110;
+  transition: var(--transition);
+}
+ 
+.drawer-close:hover {
+  background: rgba(255, 23, 68, 0.2);
+  border-color: #ff1744;
+  color: #ff1744;
+  transform: rotate(90deg);
+}
+ 
+/* Image Banner Inside Drawer Header */
+.drawer-image-banner {
+  height: 230px;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 100%), #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+ 
+.drawer-image-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: transform 0.5s ease;
+}
+ 
+.drawer-image-banner:hover img {
+  transform: scale(1.06);
+}
+ 
+.drawer-img-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  background: #ffffff;
+  z-index: 1;
+}
+ 
+.drawer-banner-title {
+  position: absolute;
+  bottom: 16px;
+  left: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+.drawer-banner-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+}
+ 
+.badge-maker {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: var(--primary);
+  color: var(--text-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  box-shadow: var(--glow-cyan);
+}
+ 
+/* Scroll Content */
+.drawer-content {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+ 
+.drawer-content::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+.drawer-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+ 
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+ 
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+ 
+.specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+ 
+.spec-item {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+ 
+.spec-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+ 
+.spec-val {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+ 
+.comment-box {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+ 
+.btn-report-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  box-shadow: var(--glow-cyan);
+}
+ 
+.btn-report-link:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+ 
+ 
+/* ==========================================
+   5. TOASTS & OTHER COMMON UI ELEMENTS
+   ========================================== */
+ 
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: -400px;
+  background: #0c1425;
+  border: 1px solid var(--card-hover-border);
+  border-radius: 8px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 2000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+ 
+.toast.show {
+  right: 24px;
+}
+ 
+.toast i {
+  color: var(--primary);
+}
+ 
+/* Pagination UI */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--card-border);
+}
+ 
+#reports-pagination-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+ 
+.pagination-buttons {
+  display: flex;
+  gap: 8px;
+}
+ 
+.btn-page {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition);
+}
+ 
+.btn-page:hover:not(:disabled) {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+ 
+.btn-page:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+ 
+/* Filter controls */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+ 
+.filter-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+ 
+.filter-control {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.85rem;
+  outline: none;
+  transition: var(--transition);
+}
+ 
+.filter-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.15);
+}
+ 
+.btn-reset {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+ 
+.btn-reset:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+}
+ 
+option {
+  background-color: #0b1329;
+  color: #fff;
+}
+
+/* ==========================================================================
+   Glassmorphism Sunlit Pure White & High Contrast Overrides
+   ========================================================================== */
+
+/* Gorgeous Fluid Nebula Background - Premium Warm Sunlit Pure White Style */
+body {
+  background: radial-gradient(circle at 15% 20%, rgba(249, 115, 22, 0.05) 0%, transparent 40%), 
+              radial-gradient(circle at 85% 80%, rgba(251, 191, 36, 0.06) 0%, transparent 40%), 
+              radial-gradient(circle at 50% 50%, rgba(253, 186, 116, 0.04) 0%, transparent 50%),
+              #ffffff !important; /* Pure clean white canvas */
+  background-attachment: fixed !important;
+}
+
+/* Highly Frosted Sidebar - Whitish Sunlit Glass */
+.sidebar {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(30px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+  border-right: 1px solid rgba(249, 115, 22, 0.1) !important;
+}
+
+.logo-text {
+  background: linear-gradient(90deg, #f97316, #ea580c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.menu-item.active {
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  color: var(--primary) !important;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.1) !important;
+}
+
+.menu-item.active i {
+  color: var(--primary) !important;
+  filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6)) !important;
+}
+
+/* Highly Frosted Header - Clear Sunlit White */
+.main-header {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1) !important;
+}
+
+/* Highly Frosted Cards - Sunlit White Glass with High Contrast */
+.card, .stat-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(30px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(120, 53, 4, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+.card:hover, .stat-card:hover {
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 15px 35px rgba(120, 53, 4, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), 0 0 15px rgba(249, 115, 22, 0.1) !important;
+}
+
+/* Welcome Card Jumbotron - Premium Energetic Orange Accent */
+.welcome-card-gradient {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.25) !important;
+  box-shadow: 0 15px 35px rgba(234, 88, 12, 0.2), 0 0 25px rgba(249, 115, 22, 0.1) !important;
+}
+
+.welcome-badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+}
+
+.btn-guide-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+  color: var(--text-dark) !important;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3) !important;
+}
+
+.btn-guide-primary:hover {
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45) !important;
+}
+
+/* Category Progress fill */
+.cat-progress-fill {
+  background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+}
+
+/* Tables */
+.data-table th {
+  border-bottom: 1px solid rgba(249, 115, 22, 0.18) !important;
+}
+
+.data-table td {
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1) !important;
+}
+
+.badge-brand {
+  background: rgba(249, 115, 22, 0.1) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  color: var(--primary) !important;
+}
+
+.btn-report-circle {
+  background: rgba(253, 186, 116, 0.15) !important;
+  border: 1px solid rgba(253, 186, 116, 0.3) !important;
+  color: var(--primary) !important;
+}
+
+.btn-report-circle:hover {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.4) !important;
+}
+
+/* Matrix Styles */
+.plc-sub-tabs-container {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+}
+
+.plc-sub-tab.active {
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  color: var(--primary) !important;
+}
+
+.plc-timeline-viewport {
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
+.plc-matrix-table th.sticky-col, 
+.plc-matrix-table td.sticky-col {
+  background: #ffffff !important;
+  border-right: 2px solid rgba(249, 115, 22, 0.15) !important;
+}
+
+.plc-matrix-table thead tr th {
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.plc-matrix-table thead tr th.active-year {
+  color: var(--primary) !important;
+  background: rgba(249, 115, 22, 0.05) !important;
+  border-bottom: 2px solid var(--primary) !important;
+}
+
+.plc-tire-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(249, 115, 22, 0.1) !important;
+}
+
+.plc-tire-card:hover {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.08), 0 0 12px rgba(249, 115, 22, 0.1) !important;
+}
+
+/* EV Kanban Columns */
+.ev-board-col, .ev-maker-column {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(249, 115, 22, 0.12) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+.ev-board-col-count {
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  color: var(--primary) !important;
+}
+
+.ev-tire-kanban-card, .ev-product-card {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(249, 115, 22, 0.1) !important;
+}
+
+.ev-tire-kanban-card:hover, .ev-product-card:hover {
+  border-color: var(--primary) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.1) !important;
+}
+
+/* Glass Slidable Drawer */
+.detail-drawer {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(30px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+  border-left: 1px solid rgba(249, 115, 22, 0.18) !important;
+  box-shadow: -15px 0 45px rgba(120, 53, 4, 0.06) !important;
+}
+
+.drawer-close {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+}
+
+.drawer-close:hover {
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2) !important;
+}
+
+.spec-item {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(249, 115, 22, 0.08) !important;
+}
+
+.comment-box {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-left: 4px solid var(--primary) !important;
+}
+
+.btn-report-link {
+  background: linear-gradient(135deg, var(--secondary), var(--primary)) !important;
+  color: var(--text-dark) !important;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25) !important;
+}
+
+.btn-report-link:hover {
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4) !important;
+}
+
+/* Input elements */
+.filter-control {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(249, 115, 22, 0.18) !important;
+  color: var(--text-primary) !important;
+}
+
+.filter-control:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.15) !important;
+}
+
+.btn-reset {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  color: var(--text-primary) !important;
+}
+
+.btn-reset:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+.pagination-buttons .btn-page {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  color: var(--text-primary) !important;
+}
+
+.pagination-buttons .btn-page:hover:not(:disabled) {
+  background: rgba(249, 115, 22, 0.08) !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+/* ==========================================================================
+   FORCE HIGH CONTRAST DARK SLATE TEXT FOR GLASS ELEMENTS
+   ========================================================================== */
+.card-title h3,
+.card-title h3 i,
+.stat-value,
+.stat-info h3,
+.plc-segment-label .seg-name,
+.ev-product-name,
+.spec-val,
+#reports-pagination-info,
+option,
+.ev-maker-badge,
+.ev-maker-title,
+.data-table th,
+.data-table td,
+.menu-item,
+.sidebar-footer p,
+.plc-sub-tab,
+.plc-matrix-table thead tr th,
+.plc-card-title,
+.plc-card-maker,
+.spec-label,
+.comment-box,
+.legend-item,
+.ev-product-details,
+#header-subtitle-text,
+.search-box-wrapper input {
+  color: #1e293b !important; /* Premium Dark Slate 800 for flawless contrast */
+}
+
+/* Exclusive Active Styles */
+.menu-item.active, .menu-item.active span {
+  color: var(--primary) !important;
+}
+.menu-item.active i {
+  color: var(--primary) !important;
+}
+.plc-sub-tab.active {
+  color: var(--primary) !important;
+}
+
+/* Welcome Jumbotron Exception: Bold high-contrast white layout on deep orange background */
+.welcome-card-gradient h1,
+.welcome-card-gradient p,
+.welcome-card-gradient .welcome-badge {
+  color: #ffffff !important;
+}
+
+
+/* ==========================================================================
+   GLOBAL PREMIUM FONT ENLARGEMENT OVERRIDES
+   ========================================================================== */
+.menu-item {
+  font-size: 1.05rem !important; /* Enlarged from 0.9rem */
+}
+.logo-text {
+  font-size: 1.3rem !important; /* Enlarged from 1.15rem */
+}
+.logo-icon {
+  font-size: 1.3rem !important; /* Enlarged from 1.15rem */
+  width: 42px !important;
+  height: 42px !important;
+}
+.header-title h2 {
+  font-size: 1.55rem !important; /* Enlarged from 1.3rem */
+}
+#header-subtitle-text {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.search-box-wrapper input {
+  font-size: 1rem !important; /* Enlarged from 0.85rem */
+}
+.card-title h3 {
+  font-size: 1.2rem !important; /* Enlarged from 1.0rem */
+}
+.stat-info h3 {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.stat-value {
+  font-size: 2.1rem !important; /* Enlarged from 1.8rem */
+}
+.stat-icon {
+  font-size: 2.1rem !important; /* Enlarged from 1.8rem */
+}
+.welcome-badge {
+  font-size: 0.85rem !important; /* Enlarged from 0.7rem */
+}
+.welcome-card-gradient h1 {
+  font-size: 2.1rem !important; /* Enlarged from 1.8rem */
+}
+.welcome-card-gradient p {
+  font-size: 1.1rem !important; /* Enlarged from 0.95rem */
+}
+.btn-guide-primary, .btn-guide-secondary {
+  font-size: 1.05rem !important; /* Enlarged from 0.85rem */
+}
+.cat-label {
+  font-size: 1rem !important; /* Enlarged from 0.85rem */
+}
+.cat-count-badge {
+  font-size: 1rem !important; /* Enlarged from 0.85rem */
+}
+.data-table th {
+  font-size: 0.95rem !important; /* Enlarged from 0.75rem */
+}
+.data-table td {
+  font-size: 1.05rem !important; /* Enlarged from 0.85rem */
+}
+.badge-brand, .badge-spec {
+  font-size: 0.85rem !important; /* Enlarged from 0.75rem */
+}
+.plc-sub-tab {
+  font-size: 1.05rem !important; /* Enlarged from 0.85rem */
+}
+.plc-legend {
+  font-size: 0.9rem !important; /* Enlarged from 0.75rem */
+}
+.plc-matrix-table thead tr th {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.plc-segment-label .seg-name {
+  font-size: 1.05rem !important; /* Enlarged from 0.85rem */
+}
+.plc-segment-label .seg-desc {
+  font-size: 0.8rem !important; /* Enlarged from 0.65rem */
+}
+.plc-card-title {
+  font-size: 0.9rem !important; /* Enlarged from 0.75rem */
+}
+.plc-card-maker {
+  font-size: 0.8rem !important; /* Enlarged from 0.65rem */
+}
+.ev-maker-title {
+  font-size: 1.15rem !important; /* Enlarged from 0.95rem */
+}
+.ev-maker-badge {
+  font-size: 0.85rem !important; /* Enlarged from 0.7rem */
+}
+.ev-product-name {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.ev-product-details {
+  font-size: 0.85rem !important; /* Enlarged from 0.7rem */
+}
+.ev-type-badge, .ev-status-badge {
+  font-size: 0.8rem !important; /* Enlarged from 0.6rem/0.65rem */
+}
+.drawer-banner-title h2 {
+  font-size: 1.55rem !important; /* Enlarged from 1.35rem */
+}
+.badge-maker {
+  font-size: 0.85rem !important; /* Enlarged from 0.7rem */
+}
+.section-title {
+  font-size: 1.05rem !important; /* Enlarged from 0.85rem */
+}
+.spec-label {
+  font-size: 0.8rem !important; /* Enlarged from 0.65rem */
+}
+.spec-val {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.comment-box {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.btn-report-link {
+  font-size: 1.05rem !important; /* Enlarged from 0.85rem */
+}
+.toast {
+  font-size: 1rem !important; /* Enlarged from 0.85rem */
+}
+#reports-pagination-info {
+  font-size: 0.95rem !important; /* Enlarged from 0.8rem */
+}
+.filter-control, .btn-reset {
+  font-size: 1rem !important; /* Enlarged from 0.85rem */
+}
+.sidebar-footer {
+  font-size: 0.85rem !important; /* Enlarged from 0.75rem */
+}
+
+/* ==========================================================================
+   Tire BM System - Premium White Theme Usability & Contrast Patches
+   ========================================================================== */
+
+/* 1. 웰컴 카드 (Tire Benchmarking System) 마우스 호버 시 글씨색 검정색 변환 */
+.welcome-card-gradient:hover h1,
+.welcome-card-gradient:hover p,
+.welcome-card-gradient:hover .welcome-badge {
+  color: #1e293b !important;
+  transition: var(--transition);
+}
+
+.welcome-card-gradient:hover .btn-guide-secondary {
+  color: #1e293b !important;
+  border-color: rgba(30, 41, 59, 0.3) !important;
+  background: rgba(30, 41, 59, 0.05) !important;
+}
+
+/* 2. 카테고리 구성 비율 텍스트 및 퍼센트 가독성 대폭 향상 */
+.cat-label,
+.cat-count-badge {
+  color: #1e293b !important;
+  font-weight: 700 !important;
+}
+
+/* 3. 보고서 라이브러리 및 최근 보고서 목록 텍스트 가독성 강화 */
+.data-table tbody td,
+.data-table tbody td span,
+#dashboard-recent-reports-tbody td,
+#reports-library-tbody td {
+  color: #1e293b !important;
+}
+
+/* 테이블의 보고서 제목에 대한 기본 볼드처리 및 호버 효과 */
+#dashboard-recent-reports-tbody td:nth-child(3),
+#reports-library-tbody td:nth-child(3) span {
+  font-weight: 600 !important;
+  transition: var(--transition);
+}
+
+/* 기안자 텍스트도 고대비 검정색으로 확실하게 표현 */
+#dashboard-recent-reports-tbody td:nth-child(2),
+#reports-library-tbody td:nth-child(2) {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+/* 4. 보고서 라이브러리 & 최근 리포트 목록 개별 세부 컬러 오버라이드 */
+
+/* 완료일자 일자들을 선명한 초록색으로 고정 */
+#dashboard-recent-reports-tbody td:nth-child(4),
+#reports-library-tbody td:nth-child(5) {
+  color: var(--accent-green) !important;
+  font-weight: 700 !important;
+}
+
+/* 태그의 글씨색 및 아이콘 컬러를 명확한 주황색으로 고정 */
+#reports-library-tbody td .badge-spec {
+  background: rgba(249, 115, 22, 0.05) !important;
+  border: 1px solid rgba(249, 115, 22, 0.18) !important;
+  color: var(--primary) !important; /* 주황색 (#f97316) */
+}
+
+#reports-library-tbody td .badge-spec i {
+  color: var(--primary) !important;
+}
+
+
+
