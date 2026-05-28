@@ -523,13 +523,13 @@ body {
  * Hankook Strategic SWOT & Gap Action Panel Styling
  * ------------------------------------------------------------- */
 .strategy-card {
-    background: linear-gradient(135deg, rgba(16, 21, 41, 0.85) 0%, rgba(9, 11, 23, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 247, 237, 0.98) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 107, 0, 0.15); /* Orange-tinted border for Hankook brand */
+    border: 1px solid rgba(249, 115, 22, 0.25); /* Elegant orange border for Hankook brand */
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 15px 35px rgba(255, 107, 0, 0.04), var(--shadow-premium);
+    box-shadow: 0 15px 40px rgba(249, 115, 22, 0.06), var(--shadow-premium);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -539,8 +539,8 @@ body {
 }
 
 .strategy-card:hover {
-    border-color: rgba(255, 107, 0, 0.35);
-    box-shadow: 0 15px 40px rgba(255, 107, 0, 0.08), var(--shadow-premium);
+    border-color: rgba(249, 115, 22, 0.45);
+    box-shadow: 0 20px 45px rgba(249, 115, 22, 0.1), var(--shadow-premium);
 }
 
 .strategy-card::before {
@@ -685,13 +685,14 @@ body {
 
 /* Gap Analysis Styling */
 .gap-analysis-container {
-    background: rgba(10, 14, 28, 0.4);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(249, 115, 22, 0.15);
+    border-radius: 12px;
     padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.02);
 }
 
 .gap-panel-title {
