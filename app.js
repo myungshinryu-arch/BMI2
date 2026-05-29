@@ -233,7 +233,7 @@ function renderPortalStats() {
   if (caseEl) caseEl.textContent = state.compounds.case.length > 0 ? `${state.compounds.case.length}건` : `${FALLBACK_STATS.caseCount}건`;
 }
 
-// 6. PLC Timeline Matrix 2D Render Engine (Tire BM에서 위젯으로 통째 이식)
+// 6. PLC Timeline Matrix 2D Render Engine (Tire BM에서 위젯으로 통째 이식 - 엑셀 행번호 1:1 매핑 + rowspan 동적 병합 렌더러)
 function renderPortalTimeline() {
   const viewport = document.getElementById('plc-table-viewport');
   if (!viewport) return;
@@ -253,28 +253,88 @@ function renderPortalTimeline() {
     return;
   }
 
-  // 가로축 연도와 세로축 세그먼트 가공 정렬
+  // 2. 고유한 연도 오름차순 정렬 추출
   const years = [...new Set(sheetItems.map(item => item.year))].sort((a, b) => a - b);
-  const categories = [...new Set(sheetItems.map(item => item.category))].sort();
 
-  // 표 엘리먼트 생성
+  // 3. 고유한 excelRow(엑셀 행 번호) 오름차순으로 행 목록 생성하여 순서 100% 보장
+  const excelRows = [...new Set(sheetItems.map(item => item.excelRow))].sort((a, b) => a - b);
+
+  // 각 excelRow에 매칭되는 그룹핑 생성
+  const matrixRows = excelRows.map(rowNum => {
+    const rowItems = sheetItems.filter(item => item.excelRow === rowNum);
+    const sample = rowItems[0];
+    
+    // 카테고리 명칭에서 괄호 및 개행 설명 정밀 사전 절삭 (예: "Super Sport (dry 성능 위주...)" -> "Super Sport")
+    let rawCategory = (sample.category || '').trim();
+    if (rawCategory.includes('(')) {
+      rawCategory = rawCategory.split('(')[0].trim();
+    }
+    
+    return {
+      excelRow: rowNum,
+      category: rawCategory,
+      division: (sample.division || '').trim(),
+      items: rowItems
+    };
+  });
+
+  const filteredRows = matrixRows;
+
+  // 4. 동적 rowspan (행 병합 횟수) 정밀 사전 계산 (필터링된 행 목록 기준)
+  // 4-1. Segment(category)의 rowspan 연속 횟수 계산
+  for (let i = 0; i < filteredRows.length; i++) {
+    if (i === 0 || filteredRows[i].category !== filteredRows[i - 1].category) {
+      let span = 1;
+      while (i + span < filteredRows.length && filteredRows[i + span].category === filteredRows[i].category) {
+        span++;
+      }
+      filteredRows[i].categorySpan = span;
+    } else {
+      filteredRows[i].categorySpan = 0; // 0이면 렌더링하지 않고 건너뜀
+    }
+  }
+
+  // 4-2. Maker(division)의 rowspan 연속 횟수 계산 (반드시 동일 카테고리 내에서만 병합되도록 가드배치)
+  for (let i = 0; i < filteredRows.length; i++) {
+    const currentCat = filteredRows[i].category;
+    const currentDiv = filteredRows[i].division;
+    
+    if (i === 0 || filteredRows[i - 1].category !== currentCat || filteredRows[i - 1].division !== currentDiv) {
+      let span = 1;
+      while (
+        i + span < filteredRows.length && 
+        filteredRows[i + span].category === currentCat && 
+        filteredRows[i + span].division === currentDiv
+      ) {
+        span++;
+      }
+      filteredRows[i].divisionSpan = span;
+    } else {
+      filteredRows[i].divisionSpan = 0; // 0이면 렌더링하지 않고 건너뜀
+    }
+  }
+
+  // 5. 테이블 생성
   const table = document.createElement('table');
   table.className = 'plc-matrix-table';
-  
-  // CSS 변수에 연도의 실제 개수 바인딩하여 5등분 기반 자동 수식 너비 연동
-  table.style.setProperty('--year-count', years.length);
 
-  // 헤더 (thead) 빌드
+  // 6. 테이블 헤더 (이중 Sticky 열 세팅)
   const thead = document.createElement('thead');
   const headerTr = document.createElement('tr');
-  const cornerTh = document.createElement('th');
-  cornerTh.className = 'sticky-col';
-  cornerTh.textContent = '세그먼트 / 구분';
-  headerTr.appendChild(cornerTh);
+  
+  const segmentTh = document.createElement('th');
+  segmentTh.className = 'segment-col';
+  segmentTh.textContent = '세그먼트 (Segment)';
+  headerTr.appendChild(segmentTh);
+
+  const makerTh = document.createElement('th');
+  makerTh.className = 'maker-col';
+  makerTh.textContent = '구분 (Maker)';
+  headerTr.appendChild(makerTh);
 
   years.forEach(year => {
     const th = document.createElement('th');
-    th.textContent = `${year}년`;
+    th.textContent = year;
     if (year === 2025 || year === 2026) {
       th.classList.add('active-year');
     }
@@ -283,37 +343,58 @@ function renderPortalTimeline() {
   thead.appendChild(headerTr);
   table.appendChild(thead);
 
-  // 본문 (tbody) 빌드
+  // 7. 테이블 바디 렌더링 및 동적 rowspan 적용
   const tbody = document.createElement('tbody');
   
-  categories.forEach(cat => {
+  filteredRows.forEach((row) => {
     const tr = document.createElement('tr');
     
-    // 좌측 고정 열 세그먼트 헤더
-    const stickTd = document.createElement('td');
-    stickTd.className = 'sticky-col';
+    // 자사 Hankook 행 판별하여 행(tr) 강조용 클래스 주입
+    const isHankookRow = (row.division.toUpperCase() === 'HK' || row.division === '자사' || row.division.toUpperCase() === 'HANKOOK');
+    if (isHankookRow) {
+      tr.classList.add('hankook-row');
+    }
     
-    const sampleItem = sheetItems.find(item => item.category === cat);
-    const divisionText = sampleItem ? sampleItem.division : '성능 구분';
+    // 7-1. Segment (Category) 셀 렌더링 (동적 rowspan 적용)
+    if (row.categorySpan > 0) {
+      const segmentTd = document.createElement('td');
+      segmentTd.className = 'segment-col group-first';
+      segmentTd.rowSpan = row.categorySpan;
+      segmentTd.innerHTML = `
+        <div class="plc-segment-label">
+          <span class="seg-name" title="${row.category}">${row.category}</span>
+        </div>
+      `;
+      tr.appendChild(segmentTd);
+    }
+    
+    // 7-2. Maker (Division) 셀 렌더링 (동적 rowspan 적용)
+    if (row.divisionSpan > 0) {
+      const makerTd = document.createElement('td');
+      makerTd.className = 'maker-col group-first';
+      makerTd.rowSpan = row.divisionSpan;
+      
+      const makerDisplayName = getMakerDisplayName(row.division, row.items);
+      const isHankookLabel = (makerDisplayName === 'Hankook');
+      
+      makerTd.innerHTML = `
+        <div class="plc-maker-label ${isHankookLabel ? 'hankook-label' : ''}">
+          <span class="maker-name">${makerDisplayName}</span>
+        </div>
+      `;
+      tr.appendChild(makerTd);
+    }
 
-    stickTd.innerHTML = `
-      <div class="plc-segment-label">
-        <span class="seg-name">${cat}</span>
-        <span class="seg-desc">${divisionText}</span>
-      </div>
-    `;
-    tr.appendChild(stickTd);
-
-    // 연도별 데이터 격자 셀 생성
+    // 7-3. 연도별 타임라인 셀 채우기
     years.forEach(year => {
       const td = document.createElement('td');
       td.className = 'plc-matrix-cell';
       
-      const cellItems = sheetItems.filter(item => item.category === cat && item.year === year);
+      const cellItems = row.items.filter(item => item.year === year);
       
       if (cellItems.length > 0) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'plc-cell-cards-wrapper';
+        const cardsWrapper = document.createElement('div');
+        cardsWrapper.className = 'plc-cell-cards-wrapper';
 
         cellItems.forEach(item => {
           const hasImg = findTireImage(item.sheet, item.excelRow, item.excelCol) !== null;
@@ -322,8 +403,9 @@ function renderPortalTimeline() {
 
           const card = document.createElement('div');
           card.className = `plc-tire-card ${hasImg ? 'has-image' : ''} ${hasRep ? 'has-report' : ''}`;
+          card.setAttribute('data-excel-row', item.excelRow);
+          card.setAttribute('data-excel-col', item.excelCol);
           
-          // 제조사 감지
           const makerText = detectMaker(item.productName);
 
           card.innerHTML = `
@@ -408,12 +490,10 @@ function renderPortalTimeline() {
 
             makers.forEach(maker => {
               if (maker === clickedMaker) {
-                // 클릭한 브랜드는 찾아낸 매칭 패턴명 강제 고정
                 state.selectedCompoundFilters[maker] = {
                   pattern: matchedPattern || "N/A"
                 };
               } else {
-                // 나머지 제조사들은 동일 계절 + 가장 근접한 연도 매칭 최적 패턴 선별 자동 적용
                 const bestPat = findBestMatchingPattern(maker, targetSeason, targetYear, treadList);
                 state.selectedCompoundFilters[maker] = {
                   pattern: bestPat
@@ -432,18 +512,17 @@ function renderPortalTimeline() {
             }
           });
 
-          wrapper.appendChild(card);
+          cardsWrapper.appendChild(card);
         });
-        td.appendChild(wrapper);
+        td.appendChild(cardsWrapper);
       } else {
         td.innerHTML = `<span style="color: rgba(0,0,0,0.04); font-size: 0.75rem;">-</span>`;
       }
       tr.appendChild(td);
     });
-
     tbody.appendChild(tr);
   });
-
+  
   table.appendChild(tbody);
   viewport.innerHTML = '';
   viewport.appendChild(table);
@@ -458,6 +537,40 @@ function renderPortalTimeline() {
       });
     }, 150); // 렌더링 완료 및 레이아웃 안정화 후 150ms 시점에 부드럽게 스크롤
   }
+}
+
+// 엑셀 내 구분(Division)을 실제 표시용 메이커로 매핑해주는 스마트 헬퍼 함수
+function getMakerDisplayName(division, items) {
+  if (!division) return '-';
+  const cleanDiv = division.toUpperCase().trim();
+  
+  const mapping = {
+    'CT': 'Continental',
+    'MC': 'Michelin',
+    'PR': 'Pirelli',
+    'GY': 'Goodyear',
+    'BS': 'Bridgestone',
+    'HK': 'Hankook',
+    '자사': 'Hankook',
+    'HANKOOK': 'Hankook'
+  };
+  
+  if (mapping[cleanDiv]) {
+    return mapping[cleanDiv];
+  }
+  
+  // 만약 사전에 매핑되지 않은 경우, 행 내부 아이템의 브랜드명을 역추적하여 안전 장치 마련
+  if (items && items.length > 0) {
+    for (const item of items) {
+      const detected = detectMaker(item.productName);
+      if (detected && detected !== '기타') {
+        if (detected === 'Hankook') return 'Hankook';
+        return detected;
+      }
+    }
+  }
+  
+  return division;
 }
 
 // 제조사 감지 헬퍼
