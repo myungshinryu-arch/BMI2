@@ -33,7 +33,7 @@
                 </li>
                 <li class="view-tab menu-item" id="tab-generation-trends" onclick="window.TireDashboardApp.switchView('generation-trends')" style="list-style: none;">
                     <i class="fa-solid fa-chart-line" style="width: 20px; text-align: center;"></i>
-                    <span>대표 상품 세대별 성능 변화</span>
+                    <span>대표 상품 세대별 성능</span>
                 </li>
                 <li class="view-tab menu-item" id="tab-hankook-strategy" onclick="window.TireDashboardApp.switchView('hankook-strategy')" style="list-style: none;">
                     <i class="fa-solid fa-route" style="width: 20px; text-align: center;"></i>
@@ -45,7 +45,7 @@
                 </li>
                 <li class="view-tab menu-item" id="tab-tech-strategy" onclick="window.TireDashboardApp.switchView('tech-strategy')" style="list-style: none;">
                     <i class="fa-solid fa-compass" style="width: 20px; text-align: center;"></i>
-                    <span>경쟁사 R&D 기술전략</span>
+                    <span>경쟁사 R&D 전략</span>
                 </li>
                 
                 <!-- 시스템 간 빠른 연동 파이프라인 (Divider & External Links) -->
@@ -356,14 +356,14 @@
                 <div class="charts-grid">
                     <!-- Radar Chart -->
                     <div class="chart-card border-hankook-glow-subtle">
-                        <h2 class="chart-card-title" style="border-left-color: var(--color-hankook);">한국타이어 대표제품 vs 벤치마크 1위 핵심성능 비교 (1:1 Match)</h2>
+                        <h2 class="chart-card-title" style="border-left-color: var(--color-hankook);">한국타이어 대표제품 vs 벤치마크 1위 핵심성능 비교</h2>
                         <div class="chart-wrapper">
                             <canvas id="chart-radar-attributes"></canvas>
                         </div>
                     </div>
                     <!-- YoY Performance Trend Chart -->
                     <div class="chart-card">
-                        <h2 class="chart-card-title">연도별(YoY) 주요 성능 항목별 점수 추이</h2>
+                        <h2 class="chart-card-title">연도별 주요 성능 항목별 점수 추이</h2>
                         <div class="chart-wrapper">
                             <canvas id="chart-yoy-trends"></canvas>
                         </div>

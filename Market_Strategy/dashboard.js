@@ -2584,13 +2584,13 @@ class TireDashboard {
         };
 
         const brandNamesKo = {
-            'Hankook': '한국타이어 (Hankook)',
-            'Michelin': '미쉐린 (Michelin)',
-            'Bridgestone': '브리지스톤 (Bridgestone)',
-            'Continental': '콘티넨탈 (Continental)',
-            'Goodyear': '굿이어 (Goodyear)',
-            'Pirelli': '피렐리 (Pirelli)',
-            'Kumho': '금호타이어 (Kumho)'
+            'Hankook': '한국타이어',
+            'Michelin': '미쉐린',
+            'Bridgestone': '브리지스톤',
+            'Continental': '콘티넨탈',
+            'Goodyear': '굿이어',
+            'Pirelli': '피렐리',
+            'Kumho': '금호타이어'
         };
 
         tableRows.forEach(row => {
@@ -2815,13 +2815,13 @@ class TireDashboard {
             'Winter': '겨울용 (Winter)'
         };
         const brandNamesKo = {
-            'Hankook': '한국타이어 (Hankook)',
-            'Michelin': '미쉐린 (Michelin)',
-            'Bridgestone': '브리지스톤 (Bridgestone)',
-            'Continental': '콘티넨탈 (Continental)',
-            'Goodyear': '굿이어 (Goodyear)',
-            'Pirelli': '피렐리 (Pirelli)',
-            'Kumho': '금호타이어 (Kumho)'
+            'Hankook': '한국타이어',
+            'Michelin': '미쉐린',
+            'Bridgestone': '브리지스톤',
+            'Continental': '콘티넨탈',
+            'Goodyear': '굿이어',
+            'Pirelli': '피렐리',
+            'Kumho': '금호타이어'
         };
         
         document.getElementById('calc-summary-brand').textContent = brandNamesKo[brand] || brand;
@@ -2979,7 +2979,7 @@ class TireDashboard {
             const headerTitle = document.getElementById('gt-header-title');
             const headerSubtitle = document.getElementById('gt-header-subtitle');
             if (headerTitle) {
-                headerTitle.textContent = `${data.brand || ''} ${data.lineupName || ''} 대표 상품 세대별 성능 변화 분석`;
+                headerTitle.textContent = `${data.brand || ''} ${data.lineupName || ''} 대표 상품 세대별 성능 분석`;
             }
             if (headerSubtitle) {
                 headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU || 'UHP'} | 북미 US — ${data.segmentUS || 'Passenger'}<br><span style="display: block; margin-top: 8px; color: var(--color-hankook); font-weight: 700;">[대표 경쟁 라인: ${data.flagshipLine || ''} ➔ 대응 한국 라인: ${data.hankookLine || ''}]</span>`;
@@ -3122,7 +3122,7 @@ class TireDashboard {
         // 5. 한국타이어 R&D 대응 액션 제안 주입
         const proposalBox = document.getElementById('gt-rd-proposal');
         if (proposalBox) {
-            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:0.98rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
+            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:0.98rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
         }
 
         // 6. 세대별 세부 성능 항목 Radar Chart 시각화
