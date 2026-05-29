@@ -2,443 +2,1260 @@
 window.PLC_DATA = {
   "reports": [
     {
-      "id": 1,
-      "title": "PLC Map Benchmarking Rerpot 등록 안내 (2026년 2월 update version)",
-      "rawRow": 1
-    },
-    {
-      "id": 2,
-      "title": "1. 목적 : PLC Map 에서 바로 보고서 조회 가능하여, 업무 편의성 증대",
-      "rawRow": 2
-    },
-    {
-      "id": 3,
-      "title": "2. 대상 Report : 81 EA Report (Arena VPR 등록 보고서와 동일)",
-      "rawRow": 3
-    },
-    {
-      "id": 5,
-      "title": "1) Benchmarking 대상 상품이 PLC Map 에 있을 경우 : 해당 상품명 옆에             클릭 시, 해당 Report Pop-Up",
-      "rawRow": 5
-    },
-    {
-      "id": 6,
-      "title": "2) Benchmarking 상품이 PLC Map 에 표기되어 있지 않을 경우 : 아래 Report List 참조하여 Link Address 로 보고서 조회 가능",
-      "rawRow": 6
-    },
-    {
-      "id": 7,
-      "title": "4. Benchmarking Report List",
-      "rawRow": 7
-    },
-    {
-      "id": 8,
-      "title": "기안자 기안부서 보고서 분류 제목 문서번호 기안일자 완료일자 Link Address PLC Map 표기 관련 상품_1 관련 상품_2 관련 상품_3 관련 상품_4 관련 상품_5",
-      "rawRow": 8
-    },
-    {
       "id": 9,
-      "title": "송호영  Segment/지역상품 분석 북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과 \t57049336-B0-HQ26-00004 2026.01.22 2026.01.22 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2026/01/AC004_1.nsf/vdockey/202601221131004B06BC6A49C1B44849258D87000DCDB6?opendocument%26popup=1 X All-Terrain T/A KO2 Recon Grappler A/T Recon Grappler Discoverer AT3 LT Discoverer Rugged Trek",
+      "drafter": "송호영",
+      "dept": "",
+      "reportType": "Segment/지역상품 분석",
+      "title": "북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과",
+      "docNo": "57049336-B0-HQ26-00004",
+      "draftDate": "2026.01.22",
+      "completeDate": "2026.01.22",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2026/01/AC004_1.nsf/vdockey/202601221131004B06BC6A49C1B44849258D87000DCDB6?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [
+        "All-Terrain T/A KO2",
+        "Recon Grappler A/T",
+        "Recon Grappler",
+        "Discoverer AT3 LT",
+        "Discoverer Rugged Trek"
+      ],
       "rawRow": 9
     },
     {
       "id": 10,
-      "title": "이재복 New Technology Benchmarking Project OE Maker 상품 분석 2025년 China OE Benchmarking 종합 분석 보고 57049336-B0-HQ25-00052 2025.12.05 2025.12.05 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/12/AC004_1.nsf/vdockey/20251205081851C28790C7E17C1C0149258D56008008A6?opendocument%26popup=1 X",
+      "drafter": "이재복",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "2025년 China OE Benchmarking 종합 분석 보고",
+      "docNo": "57049336-B0-HQ25-00052",
+      "draftDate": "2025.12.05",
+      "completeDate": "2025.12.05",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/12/AC004_1.nsf/vdockey/20251205081851C28790C7E17C1C0149258D56008008A6?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 10
     },
     {
       "id": 11,
-      "title": "박진욱 New Technology Benchmarking Project OE Maker 상품 분석 경쟁사 BMW OE 상품 Benchmarking 결과 보고 57049336-B0-HQ25-00049 2025.12.03 2025.12.04 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/12/AC004_1.nsf/vdockey/202512031503316B80E798510209BE49258D5500214504?opendocument%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "경쟁사 BMW OE 상품 Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ25-00049",
+      "draftDate": "2025.12.03",
+      "completeDate": "2025.12.04",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/12/AC004_1.nsf/vdockey/202512031503316B80E798510209BE49258D5500214504?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 11
     },
     {
       "id": 12,
-      "title": "이현규 New Technology Benchmarking Project 일반 상품 분석 Continental 북미 All Season Touring 신상품 분석 결과 보고 (Conti True Contact Tour 54) 57049336-B0-HQ25-00045 2025.11.07 2025.11.08 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/11/AC004_1.nsf/vdockey/202511071730078FD3DA79C460FB9149258D3B002EB10A?opendocument%26popup=1 O True Contact Tour 54",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continental 북미 All Season Touring 신상품 분석 결과 보고 (Conti True Contact Tour 54)",
+      "docNo": "57049336-B0-HQ25-00045",
+      "draftDate": "2025.11.07",
+      "completeDate": "2025.11.08",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/11/AC004_1.nsf/vdockey/202511071730078FD3DA79C460FB9149258D3B002EB10A?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "True Contact Tour 54"
+      ],
       "rawRow": 12
     },
     {
       "id": 13,
-      "title": "이재복 New Technology Benchmarking Project 일반 상품 분석 Michelin Winter Alpin Seg. 신상품 Alpin 7 Benchmarking 결과 보고 57049336-B0-HQ25-00044 2025.11.07 2025.11.07 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/11/AC004_1.nsf/vdockey/20251107102707D01708C4A2579ECB49258D3B0007F3CD?opendocument%26popup=1 O Alpin 7",
+      "drafter": "이재복",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin Winter Alpin Seg. 신상품 Alpin 7 Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ25-00044",
+      "draftDate": "2025.11.07",
+      "completeDate": "2025.11.07",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/11/AC004_1.nsf/vdockey/20251107102707D01708C4A2579ECB49258D3B0007F3CD?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Alpin 7"
+      ],
       "rawRow": 13
     },
     {
       "id": 14,
-      "title": "박진욱 New Technology Benchmarking Project Segment/지역상품 분석 Continental APAM Summer 신상품 Max Contact MC7 Benchmarking 결과 보고 57049336-B0-HQ25-00043 2025.10.30 2025.10.31 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/2025103013121174187A22AF8303E149258D33001713BC?opendocument%26popup=1 O Max Contact MC7",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "Continental APAM Summer 신상품 Max Contact MC7 Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ25-00043",
+      "draftDate": "2025.10.30",
+      "completeDate": "2025.10.31",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/2025103013121174187A22AF8303E149258D33001713BC?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Max Contact MC7"
+      ],
       "rawRow": 14
     },
     {
       "id": 15,
-      "title": "박진욱 New Technology Benchmarking Project OE Maker 상품 분석 [HKMC 용역과제 결과 보고] 고성능 CUP (Semi-Slick) 타이어 Benchmarking 57049336-B0-HQ25-00041 2025.10.21 2025.10.22 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/2025102117023004941A3117EAA54749258D2A002C2A70?opendocument%26popup=1 O Pilot Sport CUP2 P Zero Corsa P Zero R P Zero PZ4",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "[HKMC 용역과제 결과 보고] 고성능 CUP (Semi-Slick) 타이어 Benchmarking",
+      "docNo": "57049336-B0-HQ25-00041",
+      "draftDate": "2025.10.21",
+      "completeDate": "2025.10.22",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/2025102117023004941A3117EAA54749258D2A002C2A70?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Pilot Sport CUP2",
+        "P Zero Corsa",
+        "P Zero R",
+        "P Zero PZ4"
+      ],
       "rawRow": 15
     },
     {
       "id": 16,
-      "title": "김상현 New Technology Benchmarking Project 일반 상품 분석 금호 신상품 & 타이어 뱅크 PB상품 분석 결과 57049336-B0-HQ25-00039 2025.10.17 2025.10.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/20251017105632B63DF6596B56AF9649258D26000AA622?opendocument%26popup=1 X KH - Solus Advance TA51+ NX - Opera MC_Premier All Season 2 Pirelli P8 FS Premium KH_Ecsta Sport S",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "금호 신상품 & 타이어 뱅크 PB상품 분석 결과",
+      "docNo": "57049336-B0-HQ25-00039",
+      "draftDate": "2025.10.17",
+      "completeDate": "2025.10.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/20251017105632B63DF6596B56AF9649258D26000AA622?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [
+        "KH - Solus Advance TA51+",
+        "NX - Opera",
+        "MC_Premier All Season 2",
+        "Pirelli P8 FS Premium",
+        "KH_Ecsta Sport S"
+      ],
       "rawRow": 16
     },
     {
       "id": 17,
-      "title": "이현규 New Technology Benchmarking Project 일반 상품 분석 Michelin 신상품 2종 기본분석 보고서 (E Primacy 2, E Pilot Sport) 57049336-B0-HQ25-00038 2025.09.24 2025.09.25 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250924110700403257AC0741359149258D0F000B985F?opendocument%26popup=1 O E Primacy 2 E Pilot Sport",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin 신상품 2종 기본분석 보고서 (E Primacy 2, E Pilot Sport)",
+      "docNo": "57049336-B0-HQ25-00038",
+      "draftDate": "2025.09.24",
+      "completeDate": "2025.09.25",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250924110700403257AC0741359149258D0F000B985F?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "E Primacy 2",
+        "E Pilot Sport"
+      ],
       "rawRow": 17
     },
     {
       "id": 18,
-      "title": "김상현 New Technology Benchmarking Project OE Maker 상품 분석 Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과 57049336-B0-HQ25-00037 2025.09.12 2025.09.12 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1 O Eagle F1 Asymmetric 6",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과",
+      "docNo": "57049336-B0-HQ25-00037",
+      "draftDate": "2025.09.12",
+      "completeDate": "2025.09.12",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Eagle F1 Asymmetric 6"
+      ],
       "rawRow": 18
     },
     {
       "id": 19,
-      "title": "양승혁 New Technology Benchmarking Project 일반 상품 분석 Benchmarking Report_2nd Tier Summer EV (Falken, Yokohama) 57049336-B0-HQ25-00034 2025.08.11 2025.08.18 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/2025081109544236BAF7791F30AE9149258CE30004FF9D?opendocument%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Benchmarking Report_2nd Tier Summer EV (Falken, Yokohama)",
+      "docNo": "57049336-B0-HQ25-00034",
+      "draftDate": "2025.08.11",
+      "completeDate": "2025.08.18",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/2025081109544236BAF7791F30AE9149258CE30004FF9D?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 19
     },
     {
       "id": 20,
-      "title": "김상현 New Technology Benchmarking Project 일반 상품 분석 Dunlop All Weather 상품 분석 결과 (Synchro Weather) 57049336-B0-HQ25-00035 2025.08.12 2025.08.18 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/20250812081940C8AE050A1EDA0DFA49258CE300802330?opendocument%26popup=1 X Syncroweather",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Dunlop All Weather 상품 분석 결과 (Synchro Weather)",
+      "docNo": "57049336-B0-HQ25-00035",
+      "draftDate": "2025.08.12",
+      "completeDate": "2025.08.18",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/20250812081940C8AE050A1EDA0DFA49258CE300802330?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [
+        "Syncroweather"
+      ],
       "rawRow": 20
     },
     {
       "id": 21,
-      "title": "박진욱 New Technology Benchmarking Project OE Maker 상품 분석 경쟁사 Tesla OE 상품 Benchmarking 보고서 57049336-B0-HQ25-00030 2025.08.04 2025.08.05 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/20250804162447562521B709742FA449258CDC0028AF6A?opendocument%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "경쟁사 Tesla OE 상품 Benchmarking 보고서",
+      "docNo": "57049336-B0-HQ25-00030",
+      "draftDate": "2025.08.04",
+      "completeDate": "2025.08.05",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/20250804162447562521B709742FA449258CDC0028AF6A?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 21
     },
     {
       "id": 22,
-      "title": "박진욱 New Technology Benchmarking Project 일반 상품 분석 타사 Color Tire 조사 결과 보고 57049336-B0-HQ25-00031 2025.08.04 2025.08.04 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/202508041726366B43587386ECC2C649258CDC002E5FC7?opendocument%26popup=1 X Ultra Contact UC6",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "타사 Color Tire 조사 결과 보고",
+      "docNo": "57049336-B0-HQ25-00031",
+      "draftDate": "2025.08.04",
+      "completeDate": "2025.08.04",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/08/AC004_1.nsf/vdockey/202508041726366B43587386ECC2C649258CDC002E5FC7?opendocument%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [
+        "Ultra Contact UC6"
+      ],
       "rawRow": 22
     },
     {
       "id": 23,
-      "title": "김상현 New Technology Benchmarking Project 일반 상품 분석 Goodyear Summer 상품 분석 결과 (EfficientGrip Compact 2) 57049336-B0-HQ25-00023 2025.06.26 2025.06.26 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/06/AC004_1.nsf/vdockey/20250626092204A28F839373304E2849258CB500020301?opendocument%26popup=1 O EfficientGrip Compact 2",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Goodyear Summer 상품 분석 결과 (EfficientGrip Compact 2)",
+      "docNo": "57049336-B0-HQ25-00023",
+      "draftDate": "2025.06.26",
+      "completeDate": "2025.06.26",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/06/AC004_1.nsf/vdockey/20250626092204A28F839373304E2849258CB500020301?opendocument%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "EfficientGrip Compact 2"
+      ],
       "rawRow": 23
     },
     {
       "id": 24,
-      "title": "양승혁 New Technology Benchmarking Project 일반 상품 분석 Benchmarking Report _ Continental & Bridgestone All Weather 신상품 57049336-B0-HQ25-00019 2025.06.23 2025.06.25 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/06/AC004_1.nsf/vdockey/202506231432090FE31268FAB9C3A449258CB2001E61FE?opendocument&ismobile=0%26popup=1 O Allseason Contact 2 Turanza All Season 6",
+      "drafter": "양승혁",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Benchmarking Report _ Continental & Bridgestone All Weather 신상품",
+      "docNo": "57049336-B0-HQ25-00019",
+      "draftDate": "2025.06.23",
+      "completeDate": "2025.06.25",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/06/AC004_1.nsf/vdockey/202506231432090FE31268FAB9C3A449258CB2001E61FE?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Allseason Contact 2",
+        "Turanza All Season 6"
+      ],
       "rawRow": 24
     },
     {
       "id": 25,
-      "title": "김상현 New Technology Benchmarking Project 일반 상품 분석 Michelin LT(Pick up Highway Terrain)상품 분석 결과 (Defender LTX M/S 2 & Defender LTX Platinum) 57049336-B0-HQ25-00017 2025.05.23 2025.05.23 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/05/AC004_1.nsf/vdockey/20250523090314C0A841075111E67C49258C9300004930?opendocument&ismobile=0%26popup=1 O Defender LTX M/S 2 Defender LTX Platinum",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin LT(Pick up Highway Terrain)상품 분석 결과 (Defender LTX M/S 2 & Defender LTX Platinum)",
+      "docNo": "57049336-B0-HQ25-00017",
+      "draftDate": "2025.05.23",
+      "completeDate": "2025.05.23",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/05/AC004_1.nsf/vdockey/20250523090314C0A841075111E67C49258C9300004930?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Defender LTX M/S 2",
+        "Defender LTX Platinum"
+      ],
       "rawRow": 25
     },
     {
       "id": 26,
-      "title": "이재복 New Technology Benchmarking Project 일반 상품 분석 KH사 EnnoV Supermile/Winter 상품 분석 결과 57049336-B0-HQ25-00016 2025.05.09 2025.05.09 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/05/AC004_1.nsf/vdockey/20250509112629137D562C1209A93149258C85000D6765?opendocument&ismobile=0%26popup=1 O EnnoV Supermile EnnoV Winter",
+      "drafter": "이재복",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "KH사 EnnoV Supermile/Winter 상품 분석 결과",
+      "docNo": "57049336-B0-HQ25-00016",
+      "draftDate": "2025.05.09",
+      "completeDate": "2025.05.09",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/05/AC004_1.nsf/vdockey/20250509112629137D562C1209A93149258C85000D6765?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "EnnoV Supermile",
+        "EnnoV Winter"
+      ],
       "rawRow": 26
     },
     {
       "id": 27,
-      "title": "김상현 New Technology Benchmarking Project OE Maker 상품 분석 24년 HMG-DX OE Tire BM 보고서 57049336-B0-HQ25-00015 2025.04.03 2025.04.04 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/04/AC004_1.nsf/vdockey/20250403150500EB28E268EBE0241F49258C6100216790?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "24년 HMG-DX OE Tire BM 보고서",
+      "docNo": "57049336-B0-HQ25-00015",
+      "draftDate": "2025.04.03",
+      "completeDate": "2025.04.04",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/04/AC004_1.nsf/vdockey/20250403150500EB28E268EBE0241F49258C6100216790?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 27
     },
     {
       "id": 28,
-      "title": "양승혁 New Technology Benchmarking Project 기술 Theme 분석 Benchmarking Report_고성능 차량용 타이어 분석 결과 (M, AMG) 57049336-B0-HQ25-00012 2025.03.25 2025.03.26 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/03/AC004_1.nsf/vdockey/20250325091835D25578204BADEB6F49258C580001A8CA?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "Benchmarking Report_고성능 차량용 타이어 분석 결과 (M, AMG)",
+      "docNo": "57049336-B0-HQ25-00012",
+      "draftDate": "2025.03.25",
+      "completeDate": "2025.03.26",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/03/AC004_1.nsf/vdockey/20250325091835D25578204BADEB6F49258C580001A8CA?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 28
     },
     {
       "id": 29,
-      "title": "이재복 New Technology Benchmarking Project OE Maker 상품 분석 BYD 공급 OE Tire 분석 결과 (Ling Long, Continental) 57049336-B0-HQ25-00008 2025.03.12 2025.03.14 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/03/AC004_1.nsf/vdockey/20250312154409B9A65B9C89DBA1B549258C4B0024FE27?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "이재복",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "BYD 공급 OE Tire 분석 결과 (Ling Long, Continental)",
+      "docNo": "57049336-B0-HQ25-00008",
+      "draftDate": "2025.03.12",
+      "completeDate": "2025.03.14",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/03/AC004_1.nsf/vdockey/20250312154409B9A65B9C89DBA1B549258C4B0024FE27?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 29
     },
     {
       "id": 30,
-      "title": "박진욱 New Technology Benchmarking Project 중량 분석 2024년 Global Weight Benchmarking 보고서 57049336-B0-HQ25-00007 2025.03.10 2025.03.11 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/03/AC004_1.nsf/vdockey/20250310001042FE8C2F0D55524CE849258C4800535CC0?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "중량 분석",
+      "title": "2024년 Global Weight Benchmarking 보고서",
+      "docNo": "57049336-B0-HQ25-00007",
+      "draftDate": "2025.03.10",
+      "completeDate": "2025.03.11",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/03/AC004_1.nsf/vdockey/20250310001042FE8C2F0D55524CE849258C4800535CC0?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 30
     },
     {
       "id": 31,
-      "title": "김상현 New Technology Benchmarking Project 일반 상품 분석 Goodyear Winter 상품 분석 결과 (UltraGrip Performance 3) 57049336-B0-HQ25-00002 2025.01.20 2025.01.21 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/01/AC004_1.nsf/vdockey/20250120153853F3CF7F29CD2CCC6E49258C180024832E?opendocument&ismobile=0%26popup=1 O UltraGrip Performance 3",
+      "drafter": "김상현",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Goodyear Winter 상품 분석 결과 (UltraGrip Performance 3)",
+      "docNo": "57049336-B0-HQ25-00002",
+      "draftDate": "2025.01.20",
+      "completeDate": "2025.01.21",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/01/AC004_1.nsf/vdockey/20250120153853F3CF7F29CD2CCC6E49258C180024832E?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "UltraGrip Performance 3"
+      ],
       "rawRow": 31
     },
     {
       "id": 32,
-      "title": "이현규 New Technology Benchmarking Project 기술 Theme 분석 Bridgestone Platform & Modularity 기술 분석 결과 보고 57049336-B0-HQ25-00001 2025.01.17 2025.01.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/01/AC004_1.nsf/vdockey/20250117154836F44F6082381E9EEA49258C150025685A?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "Bridgestone Platform & Modularity 기술 분석 결과 보고",
+      "docNo": "57049336-B0-HQ25-00001",
+      "draftDate": "2025.01.17",
+      "completeDate": "2025.01.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/01/AC004_1.nsf/vdockey/20250117154836F44F6082381E9EEA49258C150025685A?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 32
     },
     {
       "id": 33,
-      "title": "박진욱 New Technology Benchmarking Project 기술 Theme 분석 Goodyear Recall 상품 분석 결과 (VW ID.3 OE 규격) 57049336-B0-HQ24-00045 2024.11.06 2024.11.06 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/11/AC004_1.nsf/vdockey/2024110613132845F48A00122B8E3849258BCD001732A0?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "Goodyear Recall 상품 분석 결과 (VW ID.3 OE 규격)",
+      "docNo": "57049336-B0-HQ24-00045",
+      "draftDate": "2024.11.06",
+      "completeDate": "2024.11.06",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/11/AC004_1.nsf/vdockey/2024110613132845F48A00122B8E3849258BCD001732A0?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 33
     },
     {
       "id": 34,
-      "title": "이현규 New Technology Benchmarking Project Maker 상품 분석 중국 시장 Giti OE Tire 종합 기술 분석 보고 57049336-B0-HQ24-00043 2024.10.28 2024.10.29 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/10/AC004_1.nsf/vdockey/20241028104229445336F17F3DBF8D49258BC400095CFB?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "Maker 상품 분석",
+      "title": "중국 시장 Giti OE Tire 종합 기술 분석 보고",
+      "docNo": "57049336-B0-HQ24-00043",
+      "draftDate": "2024.10.28",
+      "completeDate": "2024.10.29",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/10/AC004_1.nsf/vdockey/20241028104229445336F17F3DBF8D49258BC400095CFB?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 34
     },
     {
       "id": 35,
-      "title": "박진욱 New Technology Benchmarking Project 일반 상품 분석 Michelin Summer Super Sport Segment 상품 \"Pilot Sport S 5\" 1차 Benchmarking 결과 보고 57049336-B0-HQ24-00040 2024.10.22 2024.10.23 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/10/AC004_1.nsf/vdockey/2024102217024695EB7090A2F2EA2C49258BBE002C2EAD?opendocument&ismobile=0%26popup=1 O Pilot Sport S 5",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin Summer Super Sport Segment 상품 \"Pilot Sport S 5\" 1차 Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ24-00040",
+      "draftDate": "2024.10.22",
+      "completeDate": "2024.10.23",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/10/AC004_1.nsf/vdockey/2024102217024695EB7090A2F2EA2C49258BBE002C2EAD?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Pilot Sport S 5"
+      ],
       "rawRow": 35
     },
     {
       "id": 36,
-      "title": "이현규 New Technology Benchmarking Project 일반 상품 분석 중국계 SAILUN EV 전용 상품 ERANGE EV 분석 결과 57049336-B0-HQ24-00037 2024.10.03 2024.10.03 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/10/AC004_1.nsf/vdockey/202410031221278BAF1035E064DDC049258BAB00126E50?opendocument&ismobile=0%26popup=1 O ERANGE EV",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "중국계 SAILUN EV 전용 상품 ERANGE EV 분석 결과",
+      "docNo": "57049336-B0-HQ24-00037",
+      "draftDate": "2024.10.03",
+      "completeDate": "2024.10.03",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/10/AC004_1.nsf/vdockey/202410031221278BAF1035E064DDC049258BAB00126E50?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "ERANGE EV"
+      ],
       "rawRow": 36
     },
     {
       "id": 37,
-      "title": "이현규 New Technology Benchmarking Project 일반 상품 분석 Bridgestone Summer Balance급 신상품 Turanza 6 기본 분석 결과 보고 57049336-B0-HQ24-00036 2024.08.21 2024.08.22 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/08/AC004_1.nsf/vdockey/202408211958335D5C442D8F68E35049258B80003C46B7?opendocument&ismobile=0%26popup=1 O Turanza 6",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Bridgestone Summer Balance급 신상품 Turanza 6 기본 분석 결과 보고",
+      "docNo": "57049336-B0-HQ24-00036",
+      "draftDate": "2024.08.21",
+      "completeDate": "2024.08.22",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/08/AC004_1.nsf/vdockey/202408211958335D5C442D8F68E35049258B80003C46B7?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Turanza 6"
+      ],
       "rawRow": 37
     },
     {
       "id": 38,
-      "title": "양승혁 New Technology Benchmarking Project Maker 상품 분석 Benchmarking Report_Pirelli EV 타이어 설계 분석 57049336-B0-HQ24-00035 2024.07.25 2024.07.25 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/07/AC004_1.nsf/vdockey/20240725100447CE38180724650D5749258B650005E7DE?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "Maker 상품 분석",
+      "title": "Benchmarking Report_Pirelli EV 타이어 설계 분석",
+      "docNo": "57049336-B0-HQ24-00035",
+      "draftDate": "2024.07.25",
+      "completeDate": "2024.07.25",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/07/AC004_1.nsf/vdockey/20240725100447CE38180724650D5749258B650005E7DE?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 38
     },
     {
       "id": 39,
-      "title": "이현규 New Technology Benchmarking Project 일반 상품 분석 Pirelli 유럽/북미 All Weather 상품 분석 결과 보고 57049336-B0-HQ24-00033 2024.07.23 2024.07.23 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/07/AC004_1.nsf/vdockey/2024072315144507AF1D63B8B9429749258B6300224AE1?opendocument&ismobile=0%26popup=1 O Cinturato Weatheractive Cintuato All Season SF2",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Pirelli 유럽/북미 All Weather 상품 분석 결과 보고",
+      "docNo": "57049336-B0-HQ24-00033",
+      "draftDate": "2024.07.23",
+      "completeDate": "2024.07.23",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/07/AC004_1.nsf/vdockey/2024072315144507AF1D63B8B9429749258B6300224AE1?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Cinturato Weatheractive",
+        "Cintuato All Season SF2"
+      ],
       "rawRow": 39
     },
     {
       "id": 40,
-      "title": "박진욱 New Technology Benchmarking Project 일반 상품 분석 Continental EU Summer Segment Sustainable 상품 ULTRA CONTACT NXT Benchmarking 결과 보고 57049336-B0-HQ24-00032 2024.07.15 2024.07.15 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/07/AC004_1.nsf/vdockey/202407150751417DB35F30DD2DB6A149258B5A007D8FE4?opendocument&ismobile=0%26popup=1 O ULTRA CONTACT NXT",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continental EU Summer Segment Sustainable 상품 ULTRA CONTACT NXT Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ24-00032",
+      "draftDate": "2024.07.15",
+      "completeDate": "2024.07.15",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/07/AC004_1.nsf/vdockey/202407150751417DB35F30DD2DB6A149258B5A007D8FE4?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "ULTRA CONTACT NXT"
+      ],
       "rawRow": 40
     },
     {
       "id": 41,
-      "title": "박진욱 New Technology Benchmarking Project 일반 상품 분석 Continental EU Summer Segment PREMIUM CONTACT 7 Benchmarking 결과 보고 57049336-B0-HQ24-00031 2024.06.17 2024.06.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/202406171518258A2F8A660C73B13F49258B3F0022A062?opendocument&ismobile=0%26popup=1 O PREMIUM CONTACT 7",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continental EU Summer Segment PREMIUM CONTACT 7 Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ24-00031",
+      "draftDate": "2024.06.17",
+      "completeDate": "2024.06.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/202406171518258A2F8A660C73B13F49258B3F0022A062?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "PREMIUM CONTACT 7"
+      ],
       "rawRow": 41
     },
     {
       "id": 42,
-      "title": "이현규 New Technology Benchmarking Project 일반 상품 분석 K社 EV 전용 상품 EnnoV 분석 결과 보고 57049336-B0-HQ24-00028 2024.06.17 2024.06.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/20240617075639D7508F3C5715240749258B3E007E028C?opendocument&ismobile=0%26popup=1 O EnnoV Premium",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "K社 EV 전용 상품 EnnoV 분석 결과 보고",
+      "docNo": "57049336-B0-HQ24-00028",
+      "draftDate": "2024.06.17",
+      "completeDate": "2024.06.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/20240617075639D7508F3C5715240749258B3E007E028C?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "EnnoV Premium"
+      ],
       "rawRow": 42
     },
     {
       "id": 43,
-      "title": "송호영 New Technology Benchmarking Project 일반 상품 분석 북미 PCR Summer 신상품 Benchmarking_Continental ExtremeContact Sport 02 57049336-B0-HQ24-00026 2024.06.13 2024.06.14 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/2024061317192284C844F64759565D49258B3B002DB5BD?opendocument&ismobile=0%26popup=1 O ExtremeContact Sport 2",
+      "drafter": "송호영",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "북미 PCR Summer 신상품 Benchmarking_Continental ExtremeContact Sport 02",
+      "docNo": "57049336-B0-HQ24-00026",
+      "draftDate": "2024.06.13",
+      "completeDate": "2024.06.14",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/2024061317192284C844F64759565D49258B3B002DB5BD?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "ExtremeContact Sport 2"
+      ],
       "rawRow": 43
     },
     {
       "id": 44,
-      "title": "박진욱 New Technology Benchmarking Project Segment/지역상품 분석 Continental APAM Summer 전용 상품 BM 결과 보고 57049336-B0-HQ24-00022 2024.04.18 2024.04.19 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/04/AC004_1.nsf/vdockey/2024041808325215F4BC2E57F69ADB49258B02008157C1?opendocument&ismobile=0%26popup=1 O CT APAM SUMMER",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "Continental APAM Summer 전용 상품 BM 결과 보고",
+      "docNo": "57049336-B0-HQ24-00022",
+      "draftDate": "2024.04.18",
+      "completeDate": "2024.04.19",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/04/AC004_1.nsf/vdockey/2024041808325215F4BC2E57F69ADB49258B02008157C1?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "CT APAM SUMMER"
+      ],
       "rawRow": 44
     },
     {
       "id": 45,
-      "title": "양승혁 New Technology Benchmarking Project 일반 상품 분석 Benchmakring Report_Vredestein All Weather EV 신상품_QUATRAC PRO EV 57049336-B0-HQ24-00020 2024.04.17 2024.04.18 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/04/AC004_1.nsf/vdockey/202404171402002F894244359B52DA49258B02001BA30F?opendocument&ismobile=0%26popup=1 O QUATRAC PRO EV",
+      "drafter": "양승혁",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Benchmakring Report_Vredestein All Weather EV 신상품_QUATRAC PRO EV",
+      "docNo": "57049336-B0-HQ24-00020",
+      "draftDate": "2024.04.17",
+      "completeDate": "2024.04.18",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/04/AC004_1.nsf/vdockey/202404171402002F894244359B52DA49258B02001BA30F?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "QUATRAC PRO EV"
+      ],
       "rawRow": 45
     },
     {
       "id": 46,
-      "title": "박진욱 New Technology Benchmarking Project 일반 상품 분석 Continental Summer 신상품 ULTRA CONTACT Benchmarking 결과 보고 57049336-B0-HQ24-00016 2024.03.20 2024.03.20 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240320082109629C4BF6D248C0B749258AE500803B7D?opendocument&ismobile=0%26popup=1 O ULTRA CONTACT",
+      "drafter": "박진욱",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continental Summer 신상품 ULTRA CONTACT Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ24-00016",
+      "draftDate": "2024.03.20",
+      "completeDate": "2024.03.20",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240320082109629C4BF6D248C0B749258AE500803B7D?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "ULTRA CONTACT"
+      ],
       "rawRow": 46
     },
     {
       "id": 47,
-      "title": "송호영 New Technology Benchmarking Project Segment/지역상품 분석 북미 SUV 신상품(UTQG Treadwear 800) Benchmarking 결과 보고 57049336-B0-HQ24-00014 2024.03.18 2024.03.18 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240318094233F64D6D21C2F21FE149258AE40003DF48?opendocument&ismobile=0%26popup=1 O Alenza AS Ultra Scorpion AS+3",
+      "drafter": "송호영",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "북미 SUV 신상품(UTQG Treadwear 800) Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ24-00014",
+      "draftDate": "2024.03.18",
+      "completeDate": "2024.03.18",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240318094233F64D6D21C2F21FE149258AE40003DF48?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Alenza AS Ultra",
+        "Scorpion AS+3"
+      ],
       "rawRow": 47
     },
     {
       "id": 48,
-      "title": "강명환 New Technology Benchmarking Project 일반 상품 분석 MC Summer Sustainability & Balance 제품 Benchmarking 57049336-B0-HQ24-00012 2024.03.12 2024.03.12 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240312153217491BEE342ABA8E6449258ADE0023E785?opendocument&ismobile=0%26popup=1 O E.Primacy Primacy 4+ Turanza ECO",
+      "drafter": "강명환",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "MC Summer Sustainability & Balance 제품 Benchmarking",
+      "docNo": "57049336-B0-HQ24-00012",
+      "draftDate": "2024.03.12",
+      "completeDate": "2024.03.12",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240312153217491BEE342ABA8E6449258ADE0023E785?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "E.Primacy",
+        "Primacy 4+",
+        "Turanza ECO"
+      ],
       "rawRow": 48
     },
     {
       "id": 49,
-      "title": "이현규 New Technology Benchmarking Project 중량 분석 2023년 Global Weight Benchmarking 보고서 57049336-B0-HQ24-00011 2024.02.27 2024.02.28 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/02/AC004_1.nsf/vdockey/2024022711405029312530537423C449258AD0000EB4A6?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "이현규",
+      "dept": "New Technology Benchmarking Project",
+      "reportType": "중량 분석",
+      "title": "2023년 Global Weight Benchmarking 보고서",
+      "docNo": "57049336-B0-HQ24-00011",
+      "draftDate": "2024.02.27",
+      "completeDate": "2024.02.28",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/02/AC004_1.nsf/vdockey/2024022711405029312530537423C449258AD0000EB4A6?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 49
     },
     {
       "id": 50,
-      "title": "김상현 New Tech. Benchmarking Project 일반 상품 분석 북미용 UHP All Season Bridgestone Potenza RE980 AS+ Benchmarking Report 57049336-B0-HQ24-00003 2024.01.08 2024.01.09 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/01/AC004_1.nsf/vdockey/202401081946269F070668EE0E3C8449258A9E003B2C68?opendocument&ismobile=0%26popup=1 O Potenza RE98 AS+",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "북미용 UHP All Season Bridgestone Potenza RE980 AS+ Benchmarking Report",
+      "docNo": "57049336-B0-HQ24-00003",
+      "draftDate": "2024.01.08",
+      "completeDate": "2024.01.09",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/01/AC004_1.nsf/vdockey/202401081946269F070668EE0E3C8449258A9E003B2C68?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Potenza RE98 AS+"
+      ],
       "rawRow": 50
     },
     {
       "id": 51,
-      "title": "박진욱 New Tech. Benchmarking Project 일반 상품 분석 Continental Summer Super Sport 신상품 Sport Contact 7 Benchmarking 결과 보고 57049336-B0-HQ23-00081 2023.11.09 2023.11.14 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/11/AC004_1.nsf/vdockey/20231109082723F66980ED571CACCC49258A610080D20D?opendocument&ismobile=0%26popup=1 O Sport Contact 7",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continental Summer Super Sport 신상품 Sport Contact 7 Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ23-00081",
+      "draftDate": "2023.11.09",
+      "completeDate": "2023.11.14",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/11/AC004_1.nsf/vdockey/20231109082723F66980ED571CACCC49258A610080D20D?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Sport Contact 7"
+      ],
       "rawRow": 51
     },
     {
       "id": 52,
-      "title": "김상현 New Tech. Benchmarking Project 일반 상품 분석 북미용 Michelin Defender 2 Benchmarking Report 57049336-B0-HQ23-00085 2023.11.10 2023.11.14 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/11/AC004_1.nsf/vdockey/202311101328481B785F4BA199CA3349258A6300189A41?opendocument&ismobile=0%26popup=1 O Defender 2",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "북미용 Michelin Defender 2 Benchmarking Report",
+      "docNo": "57049336-B0-HQ23-00085",
+      "draftDate": "2023.11.10",
+      "completeDate": "2023.11.14",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/11/AC004_1.nsf/vdockey/202311101328481B785F4BA199CA3349258A6300189A41?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Defender 2"
+      ],
       "rawRow": 52
     },
     {
       "id": 53,
-      "title": "양승혁 New Tech. Benchmarking Project OE Maker 상품 분석 Benchmarking report_Volkswagen ID.4 OE Uneven Wear Analysis 57049336-B0-HQ23-00075 2023.11.03 2023.11.03 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/11/AC004_1.nsf/vdockey/202311031359278CD323112F3B93F549258A5C001B689C?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "Benchmarking report_Volkswagen ID.4 OE Uneven Wear Analysis",
+      "docNo": "57049336-B0-HQ23-00075",
+      "draftDate": "2023.11.03",
+      "completeDate": "2023.11.03",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/11/AC004_1.nsf/vdockey/202311031359278CD323112F3B93F549258A5C001B689C?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 53
     },
     {
       "id": 54,
-      "title": "김상현 New Tech. Benchmarking Project Segment/지역상품 분석 유럽 & 북미 All Weather 상품(Bridgestone, Toyo, Vredestein) Benchmarking 보고서 57049336-B0-HQ23-00073 2023.10.30 2023.10.30 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/10/AC004_1.nsf/vdockey/2023103008020257FAC9B23B6357CA49258A57007E832A?opendocument&ismobile=0%26popup=1 O Weather Control A5 evo Celsius AS2 Weather Peak Celsius Sport Quatrac Pro",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "유럽 & 북미 All Weather 상품(Bridgestone, Toyo, Vredestein) Benchmarking 보고서",
+      "docNo": "57049336-B0-HQ23-00073",
+      "draftDate": "2023.10.30",
+      "completeDate": "2023.10.30",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/10/AC004_1.nsf/vdockey/2023103008020257FAC9B23B6357CA49258A57007E832A?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Weather Control A5 evo",
+        "Celsius AS2",
+        "Weather Peak",
+        "Celsius Sport",
+        "Quatrac Pro"
+      ],
       "rawRow": 54
     },
     {
       "id": 55,
-      "title": "양승혁 New Tech. Benchmarking Project 일반 상품 분석 Benchmarking Report_North America & China_EV_Goodyear ELECTRICDRIVE 57049336-B0-HQ23-00069 2023.09.18 2023.09.22 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/09/AC004_1.nsf/vdockey/20230918161236CDF7BC0BC1A1FF7C49258A2E002797E3?opendocument&ismobile=0%26popup=1 O ELECTRIC DRIVE",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Benchmarking Report_North America & China_EV_Goodyear ELECTRICDRIVE",
+      "docNo": "57049336-B0-HQ23-00069",
+      "draftDate": "2023.09.18",
+      "completeDate": "2023.09.22",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/09/AC004_1.nsf/vdockey/20230918161236CDF7BC0BC1A1FF7C49258A2E002797E3?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "ELECTRIC DRIVE"
+      ],
       "rawRow": 55
     },
     {
       "id": 56,
-      "title": "최재혁 New Tech. Benchmarking Project 기술 Theme 분석 경쟁사 PCR 타이어 Groove Depth 조사 보고 57049336-B0-HQ23-00057 2023.08.03 2023.08.03 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/08/AC004_1.nsf/vdockey/202308031021299B4FB90B0125E3A049258A0000077569?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "최재혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "경쟁사 PCR 타이어 Groove Depth 조사 보고",
+      "docNo": "57049336-B0-HQ23-00057",
+      "draftDate": "2023.08.03",
+      "completeDate": "2023.08.03",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/08/AC004_1.nsf/vdockey/202308031021299B4FB90B0125E3A049258A0000077569?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 56
     },
     {
       "id": 57,
-      "title": "양승혁 New Tech. Benchmarking Project OE Maker 상품 분석 HMG-DX OE Tire Benchmarking Report 57049336-B0-HQ23-00042 2023.06.07 2023.06.07 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/06/AC004_1.nsf/vdockey/202306070901395D645F22AA15F1C0492589C70000204A?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "HMG-DX OE Tire Benchmarking Report",
+      "docNo": "57049336-B0-HQ23-00042",
+      "draftDate": "2023.06.07",
+      "completeDate": "2023.06.07",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/06/AC004_1.nsf/vdockey/202306070901395D645F22AA15F1C0492589C70000204A?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 57
     },
     {
       "id": 58,
-      "title": "박진욱 New Tech. Benchmarking Project 일반 상품 분석 Michelin Premium Summer Sport 신상품 (Pilot Sport 5) Benchmarking 결과 보고 57049336-B0-HQ23-00045 2023.06.07 2023.06.07 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/06/AC004_1.nsf/vdockey/2023060715231412107CC427E4E1F8492589C700230892?opendocument&ismobile=0%26popup=1 O Pilot Sport 5",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin Premium Summer Sport 신상품 (Pilot Sport 5) Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ23-00045",
+      "draftDate": "2023.06.07",
+      "completeDate": "2023.06.07",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/06/AC004_1.nsf/vdockey/2023060715231412107CC427E4E1F8492589C700230892?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Pilot Sport 5"
+      ],
       "rawRow": 58
     },
     {
       "id": 59,
-      "title": "김상현 New Tech. Benchmarking Project 일반 상품 분석 OE) Goodyear Eagle F1 Asymmetric 5 Benchmarking 보고 57049336-B0-HQ23-00032 2023.04.24 2023.04.28 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/04/AC004_1.nsf/vdockey/20230424095353CECFB624BB016D3B4925899B0004EC99?opendocument&ismobile=0%26popup=1 O Eagle F1 Asymmetric 5",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "OE) Goodyear Eagle F1 Asymmetric 5 Benchmarking 보고",
+      "docNo": "57049336-B0-HQ23-00032",
+      "draftDate": "2023.04.24",
+      "completeDate": "2023.04.28",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/04/AC004_1.nsf/vdockey/20230424095353CECFB624BB016D3B4925899B0004EC99?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Eagle F1 Asymmetric 5"
+      ],
       "rawRow": 59
     },
     {
       "id": 60,
-      "title": "양승혁 New Tech. Benchmarking Project Segment/지역상품 분석 Benchmarking Report_Domestic market EV tire 57049336-B0-HQ23-00021 2023.04.11 2023.04.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/04/AC004_1.nsf/vdockey/202304111348068949808499161AA34925898E001A5D55?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "Benchmarking Report_Domestic market EV tire",
+      "docNo": "57049336-B0-HQ23-00021",
+      "draftDate": "2023.04.11",
+      "completeDate": "2023.04.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/04/AC004_1.nsf/vdockey/202304111348068949808499161AA34925898E001A5D55?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 60
     },
     {
       "id": 61,
-      "title": "송호영 New Tech. Benchmarking Project 일반 상품 분석 VAN 신상품 Benchmarking 보고서 (VanContact A/S Ultra, VanContact Ultra) 57049336-B0-HQ23-00027 2023.04.12 2023.04.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/04/AC004_1.nsf/vdockey/202304121200568C35857B7BFCCC104925898F00108AED?opendocument&ismobile=0%26popup=1 O VanContact A/S Ultra VanContact Ultra",
+      "drafter": "송호영",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "VAN 신상품 Benchmarking 보고서 (VanContact A/S Ultra, VanContact Ultra)",
+      "docNo": "57049336-B0-HQ23-00027",
+      "draftDate": "2023.04.12",
+      "completeDate": "2023.04.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/04/AC004_1.nsf/vdockey/202304121200568C35857B7BFCCC104925898F00108AED?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "VanContact A/S Ultra",
+        "VanContact Ultra"
+      ],
       "rawRow": 61
     },
     {
       "id": 62,
-      "title": "최재혁 New Tech. Benchmarking Project 기타 Michelin Mold No. 조사 결과 보고_1차 57049336-B0-HQ23-00014 2023.03.24 2023.03.24 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/03/AC004_1.nsf/vdockey/20230324083520A09A9E08AF42C0384925897B00819317?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "최재혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "기타",
+      "title": "Michelin Mold No. 조사 결과 보고_1차",
+      "docNo": "57049336-B0-HQ23-00014",
+      "draftDate": "2023.03.24",
+      "completeDate": "2023.03.24",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/03/AC004_1.nsf/vdockey/20230324083520A09A9E08AF42C0384925897B00819317?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 62
     },
     {
       "id": 63,
-      "title": "양승혁 New Tech. Benchmarking Project 중량 분석 2022년 Global Weight Benchmarking 보고서 57049336-B0-HQ23-00010 2023.03.06 2023.03.07 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/03/AC004_1.nsf/vdockey/20230306160456DF3EE2A4ACB29A1A4925896A0026DC20?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "중량 분석",
+      "title": "2022년 Global Weight Benchmarking 보고서",
+      "docNo": "57049336-B0-HQ23-00010",
+      "draftDate": "2023.03.06",
+      "completeDate": "2023.03.07",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/03/AC004_1.nsf/vdockey/20230306160456DF3EE2A4ACB29A1A4925896A0026DC20?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 63
     },
     {
       "id": 64,
-      "title": "김상현 New Tech. Benchmarking Project OE Maker 상품 분석 HMC eM Platform Competition 상품 Benchmarking 보고 57049336-B0-HQ23-00007 2023.02.23 2023.02.24 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/02/AC004_1.nsf/vdockey/202302231450163CFE438A956D8C114925895F00200A9E?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "HMC eM Platform Competition 상품 Benchmarking 보고",
+      "docNo": "57049336-B0-HQ23-00007",
+      "draftDate": "2023.02.23",
+      "completeDate": "2023.02.24",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/02/AC004_1.nsf/vdockey/202302231450163CFE438A956D8C114925895F00200A9E?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 64
     },
     {
       "id": 65,
-      "title": "김상현 New Tech. Benchmarking Project Segment/지역상품 분석 Top Tier 2nd Brand 상품 Benchmarking 보고 57049336-B0-HQ23-00004 2023.02.13 2023.02.14 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/02/AC004_1.nsf/vdockey/202302131120395384F6FED10BF86749258955000CE055?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "Top Tier 2nd Brand 상품 Benchmarking 보고",
+      "docNo": "57049336-B0-HQ23-00004",
+      "draftDate": "2023.02.13",
+      "completeDate": "2023.02.14",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/02/AC004_1.nsf/vdockey/202302131120395384F6FED10BF86749258955000CE055?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 65
     },
     {
       "id": 66,
-      "title": "임재욱 New Tech. Benchmarking Project 기술 Theme 분석 3D Kerf benchmarking 결과 보고 57049336-B0-HQ22-00045 2022.12.27 2022.12.28 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/12/AC004_1.nsf/vdockey/202212271714225D50E97E6828A2E149258925002D3D61?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "임재욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "3D Kerf benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ22-00045",
+      "draftDate": "2022.12.27",
+      "completeDate": "2022.12.28",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/12/AC004_1.nsf/vdockey/202212271714225D50E97E6828A2E149258925002D3D61?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 66
     },
     {
       "id": 67,
-      "title": "송호영 New Tech. Benchmarking Project Segment/지역상품 분석 VAN 225/55R17C Benchmarking 결과 보고 57049336-B0-HQ22-00044 2022.11.30 2022.12.05 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/20221130171205B0B886FC3087C3F44925890A002D0C87?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "송호영",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "VAN 225/55R17C Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ22-00044",
+      "draftDate": "2022.11.30",
+      "completeDate": "2022.12.05",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/20221130171205B0B886FC3087C3F44925890A002D0C87?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 67
     },
     {
       "id": 68,
-      "title": "양승혁 New Tech. Benchmarking Project 일반 상품 분석 Pirelli Summer 신상품 Powergy Benchmarking 보고 57049336-B0-HQ22-00042 2022.11.11 2022.11.15 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/20221111093134DA897AFEF43B38E1492588F70002E19F?opendocument&ismobile=0%26popup=1 O Powergy",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Pirelli Summer 신상품 Powergy Benchmarking 보고",
+      "docNo": "57049336-B0-HQ22-00042",
+      "draftDate": "2022.11.11",
+      "completeDate": "2022.11.15",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/20221111093134DA897AFEF43B38E1492588F70002E19F?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Powergy"
+      ],
       "rawRow": 68
     },
     {
       "id": 69,
-      "title": "박진욱 New Tech. Benchmarking Project 일반 상품 분석 Continetal 북미 UHP All Season 신상품 (ExtremeContact DWS06 Plus) Benchmarking 결과 보고 57049336-B0-HQ22-00041 2022.11.11 2022.11.15 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/20221111081741E5D392A93844DE44492588F6007FEFB9?opendocument&ismobile=0%26popup=1 O ExtremeContact DWS6 Plus",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continetal 북미 UHP All Season 신상품 (ExtremeContact DWS06 Plus) Benchmarking 결과 보고",
+      "docNo": "57049336-B0-HQ22-00041",
+      "draftDate": "2022.11.11",
+      "completeDate": "2022.11.15",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/20221111081741E5D392A93844DE44492588F6007FEFB9?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "ExtremeContact DWS6 Plus"
+      ],
       "rawRow": 69
     },
     {
       "id": 70,
-      "title": "김상현 New Tech. Benchmarking Project 일반 상품 분석 Goodyear Summer Sport 신상품 Benchmarking 보고 57049336-B0-HQ22-00033 2022.11.02 2022.11.04 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/2022110210483879F68AA07D2EBD37492588EE0009EB31?opendocument&ismobile=0%26popup=1 O Eagle F1 Asymmetric 6",
+      "drafter": "김상현",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Goodyear Summer Sport 신상품 Benchmarking 보고",
+      "docNo": "57049336-B0-HQ22-00033",
+      "draftDate": "2022.11.02",
+      "completeDate": "2022.11.04",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/11/AC004_1.nsf/vdockey/2022110210483879F68AA07D2EBD37492588EE0009EB31?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Eagle F1 Asymmetric 6"
+      ],
       "rawRow": 70
     },
     {
       "id": 71,
-      "title": "양승혁 New Tech. Benchmarking Project OE Maker 상품 분석 Benchmarking Report_Tesla OE Anaysis 57049336-B0-HQ22-00032 2022.09.15 2022.09.26 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/09/AC004_1.nsf/vdockey/20220915154350CA44FB121217E1B7492588BE0024F74B?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "Benchmarking Report_Tesla OE Anaysis",
+      "docNo": "57049336-B0-HQ22-00032",
+      "draftDate": "2022.09.15",
+      "completeDate": "2022.09.26",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/09/AC004_1.nsf/vdockey/20220915154350CA44FB121217E1B7492588BE0024F74B?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 71
     },
     {
       "id": 72,
-      "title": "임재욱 New Tech. Benchmarking Project OE Maker 상품 분석 Audi OE Top Tier 경량화 상품 분석 보고 57049336-B0-HQ22-00029 2022.09.07 2022.09.26 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/09/AC004_1.nsf/vdockey/20220907105351E1B74C1827A34EF7492588B6000A6BE6?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "임재욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "OE Maker 상품 분석",
+      "title": "Audi OE Top Tier 경량화 상품 분석 보고",
+      "docNo": "57049336-B0-HQ22-00029",
+      "draftDate": "2022.09.07",
+      "completeDate": "2022.09.26",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/09/AC004_1.nsf/vdockey/20220907105351E1B74C1827A34EF7492588B6000A6BE6?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 72
     },
     {
       "id": 73,
-      "title": "양승혁 New Tech. Benchmarking Project 기술 Theme 분석 경쟁사 Carcass Joint 분석 57049336-B0-HQ22-00026 2022.08.29 2022.09.07 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/08/AC004_1.nsf/vdockey/20220829111055406A880A3372E4A4492588AD000BF95A?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "경쟁사 Carcass Joint 분석",
+      "docNo": "57049336-B0-HQ22-00026",
+      "draftDate": "2022.08.29",
+      "completeDate": "2022.09.07",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/08/AC004_1.nsf/vdockey/20220829111055406A880A3372E4A4492588AD000BF95A?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 73
     },
     {
       "id": 74,
-      "title": "박진욱 New Tech. Benchmarking Project 기타 Benchmarking 표준 시험 조건 변경안 보고 57049336-B0-HQ22-00025 2022.08.23 2022.09.07 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/08/AC004_1.nsf/vdockey/20220823174948AB6F832578169A5E492588A700307D9B?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "기타",
+      "title": "Benchmarking 표준 시험 조건 변경안 보고",
+      "docNo": "57049336-B0-HQ22-00025",
+      "draftDate": "2022.08.23",
+      "completeDate": "2022.09.07",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/08/AC004_1.nsf/vdockey/20220823174948AB6F832578169A5E492588A700307D9B?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 74
     },
     {
       "id": 75,
-      "title": "송호영 New Tech. Benchmarking Project 일반 상품 분석 VAN Summer 신상품 Benchmarking 보고 57049336-B0-HQ22-00023 2022.07.28 2022.08.02 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/202207281816223528CCA77272DAD94925888D0032EB96?opendocument&ismobile=0%26popup=1 O VanContact ECO",
+      "drafter": "송호영",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "VAN Summer 신상품 Benchmarking 보고",
+      "docNo": "57049336-B0-HQ22-00023",
+      "draftDate": "2022.07.28",
+      "completeDate": "2022.08.02",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/202207281816223528CCA77272DAD94925888D0032EB96?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "VanContact ECO"
+      ],
       "rawRow": 75
     },
     {
       "id": 76,
-      "title": "양승혁 New Tech. Benchmarking Project 일반 상품 분석 Michelin All Weather 상품 CrossClimate2 Benchmarking 분석 보고 (2차) 57049336-B0-HQ22-00021 2022.07.19 2022.07.21 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/2022071917004638493771301FF34A49258884002C0049?opendocument&ismobile=0%26popup=1 O CrossClimate 2 (유럽) CrossClimate 2 (북미)",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin All Weather 상품 CrossClimate2 Benchmarking 분석 보고 (2차)",
+      "docNo": "57049336-B0-HQ22-00021",
+      "draftDate": "2022.07.19",
+      "completeDate": "2022.07.21",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/2022071917004638493771301FF34A49258884002C0049?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "CrossClimate 2 (유럽)",
+        "CrossClimate 2 (북미)"
+      ],
       "rawRow": 76
     },
     {
       "id": 77,
-      "title": "박진욱 New Tech. Benchmarking Project Maker 상품 분석 Pirelli 고성능 OE 상품 Benchmarking 보고 (2차) 57049336-B0-HQ22-00019 2022.07.06 2022.07.14 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/20220706093238E6EEF5C402239D45492588770002FAB5?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "Maker 상품 분석",
+      "title": "Pirelli 고성능 OE 상품 Benchmarking 보고 (2차)",
+      "docNo": "57049336-B0-HQ22-00019",
+      "draftDate": "2022.07.06",
+      "completeDate": "2022.07.14",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/20220706093238E6EEF5C402239D45492588770002FAB5?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 77
     },
     {
       "id": 78,
-      "title": "양승혁 New Tech. Benchmarking Project Segment/지역상품 분석 Motocycle Benchmarking 보고서 (1차) 57049336-B0-HQ22-00015 2022.05.16 2022.05.17 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/05/AC004_1.nsf/vdockey/202205161552450F8A1B5A78677921492588440025C416?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "Segment/지역상품 분석",
+      "title": "Motocycle Benchmarking 보고서 (1차)",
+      "docNo": "57049336-B0-HQ22-00015",
+      "draftDate": "2022.05.16",
+      "completeDate": "2022.05.17",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/05/AC004_1.nsf/vdockey/202205161552450F8A1B5A78677921492588440025C416?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 78
     },
     {
       "id": 79,
-      "title": "송호영 New Tech. Benchmarking Project 일반 상품 분석 Toyo Open Country AT 3 Benchmarking 분석 보고 57049336-B0-HQ22-00013 2022.05.03 2022.05.13 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/05/AC004_1.nsf/vdockey/202205030926389801488C744EB6DA4925883700026C98?opendocument&ismobile=0%26popup=1 O Open Country AT 3",
+      "drafter": "송호영",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Toyo Open Country AT 3 Benchmarking 분석 보고",
+      "docNo": "57049336-B0-HQ22-00013",
+      "draftDate": "2022.05.03",
+      "completeDate": "2022.05.13",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/05/AC004_1.nsf/vdockey/202205030926389801488C744EB6DA4925883700026C98?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Open Country AT 3"
+      ],
       "rawRow": 79
     },
     {
       "id": 80,
-      "title": "양승혁 New Tech. Benchmarking Project 일반 상품 분석 Continental Winter 상품 WinterContact TS870 / TS870P Benchmarking 분석 보고 (1차) 57049336-B0-HQ22-00011 2022.02.16 2022.03.08 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/02/AC004_1.nsf/vdockey/20220216142930DC5347464F08BE38492587EB001E2A0A?opendocument&ismobile=0%26popup=1 O WinterContact TS87(P)",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "일반 상품 분석",
+      "title": "Continental Winter 상품 WinterContact TS870 / TS870P Benchmarking 분석 보고 (1차)",
+      "docNo": "57049336-B0-HQ22-00011",
+      "draftDate": "2022.02.16",
+      "completeDate": "2022.03.08",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/02/AC004_1.nsf/vdockey/20220216142930DC5347464F08BE38492587EB001E2A0A?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "WinterContact TS87(P)"
+      ],
       "rawRow": 80
     },
     {
       "id": 81,
-      "title": "박진욱 New Tech. Benchmarking Project 기술 Theme 분석 Continental High Load 규격 신상품 (EcoContact 6, HL245/40R19Y XL) Benchmarking 보고 57049336-B0-HQ22-00010 2022.02.11 2022.02.15 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/02/AC004_1.nsf/vdockey/20220211114821F7F71B361C523AFA492587E6000F677F?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "기술 Theme 분석",
+      "title": "Continental High Load 규격 신상품 (EcoContact 6, HL245/40R19Y XL) Benchmarking 보고",
+      "docNo": "57049336-B0-HQ22-00010",
+      "draftDate": "2022.02.11",
+      "completeDate": "2022.02.15",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/02/AC004_1.nsf/vdockey/20220211114821F7F71B361C523AFA492587E6000F677F?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 81
     },
     {
       "id": 82,
-      "title": "양승혁 New Tech. Benchmarking Project 중량 분석 2021년 Global Weight Benchmarking 보고서 57049336-B0-HQ22-00007 2022.02.10 2022.02.11 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/02/AC004_1.nsf/vdockey/20220210170454B50C26C01C7451FD492587E5002C6025?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking Project",
+      "reportType": "중량 분석",
+      "title": "2021년 Global Weight Benchmarking 보고서",
+      "docNo": "57049336-B0-HQ22-00007",
+      "draftDate": "2022.02.10",
+      "completeDate": "2022.02.11",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/02/AC004_1.nsf/vdockey/20220210170454B50C26C01C7451FD492587E5002C6025?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 82
     },
     {
       "id": 83,
-      "title": "송호영 New Tech. Benchmarking TFT Segment/지역상품 분석 북미용 Performance Touring SUV 상품 개발을 위한 Benchmarking 분석 보고 (1차) 57049336-B0-HQ21-00032 2021.11.25 2021.11.29 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/2021112510082399927CDDD25DBE804925879800063E19?opendocument&ismobile=0%26popup=1 O CrossContact LX25 CrossContact LX Sport Latitude Tour HP",
+      "drafter": "송호영",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "Segment/지역상품 분석",
+      "title": "북미용 Performance Touring SUV 상품 개발을 위한 Benchmarking 분석 보고 (1차)",
+      "docNo": "57049336-B0-HQ21-00032",
+      "draftDate": "2021.11.25",
+      "completeDate": "2021.11.29",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/2021112510082399927CDDD25DBE804925879800063E19?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "CrossContact LX25",
+        "CrossContact LX Sport",
+        "Latitude Tour HP"
+      ],
       "rawRow": 83
     },
     {
       "id": 84,
-      "title": "양승혁 New Tech. Benchmarking TFT 일반 상품 분석 Goodyear All Weather product \"Vector 4Seasons Generation 3\" Benchmarking Report 57049336-B0-HQ21-00028 2021.11.11 2021.11.16 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/20211111111957CFEDA564F481AFA94925878A000CC7C6?opendocument&ismobile=0%26popup=1 O Vector 4Seasons Gen.3",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "일반 상품 분석",
+      "title": "Goodyear All Weather product \"Vector 4Seasons Generation 3\" Benchmarking Report",
+      "docNo": "57049336-B0-HQ21-00028",
+      "draftDate": "2021.11.11",
+      "completeDate": "2021.11.16",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/20211111111957CFEDA564F481AFA94925878A000CC7C6?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Vector 4Seasons Gen.3"
+      ],
       "rawRow": 84
     },
     {
       "id": 85,
-      "title": "송호영 New Tech. Benchmarking TFT 기타 21년 JD POWER TSI 경쟁사(KH) SUV 성능 Benchmarking 보고 (1차) 57049336-B0-HQ21-00021 2021.10.29 2021.11.01 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/10/AC004_1.nsf/vdockey/20211029083236585BEC83F9652ADC4925877C008151E2?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "송호영",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "기타",
+      "title": "21년 JD POWER TSI 경쟁사(KH) SUV 성능 Benchmarking 보고 (1차)",
+      "docNo": "57049336-B0-HQ21-00021",
+      "draftDate": "2021.10.29",
+      "completeDate": "2021.11.01",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/10/AC004_1.nsf/vdockey/20211029083236585BEC83F9652ADC4925877C008151E2?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 85
     },
     {
       "id": 86,
-      "title": "박진욱 New Tech. Benchmarking TFT 일반 상품 분석 Michelin High Performance All Season 상품 (Pilot Sport All Season 4) Benchmarking 보고 57049336-B0-HQ21-00016 2021.10.15 2021.10.18 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/10/AC004_1.nsf/vdockey/20211015145847B61190C3920CCC9B4925876F0020D584?opendocument&ismobile=0%26popup=1 O Pilot Sport AS 4",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin High Performance All Season 상품 (Pilot Sport All Season 4) Benchmarking 보고",
+      "docNo": "57049336-B0-HQ21-00016",
+      "draftDate": "2021.10.15",
+      "completeDate": "2021.10.18",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/10/AC004_1.nsf/vdockey/20211015145847B61190C3920CCC9B4925876F0020D584?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Pilot Sport AS 4"
+      ],
       "rawRow": 86
     },
     {
       "id": 87,
-      "title": "박진욱 New Tech. Benchmarking TFT Maker 상품 분석 Pirelli 고성능 OE 상품 Benchmarking 보고 (1차) 57049336-B0-HQ21-00011 2021.09.15 2021.09.23 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/09/AC004_1.nsf/vdockey/20210915080940C68D89549176E26049258750007F3626?opendocument&ismobile=0%26popup=1 X",
+      "drafter": "박진욱",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "Maker 상품 분석",
+      "title": "Pirelli 고성능 OE 상품 Benchmarking 보고 (1차)",
+      "docNo": "57049336-B0-HQ21-00011",
+      "draftDate": "2021.09.15",
+      "completeDate": "2021.09.23",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/09/AC004_1.nsf/vdockey/20210915080940C68D89549176E26049258750007F3626?opendocument&ismobile=0%26popup=1",
+      "plcMap": "X",
+      "relatedProducts": [],
       "rawRow": 87
     },
     {
       "id": 88,
-      "title": "양승혁 New Tech. Benchmarking TFT 일반 상품 분석 Michelin All Weather 상품 북미 CrossClimate2 Benchmarking 분석 보고 (1차) 57049336-B0-HQ21-00005 2021.09.08 2021.09.09 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/09/AC004_1.nsf/vdockey/20210908154004B7A75C67628B55044925874A0024A049?opendocument&ismobile=0%26popup=1 O CrossClimate 2 (북미)",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin All Weather 상품 북미 CrossClimate2 Benchmarking 분석 보고 (1차)",
+      "docNo": "57049336-B0-HQ21-00005",
+      "draftDate": "2021.09.08",
+      "completeDate": "2021.09.09",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/09/AC004_1.nsf/vdockey/20210908154004B7A75C67628B55044925874A0024A049?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "CrossClimate 2 (북미)"
+      ],
       "rawRow": 88
     },
     {
       "id": 89,
-      "title": "양승혁 New Tech. Benchmarking TFT 일반 상품 분석 Michelin EV 전용상품 Pilot Sport EV Benchmarking 분석 보고 (1차) 57049336-B0-HQ21-00003 2021.09.01 2021.09.02 https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/09/AC004_1.nsf/vdockey/2021090108002726304F2A1AE118BB49258742007E60BC?opendocument&ismobile=0%26popup=1 O Pilot Sport EV",
+      "drafter": "양승혁",
+      "dept": "New Tech. Benchmarking TFT",
+      "reportType": "일반 상품 분석",
+      "title": "Michelin EV 전용상품 Pilot Sport EV Benchmarking 분석 보고 (1차)",
+      "docNo": "57049336-B0-HQ21-00003",
+      "draftDate": "2021.09.01",
+      "completeDate": "2021.09.02",
+      "linkAddress": "https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/09/AC004_1.nsf/vdockey/2021090108002726304F2A1AE118BB49258742007E60BC?opendocument&ismobile=0%26popup=1",
+      "plcMap": "O",
+      "relatedProducts": [
+        "Pilot Sport EV"
+      ],
       "rawRow": 89
     }
   ],

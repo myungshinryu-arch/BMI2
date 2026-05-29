@@ -43,18 +43,85 @@ try {
   const reportSheet = workbook.Sheets['BM Report List'];
   if (reportSheet) {
     const rows = XLSX.utils.sheet_to_json(reportSheet, { header: 1 });
-    rows.forEach((row, i) => {
-      if (row && row.length > 0) {
-        const text = row.join(' ').trim();
-        if (text.startsWith('▶') || text.includes('Benchmarking') || text.includes('보고') || text.includes('분석')) {
-          result.reports.push({
-            id: i,
-            title: text.replace(/^▶\s*/, ''),
-            rawRow: i
-          });
-        }
+    let headerRowIdx = -1;
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      if (row && row.includes('기안자') && row.includes('기안부서')) {
+        headerRowIdx = i;
+        break;
       }
-    });
+    }
+
+    if (headerRowIdx !== -1) {
+      for (let i = headerRowIdx + 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || row.length === 0) continue;
+
+        const drafter = (row[0] || '').toString().trim();
+        const dept = (row[1] || '').toString().trim();
+        const reportType = (row[2] || '').toString().trim();
+        const title = (row[3] || '').toString().trim();
+
+        // Skip non-data spacer rows or rows with empty titles
+        if (!drafter && !title) continue;
+        if (title.includes('목적') || title.includes('대상 Report') || title.includes('등록 안내') || title.includes('참조하여')) continue;
+
+        const docNo = (row[4] || '').toString().trim();
+        
+        // Handle dates
+        const draftDate = (row[5] || '').toString().trim();
+        const completeDate = (row[6] || '').toString().trim();
+        
+        // Link and map info
+        const linkAddress = (row[7] || '').toString().trim();
+        const plcMap = (row[8] || '').toString().trim();
+
+        // Collect related products
+        const relatedProducts = [];
+        for (let col = 9; col < row.length; col++) {
+          const val = (row[col] || '').toString().trim();
+          if (val && val !== 'null' && val !== '-' && val !== 'X' && val !== 'O') {
+            relatedProducts.push(val);
+          }
+        }
+
+        result.reports.push({
+          id: i,
+          drafter,
+          dept,
+          reportType,
+          title,
+          docNo,
+          draftDate,
+          completeDate,
+          linkAddress,
+          plcMap,
+          relatedProducts,
+          rawRow: i
+        });
+      }
+    } else {
+      // Fallback in case header not found
+      rows.forEach((row, i) => {
+        if (row && row.length > 0) {
+          const text = row.join(' ').trim();
+          if (text.startsWith('▶') || text.includes('Benchmarking') || text.includes('보고') || text.includes('분석')) {
+            result.reports.push({
+              id: i,
+              title: text.replace(/^▶\s*/, ''),
+              drafter: '기타',
+              dept: '분석팀',
+              docNo: 'N/A',
+              draftDate: '2026.02',
+              completeDate: '2026.02',
+              linkAddress: '#',
+              relatedProducts: [],
+              rawRow: i
+            });
+          }
+        }
+      });
+    }
   }
 
   // 2. Parse Timeline Sheets
