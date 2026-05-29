@@ -1741,9 +1741,14 @@ body {
 
 /* Input elements */
 .filter-control {
-  background: rgba(255, 255, 255, 0.8) !important;
+  background: #ffffff !important;
   border: 1px solid rgba(249, 115, 22, 0.18) !important;
   color: var(--text-primary) !important;
+}
+
+.filter-control option {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
 }
 
 .filter-control:focus {
