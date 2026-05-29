@@ -18,7 +18,7 @@ const state = {
   currentSheet: 'Summer', // Active PLC Timeline sheet
   selectedCompoundPatterns: {}, // 각 제조사별 실시간 드롭다운 선택 패턴 보관소
   timeline: {
-    filterSegments: [],
+    filterSegments: ['Super Sport'],
     filterMakers: []
   }
 };
@@ -343,12 +343,12 @@ function renderPortalTimeline() {
   
   const segmentTh = document.createElement('th');
   segmentTh.className = 'segment-col';
-  segmentTh.textContent = '세그먼트 (Segment)';
+  segmentTh.textContent = '세그먼트';
   headerTr.appendChild(segmentTh);
 
   const makerTh = document.createElement('th');
   makerTh.className = 'maker-col';
-  makerTh.textContent = '구분 (Maker)';
+  makerTh.textContent = '제조사';
   headerTr.appendChild(makerTh);
 
   years.forEach(year => {

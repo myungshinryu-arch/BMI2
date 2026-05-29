@@ -2118,7 +2118,7 @@ body {
 
 .plc-matrix-table tr.hankook-row td.segment-col,
 .plc-matrix-table tr.hankook-row td.maker-col {
-  background: linear-gradient(90deg, #fffefc, rgba(254, 215, 170, 0.4)) !important;
+  background: linear-gradient(90deg, #ffffff, #ffe9d6) !important;
 }
 
 .plc-maker-label.hankook-label .maker-name {
