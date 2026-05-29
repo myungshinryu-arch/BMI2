@@ -236,10 +236,65 @@
             </div>
           </div>
 
-          <!-- 꼭지 3 (좌측 하단): 경쟁사 R&D 테마 집중도 가중치 -->
+          <!-- 꼭지 3 (좌측 하단): 상품 기술 경쟁력 비교 (한국타이어 vs. 벤치마크 핵심성능 비교) -->
+          <div class="quad-panel panel-product-competitiveness">
+            <div class="panel-header tech-header-filters">
+              <h3 class="panel-title"><i class="fa-solid fa-gauge-high"></i> 상품 기술 경쟁력 비교</h3>
+              
+              <!-- 전용 대상 세그먼트 필터 영역 (시장/상품전략 UI 연동) -->
+              <div class="trend-filters" style="margin-bottom: 0;">
+                <div class="filter-group">
+                  <label for="tech-seg"><i class="fa-solid fa-layer-group"></i> 분석 세그먼트</label>
+                  <select id="tech-seg" class="filter-select">
+                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠 (UHP)</option>
+                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
+                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
+                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
+                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="panel-content tech-split-container">
+              <!-- 좌측: 레이더 차트 영역 (55%) -->
+              <div class="tech-chart-area">
+                <canvas id="product-comp-chart"></canvas>
+              </div>
+              
+              <!-- 우측: 3대 핵심 분석 카드 영역 (45%) -->
+              <div class="tech-info-area">
+                <!-- 1위 제품 카드 -->
+                <div class="tech-info-card best-product">
+                  <div class="t-card-icon"><i class="fa-solid fa-trophy"></i></div>
+                  <div class="t-card-body">
+                    <div class="t-card-label">세그먼트 벤치마크 1위 제품</div>
+                    <div class="t-card-value" id="tech-best-product">MICHELIN Pilot Sport 5</div>
+                  </div>
+                </div>
+                <!-- 시장 포지션 카드 -->
+                <div class="tech-info-card market-position">
+                  <div class="t-card-icon"><i class="fa-solid fa-map-pin"></i></div>
+                  <div class="t-card-body">
+                    <div class="t-card-label">한국타이어 시장포지션</div>
+                    <div class="t-card-value" id="tech-market-position">글로벌 기술 추격형 (성능차 최소화)</div>
+                  </div>
+                </div>
+                <!-- 최우선 보강 성능 카드 -->
+                <div class="tech-info-card priority-enhancement">
+                  <div class="t-card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                  <div class="t-card-body">
+                    <div class="t-card-label">최우선 보강 필요 성능</div>
+                    <div class="t-card-value" id="tech-priority-enhancement">젖은 노면 제동력 (Wet Braking)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 꼭지 4 (우측 하단): R&D 테마 집중 비교 (기존 R&D 패널이 이 위치로 이동) -->
           <div class="quad-panel panel-rd-priority">
             <div class="panel-header rd-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-compass-drafting"></i> 경쟁사 R&D 테마 집중도 가중치</h3>
+              <h3 class="panel-title"><i class="fa-solid fa-compass-drafting"></i> R&D 테마 집중 비교</h3>
               
               <!-- 글로벌 탑 4 탭 버튼 (복수 선택 가능, 디폴트 Hankook & Michelin 활성) -->
               <div class="rd-mfg-tabs" id="rd-mfg-tabs">
@@ -251,17 +306,6 @@
             </div>
             <div class="panel-content chart-container">
               <canvas id="rd-priority-chart"></canvas>
-            </div>
-          </div>
-
-          <!-- 꼭지 4 (우측 하단): BI Report (글로벌 탑 4 최신 뉴스 스크랩) -->
-          <div class="quad-panel panel-bi-report">
-            <div class="panel-header">
-              <h3 class="panel-title"><i class="fa-solid fa-newspaper"></i> BI Report: 글로벌 탑 4 최신 기사 스크랩</h3>
-              <div class="news-ticker-status">실시간 스크랩 업데이트 중 <span class="news-dot"></span></div>
-            </div>
-            <div class="panel-content news-scrap-container" id="news-scrap-container">
-              <!-- 뉴스 카드가 스크립트에서 동적으로 들어가도록 구현 -->
             </div>
           </div>
 

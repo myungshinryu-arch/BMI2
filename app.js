@@ -1363,6 +1363,7 @@ function findAssociatedReport(productName) {
 let globalMarketChart = null;
 let trendPerformanceChart = null;
 let rdPriorityChart = null;
+let productCompChart = null;
 
 // 연도별 글로벌 전체 매출 및 판매량 데이터베이스 (세그먼트 세분화: All, UHP, Grand Touring, All-Season, Winter, SUV)
 const GLOBAL_MARKET_DATABASE = {
@@ -1548,10 +1549,142 @@ const RD_PRIORITY_DATABASE = {
   "BRIDGESTONE": [92, 90, 88, 86, 92]
 };
 
+// 신설: 한국타이어 vs. 벤치마크 핵심성능 비교 레이더 차트 및 3대 핵심 분석 카드 데이터베이스
+// 6대 축 순서: [마른 노면 접지력, 젖은 노면 제동력, 수막현상 방지, 승차감 및 소음, 트레드 수명, 연비 효율성]
+const PRODUCT_COMPETITIVENESS_DATABASE = {
+  "Ultra High Performance (UHP)": {
+    chartData: {
+      hankook: [92, 88, 90, 91, 85, 87],
+      benchmark: [95, 94, 92, 93, 89, 86]
+    },
+    bestProduct: "MICHELIN Pilot Sport 5",
+    marketPosition: "글로벌 기술 추격형 (성능차 최소화)",
+    priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+  },
+  "Grand Touring (All-Season)": {
+    chartData: {
+      hankook: [89, 91, 88, 93, 92, 90],
+      benchmark: [92, 92, 90, 94, 94, 88]
+    },
+    bestProduct: "CONTINENTAL PremiumContact 7",
+    marketPosition: "시장 선도형 동등 수준 (승차감 우수)",
+    priorityEnhancement: "수막현상 방지 (Hydroplaning)"
+  },
+  "All-Season Passenger": {
+    chartData: {
+      hankook: [87, 86, 85, 92, 94, 91],
+      benchmark: [89, 88, 88, 91, 95, 89]
+    },
+    bestProduct: "MICHELIN CrossClimate 2",
+    marketPosition: "안정성 지향형 추격 (수명 경쟁력 우수)",
+    priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+  },
+  "Winter / Snow": {
+    chartData: {
+      hankook: [85, 93, 91, 90, 86, 84],
+      benchmark: [88, 95, 93, 92, 88, 85]
+    },
+    bestProduct: "CONTINENTAL VikingContact 7",
+    marketPosition: "특화 성능 추격형 (눈길 그립 확보)",
+    priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
+  },
+  "All-Terrain (SUV/Truck)": {
+    chartData: {
+      hankook: [91, 86, 88, 89, 90, 85],
+      benchmark: [93, 89, 90, 90, 92, 84]
+    },
+    bestProduct: "GOODYEAR Wrangler Duratrac",
+    marketPosition: "내구성 중심 경쟁형 (오프로드 강화)",
+    priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+  }
+};
+
+// 신설: 한국타이어 vs. 벤치마크 핵심성능 비교 및 3대 핵심 요약 카드 렌더러
+function initProductCompChart(ctx) {
+  const segSelect = document.getElementById('tech-seg');
+  if (!segSelect) return;
+  
+  const selectedSeg = segSelect.value;
+  const techData = PRODUCT_COMPETITIVENESS_DATABASE[selectedSeg];
+  if (!techData) return;
+
+  if (productCompChart) productCompChart.destroy();
+
+  productCompChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['마른 노면 접지력', '젖은 노면 제동력', '수막현상 방지', '승차감 및 소음', '트레드 수명', '연비 효율성'],
+      datasets: [
+        {
+          label: 'HANKOOK',
+          data: techData.chartData.hankook,
+          backgroundColor: 'rgba(249, 115, 22, 0.15)', // 주황색 투명
+          borderColor: 'rgba(249, 115, 22, 1)',
+          borderWidth: 2.5,
+          pointBackgroundColor: 'rgba(249, 115, 22, 1)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 4.5,
+          pointHoverRadius: 6.5
+        },
+        {
+          label: 'Benchmark Avg',
+          data: techData.chartData.benchmark,
+          backgroundColor: 'rgba(59, 130, 246, 0.08)', // 파란색 투명
+          borderColor: 'rgba(59, 130, 246, 0.85)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(59, 130, 246, 0.85)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { family: 'Pretendard', weight: '700', size: 10.5 }, color: '#475569' }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          titleFont: { family: 'Pretendard', weight: '700' },
+          bodyFont: { family: 'Pretendard' },
+          padding: 12,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        r: {
+          angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
+          grid: { color: 'rgba(0, 0, 0, 0.08)' },
+          min: 60,
+          max: 100,
+          ticks: { stepSize: 10, backdropColor: 'transparent', font: { family: 'Pretendard', size: 8.5 }, color: '#94a3b8' },
+          pointLabels: { font: { family: 'Pretendard', weight: '700', size: 10.5 }, color: '#334155' }
+        }
+      }
+    }
+  });
+
+  // 3대 핵심 분석 카드 실시간 텍스트 연동 업데이트
+  const bestProductEl = document.getElementById('tech-best-product');
+  const marketPositionEl = document.getElementById('tech-market-position');
+  const priorityEnhancementEl = document.getElementById('tech-priority-enhancement');
+
+  if (bestProductEl) bestProductEl.textContent = techData.bestProduct;
+  if (marketPositionEl) marketPositionEl.textContent = techData.marketPosition;
+  if (priorityEnhancementEl) priorityEnhancementEl.textContent = techData.priorityEnhancement;
+}
+
 function initStrategyDashboard() {
   const gCtx = document.getElementById('global-market-chart');
   const tCtx = document.getElementById('trend-performance-chart');
   const rCtx = document.getElementById('rd-priority-chart');
+  const pCtx = document.getElementById('product-comp-chart');
   
   if (!gCtx || !tCtx || !rCtx) return;
 
@@ -1561,11 +1694,13 @@ function initStrategyDashboard() {
   // 꼭지 2: 트렌드 퍼포먼스 차트 그리기
   initTrendPerformanceChart(tCtx);
 
-  // 꼭지 3: R&D 가중치 차트 그리기
+  // 꼭지 3: R&D 가중치 차트 그리기 (우측 이동 및 R&D 테마 집중 비교 개명)
   initRdPriorityChart(rCtx);
 
-  // 꼭지 4: BI 최신 기사 스크랩 렌더링
-  renderNewsScraps();
+  // 꼭지 4: 상품 기술 경쟁력 비교 차트 그리기 (신설)
+  if (pCtx) {
+    initProductCompChart(pCtx);
+  }
 
   // 이벤트 바인딩
   setupStrategyEventListeners();
@@ -1898,4 +2033,12 @@ function setupStrategyEventListeners() {
       initRdPriorityChart(document.getElementById('rd-priority-chart'));
     });
   });
+
+  // 신설: 상품 기술 경쟁력 비교 필터 연동
+  const techSegSelect = document.getElementById('tech-seg');
+  if (techSegSelect) {
+    techSegSelect.addEventListener('change', () => {
+      initProductCompChart(document.getElementById('product-comp-chart'));
+    });
+  }
 }
