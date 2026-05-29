@@ -27,11 +27,7 @@
             
             <p class="sidebar-section-title" style="padding: 15px 16px 4px 16px; margin: 0; font-weight: 800; text-transform: uppercase;">분석 뷰 네비게이션</p>
             <ul class="sidebar-menu" style="list-style: none; padding: 0 16px; display: flex; flex-direction: column; gap: 8px;">
-                <li class="view-tab menu-item active" id="tab-market" onclick="window.TireDashboardApp.switchView('market')" style="list-style: none;">
-                    <i class="fa-solid fa-chart-column" style="width: 20px; text-align: center;"></i>
-                    <span>Market & Sales Overview</span>
-                </li>
-                <li class="view-tab menu-item" id="tab-competitiveness" onclick="window.TireDashboardApp.switchView('competitiveness')" style="list-style: none;">
+                <li class="view-tab menu-item active" id="tab-competitiveness" onclick="window.TireDashboardApp.switchView('competitiveness')" style="list-style: none;">
                     <i class="fa-solid fa-layer-group" style="width: 20px; text-align: center;"></i>
                     <span>기술 경쟁력 Overview</span>
                 </li>
@@ -39,13 +35,17 @@
                     <i class="fa-solid fa-chart-line" style="width: 20px; text-align: center;"></i>
                     <span>대표 상품 세대별 성능 변화</span>
                 </li>
-                <li class="view-tab menu-item" id="tab-tech-strategy" onclick="window.TireDashboardApp.switchView('tech-strategy')" style="list-style: none;">
-                    <i class="fa-solid fa-compass" style="width: 20px; text-align: center;"></i>
-                    <span>기술 전략 Overview</span>
-                </li>
                 <li class="view-tab menu-item" id="tab-hankook-strategy" onclick="window.TireDashboardApp.switchView('hankook-strategy')" style="list-style: none;">
                     <i class="fa-solid fa-route" style="width: 20px; text-align: center;"></i>
                     <span>대응 전략 & 로드맵</span>
+                </li>
+                <li class="view-tab menu-item" id="tab-market" onclick="window.TireDashboardApp.switchView('market')" style="list-style: none;">
+                    <i class="fa-solid fa-chart-column" style="width: 20px; text-align: center;"></i>
+                    <span>Market & Sales Overview</span>
+                </li>
+                <li class="view-tab menu-item" id="tab-tech-strategy" onclick="window.TireDashboardApp.switchView('tech-strategy')" style="list-style: none;">
+                    <i class="fa-solid fa-compass" style="width: 20px; text-align: center;"></i>
+                    <span>경쟁사 R&D 기술전략</span>
                 </li>
                 
                 <!-- 시스템 간 빠른 연동 파이프라인 (Divider & External Links) -->
@@ -123,7 +123,7 @@
 
 
             <!-- ==================== TAB 1: Market & Sales Overview ==================== -->
-            <div id="panel-market" class="view-panel active">
+            <div id="panel-market" class="view-panel">
 
                 <!-- Brand Chip Selectors for Multi-select -->
                 <div class="brand-select-card card-premium">
@@ -234,7 +234,7 @@
             </div>
 
             <!-- ==================== TAB 2: Technical Competitiveness ==================== -->
-            <div id="panel-competitiveness" class="view-panel">
+            <div id="panel-competitiveness" class="view-panel active">
                 <!-- Performance Filters Header -->
                 <div class="panel-filter-bar">
                     <div class="filter-bar-group">

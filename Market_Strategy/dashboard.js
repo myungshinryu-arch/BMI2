@@ -805,7 +805,7 @@ class TireDashboard {
 
         // 최초 전체 화면 렌더링 및 뷰 설정
         this.updateDashboard();
-        this.switchView('market');
+        this.switchView('competitiveness');
     }
 
     /**
@@ -1044,7 +1044,7 @@ class TireDashboard {
 
         this.updateSourceFilterOptions();
         this.updateDashboard();
-        this.switchView('market');
+        this.switchView('competitiveness');
     }
 
     /**
