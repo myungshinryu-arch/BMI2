@@ -18,7 +18,7 @@ const state = {
   currentSheet: 'Summer', // Active PLC Timeline sheet
   selectedCompoundPatterns: {}, // 각 제조사별 실시간 드롭다운 선택 패턴 보관소
   timeline: {
-    filterSegments: ['Super Sport'],
+    filterSegments: ['Sport'],
     filterMakers: []
   }
 };
