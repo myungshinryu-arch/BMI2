@@ -1984,8 +1984,8 @@ class TireDashboard {
                         position: 'top',
                         labels: { 
                             boxWidth: 14, 
-                            font: { size: 12, weight: '700' },
-                            color: '#cbd5e1'
+                            font: { size: 13, weight: '700' },
+                            color: '#111827'
                         }
                     },
                     tooltip: {
@@ -2014,10 +2014,10 @@ class TireDashboard {
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.06)' },
                         ticks: { 
-                            font: { size: 11, weight: '700' }, 
-                            color: '#cbd5e1'
+                            font: { size: 12, weight: '700' }, 
+                            color: '#111827'
                         }
                     },
                     y: {
@@ -2026,14 +2026,14 @@ class TireDashboard {
                         title: { 
                             display: true, 
                             text: activeMetric === 'revenue' ? '글로벌 매출액 (십억 USD)' : '글로벌 판매량 (백만 본)', 
-                            color: '#f97316', 
-                            font: { size: 12, weight: '700' } 
+                            color: '#ea580c', 
+                            font: { size: 13, weight: '800' } 
                         },
                         ticks: {
-                            font: { size: 11, weight: '600' },
-                            color: '#94a3b8'
+                            font: { size: 12, weight: '700' },
+                            color: '#111827'
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        grid: { color: 'rgba(0, 0, 0, 0.06)' }
                     }
                 }
             }
