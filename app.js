@@ -209,12 +209,14 @@ async function loadPortalData() {
     renderPortalStats();
     renderPortalTimeline();
     renderMakerComparison();
+    initStrategyDashboard();
 
   } catch (err) {
     console.error("Portal global pipeline error:", err);
     renderPortalStats();
     renderPortalTimeline();
     renderMakerComparison();
+    initStrategyDashboard();
   }
 }
 
@@ -1352,5 +1354,415 @@ function findAssociatedReport(productName) {
     }
 
     return false;
+  });
+}
+
+// ==========================================================================
+// 12. PORTAL STRATEGY DASHBOARD (시장/상품전략 2x2 쿼드 관제 대시보드 구동 로직)
+// ==========================================================================
+let globalMarketChart = null;
+let trendPerformanceChart = null;
+let rdPriorityChart = null;
+
+// 뉴스 데이터셋
+const STRATEGY_NEWS_DATA = [
+  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "#" },
+  { mfg: "HANKOOK", title: "HANKOOK, 포르쉐 타이칸 전용 초고성능 iON Evo 신형 OE 공급 체결", date: "2026-04-29", snippet: "포르쉐와 파트너십을 더욱 공고히 하며, 최고 사양 컴파운드 배합 기술력을 세계 시장에 증명했습니다.", url: "#" },
+  { mfg: "MICHELIN", title: "미쉐린, 순환 원료 비중 45% 초과 달성 '친환경 컴파운드 배합' 발표", date: "2026-05-12", snippet: "100% 지속가능한 타이어 실현을 선언하며 친환경 실리카 및 재생 고무 배합 원천 기술 개발에 한발 앞섰습니다.", url: "#" },
+  { mfg: "MICHELIN", title: "MICHELIN, 지능형 센서 내장 '스마트 트레드' 자율주행 OE 최초 양산", date: "2026-03-15", snippet: "실시간 마모 및 제동 성능 모니터링 센서를 트레드 고무 내에 안착시켜 완성차 안전 지표와 직접 연동합니다.", url: "#" },
+  { mfg: "CONTINENTAL", title: "콘티넨탈, AI 딥러닝 기반 '컴파운드 물성 실시간 연산 시뮬레이터' 상용화", date: "2026-05-02", snippet: "물리적 가황 가공 전에 Tg 및 Tan delta 예측 정밀도를 98%까지 달성하여 R&D 개발 주기를 대폭 단축했습니다.", url: "#" },
+  { mfg: "CONTINENTAL", title: "CONTINENTAL, 자율주행 특화 저소음 컴파운드 'Contact Silence' 유럽 출시", date: "2026-03-22", snippet: "특수 흡음재 폼과 고감도 정숙 컴파운드를 적용하여 고속 주행 시 전기차 특유의 실내 NVH 지표를 극대화 개선했습니다.", url: "#" },
+  { mfg: "BRIDGESTONE", title: "브리지스톤, 글로벌 모터스포츠 '포뮬러 E' 차세대 타이어 단독 공급 선정", date: "2026-05-20", snippet: "극한의 전비와 고그립 제동 성능이 요구되는 전동 레이싱 트랙에서 브리지스톤의 가치를 재입증하는 기회입니다.", url: "#" },
+  { mfg: "BRIDGESTONE", title: "BRIDGESTONE, ENLITEN 경량 친환경 컴파운드 세그먼트 전격 확대", date: "2026-04-05", snippet: "이산화탄소 배출 저감 및 원자료 경량화 설계를 바탕으로 컴팩트 전기 SUV 타이어 신규 표준을 제시했습니다.", url: "#" }
+];
+
+// 트렌드 가상 성능 및 판매 데이터맵 (제조사 x 세그먼트 x 성능데이터소스)
+const TREND_PERFORMANCE_DATABASE = {
+  "HANKOOK": {
+    "Summer": {
+      "Wear":    { sales: [92, 95, 98, 102, 106, 110], score: [88, 89, 91, 92, 94, 95] },
+      "Braking": { sales: [92, 95, 98, 102, 106, 110], score: [92, 93, 95, 96, 97, 98] },
+      "RR":      { sales: [92, 95, 98, 102, 106, 110], score: [90, 92, 94, 97, 98, 99] }
+    },
+    "Winter": {
+      "Wear":    { sales: [40, 42, 45, 48, 50, 52], score: [85, 86, 88, 89, 90, 92] },
+      "Braking": { sales: [40, 42, 45, 48, 50, 52], score: [94, 95, 96, 97, 98, 98] },
+      "RR":      { sales: [40, 42, 45, 48, 50, 52], score: [87, 88, 89, 91, 92, 93] }
+    },
+    "SUV": {
+      "Wear":    { sales: [60, 64, 68, 72, 76, 80], score: [89, 90, 91, 93, 94, 96] },
+      "Braking": { sales: [60, 64, 68, 72, 76, 80], score: [91, 92, 93, 95, 96, 97] },
+      "RR":      { sales: [60, 64, 68, 72, 76, 80], score: [88, 90, 92, 94, 96, 97] }
+    },
+    "All Weather": {
+      "Wear":    { sales: [30, 35, 42, 50, 58, 65], score: [82, 84, 86, 88, 90, 92] },
+      "Braking": { sales: [30, 35, 42, 50, 58, 65], score: [88, 89, 91, 93, 94, 96] },
+      "RR":      { sales: [30, 35, 42, 50, 58, 65], score: [85, 87, 89, 91, 93, 95] }
+    }
+  },
+  "MICHELIN": {
+    "Summer": {
+      "Wear":    { sales: [160, 163, 167, 170, 172, 175], score: [94, 95, 95, 96, 96, 97] },
+      "Braking": { sales: [160, 163, 167, 170, 172, 175], score: [95, 96, 97, 97, 98, 99] },
+      "RR":      { sales: [160, 163, 167, 170, 172, 175], score: [91, 92, 93, 93, 94, 95] }
+    },
+    "Winter": {
+      "Wear":    { sales: [75, 78, 80, 82, 85, 87], score: [92, 93, 94, 94, 95, 96] },
+      "Braking": { sales: [75, 78, 80, 82, 85, 87], score: [96, 97, 97, 98, 98, 99] },
+      "RR":      { sales: [75, 78, 80, 82, 85, 87], score: [89, 90, 91, 92, 92, 93] }
+    },
+    "SUV": {
+      "Wear":    { sales: [110, 114, 118, 122, 126, 130], score: [93, 94, 95, 95, 96, 97] },
+      "Braking": { sales: [110, 114, 118, 122, 126, 130], score: [94, 95, 96, 96, 97, 98] },
+      "RR":      { sales: [110, 114, 118, 122, 126, 130], score: [90, 91, 92, 93, 94, 95] }
+    },
+    "All Weather": {
+      "Wear":    { sales: [60, 65, 72, 80, 88, 95], score: [90, 91, 92, 93, 94, 95] },
+      "Braking": { sales: [60, 65, 72, 80, 88, 95], score: [91, 92, 93, 94, 95, 96] },
+      "RR":      { sales: [60, 65, 72, 80, 88, 95], score: [88, 89, 90, 91, 92, 93] }
+    }
+  },
+  "CONTINENTAL": {
+    "Summer": {
+      "Wear":    { sales: [110, 113, 117, 120, 122, 125], score: [90, 91, 92, 92, 93, 94] },
+      "Braking": { sales: [110, 113, 117, 120, 122, 125], score: [94, 95, 96, 97, 97, 98] },
+      "RR":      { sales: [110, 113, 117, 120, 122, 125], score: [89, 90, 92, 93, 94, 95] }
+    },
+    "Winter": {
+      "Wear":    { sales: [55, 58, 60, 63, 65, 68], score: [87, 88, 89, 90, 91, 92] },
+      "Braking": { sales: [55, 58, 60, 63, 65, 68], score: [95, 96, 97, 98, 98, 99] },
+      "RR":      { sales: [55, 58, 60, 63, 65, 68], score: [88, 89, 90, 91, 92, 93] }
+    },
+    "SUV": {
+      "Wear":    { sales: [75, 78, 82, 86, 90, 94], score: [89, 90, 91, 92, 93, 94] },
+      "Braking": { sales: [75, 78, 82, 86, 90, 94], score: [93, 94, 95, 96, 97, 98] },
+      "RR":      { sales: [75, 78, 82, 86, 90, 94], score: [88, 89, 91, 92, 94, 95] }
+    },
+    "All Weather": {
+      "Wear":    { sales: [45, 49, 54, 60, 67, 74], score: [86, 87, 89, 90, 91, 93] },
+      "Braking": { sales: [45, 49, 54, 60, 67, 74], score: [90, 91, 93, 94, 95, 96] },
+      "RR":      { sales: [45, 49, 54, 60, 67, 74], score: [86, 88, 89, 91, 92, 94] }
+    }
+  },
+  "BRIDGESTONE": {
+    "Summer": {
+      "Wear":    { sales: [152, 155, 159, 162, 165, 168], score: [91, 92, 92, 93, 94, 95] },
+      "Braking": { sales: [152, 155, 159, 162, 165, 168], score: [93, 94, 95, 96, 97, 98] },
+      "RR":      { sales: [152, 155, 159, 162, 165, 168], score: [90, 91, 92, 93, 95, 96] }
+    },
+    "Winter": {
+      "Wear":    { sales: [68, 71, 73, 76, 78, 81], score: [88, 89, 90, 91, 92, 93] },
+      "Braking": { sales: [68, 71, 73, 76, 78, 81], score: [94, 95, 96, 96, 97, 98] },
+      "RR":      { sales: [68, 71, 73, 76, 78, 81], score: [87, 88, 89, 90, 91, 92] }
+    },
+    "SUV": {
+      "Wear":    { sales: [95, 99, 103, 107, 111, 115], score: [90, 91, 92, 93, 94, 95] },
+      "Braking": { sales: [95, 99, 103, 107, 111, 115], score: [92, 93, 94, 95, 96, 97] },
+      "RR":      { sales: [95, 99, 103, 107, 111, 115], score: [89, 90, 91, 93, 94, 95] }
+    },
+    "All Weather": {
+      "Wear":    { sales: [50, 55, 61, 68, 75, 82], score: [87, 88, 89, 91, 92, 94] },
+      "Braking": { sales: [50, 55, 61, 68, 75, 82], score: [89, 90, 92, 93, 94, 96] },
+      "RR":      { sales: [50, 55, 61, 68, 75, 82], score: [86, 88, 89, 90, 92, 93] }
+    }
+  }
+};
+
+// R&D 집중도 가중치 데이터맵
+const RD_PRIORITY_DATABASE = {
+  "HANKOOK":     [90, 85, 95, 80, 88],
+  "MICHELIN":    [95, 98, 90, 92, 95],
+  "CONTINENTAL": [88, 92, 85, 95, 89],
+  "BRIDGESTONE": [92, 90, 88, 86, 92]
+};
+
+function initStrategyDashboard() {
+  const gCtx = document.getElementById('global-market-chart');
+  const tCtx = document.getElementById('trend-performance-chart');
+  const rCtx = document.getElementById('rd-priority-chart');
+  
+  if (!gCtx || !tCtx || !rCtx) return;
+
+  // 꼭지 1: 글로벌 마켓 차트 그리기
+  initGlobalMarketChart(gCtx);
+
+  // 꼭지 2: 트렌드 퍼포먼스 차트 그리기
+  initTrendPerformanceChart(tCtx);
+
+  // 꼭지 3: R&D 가중치 차트 그리기
+  initRdPriorityChart(rCtx);
+
+  // 꼭지 4: BI 최신 기사 스크랩 렌더링
+  renderNewsScraps();
+
+  // 이벤트 바인딩
+  setupStrategyEventListeners();
+}
+
+function initGlobalMarketChart(ctx) {
+  if (globalMarketChart) globalMarketChart.destroy();
+  
+  globalMarketChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['HANKOOK', 'MICHELIN', 'CONTINENTAL', 'BRIDGESTONE'],
+      datasets: [
+        {
+          label: '글로벌 전체 매출액 (십억 USD)',
+          data: [6.8, 28.5, 12.4, 27.2],
+          backgroundColor: 'rgba(249, 115, 22, 0.75)',
+          borderColor: 'rgba(249, 115, 22, 1)',
+          borderWidth: 1.5,
+          yAxisID: 'y-revenue',
+          borderRadius: 8
+        },
+        {
+          label: '글로벌 전체 판매량 (백만 본)',
+          data: [102, 175, 125, 168],
+          type: 'line',
+          backgroundColor: 'rgba(59, 130, 246, 0.15)',
+          borderColor: 'rgba(59, 130, 246, 1)',
+          borderWidth: 3,
+          pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          yAxisID: 'y-sales',
+          tension: 0.35
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { family: 'Pretendard', weight: '600', size: 11 }, color: '#475569' }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          titleFont: { family: 'Pretendard', weight: '700' },
+          bodyFont: { family: 'Pretendard' },
+          padding: 12,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: 'Pretendard', weight: '700', size: 11 }, color: '#475569' }
+        },
+        'y-revenue': {
+          type: 'linear',
+          position: 'left',
+          grid: { color: 'rgba(0, 0, 0, 0.04)' },
+          title: { display: true, text: '매출액 (십억 USD)', font: { family: 'Pretendard', weight: '700', size: 10 } },
+          ticks: { font: { family: 'Pretendard', size: 10 }, color: '#475569' }
+        },
+        'y-sales': {
+          type: 'linear',
+          position: 'right',
+          grid: { display: false },
+          title: { display: true, text: '판매량 (백만 본)', font: { family: 'Pretendard', weight: '700', size: 10 } },
+          ticks: { font: { family: 'Pretendard', size: 10 }, color: '#475569' }
+        }
+      }
+    }
+  });
+}
+
+function initTrendPerformanceChart(ctx) {
+  const mfg = document.getElementById('trend-mfg').value;
+  const seg = document.getElementById('trend-seg').value;
+  const activeBtn = document.querySelector('.btn-source.active');
+  const source = activeBtn ? activeBtn.getAttribute('data-source') : 'Wear';
+
+  const dataset = TREND_PERFORMANCE_DATABASE[mfg][seg][source];
+
+  if (trendPerformanceChart) trendPerformanceChart.destroy();
+
+  trendPerformanceChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['2021년', '2022년', '2023년', '2024년', '2025년', '2026년(E)'],
+      datasets: [
+        {
+          label: `${mfg} - 연도별 판매량 (백만 본)`,
+          data: dataset.sales,
+          backgroundColor: 'rgba(59, 130, 246, 0.15)',
+          borderColor: 'rgba(59, 130, 246, 0.6)',
+          borderWidth: 1.5,
+          yAxisID: 'y-sales',
+          borderRadius: 6
+        },
+        {
+          label: `${mfg} - 종합 성능 점수 [${source}] (Score)`,
+          data: dataset.score,
+          type: 'line',
+          backgroundColor: 'rgba(249, 115, 22, 0.15)',
+          borderColor: 'rgba(249, 115, 22, 1)',
+          borderWidth: 3,
+          pointBackgroundColor: 'rgba(249, 115, 22, 1)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          yAxisID: 'y-score',
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { family: 'Pretendard', weight: '600', size: 11 }, color: '#475569' }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          titleFont: { family: 'Pretendard', weight: '700' },
+          bodyFont: { family: 'Pretendard' },
+          padding: 12,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: 'Pretendard', weight: '700', size: 11 }, color: '#475569' }
+        },
+        'y-sales': {
+          type: 'linear',
+          position: 'left',
+          grid: { color: 'rgba(0, 0, 0, 0.04)' },
+          title: { display: true, text: '판매량 (백만 본)', font: { family: 'Pretendard', weight: '700', size: 10 } },
+          ticks: { font: { family: 'Pretendard', size: 10 }, color: '#475569' }
+        },
+        'y-score': {
+          type: 'linear',
+          position: 'right',
+          grid: { display: false },
+          min: 60,
+          max: 100,
+          title: { display: true, text: '성능 점수 (Score)', font: { family: 'Pretendard', weight: '700', size: 10 } },
+          ticks: { font: { family: 'Pretendard', size: 10 }, color: '#475569' }
+        }
+      }
+    }
+  });
+}
+
+function initRdPriorityChart(ctx) {
+  const activeTab = document.querySelector('.rd-tab-btn.active');
+  const mfg = activeTab ? activeTab.getAttribute('data-mfg') : 'HANKOOK';
+  const data = RD_PRIORITY_DATABASE[mfg];
+
+  if (rdPriorityChart) rdPriorityChart.destroy();
+
+  rdPriorityChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['친환경/ESG (Eco)', '초고성능 (Sport)', 'EV 전용 (EV Spec)', '디지털&AI (Smart)', '마모 수명 극대화 (Durability)'],
+      datasets: [
+        {
+          label: `${mfg} R&D 테마 집중도 가중치 (%)`,
+          data: data,
+          backgroundColor: 'rgba(249, 115, 22, 0.18)',
+          borderColor: 'rgba(249, 115, 22, 1)',
+          borderWidth: 2.5,
+          pointBackgroundColor: 'rgba(249, 115, 22, 1)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { family: 'Pretendard', weight: '700', size: 11 }, color: '#475569' }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          titleFont: { family: 'Pretendard', weight: '700' },
+          bodyFont: { family: 'Pretendard' },
+          padding: 12,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        r: {
+          angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
+          grid: { color: 'rgba(0, 0, 0, 0.08)' },
+          min: 50,
+          max: 100,
+          ticks: { stepSize: 10, backdropColor: 'transparent', font: { family: 'Pretendard', size: 9 }, color: '#94a3b8' },
+          pointLabels: { font: { family: 'Pretendard', weight: '700', size: 10.5 }, color: '#334155' }
+        }
+      }
+    }
+  });
+}
+
+function renderNewsScraps() {
+  const container = document.getElementById('news-scrap-container');
+  if (!container) return;
+
+  container.innerHTML = STRATEGY_NEWS_DATA.map(news => {
+    const badgeClass = news.mfg.toLowerCase();
+    return `
+      <div class="news-card-scrap" onclick="showNewsMockToast('${news.mfg}', '${news.title}')">
+        <div class="news-meta-row">
+          <span class="news-mfg-badge ${badgeClass}">${news.mfg}</span>
+          <span class="news-date">${news.date}</span>
+        </div>
+        <div class="news-title-scrap" title="${news.title}">${news.title}</div>
+        <div class="news-snippet-scrap">${news.snippet}</div>
+        <div class="news-source-link">전문 스크랩 보기 <i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.showNewsMockToast = function(mfg, title) {
+  if (window.showToast) {
+    window.showToast(`📰 [BI Report] ${mfg} 최신 뉴스 로드 완료: "${title.substring(0, 20)}..."`);
+  } else {
+    console.log(`[BI Report Clicked]: ${mfg} - ${title}`);
+  }
+};
+
+function setupStrategyEventListeners() {
+  // 연도별 필터링
+  const mfgSelect = document.getElementById('trend-mfg');
+  const segSelect = document.getElementById('trend-seg');
+  if (mfgSelect) mfgSelect.addEventListener('change', () => initTrendPerformanceChart(document.getElementById('trend-performance-chart')));
+  if (segSelect) segSelect.addEventListener('change', () => initTrendPerformanceChart(document.getElementById('trend-performance-chart')));
+
+  // 연도별 성능 지표 버튼
+  const btns = document.querySelectorAll('.btn-source');
+  btns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      btns.forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      initTrendPerformanceChart(document.getElementById('trend-performance-chart'));
+    });
+  });
+
+  // R&D 탭 버튼 클릭
+  const tabBtns = document.querySelectorAll('.rd-tab-btn');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      initRdPriorityChart(document.getElementById('rd-priority-chart'));
+    });
   });
 }

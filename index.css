@@ -1496,218 +1496,319 @@ body {
 }
 
 /* ==========================================================================
-   PORTAL STRATEGY MONITOR WIDGET (시장/상품전략 간략 모니터 위젯)
+   PORTAL STRATEGY DASHBOARD (시장/상품전략 2x2 쿼드 관제 대시보드)
    ========================================================================== */
-.portal-strategy-widget {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 247, 237, 0.98) 100%) !important;
-  border: 1px solid rgba(249, 115, 22, 0.22) !important;
-  box-shadow: 0 15px 40px rgba(249, 115, 22, 0.04), var(--shadow-premium) !important;
+.portal-strategy-dashboard {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0%, rgba(15, 23, 42, 0.04) 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.18) !important;
+  box-shadow: var(--shadow-premium) !important;
   position: relative;
   overflow: hidden;
+  padding: 24px !important;
+  border-radius: 24px !important;
 }
 
-.portal-strategy-widget::before {
+.portal-strategy-dashboard::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 5px;
+  width: 6px;
   height: 100%;
-  background: var(--primary); /* 좌측 주황색 강조 바 */
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
 }
 
-.strategy-shortcut-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--primary);
-  text-decoration: none;
-  background: rgba(249, 115, 22, 0.05);
-  border: 1px solid rgba(249, 115, 22, 0.15);
-  padding: 8px 16px;
-  border-radius: 10px;
-  transition: var(--transition);
-  font-family: var(--font-display);
-}
-
-.strategy-shortcut-link:hover {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
-  transform: translateY(-1px);
-}
-
-.strategy-summary-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 24px;
-  margin-top: 4px;
-}
-
-.strategy-summary-subpanel {
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(249, 115, 22, 0.08);
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.01);
-}
-
-.subpanel-title {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--text-dark);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid rgba(249, 115, 22, 0.06);
-  padding-bottom: 10px;
-}
-
-.subpanel-title i {
-  color: var(--primary);
-}
-
-/* SWOT 요약 그리드 */
-.mini-swot-grid {
+.strategy-quad-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 24px;
+  margin-top: 16px;
 }
 
-.mini-swot-item {
-  background: #fffcf9;
-  border: 1px solid rgba(249, 115, 22, 0.06);
-  border-radius: 12px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  transition: var(--transition);
-}
-
-.mini-swot-item:hover {
-  transform: translateY(-2px);
-  border-color: var(--primary);
-  background-color: #ffedd5;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.06);
-}
-
-.m-swot-letter {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
-  border-radius: 5px;
-  font-size: 0.7rem;
-  font-weight: 900;
-  color: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.swot-s .m-swot-letter { background-color: var(--accent-green); }
-.swot-w .m-swot-letter { background-color: var(--primary); }
-.swot-o .m-swot-letter { background-color: var(--accent-blue); }
-.swot-t .m-swot-letter { background-color: var(--danger); }
-
-.mini-swot-item p {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #475569;
-  line-height: 1.5;
-}
-
-/* SWOT 호버 보정 */
-.swot-s:hover p { color: #047857; }
-.swot-w:hover p { color: #c2410c; }
-.swot-o:hover p { color: #1d4ed8; }
-.swot-t:hover p { color: #b91c1c; }
-
-/* 미니 GAP 분석 리스트 */
-.mini-gap-list {
+.quad-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(249, 115, 22, 0.08);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.mini-gap-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.quad-panel:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.25);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.06), 0 1px 2px rgba(255, 255, 255, 0.5) inset;
 }
 
-.mg-meta {
+.quad-panel .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.08);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.mg-name {
-  font-weight: 700;
+.quad-panel .panel-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quad-panel .panel-title i {
+  color: var(--primary);
+}
+
+.quad-panel .panel-meta {
+  font-size: 0.75rem;
   color: var(--text-muted);
-}
-
-.mg-values {
-  font-variant-numeric: tabular-nums;
   font-weight: 500;
 }
 
-.mg-h {
-  color: var(--primary);
-  font-weight: 800;
-}
-
-.mg-div {
-  color: #cbd5e1;
-  margin: 0 2px;
-}
-
-.mg-diff {
-  font-weight: 800;
-  margin-left: 6px;
-  font-size: 0.75rem;
-}
-
-.mg-diff.diff-pos { color: var(--accent-green); }
-.mg-diff.diff-neg { color: var(--danger); }
-
-.mg-bar-track {
-  height: 6px;
-  background-color: #f1f5f9;
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
+.quad-panel .chart-container {
   position: relative;
+  width: 100%;
+  height: 280px;
 }
 
-.mg-bar-h {
-  background: linear-gradient(to right, #e05600, var(--primary));
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+/* 필터 및 버튼 소스 스타일 */
+.trend-header-filters {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
 }
 
-.mg-marker-b {
-  position: absolute;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background-color: var(--text-dark);
-  box-shadow: 0 0 4px rgba(0,0,0,0.3);
-  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 2;
+.trend-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  background: rgba(249, 115, 22, 0.03);
+  border: 1px solid rgba(249, 115, 22, 0.06);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-select {
+  background: #fff;
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-select:hover, .filter-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.performance-source-group {
+  margin-left: auto;
+}
+
+/* 버튼식 성능 데이터 소스 */
+.btn-group-performance {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 3px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.btn-source {
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-source:hover {
+  color: var(--text-dark);
+}
+
+.btn-source.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* R&D 탭 스타일 */
+.rd-mfg-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.rd-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rd-tab-btn:hover {
+  color: var(--text-dark);
+}
+
+.rd-tab-btn.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+}
+
+/* BI Report 최신 기사 스크랩 컨테이너 */
+.news-ticker-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+.news-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse 1.2s infinite;
+}
+
+.news-scrap-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* 뉴스 카드 개별 스타일 */
+.news-card-scrap {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.news-card-scrap:hover {
+  border-color: rgba(249, 115, 22, 0.25);
+  background: #fffbf7;
+  transform: translateX(3px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.04);
+}
+
+.news-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.news-mfg-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.news-mfg-badge.hankook { background: rgba(249, 115, 22, 0.08); color: var(--primary); }
+.news-mfg-badge.michelin { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+.news-mfg-badge.continental { background: rgba(234, 179, 8, 0.08); color: #ca8a04; }
+.news-mfg-badge.bridgestone { background: rgba(220, 38, 38, 0.08); color: #dc2626; }
+
+.news-date {
+  color: var(--text-muted);
+}
+
+.news-title-scrap {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.news-snippet-scrap {
+  font-size: 0.76rem;
+  color: #64748b;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.news-source-link {
+  font-size: 0.7rem;
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
 }
 
 /* Responsive Grid */
-@media (max-width: 1024px) {
-  .strategy-summary-grid {
+@media (max-width: 1200px) {
+  .strategy-quad-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+  }
+  .performance-source-group {
+    margin-left: 0;
+    width: 100%;
   }
 }
