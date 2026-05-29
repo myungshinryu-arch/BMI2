@@ -1518,6 +1518,41 @@ body {
   background: linear-gradient(to bottom, var(--primary), var(--secondary));
 }
 
+/* 프리미엄 숏컷 바로가기 링크 스타일 (전체 분석 시스템 이동) */
+.strategy-shortcut-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary) !important;
+  background: rgba(249, 115, 22, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  padding: 8px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+}
+
+.strategy-shortcut-link:hover {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: var(--primary);
+  color: var(--primary) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.1);
+}
+
+.strategy-shortcut-link i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.strategy-shortcut-link:hover i {
+  transform: translateX(3px);
+}
+
 .strategy-quad-grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);

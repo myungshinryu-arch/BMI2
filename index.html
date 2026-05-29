@@ -320,19 +320,26 @@
       </section>
 
       <!-- WIDGET 1: PLC TIMELINE MATRIX DIRECT MONITOR -->
-      <section class="dashboard-widget-section">
+      <section class="dashboard-widget-section portal-strategy-dashboard">
         <div class="widget-header-row">
           <div class="widget-header-title">
             <h2 class="widget-title"><i class="fa-solid fa-timeline"></i> Tire BM Matrix</h2>
             <p class="widget-subtitle">자사 타이어 출시 연도 및 세그먼트 매트릭스 로드맵 (제품 클릭 시 해당 상세 대시보드로 이동)</p>
           </div>
           
-          <!-- Sheet filter Tab Buttons -->
-          <div class="plc-sheet-tabs" id="plc-sheet-tabs-container">
-            <button class="sheet-tab active" data-sheet="Summer">Summer</button>
-            <button class="sheet-tab" data-sheet="SUV">SUV</button>
-            <button class="sheet-tab" data-sheet="Winter-Alpin">Winter-Alpin</button>
-            <button class="sheet-tab" data-sheet="All Weather">All Weather</button>
+          <!-- 우측 헤더 컨트롤 그룹 (탭 필터 + 전체 분석 시스템 이동 숏컷 연동) -->
+          <div class="widget-header-controls" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <!-- Sheet filter Tab Buttons -->
+            <div class="plc-sheet-tabs" id="plc-sheet-tabs-container">
+              <button class="sheet-tab active" data-sheet="Summer">Summer</button>
+              <button class="sheet-tab" data-sheet="SUV">SUV</button>
+              <button class="sheet-tab" data-sheet="Winter-Alpin">Winter-Alpin</button>
+              <button class="sheet-tab" data-sheet="All Weather">All Weather</button>
+            </div>
+            
+            <a href="Tire_BM_UI_FINAL/index.html" class="strategy-shortcut-link">
+              전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
+            </a>
           </div>
         </div>
 
@@ -348,12 +355,15 @@
       </section>
 
       <!-- WIDGET 2: MAKER COMPOUND COMPARISON GAUGE CHART -->
-      <section class="dashboard-widget-section" style="margin-bottom: 0;">
+      <section class="dashboard-widget-section portal-strategy-dashboard" style="margin-bottom: 0;">
         <div class="widget-header-row">
           <div class="widget-header-title">
             <h2 class="widget-title"><i class="fa-solid fa-chart-bar"></i> Maker 별 제품 성능 비교</h2>
             <p class="widget-subtitle">실시간 트레드 컴파운드 물성 빅데이터 가공 제조사별 기술 비교 지표</p>
           </div>
+          <a href="Compd BM/index.html" class="strategy-shortcut-link">
+            전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
+          </a>
         </div>
 
         <!-- Custom HTML5/CSS Progress-Bar Gauge Widgets Grid -->
