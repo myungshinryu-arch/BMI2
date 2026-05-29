@@ -590,24 +590,22 @@ class TireDashboard {
     }
 
     init() {
-        // 사이드바 토글 이벤트 바인딩
+        // 사이드바 토글 이벤트 바인딩 (Tire BM UI 표준 기믹 탑재)
         const sidebarToggleBtn = document.getElementById('sidebar-toggle');
         const sidebar = document.querySelector('.sidebar');
-        const dashboardContainer = document.querySelector('.dashboard-container');
         
-        // localStorage에서 이전 상태 불러오기
-        const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-        if (isCollapsed && sidebar && dashboardContainer) {
-            sidebar.classList.add('collapsed');
-            dashboardContainer.classList.add('sidebar-collapsed');
+        // localStorage에서 이전 활성 상태 불러오기
+        const isActive = localStorage.getItem('sidebar-active') === 'true';
+        if (isActive && sidebar) {
+            sidebar.classList.add('active');
         }
         
-        if (sidebarToggleBtn && sidebar && dashboardContainer) {
-            sidebarToggleBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                dashboardContainer.classList.toggle('sidebar-collapsed');
-                const nowCollapsed = sidebar.classList.contains('collapsed');
-                localStorage.setItem('sidebar-collapsed', nowCollapsed);
+        if (sidebarToggleBtn && sidebar) {
+            sidebarToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('active');
+                const nowActive = sidebar.classList.contains('active');
+                localStorage.setItem('sidebar-active', nowActive);
                 
                 // 차트 크기 재조정 트리거 (전환 애니메이션 고려)
                 setTimeout(() => {
@@ -615,6 +613,16 @@ class TireDashboard {
                 }, 300);
             });
         }
+
+        // 사이드바 외부 클릭 시 닫히도록 하는 글로벌 리스너 (Tire BM UI 연동 호환 기믹)
+        document.addEventListener('click', (e) => {
+            if (sidebar && sidebar.classList.contains('active')) {
+                if (!sidebar.contains(e.target) && e.target !== sidebarToggleBtn && !sidebarToggleBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                    localStorage.setItem('sidebar-active', 'false');
+                }
+            }
+        });
 
         // 필터 변경 시 대시보드 갱신
         if (this.form) {
@@ -2216,7 +2224,15 @@ class TireDashboard {
             document.getElementById('panel-hankook-strategy').style.display = 'none';
             return;
         }
-        document.getElementById('panel-hankook-strategy').style.display = 'flex';
+        
+        // 현재 활성화된 뷰가 'hankook-strategy' 일 때에만 display를 'flex'로 지정합니다.
+        // 그 외의 하위 메뉴(탭) 상태에서는 중복 노출을 지우기 위해 감춥니다.
+        if (this.activeView !== 'hankook-strategy') {
+            document.getElementById('panel-hankook-strategy').style.display = 'none';
+            return;
+        } else {
+            document.getElementById('panel-hankook-strategy').style.display = 'flex';
+        }
 
         const segmentNamesKo = {
             'all': '전체 제품군 종합 라인업',
