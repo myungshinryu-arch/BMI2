@@ -1,8 +1,8 @@
 # powershell_server.ps1
 # A pure PowerShell TCP-based static file web server that doesn't require Admin privileges.
-# Binds to 0.0.0.0 on port 8080 to enable sharing across the network.
+# Binds to 0.0.0.0 on port 9000 to avoid common 8080 conflicts and permission issues.
 
-$port = 8080
+$port = 9000
 $basePath = Resolve-Path $PSScriptRoot
 
 # 1. Get local IP addresses for display

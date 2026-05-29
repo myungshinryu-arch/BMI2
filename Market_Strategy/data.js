@@ -93,6 +93,48 @@ const TIRE_DATABASE = [
             "2026": { sales: 18.0, tirerack: { dry_traction: 8.9, wet_traction: 8.6, hydroplaning: 8.6, comfort: 8.8, noise: 8.6, treadwear: 8.8, user_rating: 8.7 }, consumerreports: { dry_braking: 79, wet_braking: 78, handling: 76, snow_traction: 84, ice_braking: 62, fuel_economy: 80, tread_life: 88, cr_overall: 84 } }
         }
     },
+    {
+        brand: "Hankook",
+        model: "iON evo",
+        segment: "Ultra High Performance (UHP)",
+        season: "Summer",
+        yearlyData: {
+            "2021": { sales: 2.1, tirerack: { dry_traction: 9.2, wet_traction: 8.9, hydroplaning: 8.7, comfort: 9.1, noise: 9.3, treadwear: 8.0, user_rating: 8.9 }, consumerreports: { dry_braking: 92, wet_braking: 86, handling: 91, snow_traction: 30, ice_braking: 25, fuel_economy: 90, tread_life: 78, cr_overall: 85 } },
+            "2022": { sales: 4.8, tirerack: { dry_traction: 9.3, wet_traction: 9.0, hydroplaning: 8.8, comfort: 9.2, noise: 9.4, treadwear: 8.1, user_rating: 9.1 }, consumerreports: { dry_braking: 93, wet_braking: 87, handling: 92, snow_traction: 31, ice_braking: 25, fuel_economy: 92, tread_life: 79, cr_overall: 87 } },
+            "2023": { sales: 8.9, tirerack: { dry_traction: 9.4, wet_traction: 9.1, hydroplaning: 8.9, comfort: 9.3, noise: 9.5, treadwear: 8.2, user_rating: 9.2 }, consumerreports: { dry_braking: 94, wet_braking: 88, handling: 93, snow_traction: 32, ice_braking: 26, fuel_economy: 94, tread_life: 80, cr_overall: 89 } },
+            "2024": { sales: 13.5, tirerack: { dry_traction: 9.4, wet_traction: 9.2, hydroplaning: 9.0, comfort: 9.4, noise: 9.6, treadwear: 8.3, user_rating: 9.3 }, consumerreports: { dry_braking: 94, wet_braking: 89, handling: 93, snow_traction: 33, ice_braking: 27, fuel_economy: 95, tread_life: 81, cr_overall: 90 } },
+            "2025": { sales: 18.2, tirerack: { dry_traction: 9.5, wet_traction: 9.3, hydroplaning: 9.1, comfort: 9.4, noise: 9.7, treadwear: 8.4, user_rating: 9.4 }, consumerreports: { dry_braking: 95, wet_braking: 90, handling: 94, snow_traction: 33, ice_braking: 27, fuel_economy: 96, tread_life: 82, cr_overall: 92 } },
+            "2026": { sales: 23.4, tirerack: { dry_traction: 9.5, wet_traction: 9.3, hydroplaning: 9.1, comfort: 9.5, noise: 9.8, treadwear: 8.4, user_rating: 9.5 }, consumerreports: { dry_braking: 95, wet_braking: 90, handling: 94, snow_traction: 34, ice_braking: 28, fuel_economy: 97, tread_life: 82, cr_overall: 93 } }
+        }
+    },
+    {
+        brand: "Hankook",
+        model: "iON evo AS",
+        segment: "Ultra High Performance (UHP)",
+        season: "All-Season",
+        yearlyData: {
+            "2021": { sales: 1.8, tirerack: { dry_traction: 9.1, wet_traction: 8.7, hydroplaning: 8.6, comfort: 9.2, noise: 9.4, treadwear: 8.5, user_rating: 8.8 }, consumerreports: { dry_braking: 88, wet_braking: 84, handling: 87, snow_traction: 65, ice_braking: 55, fuel_economy: 91, tread_life: 82, cr_overall: 84 } },
+            "2022": { sales: 4.2, tirerack: { dry_traction: 9.2, wet_traction: 8.8, hydroplaning: 8.7, comfort: 9.3, noise: 9.5, treadwear: 8.6, user_rating: 9.0 }, consumerreports: { dry_braking: 89, wet_braking: 85, handling: 88, snow_traction: 66, ice_braking: 55, fuel_economy: 93, tread_life: 83, cr_overall: 86 } },
+            "2023": { sales: 9.5, tirerack: { dry_traction: 9.3, wet_traction: 8.9, hydroplaning: 8.8, comfort: 9.4, noise: 9.6, treadwear: 8.7, user_rating: 9.2 }, consumerreports: { dry_braking: 90, wet_braking: 86, handling: 89, snow_traction: 67, ice_braking: 56, fuel_economy: 95, tread_life: 84, cr_overall: 88 } },
+            "2024": { sales: 15.1, tirerack: { dry_traction: 9.3, wet_traction: 9.0, hydroplaning: 8.9, comfort: 9.5, noise: 9.7, treadwear: 8.8, user_rating: 9.3 }, consumerreports: { dry_braking: 90, wet_braking: 87, handling: 89, snow_traction: 67, ice_braking: 56, fuel_economy: 96, tread_life: 85, cr_overall: 90 } },
+            "2025": { sales: 21.4, tirerack: { dry_traction: 9.4, wet_traction: 9.1, hydroplaning: 9.0, comfort: 9.5, noise: 9.8, treadwear: 8.9, user_rating: 9.4 }, consumerreports: { dry_braking: 91, wet_braking: 88, handling: 90, snow_traction: 68, ice_braking: 57, fuel_economy: 97, tread_life: 86, cr_overall: 91 } },
+            "2026": { sales: 28.5, tirerack: { dry_traction: 9.4, wet_traction: 9.1, hydroplaning: 9.0, comfort: 9.6, noise: 9.9, treadwear: 8.9, user_rating: 9.5 }, consumerreports: { dry_braking: 91, wet_braking: 88, handling: 90, snow_traction: 68, ice_braking: 57, fuel_economy: 98, tread_life: 86, cr_overall: 92 } }
+        }
+    },
+    {
+        brand: "Hankook",
+        model: "Dynapro HPX",
+        segment: "Grand Touring (All-Season)",
+        season: "All-Season",
+        yearlyData: {
+            "2021": { sales: 2.5, tirerack: { dry_traction: 8.8, wet_traction: 8.5, hydroplaning: 8.6, comfort: 9.1, noise: 9.0, treadwear: 9.1, user_rating: 8.7 }, consumerreports: { dry_braking: 83, wet_braking: 81, handling: 82, snow_traction: 78, ice_braking: 66, fuel_economy: 85, tread_life: 92, cr_overall: 82 } },
+            "2022": { sales: 6.2, tirerack: { dry_traction: 8.9, wet_traction: 8.6, hydroplaning: 8.7, comfort: 9.2, noise: 9.1, treadwear: 9.2, user_rating: 8.9 }, consumerreports: { dry_braking: 84, wet_braking: 82, handling: 83, snow_traction: 79, ice_braking: 66, fuel_economy: 86, tread_life: 93, cr_overall: 84 } },
+            "2023": { sales: 11.8, tirerack: { dry_traction: 9.0, wet_traction: 8.7, hydroplaning: 8.8, comfort: 9.3, noise: 9.2, treadwear: 9.3, user_rating: 9.1 }, consumerreports: { dry_braking: 85, wet_braking: 83, handling: 84, snow_traction: 80, ice_braking: 67, fuel_economy: 87, tread_life: 94, cr_overall: 86 } },
+            "2024": { sales: 17.5, tirerack: { dry_traction: 9.1, wet_traction: 8.8, hydroplaning: 8.9, comfort: 9.4, noise: 9.3, treadwear: 9.4, user_rating: 9.2 }, consumerreports: { dry_braking: 86, wet_braking: 84, handling: 85, snow_traction: 80, ice_braking: 67, fuel_economy: 88, tread_life: 95, cr_overall: 88 } },
+            "2025": { sales: 23.8, tirerack: { dry_traction: 9.2, wet_traction: 8.9, hydroplaning: 9.0, comfort: 9.4, noise: 9.4, treadwear: 9.5, user_rating: 9.3 }, consumerreports: { dry_braking: 87, wet_braking: 85, handling: 86, snow_traction: 81, ice_braking: 68, fuel_economy: 89, tread_life: 96, cr_overall: 90 } },
+            "2026": { sales: 30.5, tirerack: { dry_traction: 9.2, wet_traction: 8.9, hydroplaning: 9.0, comfort: 9.5, noise: 9.5, treadwear: 9.5, user_rating: 9.4 }, consumerreports: { dry_braking: 87, wet_braking: 85, handling: 86, snow_traction: 81, ice_braking: 68, fuel_economy: 89, tread_life: 96, cr_overall: 91 } }
+        }
+    },
 
     // =============================================================
     // 2. 경쟁 타사 타이어 모델 (침체기 불황 하락 및 반등 시나리오 적용)

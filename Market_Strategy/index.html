@@ -3,54 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BM-Intelligence 시장/상품전략 분석 대시보드 - 북미 및 유럽 벤치마크 분석 시스템">
-    <title>시장/상품전략 분석 시스템 - BM-Intelligence</title>
+    <meta name="description" content="한국타이어 상품 전략 분석 시스템 (Benchmarking to Strategy) - 북미(Consumer Reports, Tire Rack) 및 유럽(ADAC, Auto Bild) 주요 타이어 벤치마크 데이터 및 글로벌 Top 4 경쟁사 경영 분기 실적 리포트 분석 대시보드">
+    <title>한국타이어 상품 전략 분석 시스템 (Benchmarking to Strategy)</title>
     <!-- Google Fonts: Inter for data, Outfit for clean futuristic titles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
     <!-- Chart.js library via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="styles.css?v=2.2">
-    <style>
-        /* 초고시인성 캐시 우회용 한국타이어 카드 스타일 */
-        .kpi-card.border-hankook-glow {
-            border: 3px solid #f97316 !important;
-            background: #ffece0 !important; /* 확실하게 눈에 띄는 옅은 주황색 솔리드 배경 */
-            box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9) !important;
-        }
-        .kpi-card.border-hankook-glow:hover {
-            transform: translateY(-4px) !important;
-            border-color: #ea580c !important;
-            box-shadow: 0 20px 45px rgba(249, 115, 22, 0.35), var(--shadow-premium) !important;
-        }
-        .kpi-card.border-hankook-glow .kpi-title {
-            color: #c2410c !important; /* 시인성이 높은 짙은 주황색 */
-            font-weight: 800 !important;
-        }
-        .kpi-card.border-hankook-glow .kpi-value {
-            color: #c2410c !important; /* 시인성이 높은 짙은 주황색 대형 수치 */
-            font-weight: 800 !important;
-        }
-        .kpi-card.border-hankook-glow .kpi-desc, 
-        .kpi-card.border-hankook-glow .kpi-desc strong {
-            color: #475569 !important; /* 가독성을 위한 다크 슬레이트 */
-            font-weight: 600 !important;
-        }
-    </style>
 </head>
 <body>
-    <!-- Decorative Glow Background Blobs -->
-    <div class="glow-blob blob-1"></div>
-    <div class="glow-blob blob-2"></div>
-    <div class="glow-blob blob-3"></div>
-
     <div class="dashboard-container">
-        <!-- Sidebar Navigation & Filters -->
+        <!-- Sidebar Navigation & Common Filters -->
         <aside class="sidebar">
-            <div class="brand-logo" onclick="location.href='../index.html'" style="cursor: pointer;">
+            <div class="brand-logo">
                 <svg class="logo-icon" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5" fill="none"/>
                     <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
@@ -60,111 +28,52 @@
                     <line x1="2" y1="12" x2="6" y2="12" stroke="currentColor" stroke-width="1.5"/>
                     <line x1="18" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
-                <span class="logo-text" data-i18n="logo-text">시장/상품전략</span>
-            </div>
-            
-            <button class="back-home-btn" onclick="location.href='../index.html'">
-                <i class="fa-solid fa-house-laptop"></i> 통합 포털 홈
-            </button>
-            
-            <p class="sidebar-section-title" style="margin-top: 10px;">글로벌 시스템 이동 (NAVIGATE)</p>
-            <div class="global-nav-links" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 5px;">
-                <a href="../Market_Strategy/index.html" class="nav-shortcut-btn active" title="시장/상품전략" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: var(--color-hankook); color: #fff; border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--color-hankook);">
-                    <i class="fa-solid fa-globe" style="font-size: 15px;"></i>
-                    <span>시장/전략</span>
-                </a>
-                <a href="../Tire_BM_UI_FINAL/index.html" class="nav-shortcut-btn" title="Tire BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--border-light);">
-                    <i class="fa-solid fa-chart-line" style="font-size: 15px; color: var(--color-blue);"></i>
-                    <span>Tire BM</span>
-                </a>
-                <a href="../Compd BM/index.html" class="nav-shortcut-btn" title="Compound BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--border-light);">
-                    <i class="fa-solid fa-flask-vial" style="font-size: 15px; color: var(--color-emerald);"></i>
-                    <span>Comp'd BM</span>
-                </a>
-                <a href="../AI_Simulator/index.html" class="nav-shortcut-btn" title="AI Simulator" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--border-light);">
-                    <i class="fa-solid fa-robot" style="font-size: 15px; color: var(--color-purple);"></i>
-                    <span>AI 시뮬레이터</span>
-                </a>
-            </div>
-            
-            <p class="sidebar-section-title" data-i18n="filter-title">글로벌 분석 필터 (FILTERS)</p>
-            <form id="filter-form" class="filters-group" onsubmit="event.preventDefault();">
-                <!-- Data Source Selection -->
-                <div class="filter-item">
-                    <label for="filter-source" class="filter-label" data-i18n="filter-source-label">성능 데이터 소스 (SOURCE)</label>
-                    <select id="filter-source" class="filter-select">
-                        <!-- Dynamic localization options will be injected by JS, keeping default as KO -->
-                        <option value="combined">글로벌 종합 평점 (북미+유럽)</option>
-                        <option value="tirerack">북미 Tire Rack 평가 (소비자)</option>
-                        <option value="consumerreports">북미 Consumer Reports (연구소)</option>
-                        <option value="adac">유럽 ADAC 테스트 (독일 학교식)</option>
-                        <option value="autobild">유럽 Auto Bild 테스트 (정성 등급)</option>
-                    </select>
-                </div>
-
-
-                <!-- Brand / Manufacturer -->
-                <div class="filter-item">
-                    <label for="filter-brand" class="filter-label" data-i18n="filter-brand-label">벤치마크 제조사 (BRAND)</label>
-                    <select id="filter-brand" class="filter-select">
-                        <option value="all" data-i18n="brand_all">전체 제조사 (All Brands)</option>
-                        <option value="Hankook" data-i18n="brand_Hankook">한국타이어 (Hankook)</option>
-                        <option value="Michelin" data-i18n="brand_Michelin">미쉐린 (Michelin)</option>
-                        <option value="Bridgestone" data-i18n="brand_Bridgestone">브리지스톤 (Bridgestone)</option>
-                        <option value="Continental" data-i18n="brand_Continental">콘티넨탈 (Continental)</option>
-                        <option value="Goodyear" data-i18n="brand_Goodyear">굿이어 (Goodyear)</option>
-                        <option value="Pirelli" data-i18n="brand_Pirelli">피렐리 (Pirelli)</option>
-                        <option value="Kumho" data-i18n="brand_Kumho">금호타이어 (Kumho)</option>
-                    </select>
-                </div>
-
-                <!-- Market Segment -->
-                <div class="filter-item">
-                    <label for="filter-segment" class="filter-label" data-i18n="filter-segment-label">대상 세그먼트 (SEGMENT)</label>
-                    <select id="filter-segment" class="filter-select">
-                        <option value="all" data-i18n="segment_all">전체 세그먼트 (All Segments)</option>
-                        <option value="Ultra High Performance (UHP)" data-i18n="segment_uhp">초고성능 스포츠 (UHP)</option>
-                        <option value="Grand Touring (All-Season)" data-i18n="segment_gt">투어링 사계절 (Grand Touring)</option>
-                        <option value="All-Season Passenger" data-i18n="segment_all_season">일반 승용 사계절 (All-Season)</option>
-                        <option value="Winter / Snow" data-i18n="segment_winter">겨울용 스노우 (Winter/Snow)</option>
-                        <option value="All-Terrain (SUV/Truck)" data-i18n="segment_terrain">온/오프로드 SUV (All-Terrain)</option>
-                    </select>
-                </div>
-
-                <!-- Standard Analysis Year (Reporting Year) -->
-                <div class="filter-item">
-                    <label for="filter-year" class="filter-label" data-i18n="filter-year-label">기준 분석 연도 (YEAR)</label>
-                    <select id="filter-year" class="filter-select">
-                        <option value="2021">2021년</option>
-                        <option value="2022">2022년</option>
-                        <option value="2023">2023년</option>
-                        <option value="2024">2024년</option>
-                        <option value="2025">2025년</option>
-                        <option value="2026" selected>2026년</option>
-                    </select>
-                </div>
-
-                <!-- Metric Type Selection -->
-                <div class="filter-item">
-                    <label for="filter-metric" class="filter-label">분석 지표 기준 (METRIC)</label>
-                    <select id="filter-metric" class="filter-select">
-                        <option value="volume">판매 수량 (Volume - k units)</option>
-                        <option value="revenue">판매 매출 (Revenue - Million USD)</option>
-                    </select>
-                </div>
-
-                <button id="btn-reset-filters" class="btn-sidebar-reset">
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                <span class="logo-text">BENCHMARKING TO STRATEGY</span>
+                <button id="sidebar-toggle" class="sidebar-toggle-btn" title="사이드바 접기/펼치기">
+                    <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="15 18 9 12 15 6"/>
                     </svg>
-                    <span data-i18n="btn-reset-filters">필터 설정 초기화 (Reset)</span>
                 </button>
-            </form>
+            </div>
+            
+            <p class="sidebar-section-title">분석 뷰 네비게이션</p>
+            <nav class="sidebar-nav">
+                <button class="view-tab active" id="tab-market" onclick="window.TireDashboardApp.switchView('market')">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>Market & Sales Overview</span>
+                </button>
+                <button class="view-tab" id="tab-competitiveness" onclick="window.TireDashboardApp.switchView('competitiveness')">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>기술 경쟁력 Overview</span>
+                </button>
+                <button class="view-tab" id="tab-tech-strategy" onclick="window.TireDashboardApp.switchView('tech-strategy')">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                        <polyline points="2 17 12 22 22 17"/>
+                        <polyline points="2 12 12 17 22 12"/>
+                    </svg>
+                    <span>기술 전략 Overview</span>
+                </button>
+                <button class="view-tab" id="tab-hankook-strategy" onclick="window.TireDashboardApp.switchView('hankook-strategy')">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span>대응 전략 & 로드맵</span>
+                </button>
+            </nav>
 
             <div class="sidebar-footer">
-                <p class="footer-source-note" data-i18n="footer-source-note">출처: Consumer Reports 연구소 정량 측정, TireRack.com 북미 소비자 평가, 독일 ADAC 공인 등급, 독일 Auto Bild 전문 비교 평가 (2021-2026).</p>
+                <p class="footer-source-note">출처: Consumer Reports 연구소 정량 측정, TireRack.com 북미 소비자 평가, 독일 ADAC 공인 등급, 독일 Auto Bild 전문 비교 평가 (2021-2026).</p>
             </div>
-
         </aside>
 
         <!-- Main Dashboard Content -->
@@ -172,8 +81,8 @@
             <!-- Header Section -->
             <header class="dashboard-header">
                 <div>
-                    <h1 class="header-title" data-i18n="header-title">한국타이어 상품 전략 분석 시스템</h1>
-                    <p class="header-subtitle" data-i18n="header-subtitle">BENCHMARKING TO STRATEGY</p>
+                    <h1 class="header-title">한국타이어 상품 전략 분석 시스템</h1>
+                    <p class="header-subtitle">BENCHMARKING TO STRATEGY</p>
                 </div>
                 <div class="header-right-controls">
                     <button id="btn-show-sources" class="btn-header-sources">
@@ -186,287 +95,276 @@
                     </button>
                     <div class="header-status">
                         <span class="status-pulse-green"></span>
-                        <span class="status-text" data-i18n="status-text">벤치마크 데이터베이스 동기화 완료 (2026.05)</span>
+                        <span class="status-text">벤치마크 데이터베이스 동기화 완료 (2026.05)</span>
                     </div>
                 </div>
             </header>
 
-            <!-- Analysis View Switch Navigation -->
-            <nav class="view-tabs">
-                <button class="view-tab active" id="tab-na" onclick="window.TireDashboardApp.switchView('na')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="9" y1="3" x2="9" y2="21"/>
-                        <line x1="15" y1="3" x2="15" y2="21"/>
-                        <line x1="3" y1="9" x2="21" y2="9"/>
-                        <line x1="3" y1="15" x2="21" y2="15"/>
-                    </svg>
-                    <span data-i18n="tab-na">북미용 상품 분석 (Tire Rack / CR)</span>
-                </button>
-                <button class="view-tab" id="tab-eu" onclick="window.TireDashboardApp.switchView('eu')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="9" y1="3" x2="9" y2="21"/>
-                        <line x1="15" y1="3" x2="15" y2="21"/>
-                        <line x1="3" y1="9" x2="21" y2="9"/>
-                        <line x1="3" y1="15" x2="21" y2="15"/>
-                    </svg>
-                    <span data-i18n="tab-eu">유럽용 상품 분석 (ADAC / Auto Bild)</span>
-                </button>
-                <button class="view-tab" id="tab-strategy" onclick="window.TireDashboardApp.switchView('strategy')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                        <polyline points="2 17 12 22 22 17"/>
-                        <polyline points="2 12 12 17 22 12"/>
-                    </svg>
-                    <span data-i18n="tab-strategy">글로벌 경쟁사 분기 경영 전략 분석실</span>
-                </button>
-            </nav>
 
-            <div id="panel-performance-view" class="view-panel active">
-                <!-- Metrics Summary Cards (KPIs) -->
-                <section class="kpi-grid">
-
-                <!-- KPI 1: 연간 판매 실적 -->
-                <div class="kpi-card">
-                    <div class="kpi-card-header">
-                        <span class="kpi-title" data-i18n="kpi-sales-title">선택 필터 내 연간 판매 실적</span>
-                        <div class="kpi-icon-wrapper bg-blue-trans">
-                            <svg class="kpi-icon color-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                            </svg>
+            <!-- ==================== TAB 1: Market & Sales Overview ==================== -->
+            <div id="panel-market" class="view-panel active">
+                <div class="panel-filter-bar">
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">대상 시장 (MARKET):</span>
+                        <div class="tab-btn-group" id="tab1-market-selector">
+                            <button class="tab-toggle-btn active" data-market="global">Global (전체)</button>
+                            <button class="tab-toggle-btn" data-market="na">North America (북미)</button>
+                            <button class="tab-toggle-btn" data-market="eu">Europe (유럽)</button>
                         </div>
                     </div>
-                    <div class="kpi-value-wrapper">
-                        <span id="kpi-sales" class="kpi-value">0k</span>
-                        <span class="kpi-unit" data-i18n="kpi-sales-unit">천본 (k units)</span>
+
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">지표 기준 (METRIC):</span>
+                        <div class="tab-btn-group" id="brand-metric-selector">
+                            <button class="metric-btn active" data-metric="revenue">매출액 (Revenue)</button>
+                            <button class="metric-btn" data-metric="sales">판매량 (Volume)</button>
+                        </div>
                     </div>
-                    <p class="kpi-desc" data-i18n="kpi-sales-desc">선택 조건 내 해당 연도 판매량 합계</p>
                 </div>
 
-                <!-- KPI 2: 경쟁사 1위 벤치마크 모델 -->
-                <div class="kpi-card">
-                    <div class="kpi-card-header">
-                        <span class="kpi-title" data-i18n="kpi-top-model-title">세그먼트 벤치마크 1위 제품</span>
-                        <div class="kpi-icon-wrapper bg-gold-trans">
-                            <svg class="kpi-icon color-gold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <circle cx="12" cy="8" r="7"/>
-                                <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="kpi-value-wrapper">
-                        <span id="kpi-top-model" class="kpi-value-small">-</span>
-                    </div>
-                    <p class="kpi-desc"><span data-i18n="kpi-top-model-desc">종합 최고 성능 점수: </span><strong id="kpi-top-model-score" class="color-gold">0.0</strong></p>
-                </div>
-
-                <!-- KPI 3: 한국타이어 세그먼트 순위 -->
-                <div class="kpi-card border-hankook-glow">
-                    <div class="kpi-card-header">
-                        <span class="kpi-title" data-i18n="kpi-top-brand-title" style="color: var(--color-hankook); font-weight: 700;">한국타이어 상품 시장 포지션</span>
-                        <div class="kpi-icon-wrapper bg-orange-trans">
-                            <svg class="kpi-icon color-orange" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="kpi-value-wrapper">
-                        <span id="kpi-top-brand" class="kpi-value" style="color: var(--color-hankook);">-</span>
-                    </div>
-                    <p class="kpi-desc"><span data-i18n="kpi-top-brand-desc">당사 브랜드/상품 종합 평점: </span><strong id="kpi-top-brand-score" style="color: var(--color-hankook);">0.0</strong></p>
-                </div>
-
-                <!-- KPI 4: R&D 최우선 보강 과제 -->
-                <div class="kpi-card">
-                    <div class="kpi-card-header">
-                        <span class="kpi-title" data-i18n="kpi-rnd-title">최우선 R&D 보강 성능 항목</span>
-                        <div class="kpi-icon-wrapper bg-purple-trans">
-                            <svg class="kpi-icon color-purple" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="kpi-value-wrapper">
-                        <span id="kpi-count" class="kpi-value-small">-</span>
-                    </div>
-                    <p class="kpi-desc" id="kpi-count-desc" data-i18n="kpi-rnd-desc">경쟁 1위 대비 기술 격차 최대 요인</p>
-                </div>
-            </section>
-
-            <!-- Chart Matrix Grid -->
-            <section class="charts-grid">
-                <!-- Brand Overall Revenue and Sales Volume Comparison Chart -->
-                <div class="chart-card span-2">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 10px;">
-                        <h2 class="chart-card-title" data-i18n="chart-brand-title" style="margin-bottom: 0;">제조사별 글로벌 전체 매출액 및 판매량 비교</h2>
-                        <div class="metric-selector" id="brand-metric-selector" style="display: flex; gap: 4px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 3px;">
-                            <button class="metric-btn active" data-metric="revenue" style="background: rgba(59, 130, 246, 0.2); color: #fff; border: 1px solid rgba(59, 130, 246, 0.4); padding: 4px 14px; border-radius: 16px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">매출액</button>
-                            <button class="metric-btn" data-metric="sales" style="background: transparent; color: var(--text-secondary); border: none; padding: 4px 14px; border-radius: 16px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">판매량</button>
-                        </div>
-                    </div>
-                    <div class="brand-chart-selector" id="brand-chart-selector" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; margin-top: 10px;">
-                        <label class="brand-chip active locked" style="cursor: not-allowed; opacity: 0.95;">
+                <!-- Brand Chip Selectors for Multi-select -->
+                <div class="brand-select-card card-premium">
+                    <div class="brand-select-label">비교 제조사 멀티 셀렉터 (MULTI-SELECT BRAND):</div>
+                    <div class="brand-chip-container" id="brand-chart-selector">
+                        <label class="brand-chip active locked">
                             <input type="checkbox" value="Hankook" checked disabled style="display: none;">
-                            <span class="chip-dot" style="background-color: #ff6b00; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #ff6b00;"></span>
                             한국타이어
                         </label>
                         <label class="brand-chip active">
                             <input type="checkbox" value="Michelin" checked style="display: none;">
-                            <span class="chip-dot" style="background-color: #5cb2ff; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #5cb2ff;"></span>
                             미쉐린
                         </label>
                         <label class="brand-chip">
                             <input type="checkbox" value="Bridgestone" style="display: none;">
-                            <span class="chip-dot" style="background-color: #ffd043; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #ffd043;"></span>
                             브리지스톤
                         </label>
                         <label class="brand-chip">
                             <input type="checkbox" value="Continental" style="display: none;">
-                            <span class="chip-dot" style="background-color: #ff9f24; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #ff9f24;"></span>
                             콘티넨탈
                         </label>
                         <label class="brand-chip">
                             <input type="checkbox" value="Goodyear" style="display: none;">
-                            <span class="chip-dot" style="background-color: #ca8aff; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #ca8aff;"></span>
                             굿이어
                         </label>
                         <label class="brand-chip">
                             <input type="checkbox" value="Pirelli" style="display: none;">
-                            <span class="chip-dot" style="background-color: #3b82f6; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #3b82f6;"></span>
                             피렐리
                         </label>
                         <label class="brand-chip">
                             <input type="checkbox" value="Kumho" style="display: none;">
-                            <span class="chip-dot" style="background-color: #ff3333; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;"></span>
+                            <span class="chip-dot" style="background-color: #ff3333;"></span>
                             금호타이어
                         </label>
                     </div>
-                    <div class="chart-wrapper">
+                </div>
+
+                <!-- Market Overview Main Chart -->
+                <div class="chart-card full-width-chart">
+                    <h2 class="chart-card-title">제조사별 시장 점유 및 연도별 실적 추이 비교 (2021-2026)</h2>
+                    <div class="chart-wrapper" style="height: 450px;">
                         <canvas id="chart-bar-brands"></canvas>
                     </div>
                 </div>
 
-                <!-- Multi-Attribute Radar Spider Chart -->
-                <div class="chart-card border-hankook-glow-subtle">
-                    <h2 class="chart-card-title" style="border-left-color: var(--color-hankook);" data-i18n="chart-radar-title">한국타이어 vs 벤치마크 핵심성능 비교 (Radar)</h2>
-                    <div class="chart-wrapper">
-                        <canvas id="chart-radar-attributes"></canvas>
+                <!-- Market Summary Card -->
+                <div class="market-summary-grid">
+                    <div class="card-premium">
+                        <h3 class="card-title-premium">시장 동향 및 실적 분석 가이드</h3>
+                        <p class="card-text-premium" id="market-dynamic-comment">
+                            2022-2023년 글로벌 고금리 기조와 전세계적인 인플레이션 충격으로 타이어 판매량(Q)은 소폭 위축을 겪었으나, 타이어 원자재 가격 및 소매 가격(P) 상승으로 전사 매출액(P * Q)은 오히려 증가하는 모습을 실측 데이터 기반으로 보여주고 있습니다. 2024-2026년에 이르러 글로벌 교체용(RE) 시장의 EV 특화 라인업(iON evo 등) 보급 및 고인치 SUV 믹스 강화를 기반으로 한국타이어와 주요 프리미엄 제조사들의 실질 성장이 견고하게 전개되고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== TAB 2: Technical Competitiveness ==================== -->
+            <div id="panel-competitiveness" class="view-panel">
+                <!-- Performance Filters Header -->
+                <div class="panel-filter-bar">
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">대상 시장 (MARKET):</span>
+                        <div class="tab-btn-group" id="tab2-market-selector">
+                            <button class="tab-toggle-btn active" data-market="na">North America (북미)</button>
+                            <button class="tab-toggle-btn" data-market="eu">Europe (유럽)</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">대상 세그먼트 (SEGMENT):</span>
+                        <select id="filter-segment" class="filter-select tab-select">
+                            <option value="all">전체 세그먼트 (All Segments)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">기준 분석 연도 (YEAR):</span>
+                        <select id="filter-year" class="filter-select tab-select">
+                            <option value="2021">2021년</option>
+                            <option value="2022">2022년</option>
+                            <option value="2023">2023년</option>
+                            <option value="2024">2024년</option>
+                            <option value="2025">2025년</option>
+                            <option value="2026" selected>2026년</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">성능 데이터 소스 (SOURCE):</span>
+                        <select id="filter-source" class="filter-select tab-select">
+                            <!-- Injected by JS -->
+                        </select>
                     </div>
                 </div>
 
-                <!-- Sales & Rating Trend Line/Bar Chart -->
-                <div class="chart-card" style="grid-column: span 3;">
-                    <h2 class="chart-card-title" data-i18n="chart-yoy-title">연도별(YoY) 타이어 판매량 및 종합 성능 점수 추이</h2>
-                    <div class="chart-wrapper">
-                        <canvas id="chart-yoy-trends"></canvas>
+                <!-- KPI Summary Cards -->
+                <section class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-card-header">
+                            <span class="kpi-title">선택 조건 내 연간 판매량</span>
+                            <div class="kpi-icon-wrapper bg-blue-trans">
+                                <svg class="kpi-icon color-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value-wrapper">
+                            <span id="kpi-sales" class="kpi-value">0k</span>
+                            <span class="kpi-unit">천본 (k units)</span>
+                        </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- 한국타이어 상품 전략 & R&D 가이드 (SWOT 및 성능 격차 분석) -->
-            <section class="strategy-card" id="strategy-panel">
-                <div class="strategy-header">
-                    <div class="strategy-title-group">
-                        <h2 class="strategy-main-title" data-i18n="strategy-title">한국타이어 상품 전략 & R&D 가이드 (Competitor Intelligence)</h2>
-                        <p class="strategy-subtitle" id="strategy-subtitle-text">선택 세그먼트: 초고성능 스포츠 (UHP) - Ventus S1 evo3 벤치마크 분석</p>
+                    <div class="kpi-card">
+                        <div class="kpi-card-header">
+                            <span class="kpi-title">세그먼트 벤치마크 1위 제품</span>
+                            <div class="kpi-icon-wrapper bg-gold-trans">
+                                <svg class="kpi-icon color-gold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="8" r="7"/>
+                                    <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value-wrapper">
+                            <span id="kpi-top-model" class="kpi-value-small">-</span>
+                        </div>
+                        <p class="kpi-desc">종합 최고 성능 점수: <strong id="kpi-top-model-score" class="color-gold">0.0</strong></p>
                     </div>
-                    <div class="strategy-badge">HANKOOK R&D STRATEGY</div>
-                </div>
-                
-                <div class="strategy-grid">
-                    <!-- SWOT 분석 카드 -->
-                    <div class="swot-container">
-                        <div class="swot-box swot-strength">
-                            <div class="swot-title" data-i18n="swot-s-title"><span class="swot-letter">S</span> 강점 (Strength) - 마케팅 차별화 소구</div>
-                            <p id="swot-s-content">데이터 분석 중...</p>
-                        </div>
-                        <div class="swot-box swot-weakness">
-                            <div class="swot-title" data-i18n="swot-w-title"><span class="swot-letter">W</span> 약점 (Weakness) - 최우선 R&D 과제</div>
-                            <p id="swot-w-content">데이터 분석 중...</p>
-                        </div>
-                        <div class="swot-box swot-opportunity">
-                            <div class="swot-title" data-i18n="swot-o-title"><span class="swot-letter">O</span> 기회 (Opportunity) - 시장 영토 확장</div>
-                            <p id="swot-o-content">데이터 분석 중...</p>
-                        </div>
-                        <div class="swot-box swot-threat">
-                            <div class="swot-title" data-i18n="swot-t-title"><span class="swot-letter">T</span> 위협 (Threat) - 시장 잠식 대비책</div>
-                            <p id="swot-t-content">데이터 분석 중...</p>
-                        </div>
-                    </div>
-                    
-                    <!-- 성능 항목별 Gap 지표 분석 -->
-                    <div class="gap-analysis-container">
-                        <h3 class="gap-panel-title" data-i18n="gap-analysis-title">경쟁사 1위 대비 상세 성능 격차 (Gap Analysis)</h3>
-                        <div class="gap-list" id="gap-list-container">
-                            <!-- JS를 통해 동적으로 각 성능 지표별 격차 및 진행 바 렌더링 -->
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <!-- Comprehensive Model Comparison Spreadsheet -->
-            <section class="table-card">
-                <div class="table-card-header">
-                    <h2 class="table-card-title" data-i18n="table-title">전체 타이어 모델 종합 성능 스코어카드 및 판매 대장</h2>
-                    <div class="table-actions">
-                        <div class="search-input-wrapper">
-                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"/>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                            </svg>
-                            <input type="text" id="model-search" data-i18n-placeholder="search-placeholder" placeholder="모델명 또는 제조사 검색...">
+                    <div class="kpi-card border-hankook-glow">
+                        <div class="kpi-card-header">
+                            <span class="kpi-title" style="color: var(--color-hankook); font-weight: 700;">한국타이어 세그먼트 포지션</span>
+                            <div class="kpi-icon-wrapper bg-orange-trans">
+                                <svg class="kpi-icon color-orange" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value-wrapper">
+                            <span id="kpi-top-brand" class="kpi-value" style="color: var(--color-hankook);">-</span>
+                        </div>
+                        <p class="kpi-desc">당사 대표모델 점수: <strong id="kpi-top-brand-score" style="color: var(--color-hankook);">0.0</strong></p>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-card-header">
+                            <span class="kpi-title">최우선 R&D 보강 성능 항목</span>
+                            <div class="kpi-icon-wrapper bg-purple-trans">
+                                <svg class="kpi-icon color-purple" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value-wrapper">
+                            <span id="kpi-count" class="kpi-value-small">-</span>
+                        </div>
+                        <p class="kpi-desc" id="kpi-count-desc">경쟁 1위 대비 격차 최대 요인</p>
+                    </div>
+                </section>
+
+                <!-- Competitiveness Main Chart Grid -->
+                <div class="charts-grid">
+                    <!-- Radar Chart -->
+                    <div class="chart-card border-hankook-glow-subtle">
+                        <h2 class="chart-card-title" style="border-left-color: var(--color-hankook);">한국타이어 대표제품 vs 벤치마크 1위 핵심성능 비교 (1:1 Match)</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-radar-attributes"></canvas>
+                        </div>
+                    </div>
+                    <!-- YoY Performance Trend Chart -->
+                    <div class="chart-card">
+                        <h2 class="chart-card-title">연도별(YoY) 타이어 판매량 및 종합 성능 점수 추이</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-yoy-trends"></canvas>
                         </div>
                     </div>
                 </div>
-                
-                <div class="table-scroll-container">
-                    <table class="analytics-table">
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort="brand" data-i18n="th-brand">제조사 <span class="sort-arrow"></span></th>
-                                <th class="sortable" data-sort="model" data-i18n="th-model">모델명 <span class="sort-arrow"></span></th>
-                                <th class="sortable" data-sort="segment" data-i18n="th-segment">세그먼트 <span class="sort-arrow"></span></th>
-                                <th class="sortable numeric" data-sort="sales" data-i18n="th-sales">연간 판매량 <span class="sort-arrow"></span></th>
-                                <th class="sortable numeric" data-sort="tirerack" data-i18n="th-tirerack">Tire Rack 평점 <span class="sort-arrow"></span></th>
-                                <th class="sortable numeric" data-sort="consumerreports" data-i18n="th-cr">CR 성능 점수 <span class="sort-arrow"></span></th>
-                                <th class="sortable numeric sorted-desc" data-sort="combined" data-i18n="th-combined">종합 평가 점수 <span class="sort-arrow">▼</span></th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-                            <!-- Dynamic Rows Injected by JS -->
-                        </tbody>
-                    </table>
-                </div>
-                <p class="table-footnote" style="margin-top: 15px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; padding: 0 10px;">
-                    * <strong>공식 매출총액 비례 역산 배분 추정치 (Estimated Revenue) 안내:</strong> 세그먼트별 매출액은 각 제조사의 공식 지역 매출총액(글로벌 매출 × 지역 배분율)을 분배 제약조건으로 두고, 소매 소비자 평점 데이터 기반 인지도 지분율에 비례하여 0.1M 오차 없이 수학적으로 역산 배분한 고정밀 시뮬레이션 추정치입니다.
-                </p>
-            </section>
-            </div> <!-- End of panel-performance-view -->
 
-            <!-- New View: Competitor Strategic Intelligence Portal -->
-            <div id="panel-strategy-view" class="view-panel">
-                <!-- Competitor Chip Selectors -->
-                <div class="competitor-selector-row">
-                    <p class="selector-title" data-i18n="competitor-portal-title">글로벌 Top 4 경쟁사 실시간 리포트 조회:</p>
+                <!-- Spreadsheet Section -->
+                <section class="table-card">
+                    <div class="table-card-header">
+                        <h2 class="table-card-title">세그먼트별 타이어 종합 성능 스코어카드 및 판매 대장</h2>
+                        <div class="table-actions">
+                            <div class="search-input-wrapper">
+                                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                                <input type="text" id="model-search" placeholder="모델명 또는 제조사 검색...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-scroll-container">
+                        <table class="analytics-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="brand">제조사 <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="model">모델명 <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="segment">세그먼트 <span class="sort-arrow"></span></th>
+                                    <th class="sortable numeric" data-sort="sales">연간 판매량 <span class="sort-arrow"></span></th>
+                                    <th class="sortable numeric" data-sort="tirerack">Tire Rack 평점 <span class="sort-arrow"></span></th>
+                                    <th class="sortable numeric" data-sort="consumerreports">CR 성능 점수 <span class="sort-arrow"></span></th>
+                                    <th class="sortable numeric sorted-desc" data-sort="combined">종합 평가 점수 <span class="sort-arrow">▼</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Dynamic Rows Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="table-footnote" style="margin-top: 15px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; padding: 0 10px;">
+                        * <strong>공식 매출총액 비례 역산 배분 추정치 (Estimated Revenue) 안내:</strong> 세그먼트별 매출액은 각 제조사의 공식 지역 매출총액(글로벌 매출 × 지역 배분율)을 분배 제약조건으로 두고, 소매 소비자 평점 데이터 기반 인지도 지분율에 비례하여 0.1M 오차 없이 수학적으로 역산 배분한 고정밀 시뮬레이션 추정치입니다. 각 타이어 행을 클릭하면 계산 검증 산식이 모달로 시각화됩니다.
+                    </p>
+                </section>
+            </div>
+
+            <!-- ==================== TAB 3: Technical Strategy ==================== -->
+            <div id="panel-tech-strategy" class="view-panel">
+                <!-- Competitor selection row -->
+                <div class="competitor-selector-row card-premium">
+                    <p class="selector-title">글로벌 Top 4 경쟁사 실시간 리포트 조회:</p>
                     <div class="comp-chips">
                         <button class="comp-chip active" data-brand="Michelin" onclick="window.TireDashboardApp.selectCompetitor('Michelin')">
                             <span class="chip-dot" style="background-color: var(--color-blue);"></span>
-                            <span data-i18n="brand_Michelin">미쉐린 (Michelin)</span>
+                            <span>미쉐린 (Michelin)</span>
                         </button>
                         <button class="comp-chip" data-brand="Bridgestone" onclick="window.TireDashboardApp.selectCompetitor('Bridgestone')">
                             <span class="chip-dot" style="background-color: var(--color-gold);"></span>
-                            <span data-i18n="brand_Bridgestone">브리지스톤 (Bridgestone)</span>
+                            <span>브리지스톤 (Bridgestone)</span>
                         </button>
                         <button class="comp-chip" data-brand="Continental" onclick="window.TireDashboardApp.selectCompetitor('Continental')">
                             <span class="chip-dot" style="background-color: #ff8c00;"></span>
-                            <span data-i18n="brand_Continental">콘티넨탈 (Continental)</span>
+                            <span>콘티넨탈 (Continental)</span>
                         </button>
                         <button class="comp-chip" data-brand="Goodyear" onclick="window.TireDashboardApp.selectCompetitor('Goodyear')">
                             <span class="chip-dot" style="background-color: var(--color-purple);"></span>
-                            <span data-i18n="brand_Goodyear">굿이어 (Goodyear)</span>
+                            <span>굿이어 (Goodyear)</span>
                         </button>
                     </div>
                 </div>
@@ -475,46 +373,136 @@
                 <div class="strategy-portal-grid">
                     <!-- R&D Portfolio Focus Chart -->
                     <div class="chart-card border-hankook-glow-subtle">
-                        <h2 class="chart-card-title" style="border-left-color: var(--color-hankook);" data-i18n="chart-competitor-tech-title">선택 경쟁사 핵심 R&D 테마 집중도 가중치</h2>
+                        <h2 class="chart-card-title" style="border-left-color: var(--color-hankook);">선택 경쟁사 핵심 R&D 테마 집중도 가중치</h2>
                         <div class="chart-wrapper" style="height: 320px;">
                             <canvas id="chart-competitor-tech"></canvas>
                         </div>
-                        <p class="chart-footnote" data-i18n="chart-competitor-tech-footnote">*출처: 2025-2026 분기 IR 브리핑 및 특허 공시 출원 분석 가중치</p>
                     </div>
 
                     <!-- Individual Competitor Dynamic Summary Briefing -->
-                    <div class="strategy-briefing-panel" id="competitor-briefing-card">
+                    <div class="strategy-briefing-panel card-premium" id="competitor-briefing-card">
                         <!-- Dynamic Content Injected by JS -->
                     </div>
                 </div>
 
-                <!-- Global Competitor Strategic Matrix Table -->
+                <!-- Strategic Matrix Table -->
                 <div class="table-card" style="margin-top: 20px;">
                     <div class="table-card-header">
-                        <h2 class="table-card-title" style="border-left-color: var(--color-hankook);" data-i18n="competitor-matrix-title">2025-2026 글로벌 4대 제조사 전략 비교 횡 매트릭스 (Strategic Matrix)</h2>
+                        <h2 class="table-card-title" style="border-left-color: var(--color-hankook);">2025-2026 글로벌 4대 제조사 전략 비교 횡 매트릭스 (Strategic Matrix)</h2>
                         <span class="strategy-badge" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.25); color: var(--color-blue);">STRATEGIC MATRIX</span>
                     </div>
                     <div class="table-scroll-container">
                         <table class="matrix-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 12%" data-i18n="th-matrix-brand">제조사</th>
-                                    <th style="width: 22%" data-i18n="th-matrix-tech">R&D 기술 최우선 테마</th>
-                                    <th style="width: 22%" data-i18n="th-matrix-marketing">글로벌 마케팅 핵심 소구 (USP)</th>
-                                    <th style="width: 22%" data-i18n="th-matrix-restructuring">구조조정 & 가이던스 요약</th>
-                                    <th style="width: 22%; color: var(--color-hankook);" data-i18n="th-matrix-action">한국타이어 전용 Action Point</th>
+                                    <th style="width: 12%">제조사</th>
+                                    <th style="width: 22%">R&D 기술 최우선 테마</th>
+                                    <th style="width: 22%">글로벌 마케팅 핵심 소구 (USP)</th>
+                                    <th style="width: 22%">구조조정 & 가이던스 요약</th>
+                                    <th style="width: 22%; color: var(--color-hankook);">한국타이어 전용 Action Point</th>
                                 </tr>
                             </thead>
                             <tbody id="matrix-table-body">
-                                <!-- Dynamic translation matrix rows will be updated by dashboard.js switchLanguage -->
+                                <!-- Dynamic rows updated by JS -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
+            <!-- ==================== TAB 4: Hankook Action Strategy ==================== -->
+            <div id="panel-hankook-strategy" class="view-panel">
+                <!-- Tab 4 Local Filter Bar -->
+                <div class="panel-filter-bar" style="margin-bottom: 20px;">
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">대상 시장 (MARKET):</span>
+                        <div class="tab-btn-group" id="tab4-market-selector">
+                            <button class="tab-toggle-btn active" data-market="na">North America (북미)</button>
+                            <button class="tab-toggle-btn" data-market="eu">Europe (유럽)</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">대상 세그먼트 (SEGMENT):</span>
+                        <select id="filter-segment-t4" class="filter-select tab-select">
+                            <option value="all">전체 세그먼트 (All Segments)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-bar-group">
+                        <span class="filter-bar-title">기준 분석 연도 (YEAR):</span>
+                        <select id="filter-year-t4" class="filter-select tab-select">
+                            <option value="2021">2021년</option>
+                            <option value="2022">2022년</option>
+                            <option value="2023">2023년</option>
+                            <option value="2024">2024년</option>
+                            <option value="2025">2025년</option>
+                            <option value="2026" selected>2026년</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="strategy-header card-premium" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; padding: 25px;">
+                    <div class="strategy-title-group">
+                        <h2 class="strategy-main-title" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--text-primary);">한국타이어 미래전략 및 R&D 가이드 (Action Roadmap)</h2>
+                        <p class="strategy-subtitle" id="strategy-subtitle-text" style="color: var(--text-secondary); margin-top: 4px;">선택 세그먼트 분석 기반 R&D 실행 전략 가이드라인</p>
+                    </div>
+                    <div class="strategy-badge" style="background: var(--color-hankook-glow); color: #fff; border: 1px solid var(--color-hankook); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.8rem;">HANKOOK R&D STRATEGY</div>
+                </div>
+
+                <!-- SWOT 분석 카드 -->
+                <div class="swot-container-restructured">
+                    <div class="swot-box swot-strength card-premium">
+                        <div class="swot-title"><span class="swot-letter" style="background-color: var(--color-emerald);">S</span> 강점 (Strength) - 차별화 소구</div>
+                        <p id="swot-s-content">데이터 분석 중...</p>
+                    </div>
+                    <div class="swot-box swot-weakness card-premium">
+                        <div class="swot-title"><span class="swot-letter" style="background-color: var(--color-red);">W</span> 약점 (Weakness) - 최우선 R&D 과제</div>
+                        <p id="swot-w-content">데이터 분석 중...</p>
+                    </div>
+                    <div class="swot-box swot-opportunity card-premium">
+                        <div class="swot-title"><span class="swot-letter" style="background-color: var(--color-blue);">O</span> 기회 (Opportunity) - 시장 영토 확장</div>
+                        <p id="swot-o-content">데이터 분석 중...</p>
+                    </div>
+                    <div class="swot-box swot-threat card-premium">
+                        <div class="swot-title"><span class="swot-letter" style="background-color: var(--color-gold);">T</span> 위협 (Threat) - 시장 잠식 대비책</div>
+                        <p id="swot-t-content">데이터 분석 중...</p>
+                    </div>
+                </div>
+
+                <div class="strategy-action-plan-grid">
+                    <!-- TO-BE Roadmap -->
+                    <div class="card-premium strategy-roadmap-card">
+                        <h3 class="card-title-premium" style="color: var(--color-hankook); border-left-color: var(--color-hankook); margin-bottom: 20px; font-size: 1.15rem; font-weight: 700;">한국타이어 TO-BE 판매 & 기술력 확보 로드맵</h3>
+                        <div class="roadmap-timeline">
+                            <div class="timeline-step">
+                                <div class="step-badge" style="background-color: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; width: fit-content; margin-bottom: 8px;">판매 (Sales TO-BE)</div>
+                                <div class="step-content">
+                                    <h4 class="step-title" style="color: #fff; font-size: 0.95rem; font-weight: 600; margin-bottom: 6px;">고마진 UHP 인치업 믹스 강화 & iON 라인업 글로벌 선점</h4>
+                                    <p class="step-desc" style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5;">18인치 이상 고인치 규격 공급 비중을 50%까지 증대하는 믹스 가이드라인 실행. 글로벌 프리미엄 완성차 브랜드(Porsche, Audi, BMW 등)의 차세대 전기차 순정 OE 공급 지분을 선점하고, 교체용(RE) 시장에서 전기차 전용 타이어 'iON evo' 및 'iON evo AS' 시리즈의 북미/유럽 거점 유통을 공격적으로 확보.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-step" style="margin-top: 20px;">
+                                <div class="step-badge" style="background-color: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; width: fit-content; margin-bottom: 8px;">기술 (R&D TO-BE)</div>
+                                <div class="step-content">
+                                    <h4 class="step-title" style="color: #fff; font-size: 0.95rem; font-weight: 600; margin-bottom: 6px;">벤치마크 1위 극복을 위한 친환경 바이오 컴파운드 타임라인</h4>
+                                    <p class="step-desc" style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5;">최우수 벤치마크 모델(미쉐린 CrossClimate 2 / Pilot Sport 4S) 대비 격차가 두드러진 성능(우천 시 수막현상 방지 및 겨울철 제동 한계)을 극복하기 위해 천연 레진 및 고분자 기능성 실리카 기술 탑재. 2027년까지 친환경 원재료 비중을 45%로 높임과 동시에 습윤 접지 성능을 5% 이상 개선하는 컴파운드 최적화 추진.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 성능 항목별 Gap 지표 분석 -->
+                    <div class="gap-analysis-container card-premium">
+                        <h3 class="gap-panel-title">경쟁사 1위 대비 상세 성능 격차 (Gap Analysis)</h3>
+                        <div class="gap-list" id="gap-list-container">
+                            <!-- JS를 통해 동적으로 각 성능 지표별 격차 및 진행 바 렌더링 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
-
 
     <!-- Premium Data Source Explanation Modal -->
     <div id="sources-modal" class="modal-overlay">
