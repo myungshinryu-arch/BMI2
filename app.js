@@ -1364,6 +1364,34 @@ let globalMarketChart = null;
 let trendPerformanceChart = null;
 let rdPriorityChart = null;
 
+// 연도별 글로벌 전체 매출 및 판매량 데이터베이스
+const GLOBAL_MARKET_DATABASE = {
+  "2021": {
+    revenue: [5.9, 25.1, 10.8, 24.5],
+    sales: [88, 158, 112, 151]
+  },
+  "2022": {
+    revenue: [6.1, 26.3, 11.2, 25.0],
+    sales: [91, 162, 115, 154]
+  },
+  "2023": {
+    revenue: [6.3, 27.0, 11.5, 25.8],
+    sales: [94, 166, 118, 159]
+  },
+  "2024": {
+    revenue: [6.5, 27.8, 11.9, 26.5],
+    sales: [97, 170, 121, 163]
+  },
+  "2025": {
+    revenue: [6.8, 28.5, 12.4, 27.2],
+    sales: [102, 175, 125, 168]
+  },
+  "2026": {
+    revenue: [7.1, 29.3, 12.9, 28.0],
+    sales: [106, 180, 129, 173]
+  }
+};
+
 // 뉴스 데이터셋
 const STRATEGY_NEWS_DATA = [
   { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "#" },
@@ -1500,6 +1528,9 @@ function initStrategyDashboard() {
 }
 
 function initGlobalMarketChart(ctx) {
+  const selectedYear = document.getElementById('global-market-year').value;
+  const dataForYear = GLOBAL_MARKET_DATABASE[selectedYear] || GLOBAL_MARKET_DATABASE["2026"];
+
   if (globalMarketChart) globalMarketChart.destroy();
   
   globalMarketChart = new Chart(ctx, {
@@ -1508,8 +1539,8 @@ function initGlobalMarketChart(ctx) {
       labels: ['HANKOOK', 'MICHELIN', 'CONTINENTAL', 'BRIDGESTONE'],
       datasets: [
         {
-          label: '글로벌 전체 매출액 (십억 USD)',
-          data: [6.8, 28.5, 12.4, 27.2],
+          label: `${selectedYear}년 글로벌 전체 매출액 (십억 USD)`,
+          data: dataForYear.revenue,
           backgroundColor: 'rgba(249, 115, 22, 0.75)',
           borderColor: 'rgba(249, 115, 22, 1)',
           borderWidth: 1.5,
@@ -1517,8 +1548,8 @@ function initGlobalMarketChart(ctx) {
           borderRadius: 8
         },
         {
-          label: '글로벌 전체 판매량 (백만 본)',
-          data: [102, 175, 125, 168],
+          label: `${selectedYear}년 글로벌 전체 판매량 (백만 본)`,
+          data: dataForYear.sales,
           type: 'line',
           backgroundColor: 'rgba(59, 130, 246, 0.15)',
           borderColor: 'rgba(59, 130, 246, 1)',
@@ -1740,6 +1771,14 @@ window.showNewsMockToast = function(mfg, title) {
 };
 
 function setupStrategyEventListeners() {
+  // 연도별 마켓 데이터 필터링
+  const yearSelect = document.getElementById('global-market-year');
+  if (yearSelect) {
+    yearSelect.addEventListener('change', () => {
+      initGlobalMarketChart(document.getElementById('global-market-chart'));
+    });
+  }
+
   // 연도별 필터링
   const mfgSelect = document.getElementById('trend-mfg');
   const segSelect = document.getElementById('trend-seg');

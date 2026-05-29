@@ -141,11 +141,11 @@
     <!-- MAIN CONSOLE LAYOUT: 1단 풀-너비 관제 대시보드 (100% 가로 확장) -->
     <main class="portal-main-layout">
 
-      <!-- PORTAL STRATEGY MONITOR WIDGET (한국타이어 상품 전략 & R&D 가이드 관제 대시보드) -->
+      <!-- PORTAL STRATEGY MONITOR WIDGET (Global Top4 비교 대시보드) -->
       <section class="dashboard-widget-section portal-strategy-dashboard">
         <div class="widget-header-row">
           <div class="widget-header-title">
-            <h2 class="widget-title"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> 한국타이어 상품 전략 & R&D 가이드 대시보드</h2>
+            <h2 class="widget-title"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Global Top4 비교</h2>
             <p class="widget-subtitle">제조사별 글로벌 전체 매출/판매 비교 및 연도별/세그먼트별 종합 성능 추이, R&D 집중도, 최신 BI 리포트 통합 스크랩</p>
           </div>
           <a href="Market_Strategy/index.html" class="strategy-shortcut-link">
@@ -155,10 +155,23 @@
 
         <div class="strategy-quad-grid">
           
-          <!-- 꼭지 1 (좌측 상단): 한국타이어 시장상황 (글로벌 매출액 및 판매량 비교) -->
+          <!-- 꼭지 1 (좌측 상단): 전체 매출 & 판매량 (글로벌 매출액 및 판매량 비교) -->
           <div class="quad-panel panel-global-market">
             <div class="panel-header">
-              <h3 class="panel-title"><i class="fa-solid fa-earth-americas"></i> 한국타이어 시장상황 (글로벌 탑4 전체 매출 & 판매량)</h3>
+              <h3 class="panel-title"><i class="fa-solid fa-earth-americas"></i> 전체 매출 & 판매량</h3>
+              
+              <!-- 연도 변화 색인 드롭다운 -->
+              <div class="filter-group" style="margin-left: auto;">
+                <label for="global-market-year" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-calendar-days"></i> 분석 연도</label>
+                <select id="global-market-year" class="filter-select">
+                  <option value="2021">2021년</option>
+                  <option value="2022">2022년</option>
+                  <option value="2023">2023년</option>
+                  <option value="2024">2024년</option>
+                  <option value="2025">2025년</option>
+                  <option value="2026" selected>2026년(E)</option>
+                </select>
+              </div>
               <div class="panel-meta">단위: 매출액(십억 USD) / 판매량(백만 본)</div>
             </div>
             <div class="panel-content chart-container">
@@ -194,7 +207,7 @@
                 
                 <!-- 버튼식 성능 데이터 소스 -->
                 <div class="filter-group performance-source-group">
-                  <label><i class="fa-solid fa-database"></i> 성능 지표</label>
+                  <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
                   <div class="btn-group-performance" role="group">
                     <button type="button" class="btn-source active" data-source="Wear">마모 (Wear)</button>
                     <button type="button" class="btn-source" data-source="Braking">제동 (Braking)</button>
