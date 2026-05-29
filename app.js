@@ -640,7 +640,7 @@ function renderDashboard() {
   }
 }
 
-// 12. 2D Matrix PLC Timeline Renderer (정밀 이중 열 & 엑셀 행번호 1:1 매핑 렌더러)
+// 12. 2D Matrix PLC Timeline Renderer (정밀 이중 열 & 엑셀 행번호 1:1 매핑 + rowspan 동적 병합 렌더러)
 function renderTimeline() {
   const viewport = document.getElementById('plc-timeline-viewport');
   if (!viewport) return;
@@ -673,11 +673,45 @@ function renderTimeline() {
     };
   });
 
-  // 4. 테이블 생성
+  // 4. 동적 rowspan (행 병합 횟수) 정밀 사전 계산
+  // 4-1. Segment(category)의 rowspan 연속 횟수 계산
+  for (let i = 0; i < matrixRows.length; i++) {
+    if (i === 0 || matrixRows[i].category !== matrixRows[i - 1].category) {
+      let span = 1;
+      while (i + span < matrixRows.length && matrixRows[i + span].category === matrixRows[i].category) {
+        span++;
+      }
+      matrixRows[i].categorySpan = span;
+    } else {
+      matrixRows[i].categorySpan = 0; // 0이면 렌더링하지 않고 건너뜀
+    }
+  }
+
+  // 4-2. Maker(division)의 rowspan 연속 횟수 계산 (반드시 동일 카테고리 내에서만 병합되도록 가드배치)
+  for (let i = 0; i < matrixRows.length; i++) {
+    const currentCat = matrixRows[i].category;
+    const currentDiv = matrixRows[i].division;
+    
+    if (i === 0 || matrixRows[i - 1].category !== currentCat || matrixRows[i - 1].division !== currentDiv) {
+      let span = 1;
+      while (
+        i + span < matrixRows.length && 
+        matrixRows[i + span].category === currentCat && 
+        matrixRows[i + span].division === currentDiv
+      ) {
+        span++;
+      }
+      matrixRows[i].divisionSpan = span;
+    } else {
+      matrixRows[i].divisionSpan = 0; // 0이면 렌더링하지 않고 건너뜀
+    }
+  }
+
+  // 5. 테이블 생성
   const table = document.createElement('table');
   table.className = 'plc-matrix-table';
 
-  // 5. 테이블 헤더 (이중 Sticky 열 세팅)
+  // 6. 테이블 헤더 (이중 Sticky 열 세팅)
   const thead = document.createElement('thead');
   const headerTr = document.createElement('tr');
   
@@ -702,56 +736,41 @@ function renderTimeline() {
   thead.appendChild(headerTr);
   table.appendChild(thead);
 
-  // 6. 테이블 바디 렌더링 및 병합 셀 가시 효과 처리
+  // 7. 테이블 바디 렌더링 및 동적 rowspan 적용
   const tbody = document.createElement('tbody');
   
-  matrixRows.forEach((row, idx) => {
+  matrixRows.forEach((row) => {
     const tr = document.createElement('tr');
     
-    const segmentTd = document.createElement('td');
-    segmentTd.className = 'segment-col';
-    
-    const makerTd = document.createElement('td');
-    makerTd.className = 'maker-col';
-
-    // 병합 효과 가시화 판단
-    // 이전 행과 카테고리가 동일하면 group-child로 취급해 숨김 처리 효과 부여
-    const prevRow = idx > 0 ? matrixRows[idx - 1] : null;
-    const isSameCategory = prevRow && prevRow.category === row.category;
-    
-    // 카테고리가 동일하고 메이커 구분(division)도 동일하면 숨김 처리 효과 부여
-    const isSameDivision = isSameCategory && prevRow.division === row.division;
-
-    // Segment 셀 스타일 및 내용 주입
-    if (isSameCategory) {
-      segmentTd.classList.add('group-child');
-    } else {
-      segmentTd.classList.add('group-first');
-    }
-    segmentTd.innerHTML = `
-      <div class="plc-segment-label">
-        <span class="seg-name" title="${row.category}">${row.category}</span>
-      </div>
-    `;
-
-    // Maker 셀 스타일 및 내용 주입
-    if (isSameDivision) {
-      makerTd.classList.add('group-child');
-    } else {
-      makerTd.classList.add('group-first');
+    // 7-1. Segment (Category) 셀 렌더링 (동적 rowspan 적용)
+    if (row.categorySpan > 0) {
+      const segmentTd = document.createElement('td');
+      segmentTd.className = 'segment-col group-first';
+      segmentTd.rowSpan = row.categorySpan;
+      segmentTd.innerHTML = `
+        <div class="plc-segment-label">
+          <span class="seg-name" title="${row.category}">${row.category}</span>
+        </div>
+      `;
+      tr.appendChild(segmentTd);
     }
     
-    const makerDisplayName = getMakerDisplayName(row.division, row.items);
-    makerTd.innerHTML = `
-      <div class="plc-maker-label">
-        <span class="maker-name">${makerDisplayName}</span>
-      </div>
-    `;
+    // 7-2. Maker (Division) 셀 렌더링 (동적 rowspan 적용)
+    if (row.divisionSpan > 0) {
+      const makerTd = document.createElement('td');
+      makerTd.className = 'maker-col group-first';
+      makerTd.rowSpan = row.divisionSpan;
+      
+      const makerDisplayName = getMakerDisplayName(row.division, row.items);
+      makerTd.innerHTML = `
+        <div class="plc-maker-label">
+          <span class="maker-name">${makerDisplayName}</span>
+        </div>
+      `;
+      tr.appendChild(makerTd);
+    }
 
-    tr.appendChild(segmentTd);
-    tr.appendChild(makerTd);
-
-    // 연도별 타임라인 셀 채우기
+    // 7-3. 연도별 타임라인 셀 채우기
     years.forEach(year => {
       const td = document.createElement('td');
       td.className = 'plc-matrix-cell';
