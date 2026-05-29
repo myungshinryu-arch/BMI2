@@ -269,6 +269,16 @@ class AdvisorRequest(BaseModel):
 async def run_ai_advisor(req: AdvisorRequest):
     try:
         from ai_advisor import get_ai_advisor_report, calculate_optimized_recipe
+        report_markdown = get_ai_advisor_report(
+            recipe=req.recipe,
+            sim_scores=req.simulated_scores,
+            ref_scores=req.reference_scores,
+            sim_tg=req.simulated_tg,
+            ref_tg=req.reference_tg,
+            ref_name=req.reference_name,
+            material_stats=material_stats,
+            distribution_bounds=req.distribution_bounds
+        )
         optimized_recipe = calculate_optimized_recipe(
             recipe=req.recipe,
             sim_scores=req.simulated_scores,
@@ -280,24 +290,13 @@ async def run_ai_advisor(req: AdvisorRequest):
             calculate_tg_fn=calculate_tg,
             distribution_bounds=req.distribution_bounds
         )
-        report_markdown = get_ai_advisor_report(
-            recipe=req.recipe,
-            sim_scores=req.simulated_scores,
-            ref_scores=req.reference_scores,
-            sim_tg=req.simulated_tg,
-            ref_tg=req.reference_tg,
-            ref_name=req.reference_name,
-            material_stats=material_stats,
-            distribution_bounds=req.distribution_bounds,
-            opts=optimized_recipe
-        )
         return {"report": report_markdown, "optimized_recipe": optimized_recipe}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI Advisor processing error: {str(e)}")
 
 
 # Serve frontend static assets if available (checks directory existence to avoid startup crash)
-frontend_dir = BASE_DIR.parent / 'Compd BM'
+frontend_dir = BASE_DIR.parent / 'Compd_BM'
 if not frontend_dir.exists():
     frontend_dir = BASE_DIR.parent / 'AI_Simulator'
 

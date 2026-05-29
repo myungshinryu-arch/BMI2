@@ -34,7 +34,7 @@
     const API_BASE =
         window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1")
             ? "http://localhost:8000"
-            : "https://RENDER_API_URL_HERE"; // Render 배포 후 이 URL을 실제 Render 배포 URL로 변경해 주세요 (예: https://bmi2-api.onrender.com)
+            : "https://bmi2-api.onrender.com"; // Render 배포 후 이 URL을 실제 Render 배포 URL로 변경해 주세요 (예: https://bmi2-api.onrender.com)
     const API_SPEC = `${API_BASE}/api/data-spec`;
     const API_PREDICT = `${API_BASE}/api/predict`;
     const API_ADVISOR = `${API_BASE}/api/ai-advisor`;
