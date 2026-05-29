@@ -355,6 +355,7 @@ body {
   gap: 20px;
   width: 100%;
   margin-bottom: 32px;
+  align-items: start; /* 개별 카드의 독립적인 세로 확장(커튼식 아코디언) 허용 */
 }
 
 .sidebar-section-title {
@@ -377,13 +378,14 @@ body {
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(249, 115, 22, 0.08);
   border-radius: 18px;
-  padding: 22px 24px;
+  padding: 16px 24px; /* 컴팩트 슬림화 */
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  transition: var(--transition);
+  gap: 0; /* 평소에는 하부 메뉴 간격 제로 */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* 프리미엄 커튼 모션 트랜지션 */
   position: relative;
   overflow: hidden;
+  min-height: 56px; /* 기본 높이를 슬림하게 유지 */
 }
 
 .module-compact-card::before {
@@ -408,7 +410,7 @@ body {
   background: #fff;
   border-color: var(--card-hover-border);
   box-shadow: var(--shadow-premium);
-  transform: translateY(-4px);
+  transform: translateY(-2px); /* 부드러운 리프트 효과 */
 }
 
 .module-compact-card:hover::before {
@@ -491,11 +493,31 @@ body {
 .m-submenus {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  border-top: 1px dashed rgba(249, 115, 22, 0.12);
+  gap: 4px;
+  max-height: 0; /* 평소에는 완벽하게 접어 숨김 */
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  border-top: 1px dashed transparent; /* 호버 시에만 나타나도록 설정 */
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.3s ease, 
+              margin-top 0.45s, 
+              padding-top 0.45s, 
+              border-top-color 0.45s;
+  pointer-events: none; /* 접힌 상태에서 마우스 상호작용 비활성화 */
+}
+
+/* 마우스오버 시 커튼이 열리며 내려오듯 서서히 노출 */
+.module-compact-card:hover .m-submenus {
+  max-height: 280px; /* 메뉴 높이에 맞춰 완전 노출 */
+  opacity: 1;
+  margin-top: 12px;
+  margin-bottom: 4px;
   padding-top: 12px;
+  border-top-color: rgba(249, 115, 22, 0.16);
+  pointer-events: auto;
 }
 
 .m-submenu-item {
