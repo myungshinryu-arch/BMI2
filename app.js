@@ -1539,7 +1539,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [95, 94, 92, 93, 89, 78, 86]
       },
       bestProduct: "MICHELIN Pilot Sport 5",
-      marketPosition: "6위 / 7개 사 (북미 기술 추격형 (핵심 성능 격차 최저))",
+      marketPosition: "6위 / 7개 사",
       priorityEnhancement: "눈길/빙판 제동력 보강 필요"
     },
     "Europe": {
@@ -1548,7 +1548,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [94, 93, 91, 94, 88, 85, 87]
       },
       bestProduct: "MICHELIN Pilot Sport 5",
-      marketPosition: "3위 / 6개 사 (유럽 기술 추격형 (젖은 노면 경쟁력 확보))",
+      marketPosition: "3위 / 6개 사",
       priorityEnhancement: "눈길/빙판 제동력 보강 필요"
     }
   },
@@ -1559,7 +1559,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [92, 92, 90, 94, 94, 82, 88]
       },
       bestProduct: "CONTINENTAL PremiumContact 7",
-      marketPosition: "7위 / 7개 사 (시장 선도형 동등 수준 (승차감 우수))",
+      marketPosition: "7위 / 7개 사",
       priorityEnhancement: "수막현상 방지 (Hydroplaning)"
     },
     "Europe": {
@@ -1568,7 +1568,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [91, 93, 91, 93, 93, 86, 87]
       },
       bestProduct: "CONTINENTAL PremiumContact 7",
-      marketPosition: "3위 / 7개 사 (유럽 표준 적합형 경쟁 (승차감 극대화))",
+      marketPosition: "3위 / 7개 사",
       priorityEnhancement: "수막현상 방지 (Hydroplaning)"
     }
   },
@@ -1579,7 +1579,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [89, 88, 88, 91, 95, 80, 89]
       },
       bestProduct: "MICHELIN CrossClimate 2",
-      marketPosition: "3위 / 7개 사 (안정성 지향형 추격 (수명 경쟁력 우수))",
+      marketPosition: "3위 / 7개 사",
       priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
     },
     "Europe": {
@@ -1588,7 +1588,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [88, 90, 89, 90, 94, 83, 88]
       },
       bestProduct: "MICHELIN CrossClimate 2",
-      marketPosition: "3위 / 7개 사 (올시즌 유럽형 제동 우수 (마일리 가성비 우위))",
+      marketPosition: "3위 / 7개 사",
       priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
     }
   },
@@ -1599,7 +1599,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [88, 95, 93, 92, 88, 96, 85]
       },
       bestProduct: "CONTINENTAL VikingContact 7",
-      marketPosition: "4위 / 7개 사 (특화 성능 추격형 (눈길 그립 확보))",
+      marketPosition: "4위 / 7개 사",
       priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
     },
     "Europe": {
@@ -1608,7 +1608,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [87, 96, 92, 91, 87, 97, 84]
       },
       bestProduct: "CONTINENTAL VikingContact 7",
-      marketPosition: "3위 / 7개 사 (유럽 빙판 전용 고그립 (극저온 컴파운드 최적화))",
+      marketPosition: "3위 / 7개 사",
       priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
     }
   },
@@ -1619,7 +1619,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [93, 89, 90, 90, 92, 75, 84]
       },
       bestProduct: "GOODYEAR Wrangler Duratrac",
-      marketPosition: "3위 / 7개 사 (내구성 중심 경쟁형 (오프로드 강화))",
+      marketPosition: "3위 / 7개 사",
       priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
     },
     "Europe": {
@@ -1628,7 +1628,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
         benchmark: [92, 90, 89, 89, 91, 78, 83]
       },
       bestProduct: "GOODYEAR Wrangler Duratrac",
-      marketPosition: "3위 / 7개 사 (온/오프로드 전천후형 (유럽 친환경 연비 대응))",
+      marketPosition: "3위 / 7개 사",
       priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
     }
   }
