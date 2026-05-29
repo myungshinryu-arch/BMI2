@@ -138,7 +138,91 @@
 
     <!-- MAIN CONSOLE LAYOUT: 1단 풀-너비 관제 대시보드 (100% 가로 확장) -->
     <main class="portal-main-layout">
-      
+
+      <!-- PORTAL STRATEGY MONITOR WIDGET (시장/상품전략 간략 모니터 위젯) -->
+      <section class="dashboard-widget-section portal-strategy-widget">
+        <div class="widget-header-row">
+          <div class="widget-header-title">
+            <h2 class="widget-title"><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> 한국타이어 시장/상품전략 관제 센터</h2>
+            <p class="widget-subtitle">유럽/북미 시장 핵심 SWOT 전략 방향 및 1위 벤치마크 대비 R&D 성능 격차 가이드라인</p>
+          </div>
+          <a href="Market_Strategy/index.html" class="strategy-shortcut-link">
+            전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
+          </a>
+        </div>
+
+        <div class="strategy-summary-grid">
+          
+          <!-- SWOT 요약 카드 패널 -->
+          <div class="strategy-summary-subpanel swot-summary-panel">
+            <h3 class="subpanel-title"><i class="fa-solid fa-star"></i> 최우선 R&D 전략 가이드 (SWOT)</h3>
+            <div class="mini-swot-grid">
+              <div class="mini-swot-item swot-s">
+                <span class="m-swot-letter">S</span>
+                <p>EV 및 고성능 프리미엄 라인업(iON)의 독보적 기술력 전면 배치</p>
+              </div>
+              <div class="mini-swot-item swot-w">
+                <span class="m-swot-letter">W</span>
+                <p>유럽 사계절(All-Weather) 세그먼트 마모 수명(Wear) 7% 연구 보완</p>
+              </div>
+              <div class="mini-swot-item swot-o">
+                <span class="m-swot-letter">O</span>
+                <p>유럽 친환경 교체 수요 및 전기차 전용 RE 시장 확대 적기 선점</p>
+              </div>
+              <div class="mini-swot-item swot-t">
+                <span class="m-swot-letter">T</span>
+                <p>저가 브랜드 공세 방어를 위한 프리미엄 정숙성/NVH 특화 포지셔닝</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 미니 Gap Analysis 패널 -->
+          <div class="strategy-summary-subpanel gap-summary-panel">
+            <h3 class="subpanel-title"><i class="fa-solid fa-chart-simple"></i> 주요 1위 제조사 대비 핵심 성능 격차 (R&D Gap)</h3>
+            <div class="mini-gap-list">
+              
+              <!-- 마모 수명 -->
+              <div class="mini-gap-item">
+                <div class="mg-meta">
+                  <span class="mg-name">마모 수명 (Wear Life)</span>
+                  <span class="mg-values"><strong class="mg-h">92</strong> <span class="mg-div">/</span> 95 <span class="mg-diff diff-neg">-3</span></span>
+                </div>
+                <div class="mg-bar-track">
+                  <div class="mg-bar-h" style="width: 92%;"></div>
+                  <div class="mg-marker-b" style="left: 95%;"></div>
+                </div>
+              </div>
+
+              <!-- 젖은 노면 제동 -->
+              <div class="mini-gap-item">
+                <div class="mg-meta">
+                  <span class="mg-name">젖은 노면 제동 (Wet Braking)</span>
+                  <span class="mg-values"><strong class="mg-h">96</strong> <span class="mg-div">/</span> 94 <span class="mg-diff diff-pos">+2</span></span>
+                </div>
+                <div class="mg-bar-track">
+                  <div class="mg-bar-h" style="width: 96%;"></div>
+                  <div class="mg-marker-b" style="left: 94%;"></div>
+                </div>
+              </div>
+
+              <!-- 회전저항/전비 -->
+              <div class="mini-gap-item">
+                <div class="mg-meta">
+                  <span class="mg-name">회전 저항 / 전비 (RR)</span>
+                  <span class="mg-values"><strong class="mg-h">97</strong> <span class="mg-div">/</span> 92 <span class="mg-diff diff-pos">+5</span></span>
+                </div>
+                <div class="mg-bar-track">
+                  <div class="mg-bar-h" style="width: 97%;"></div>
+                  <div class="mg-marker-b" style="left: 92%;"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       <!-- WIDGET 1: PLC TIMELINE MATRIX DIRECT MONITOR -->
       <section class="dashboard-widget-section">
         <div class="widget-header-row">
