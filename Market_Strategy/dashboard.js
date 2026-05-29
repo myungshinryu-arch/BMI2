@@ -1982,9 +1982,20 @@ class TireDashboard {
                 plugins: {
                     legend: {
                         position: 'top',
-                        labels: { boxWidth: 12, font: { size: 10, weight: '600' } }
+                        labels: { 
+                            boxWidth: 14, 
+                            font: { size: 12, weight: '700' },
+                            color: '#cbd5e1'
+                        }
                     },
                     tooltip: {
+                        backgroundColor: 'rgba(11, 15, 32, 0.95)',
+                        titleColor: '#fff',
+                        titleFont: { size: 13, weight: '700' },
+                        bodyFont: { size: 12 },
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
+                        borderWidth: 1,
+                        padding: 12,
                         callbacks: {
                             title: function(tooltipItems) {
                                 return tooltipItems[0].label + " 실적 비교";
@@ -2003,8 +2014,11 @@ class TireDashboard {
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(249, 115, 22, 0.06)' },
-                        ticks: { font: { size: 10, weight: '700' }, color: '#1e293b' }
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { 
+                            font: { size: 11, weight: '700' }, 
+                            color: '#cbd5e1'
+                        }
                     },
                     y: {
                         type: 'linear',
@@ -2012,10 +2026,14 @@ class TireDashboard {
                         title: { 
                             display: true, 
                             text: activeMetric === 'revenue' ? '글로벌 매출액 (십억 USD)' : '글로벌 판매량 (백만 본)', 
-                            color: activeMetric === 'revenue' ? '#3b82f6' : '#10b981', 
-                            font: { size: 10, weight: '600' } 
+                            color: '#f97316', 
+                            font: { size: 12, weight: '700' } 
                         },
-                        grid: { color: 'rgba(249, 115, 22, 0.06)' }
+                        ticks: {
+                            font: { size: 11, weight: '600' },
+                            color: '#94a3b8'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     }
                 }
             }

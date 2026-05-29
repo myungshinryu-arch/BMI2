@@ -2361,6 +2361,84 @@ body {
     margin-top: 25px;
 }
 
+/* ==========================================================================
+   Market & Sales Overview (#panel-market) Custom Styling
+   - Overall font size scale-up (about 10~15% larger)
+   - Extra large font size for the main chart title
+   - Custom Premium Soft-Orange styling for the Revenue/Volume toggle buttons
+   ========================================================================== */
+
+/* 1. Overall Font Size Scale-up within the panel */
+#panel-market {
+    font-size: 1.05rem !important; /* 기본보다 더 웅장하고 선명하게 */
+}
+
+/* 2. Specific elements size scale-up */
+#panel-market .brand-select-label {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+}
+
+#panel-market .brand-chip {
+    font-size: 0.95rem !important;
+    padding: 8px 18px !important;
+    font-weight: 600 !important;
+    border-radius: 25px !important;
+}
+
+#panel-market .brand-chip .chip-dot {
+    width: 10px !important;
+    height: 10px !important;
+}
+
+/* 3. Main Chart Card Title Override - EXTRA LARGE & Premium Highlight */
+#panel-market .full-width-chart .chart-card-title {
+    font-size: 1.35rem !important; /* 요청하신 대로 대폭 확대 */
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    border-left: 5px solid var(--color-hankook) !important; /* 한국타이어 오렌지 포인트 데코 */
+    padding-left: 12px !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 4. Revenue/Volume switch buttons - Soft-Orange color scheme */
+#brand-metric-selector {
+    background-color: rgba(254, 215, 170, 0.08) !important; /* 극도로 세련된 반투명 소프트오렌지 컨테이너 */
+    border: 1px solid rgba(249, 115, 22, 0.15) !important;
+    padding: 4px !important;
+    border-radius: 25px !important;
+    display: inline-flex !important;
+    gap: 4px !important;
+}
+
+#brand-metric-selector .metric-btn {
+    font-size: 0.88rem !important; /* 0.78rem -> 0.88rem 으로 버튼 폰트 확대 */
+    padding: 6px 18px !important;
+    border-radius: 20px !important;
+    font-weight: 700 !important;
+    color: rgba(255, 255, 255, 0.6) !important; /* 비활성 상태: 투명성 높은 화이트-실버 */
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    transition: all var(--transition-fast) !important;
+}
+
+#brand-metric-selector .metric-btn:hover {
+    color: #fff !important;
+    background-color: rgba(249, 115, 22, 0.12) !important; /* 호버 시 가벼운 주황색 하이라이트 */
+}
+
+/* Active State override - Stronger contrast & glowing orange with white text for maximum visibility */
+#brand-metric-selector .metric-btn.active {
+    background: linear-gradient(135deg, #f97316, #ea580c) !important; /* 선명하고 고급스러운 주황색 그라데이션 */
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important; /* 최상의 시안성 보장을 위한 순백색 폰트 */
+    font-weight: 800 !important;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.35) !important; /* 고급스러운 네온 글로우 */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important; /* 글꼴 가독성 상승용 섀도우 */
+}
+
+
 
 
 
