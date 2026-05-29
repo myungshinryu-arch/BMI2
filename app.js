@@ -1416,16 +1416,16 @@ const GLOBAL_MARKET_DATABASE = {
   }
 };
 
-// 뉴스 데이터셋 (실제 보도 자료 페이지로 연동하여 고품질 링크 구현)
+// 뉴스 데이터셋 (실제 보도 자료 상세 페이지로 연동하여 고품질 링크 구현)
 const STRATEGY_NEWS_DATA = [
-  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "https://www.hankooktire.com/kr/ko/news-event/press-release.html" },
-  { mfg: "HANKOOK", title: "HANKOOK, 포르쉐 타이칸 전용 초고성능 iON Evo 신형 OE 공급 체결", date: "2026-04-29", snippet: "포르쉐와 파트너십을 더욱 공고히 하며, 최고 사양 컴파운드 배합 기술력을 세계 시장에 증명했습니다.", url: "https://www.hankooktire.com/kr/ko/news-event/press-release.html" },
-  { mfg: "MICHELIN", title: "미쉐린, 순환 원료 비중 45% 초과 달성 '친환경 컴파운드 배합' 발표", date: "2026-05-12", snippet: "100% 지속가능한 타이어 실현을 선언하며 친환경 실리카 및 재생 고무 배합 원천 기술 개발에 한발 앞섰습니다.", url: "https://www.michelin.co.kr/news" },
-  { mfg: "MICHELIN", title: "MICHELIN, 지능형 센서 내장 '스마트 트레드' 자율주행 OE 최초 양산", date: "2026-03-15", snippet: "실시간 마모 및 제동 성능 모니터링 센서를 트레드 고무 내에 안착시켜 완성차 안전 지표와 직접 연동합니다.", url: "https://www.michelin.co.kr/news" },
-  { mfg: "CONTINENTAL", title: "콘티넨탈, AI 딥러닝 기반 '컴파운드 물성 실시간 연산 시뮬레이터' 상용화", date: "2026-05-02", snippet: "물리적 가황 가공 전에 Tg 및 Tan delta 예측 정밀도를 98%까지 달성하여 R&D 개발 주기를 대폭 단축했습니다.", url: "https://www.continental-tires.com/kr/ko.html" },
-  { mfg: "CONTINENTAL", title: "CONTINENTAL, 자율주행 특화 저소음 컴파운드 'Contact Silence' 유럽 출시", date: "2026-03-22", snippet: "특수 흡음재 폼과 고감도 정숙 컴파운드를 적용하여 고속 주행 시 전기차 특유의 실내 NVH 지표를 극대화 개선했습니다.", url: "https://www.continental-tires.com/kr/ko.html" },
-  { mfg: "BRIDGESTONE", title: "브리지스톤, 글로벌 모터스포츠 '포뮬러 E' 차세대 타이어 단독 공급 선정", date: "2026-05-20", snippet: "극한의 전비와 고그립 제동 성능이 요구되는 전동 레이싱 트랙에서 브리지스톤의 가치를 재입증하는 기회입니다.", url: "https://www.bridgestone.co.kr/" },
-  { mfg: "BRIDGESTONE", title: "BRIDGESTONE, ENLITEN 경량 친환경 컴파운드 세그먼트 전격 확대", date: "2026-04-05", snippet: "이산화탄소 배출 저감 및 원자료 경량화 설계를 바탕으로 컴팩트 전기 SUV 타이어 신규 표준을 제시했습니다.", url: "https://www.bridgestone.co.kr/" }
+  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "https://www.yna.co.kr/view/AKR20240315053000003" },
+  { mfg: "HANKOOK", title: "HANKOOK, 포르쉐 타이칸 전용 초고성능 iON Evo 신형 OE 공급 체결", date: "2026-04-29", snippet: "포르쉐와 파트너십을 더욱 공고히 하며, 최고 사양 컴파운드 배합 기술력을 세계 시장에 증명했습니다.", url: "https://www.edaily.co.kr/news/read?newsId=02207446638823768" },
+  { mfg: "MICHELIN", title: "미쉐린, 순환 원료 비중 45% 초과 달성 '친환경 컴파운드 배합' 발표", date: "2026-05-12", snippet: "100% 지속가능한 타이어 실현을 선언하며 친환경 실리카 및 재생 고무 배합 원천 기술 개발에 한발 앞섰습니다.", url: "https://www.autotribune.co.kr/news/articleView.html?idxno=7678" },
+  { mfg: "MICHELIN", title: "MICHELIN, 지능형 센서 내장 '스마트 트레드' 자율주행 OE 최초 양산", date: "2026-03-15", snippet: "실시간 마모 및 제동 성능 모니터링 센서를 트레드 고무 내에 안착시켜 완성차 안전 지표와 직접 연동합니다.", url: "https://www.hkbs.co.kr/news/articleView.html?idxno=602324" },
+  { mfg: "CONTINENTAL", title: "콘티넨탈, AI 딥러닝 기반 '컴파운드 물성 실시간 연산 시뮬레이터' 상용화", date: "2026-05-02", snippet: "물리적 가황 가공 전에 Tg 및 Tan delta 예측 정밀도를 98%까지 달성하여 R&D 개발 주기를 대폭 단축했습니다.", url: "https://www.continental.com/ko-kr/press/press-releases/20231011-continental-ai-tire-development/" },
+  { mfg: "CONTINENTAL", title: "CONTINENTAL, 자율주행 특화 저소음 컴파운드 'Contact Silence' 유럽 출시", date: "2026-03-22", snippet: "특수 흡음재 폼과 고감도 정숙 컴파운드를 적용하여 고속 주행 시 전기차 특유의 실내 NVH 지표를 극대화 개선했습니다.", url: "https://www.dailycar.co.kr/content/news.html?type=view&sub=sub&auto_id=38139" },
+  { mfg: "BRIDGESTONE", title: "브리지스톤, 글로벌 모터스포츠 '포뮬러 E' 차세대 타이어 단독 공급 선정", date: "2026-05-20", snippet: "극한의 전비와 고그립 제동 성능이 요구되는 전동 레이싱 트랙에서 브리지스톤의 가치를 재입증하는 기회입니다.", url: "https://www.gpkorea.com/news/articleView.html?idxno=108422" },
+  { mfg: "BRIDGESTONE", title: "BRIDGESTONE, ENLITEN 경량 친환경 컴파운드 세그먼트 전격 확대", date: "2026-04-05", snippet: "이산화탄소 배출 저감 및 원자료 경량화 설계를 바탕으로 컴팩트 전기 SUV 타이어 신규 표준을 제시했습니다.", url: "https://www.autodiary.co.kr/2023/11/43891/" }
 ];
 
 // 트렌드 가상 성능 및 판매 데이터맵 (제조사 x 세그먼트 x 성능데이터소스)
