@@ -32,6 +32,8 @@ const state = {
   currentTab: 'tab-dashboard',
   timeline: {
     activeSheet: 'Summer', // Summer, SUV, Winter-Alpin, All Weather
+    filterSegment: '',
+    filterMaker: ''
   },
   reportsLibrary: {
     searchQuery: '',
@@ -63,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
   setupSearch();
   setupFilters();
+  setupPlcTimelineFilters();
   setupDrawer();
   setupBtsPopup(); // BTS 이스터에그 팝업 컨트롤러 등록
 
@@ -136,6 +139,9 @@ async function loadAllData() {
 
     // Populate report filter dropdown options
     populateReportFilters();
+
+    // Initialize PLC Timeline filters
+    updatePlcFilterOptions();
 
     // Initial renders
     renderAllViews();
@@ -219,6 +225,9 @@ function setupNavigation() {
       if (mapTitle) {
         mapTitle.innerHTML = `<i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황 (${state.timeline.activeSheet} Map)`;
       }
+
+      // 시트 변경 시 필터 옵션을 동적으로 다시 생성
+      updatePlcFilterOptions();
 
       renderTimeline();
       
@@ -680,37 +689,57 @@ function renderTimeline() {
     };
   });
 
-  // 4. 동적 rowspan (행 병합 횟수) 정밀 사전 계산
+  // 3-1. 세그먼트 및 제조사 필터링 적용 (엑셀형 실시간 대화식 행 단위 필터링)
+  const filteredRows = matrixRows.filter(row => {
+    // 세그먼트 필터링 검사
+    if (state.timeline.filterSegment) {
+      if (row.category !== state.timeline.filterSegment) {
+        return false;
+      }
+    }
+
+    // 제조사 필터링 검사
+    if (state.timeline.filterMaker) {
+      const makerDisplayName = getMakerDisplayName(row.division, row.items);
+      if (makerDisplayName !== state.timeline.filterMaker) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // 4. 동적 rowspan (행 병합 횟수) 정밀 사전 계산 (필터링된 행 목록 기준)
   // 4-1. Segment(category)의 rowspan 연속 횟수 계산
-  for (let i = 0; i < matrixRows.length; i++) {
-    if (i === 0 || matrixRows[i].category !== matrixRows[i - 1].category) {
+  for (let i = 0; i < filteredRows.length; i++) {
+    if (i === 0 || filteredRows[i].category !== filteredRows[i - 1].category) {
       let span = 1;
-      while (i + span < matrixRows.length && matrixRows[i + span].category === matrixRows[i].category) {
+      while (i + span < filteredRows.length && filteredRows[i + span].category === filteredRows[i].category) {
         span++;
       }
-      matrixRows[i].categorySpan = span;
+      filteredRows[i].categorySpan = span;
     } else {
-      matrixRows[i].categorySpan = 0; // 0이면 렌더링하지 않고 건너뜀
+      filteredRows[i].categorySpan = 0; // 0이면 렌더링하지 않고 건너뜀
     }
   }
 
   // 4-2. Maker(division)의 rowspan 연속 횟수 계산 (반드시 동일 카테고리 내에서만 병합되도록 가드배치)
-  for (let i = 0; i < matrixRows.length; i++) {
-    const currentCat = matrixRows[i].category;
-    const currentDiv = matrixRows[i].division;
+  for (let i = 0; i < filteredRows.length; i++) {
+    const currentCat = filteredRows[i].category;
+    const currentDiv = filteredRows[i].division;
     
-    if (i === 0 || matrixRows[i - 1].category !== currentCat || matrixRows[i - 1].division !== currentDiv) {
+    if (i === 0 || filteredRows[i - 1].category !== currentCat || filteredRows[i - 1].division !== currentDiv) {
       let span = 1;
       while (
-        i + span < matrixRows.length && 
-        matrixRows[i + span].category === currentCat && 
-        matrixRows[i + span].division === currentDiv
+        i + span < filteredRows.length && 
+        filteredRows[i + span].category === currentCat && 
+        filteredRows[i + span].division === currentDiv
       ) {
         span++;
       }
-      matrixRows[i].divisionSpan = span;
+      filteredRows[i].divisionSpan = span;
     } else {
-      matrixRows[i].divisionSpan = 0; // 0이면 렌더링하지 않고 건너뜀
+      filteredRows[i].divisionSpan = 0; // 0이면 렌더링하지 않고 건너뜀
     }
   }
 
@@ -746,96 +775,110 @@ function renderTimeline() {
   // 7. 테이블 바디 렌더링 및 동적 rowspan 적용
   const tbody = document.createElement('tbody');
   
-  matrixRows.forEach((row) => {
+  if (filteredRows.length === 0) {
     const tr = document.createElement('tr');
-    
-    // 자사 Hankook 행 판별하여 행(tr) 강조용 클래스 주입
-    const isHankookRow = (row.division.toUpperCase() === 'HK' || row.division === '자사' || row.division.toUpperCase() === 'HANKOOK');
-    if (isHankookRow) {
-      tr.classList.add('hankook-row');
-    }
-    
-    // 7-1. Segment (Category) 셀 렌더링 (동적 rowspan 적용)
-    if (row.categorySpan > 0) {
-      const segmentTd = document.createElement('td');
-      segmentTd.className = 'segment-col group-first';
-      segmentTd.rowSpan = row.categorySpan;
-      segmentTd.innerHTML = `
-        <div class="plc-segment-label">
-          <span class="seg-name" title="${row.category}">${row.category}</span>
-        </div>
-      `;
-      tr.appendChild(segmentTd);
-    }
-    
-    // 7-2. Maker (Division) 셀 렌더링 (동적 rowspan 적용)
-    if (row.divisionSpan > 0) {
-      const makerTd = document.createElement('td');
-      makerTd.className = 'maker-col group-first';
-      makerTd.rowSpan = row.divisionSpan;
+    const td = document.createElement('td');
+    td.colSpan = years.length + 2;
+    td.style.textAlign = 'center';
+    td.style.color = 'var(--text-muted)';
+    td.style.padding = '50px 0';
+    td.style.fontSize = '0.95rem';
+    td.style.fontWeight = '600';
+    td.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px; color: var(--primary);"></i> 선택된 필터 조건에 해당하는 데이터가 존재하지 않습니다.`;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  } else {
+    filteredRows.forEach((row) => {
+      const tr = document.createElement('tr');
       
-      const makerDisplayName = getMakerDisplayName(row.division, row.items);
-      const isHankookLabel = (makerDisplayName === 'Hankook');
-      
-      makerTd.innerHTML = `
-        <div class="plc-maker-label ${isHankookLabel ? 'hankook-label' : ''}">
-          <span class="maker-name">${makerDisplayName}</span>
-        </div>
-      `;
-      tr.appendChild(makerTd);
-    }
-
-    // 7-3. 연도별 타임라인 셀 채우기
-    years.forEach(year => {
-      const td = document.createElement('td');
-      td.className = 'plc-matrix-cell';
-      
-      const cellItems = row.items.filter(item => item.year === year);
-      
-      if (cellItems.length > 0) {
-        const cardsWrapper = document.createElement('div');
-        cardsWrapper.className = 'plc-cell-cards-wrapper';
-
-        cellItems.forEach(item => {
-          const hasImg = findTireImage(item.sheet, item.excelRow, item.excelCol) !== null;
-          const associatedRep = findAssociatedReport(item.productName);
-          const hasRep = associatedRep !== null;
-
-          const card = document.createElement('div');
-          card.className = `plc-tire-card ${hasImg ? 'has-image' : ''} ${hasRep ? 'has-report' : ''}`;
-          card.setAttribute('data-excel-row', item.excelRow);
-          card.setAttribute('data-excel-col', item.excelCol);
-
-          const makerText = detectMaker(item.productName);
-
-          card.innerHTML = `
-            <div class="plc-card-title" title="${item.productName}">${item.productName}</div>
-            <div class="plc-card-maker">${makerText}</div>
-            <div class="plc-card-icons">
-              ${hasImg ? '<span class="plc-icon-indicator img" title="실물 이미지 연계"><i class="fa-solid fa-image"></i></span>' : ''}
-              ${hasRep ? '<span class="plc-icon-indicator rep" title="기안 분석 보고서 연계"><i class="fa-solid fa-file-lines"></i></span>' : ''}
-            </div>
-          `;
-
-          // 카드 클릭 시 드로워 확장
-          card.addEventListener('click', (e) => {
-            e.stopPropagation();
-            showTimelineDetails(item);
-          });
-
-          cardsWrapper.appendChild(card);
-        });
-
-        td.appendChild(cardsWrapper);
-      } else {
-        td.innerHTML = `<span style="color: rgba(255,255,255,0.03); font-size: 0.75rem;">-</span>`;
+      // 자사 Hankook 행 판별하여 행(tr) 강조용 클래스 주입
+      const isHankookRow = (row.division.toUpperCase() === 'HK' || row.division === '자사' || row.division.toUpperCase() === 'HANKOOK');
+      if (isHankookRow) {
+        tr.classList.add('hankook-row');
       }
       
-      tr.appendChild(td);
-    });
+      // 7-1. Segment (Category) 셀 렌더링 (동적 rowspan 적용)
+      if (row.categorySpan > 0) {
+        const segmentTd = document.createElement('td');
+        segmentTd.className = 'segment-col group-first';
+        segmentTd.rowSpan = row.categorySpan;
+        segmentTd.innerHTML = `
+          <div class="plc-segment-label">
+            <span class="seg-name" title="${row.category}">${row.category}</span>
+          </div>
+        `;
+        tr.appendChild(segmentTd);
+      }
+      
+      // 7-2. Maker (Division) 셀 렌더링 (동적 rowspan 적용)
+      if (row.divisionSpan > 0) {
+        const makerTd = document.createElement('td');
+        makerTd.className = 'maker-col group-first';
+        makerTd.rowSpan = row.divisionSpan;
+        
+        const makerDisplayName = getMakerDisplayName(row.division, row.items);
+        const isHankookLabel = (makerDisplayName === 'Hankook');
+        
+        makerTd.innerHTML = `
+          <div class="plc-maker-label ${isHankookLabel ? 'hankook-label' : ''}">
+            <span class="maker-name">${makerDisplayName}</span>
+          </div>
+        `;
+        tr.appendChild(makerTd);
+      }
 
-    tbody.appendChild(tr);
-  });
+      // 7-3. 연도별 타임라인 셀 채우기
+      years.forEach(year => {
+        const td = document.createElement('td');
+        td.className = 'plc-matrix-cell';
+        
+        const cellItems = row.items.filter(item => item.year === year);
+        
+        if (cellItems.length > 0) {
+          const cardsWrapper = document.createElement('div');
+          cardsWrapper.className = 'plc-cell-cards-wrapper';
+
+          cellItems.forEach(item => {
+            const hasImg = findTireImage(item.sheet, item.excelRow, item.excelCol) !== null;
+            const associatedRep = findAssociatedReport(item.productName);
+            const hasRep = associatedRep !== null;
+
+            const card = document.createElement('div');
+            card.className = `plc-tire-card ${hasImg ? 'has-image' : ''} ${hasRep ? 'has-report' : ''}`;
+            card.setAttribute('data-excel-row', item.excelRow);
+            card.setAttribute('data-excel-col', item.excelCol);
+
+            const makerText = detectMaker(item.productName);
+
+            card.innerHTML = `
+              <div class="plc-card-title" title="${item.productName}">${item.productName}</div>
+              <div class="plc-card-maker">${makerText}</div>
+              <div class="plc-card-icons">
+                ${hasImg ? '<span class="plc-icon-indicator img" title="실물 이미지 연계"><i class="fa-solid fa-image"></i></span>' : ''}
+                ${hasRep ? '<span class="plc-icon-indicator rep" title="기안 분석 보고서 연계"><i class="fa-solid fa-file-lines"></i></span>' : ''}
+              </div>
+            `;
+
+            // 카드 클릭 시 드로워 확장
+            card.addEventListener('click', (e) => {
+              e.stopPropagation();
+              showTimelineDetails(item);
+            });
+
+            cardsWrapper.appendChild(card);
+          });
+
+          td.appendChild(cardsWrapper);
+        } else {
+          td.innerHTML = `<span style="color: rgba(255,255,255,0.03); font-size: 0.75rem;">-</span>`;
+        }
+        
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
 
   table.appendChild(tbody);
   viewport.innerHTML = '';
@@ -1374,4 +1417,111 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3200);
+}
+
+// 17. PLC Timeline Excel-style Live Filter Controllers
+function setupPlcTimelineFilters() {
+  const segmentSelect = document.getElementById('filter-plc-segment');
+  const makerSelect = document.getElementById('filter-plc-maker');
+  const resetBtn = document.getElementById('btn-reset-plc-filters');
+
+  if (segmentSelect) {
+    segmentSelect.addEventListener('change', (e) => {
+      state.timeline.filterSegment = e.target.value;
+      renderTimeline();
+      
+      // 검색어 하이라이트가 있다면 다시 적용
+      if (state.globalSearch) {
+        applyGlobalHighlight(state.globalSearch);
+      }
+    });
+  }
+
+  if (makerSelect) {
+    makerSelect.addEventListener('change', (e) => {
+      state.timeline.filterMaker = e.target.value;
+      renderTimeline();
+      
+      // 검색어 하이라이트가 있다면 다시 적용
+      if (state.globalSearch) {
+        applyGlobalHighlight(state.globalSearch);
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      state.timeline.filterSegment = '';
+      state.timeline.filterMaker = '';
+      
+      if (segmentSelect) segmentSelect.value = '';
+      if (makerSelect) makerSelect.value = '';
+      
+      renderTimeline();
+      showToast('PLC 타임라인 필터가 초기화되었습니다.');
+
+      if (state.globalSearch) {
+        applyGlobalHighlight(state.globalSearch);
+      }
+    });
+  }
+}
+
+function updatePlcFilterOptions() {
+  const segmentSelect = document.getElementById('filter-plc-segment');
+  const makerSelect = document.getElementById('filter-plc-maker');
+  if (!segmentSelect || !makerSelect) return;
+
+  const activeSheetName = state.timeline.activeSheet;
+  const sheetItems = state.plcTimeline.filter(item => item.sheet === activeSheetName);
+
+  // 고유 세그먼트(Category) 및 제조사(Division) 추출
+  const categoriesSet = new Set();
+  const makersSet = new Set();
+
+  // 각 excelRow 그룹에서 수집
+  const excelRows = [...new Set(sheetItems.map(item => item.excelRow))].sort((a, b) => a - b);
+  excelRows.forEach(rowNum => {
+    const rowItems = sheetItems.filter(item => item.excelRow === rowNum);
+    const sample = rowItems[0];
+    if (sample) {
+      let cat = (sample.category || '').trim();
+      if (cat.includes('(')) {
+        cat = cat.split('(')[0].trim();
+      }
+      if (cat) categoriesSet.add(cat);
+
+      const makerName = getMakerDisplayName(sample.division, rowItems);
+      if (makerName && makerName !== '-') {
+        makersSet.add(makerName);
+      }
+    }
+  });
+
+  const sortedCategories = [...categoriesSet].sort();
+  const sortedMakers = [...makersSet].sort();
+
+  // 현재 필터 상태 유지 검사 (새로 계산된 목록에 없으면 초기화)
+  if (state.timeline.filterSegment && !categoriesSet.has(state.timeline.filterSegment)) {
+    state.timeline.filterSegment = '';
+  }
+  if (state.timeline.filterMaker && !makersSet.has(state.timeline.filterMaker)) {
+    state.timeline.filterMaker = '';
+  }
+
+  // Segment 드롭다운 갱신
+  let segmentHtml = '<option value="">전체 세그먼트</option>';
+  sortedCategories.forEach(cat => {
+    const selected = state.timeline.filterSegment === cat ? 'selected' : '';
+    segmentHtml += `<option value="${cat}" ${selected}>${cat}</option>`;
+  });
+  segmentSelect.innerHTML = segmentHtml;
+
+  // Maker 드롭다운 갱신
+  let makerHtml = '<option value="">전체 제조사</option>';
+  sortedMakers.forEach(maker => {
+    const selected = state.timeline.filterMaker === maker ? 'selected' : '';
+    makerHtml += `<option value="${maker}" ${selected}>${maker}</option>`;
+  });
+  makerSelect.innerHTML = makerHtml;
 }

@@ -296,11 +296,37 @@
  
           <!-- Timeline Matrix Table Card -->
           <div class="card col-12 plc-map-card" style="margin-top: 16px;">
-            <div class="card-header" style="background: rgba(255,255,255,0.01);">
+            <div class="card-header" style="background: rgba(255,255,255,0.01); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
               <div class="card-title">
                 <h3 id="plc-map-board-title"><i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황 (Summer Map)</h3>
               </div>
-              <div id="plc-map-legend" class="plc-legend">
+              
+              <!-- 엑셀 스타일 실시간 대화형 필터 조작반 -->
+              <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 12px; background: rgba(249, 115, 22, 0.04); padding: 6px 16px; border-radius: 10px; border: 1px solid rgba(249, 115, 22, 0.15);">
+                <span style="font-size: 0.8rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px;">
+                  <i class="fa-solid fa-filter"></i> 엑셀형 필터:
+                </span>
+                
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <label for="filter-plc-segment" style="font-size: 0.75rem; font-weight: 700; color: #1e293b;">세그먼트</label>
+                  <select id="filter-plc-segment" style="background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-weight: 600; color: #1e293b; outline: none; min-width: 120px; cursor: pointer;">
+                    <option value="">전체 세그먼트</option>
+                  </select>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <label for="filter-plc-maker" style="font-size: 0.75rem; font-weight: 700; color: #1e293b;">제조사</label>
+                  <select id="filter-plc-maker" style="background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-weight: 600; color: #1e293b; outline: none; min-width: 110px; cursor: pointer;">
+                    <option value="">전체 제조사</option>
+                  </select>
+                </div>
+                
+                <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.8); border: 1px solid rgba(249, 115, 22, 0.2); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
+                  <i class="fa-solid fa-rotate-left"></i> 초기화
+                </button>
+              </div>
+
+              <div id="plc-map-legend" class="plc-legend" style="margin-left: 0;">
                 <span class="legend-item"><span class="legend-dot dot-img"><i class="fa-solid fa-image"></i></span> 실물 이미지 연동</span>
                 <span class="legend-item"><span class="legend-dot dot-rep"><i class="fa-solid fa-file-lines"></i></span> 보고서 연계</span>
               </div>
