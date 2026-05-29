@@ -32,8 +32,8 @@ const state = {
   currentTab: 'tab-dashboard',
   timeline: {
     activeSheet: 'Summer', // Summer, SUV, Winter-Alpin, All Weather
-    filterSegment: '',
-    filterMaker: ''
+    filterSegments: [],
+    filterMakers: []
   },
   reportsLibrary: {
     searchQuery: '',
@@ -689,19 +689,19 @@ function renderTimeline() {
     };
   });
 
-  // 3-1. 세그먼트 및 제조사 필터링 적용 (엑셀형 실시간 대화식 행 단위 필터링)
+  // 3-1. 세그먼트 및 제조사 다중 선택 필터링 적용 (엑셀형 실시간 대화식 행 단위 필터링)
   const filteredRows = matrixRows.filter(row => {
-    // 세그먼트 필터링 검사
-    if (state.timeline.filterSegment) {
-      if (row.category !== state.timeline.filterSegment) {
+    // 세그먼트 다중 필터링 검사
+    if (state.timeline.filterSegments.length > 0) {
+      if (!state.timeline.filterSegments.includes(row.category)) {
         return false;
       }
     }
 
-    // 제조사 필터링 검사
-    if (state.timeline.filterMaker) {
+    // 제조사 다중 필터링 검사
+    if (state.timeline.filterMakers.length > 0) {
       const makerDisplayName = getMakerDisplayName(row.division, row.items);
-      if (makerDisplayName !== state.timeline.filterMaker) {
+      if (!state.timeline.filterMakers.includes(makerDisplayName)) {
         return false;
       }
     }
@@ -1419,44 +1419,95 @@ function showToast(message) {
   }, 3200);
 }
 
-// 17. PLC Timeline Excel-style Live Filter Controllers
+// 17. PLC Timeline Excel-style Live Filter Controllers (Premium Multi-Select Dropdowns)
 function setupPlcTimelineFilters() {
-  const segmentSelect = document.getElementById('filter-plc-segment');
-  const makerSelect = document.getElementById('filter-plc-maker');
+  const segmentBtn = document.getElementById('btn-filter-segment');
+  const segmentDropdown = document.getElementById('dropdown-filter-segment');
+  const makerBtn = document.getElementById('btn-filter-maker');
+  const makerDropdown = document.getElementById('dropdown-filter-maker');
   const resetBtn = document.getElementById('btn-reset-plc-filters');
 
-  if (segmentSelect) {
-    segmentSelect.addEventListener('change', (e) => {
-      state.timeline.filterSegment = e.target.value;
+  if (!segmentBtn || !segmentDropdown || !makerBtn || !makerDropdown) return;
+
+  // 1. 드롭다운 토글 제어
+  segmentBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = segmentDropdown.style.display === 'block';
+    makerDropdown.style.display = 'none';
+    segmentDropdown.style.display = isOpen ? 'none' : 'block';
+  });
+
+  makerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = makerDropdown.style.display === 'block';
+    segmentDropdown.style.display = 'none';
+    makerDropdown.style.display = isOpen ? 'none' : 'block';
+  });
+
+  // 2. 바깥 영역 클릭 시 드롭다운 닫기
+  document.addEventListener('click', (e) => {
+    if (segmentDropdown.contains(e.target) || makerDropdown.contains(e.target)) {
+      return;
+    }
+    segmentDropdown.style.display = 'none';
+    makerDropdown.style.display = 'none';
+  });
+
+  // 3. 세그먼트 체크박스 이벤트 감지 (이벤트 위임)
+  segmentDropdown.addEventListener('change', (e) => {
+    if (e.target.classList.contains('plc-segment-checkbox')) {
+      const val = e.target.value;
+      if (e.target.checked) {
+        if (!state.timeline.filterSegments.includes(val)) {
+          state.timeline.filterSegments.push(val);
+        }
+      } else {
+        state.timeline.filterSegments = state.timeline.filterSegments.filter(item => item !== val);
+      }
+      
+      updateFilterButtonLabels();
       renderTimeline();
       
-      // 검색어 하이라이트가 있다면 다시 적용
       if (state.globalSearch) {
         applyGlobalHighlight(state.globalSearch);
       }
-    });
-  }
+    }
+  });
 
-  if (makerSelect) {
-    makerSelect.addEventListener('change', (e) => {
-      state.timeline.filterMaker = e.target.value;
+  // 4. 제조사 체크박스 이벤트 감지 (이벤트 위임)
+  makerDropdown.addEventListener('change', (e) => {
+    if (e.target.classList.contains('plc-maker-checkbox')) {
+      const val = e.target.value;
+      if (e.target.checked) {
+        if (!state.timeline.filterMakers.includes(val)) {
+          state.timeline.filterMakers.push(val);
+        }
+      } else {
+        state.timeline.filterMakers = state.timeline.filterMakers.filter(item => item !== val);
+      }
+      
+      updateFilterButtonLabels();
       renderTimeline();
       
-      // 검색어 하이라이트가 있다면 다시 적용
       if (state.globalSearch) {
         applyGlobalHighlight(state.globalSearch);
       }
-    });
-  }
+    }
+  });
 
+  // 5. 필터 초기화 버튼 처리
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      state.timeline.filterSegment = '';
-      state.timeline.filterMaker = '';
+      state.timeline.filterSegments = [];
+      state.timeline.filterMakers = [];
       
-      if (segmentSelect) segmentSelect.value = '';
-      if (makerSelect) makerSelect.value = '';
-      
+      // 모든 체크박스 체크 해제
+      const segmentCbs = segmentDropdown.querySelectorAll('.plc-segment-checkbox');
+      const makerCbs = makerDropdown.querySelectorAll('.plc-maker-checkbox');
+      segmentCbs.forEach(cb => cb.checked = false);
+      makerCbs.forEach(cb => cb.checked = false);
+
+      updateFilterButtonLabels();
       renderTimeline();
       showToast('PLC 타임라인 필터가 초기화되었습니다.');
 
@@ -1468,9 +1519,9 @@ function setupPlcTimelineFilters() {
 }
 
 function updatePlcFilterOptions() {
-  const segmentSelect = document.getElementById('filter-plc-segment');
-  const makerSelect = document.getElementById('filter-plc-maker');
-  if (!segmentSelect || !makerSelect) return;
+  const segmentDropdown = document.getElementById('dropdown-filter-segment');
+  const makerDropdown = document.getElementById('dropdown-filter-maker');
+  if (!segmentDropdown || !makerDropdown) return;
 
   const activeSheetName = state.timeline.activeSheet;
   const sheetItems = state.plcTimeline.filter(item => item.sheet === activeSheetName);
@@ -1479,7 +1530,6 @@ function updatePlcFilterOptions() {
   const categoriesSet = new Set();
   const makersSet = new Set();
 
-  // 각 excelRow 그룹에서 수집
   const excelRows = [...new Set(sheetItems.map(item => item.excelRow))].sort((a, b) => a - b);
   excelRows.forEach(rowNum => {
     const rowItems = sheetItems.filter(item => item.excelRow === rowNum);
@@ -1501,27 +1551,75 @@ function updatePlcFilterOptions() {
   const sortedCategories = [...categoriesSet].sort();
   const sortedMakers = [...makersSet].sort();
 
-  // 현재 필터 상태 유지 검사 (새로 계산된 목록에 없으면 초기화)
-  if (state.timeline.filterSegment && !categoriesSet.has(state.timeline.filterSegment)) {
-    state.timeline.filterSegment = '';
-  }
-  if (state.timeline.filterMaker && !makersSet.has(state.timeline.filterMaker)) {
-    state.timeline.filterMaker = '';
-  }
+  // 기존 다중 선택된 항목 중 현재 시트에 존재하지 않는 필터는 자동 제거
+  state.timeline.filterSegments = state.timeline.filterSegments.filter(cat => categoriesSet.has(cat));
+  state.timeline.filterMakers = state.timeline.filterMakers.filter(maker => makersSet.has(maker));
 
-  // Segment 드롭다운 갱신
-  let segmentHtml = '<option value="">전체 세그먼트</option>';
+  // Segment 드롭다운 체크박스 렌더링
+  let segmentHtml = '';
   sortedCategories.forEach(cat => {
-    const selected = state.timeline.filterSegment === cat ? 'selected' : '';
-    segmentHtml += `<option value="${cat}" ${selected}>${cat}</option>`;
+    const checked = state.timeline.filterSegments.includes(cat) ? 'checked' : '';
+    segmentHtml += `
+      <label class="plc-multiselect-option">
+        <input type="checkbox" class="plc-segment-checkbox" value="${cat}" ${checked}>
+        <span>${cat}</span>
+      </label>
+    `;
   });
-  segmentSelect.innerHTML = segmentHtml;
+  if (segmentHtml === '') {
+    segmentHtml = '<div style="color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 10px;">옵션이 없습니다.</div>';
+  }
+  segmentDropdown.innerHTML = segmentHtml;
 
-  // Maker 드롭다운 갱신
-  let makerHtml = '<option value="">전체 제조사</option>';
+  // Maker 드롭다운 체크박스 렌더링
+  let makerHtml = '';
   sortedMakers.forEach(maker => {
-    const selected = state.timeline.filterMaker === maker ? 'selected' : '';
-    makerHtml += `<option value="${maker}" ${selected}>${maker}</option>`;
+    const checked = state.timeline.filterMakers.includes(maker) ? 'checked' : '';
+    makerHtml += `
+      <label class="plc-multiselect-option">
+        <input type="checkbox" class="plc-maker-checkbox" value="${maker}" ${checked}>
+        <span>${maker}</span>
+      </label>
+    `;
   });
-  makerSelect.innerHTML = makerHtml;
+  if (makerHtml === '') {
+    makerHtml = '<div style="color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 10px;">옵션이 없습니다.</div>';
+  }
+  makerDropdown.innerHTML = makerHtml;
+
+  // 버튼 텍스트 상태 동기화
+  updateFilterButtonLabels();
+}
+
+function updateFilterButtonLabels() {
+  const segmentBtnText = document.querySelector('#btn-filter-segment .btn-text');
+  const makerBtnText = document.querySelector('#btn-filter-maker .btn-text');
+
+  if (segmentBtnText) {
+    const selected = state.timeline.filterSegments;
+    if (selected.length === 0) {
+      segmentBtnText.textContent = '전체 세그먼트';
+      segmentBtnText.style.color = '#64748b';
+    } else if (selected.length === 1) {
+      segmentBtnText.textContent = selected[0];
+      segmentBtnText.style.color = '#1e293b';
+    } else {
+      segmentBtnText.textContent = `${selected[0]} 외 ${selected.length - 1}`;
+      segmentBtnText.style.color = '#1e293b';
+    }
+  }
+
+  if (makerBtnText) {
+    const selected = state.timeline.filterMakers;
+    if (selected.length === 0) {
+      makerBtnText.textContent = '전체 제조사';
+      makerBtnText.style.color = '#64748b';
+    } else if (selected.length === 1) {
+      makerBtnText.textContent = selected[0];
+      makerBtnText.style.color = '#1e293b';
+    } else {
+      makerBtnText.textContent = `${selected[0]} 외 ${selected.length - 1}`;
+      makerBtnText.style.color = '#1e293b';
+    }
+  }
 }

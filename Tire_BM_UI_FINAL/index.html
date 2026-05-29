@@ -296,33 +296,46 @@
  
           <!-- Timeline Matrix Table Card -->
           <div class="card col-12 plc-map-card" style="margin-top: 16px;">
-            <div class="card-header" style="background: rgba(255,255,255,0.01); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
+            <div class="card-header" style="background: rgba(255,255,255,0.01); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px;">
               <div class="card-title">
-                <h3 id="plc-map-board-title"><i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황 (Summer Map)</h3>
+                <h3 id="plc-map-board-title" style="font-size: 1.25rem;"><i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황 (Summer Map)</h3>
               </div>
               
-              <!-- 엑셀 스타일 실시간 대화형 필터 조작반 -->
-              <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 12px; background: rgba(249, 115, 22, 0.04); padding: 6px 16px; border-radius: 10px; border: 1px solid rgba(249, 115, 22, 0.15);">
-                <span style="font-size: 0.8rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px;">
-                  <i class="fa-solid fa-filter"></i> 엑셀형 필터:
-                </span>
+              <!-- 엑셀 스타일 실시간 대화형 멀티셀렉트 필터 조작반 -->
+              <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 16px; background: rgba(249, 115, 22, 0.05); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(249, 115, 22, 0.2); position: relative; flex-wrap: wrap;">
                 
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <label for="filter-plc-segment" style="font-size: 0.75rem; font-weight: 700; color: #1e293b;">세그먼트</label>
-                  <select id="filter-plc-segment" style="background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-weight: 600; color: #1e293b; outline: none; min-width: 120px; cursor: pointer;">
-                    <option value="">전체 세그먼트</option>
-                  </select>
+                <!-- 세그먼트 멀티 필터 -->
+                <div class="plc-multiselect-container" id="container-filter-segment" style="position: relative; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.9rem; font-weight: 800; color: #1e293b;">세그먼트</span>
+                  <div class="plc-multiselect-wrapper" style="position: relative;">
+                    <button type="button" id="btn-filter-segment" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.3); border-radius: 8px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; outline: none; min-width: 180px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition);">
+                      <span class="btn-text">전체 세그먼트</span>
+                      <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                    </button>
+                    <!-- 드롭다운 레이어 -->
+                    <div id="dropdown-filter-segment" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 10px; min-width: 240px; max-height: 280px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                      <!-- 체크박스 옵션들이 js에 의해 동적으로 여기에 삽입됨 -->
+                    </div>
+                  </div>
                 </div>
                 
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <label for="filter-plc-maker" style="font-size: 0.75rem; font-weight: 700; color: #1e293b;">제조사</label>
-                  <select id="filter-plc-maker" style="background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-weight: 600; color: #1e293b; outline: none; min-width: 110px; cursor: pointer;">
-                    <option value="">전체 제조사</option>
-                  </select>
+                <!-- 제조사 멀티 필터 -->
+                <div class="plc-multiselect-container" id="container-filter-maker" style="position: relative; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.9rem; font-weight: 800; color: #1e293b;">제조사</span>
+                  <div class="plc-multiselect-wrapper" style="position: relative;">
+                    <button type="button" id="btn-filter-maker" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.3); border-radius: 8px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; outline: none; min-width: 170px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition);">
+                      <span class="btn-text">전체 제조사</span>
+                      <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                    </button>
+                    <!-- 드롭다운 레이어 -->
+                    <div id="dropdown-filter-maker" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 10px; min-width: 220px; max-height: 280px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                      <!-- 체크박스 옵션들이 js에 의해 동적으로 여기에 삽입됨 -->
+                    </div>
+                  </div>
                 </div>
                 
-                <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.8); border: 1px solid rgba(249, 115, 22, 0.2); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;">
-                  <i class="fa-solid fa-rotate-left"></i> 초기화
+                <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.9); border: 1.5px solid rgba(249, 115, 22, 0.25); padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 800; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                  <i class="fa-solid fa-rotate-left"></i> 필터 초기화
                 </button>
               </div>
 
