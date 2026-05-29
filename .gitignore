@@ -1,3 +1,14 @@
 node_modules/
 .DS_Store
 *.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Raw data (do not commit to Git/Render)
+data/raw/
+backend/data/raw/
