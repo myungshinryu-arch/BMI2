@@ -317,6 +317,7 @@ function renderPortalTimeline() {
   // 5. 테이블 생성
   const table = document.createElement('table');
   table.className = 'plc-matrix-table';
+  table.style.setProperty('--year-count', years.length);
 
   // 6. 테이블 헤더 (이중 Sticky 열 세팅)
   const thead = document.createElement('thead');

@@ -27,8 +27,8 @@
   --portal-max-width: 1440px;
   
   /* Dynamic Grid Layout Calculation for exact 5 years view */
-  --sticky-col-width: 180px;
-  --year-col-width: calc((100% - var(--sticky-col-width)) / 5);
+  --sticky-col-width: 270px;
+  --year-col-width: max(calc((100% - var(--sticky-col-width)) / 5), 180px);
   
   /* Effects & Motion */
   --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.02);
@@ -729,8 +729,8 @@ body {
 }
 
 /* 연도별 열 고정 가로폭 설정: 대화면 뷰포트 내에 첫 열을 제외하고 정확히 5개 연도가 꽉 차도록 동적 비율 설정 */
-.plc-matrix-table th:not(.sticky-col), 
-.plc-matrix-table td:not(.sticky-col) {
+.plc-matrix-table th:not(.segment-col):not(.maker-col), 
+.plc-matrix-table td:not(.segment-col):not(.maker-col) {
   width: var(--year-col-width);
   min-width: var(--year-col-width);
   max-width: var(--year-col-width);
