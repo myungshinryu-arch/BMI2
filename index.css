@@ -720,7 +720,7 @@ body {
   border-right: 1px solid var(--card-border);
   border-bottom: 1px solid var(--card-border);
   padding: 10px 14px;
-  min-width: 135px;
+  min-width: 180px;
 }
  
 .plc-matrix-table th:last-child, .plc-matrix-table td:last-child {
@@ -811,7 +811,7 @@ body {
 
 .plc-maker-label .maker-name {
   font-size: 1.05rem !important; /* 크게 키운 메이커 명칭 폰트 */
-  color: var(--primary) !important; /* 자사 고유 주황색 포인트 컬러 매칭 */
+  color: #1e293b !important; /* 메이커 명칭 기본 검정색(다크 그레이)으로 전환 */
   font-weight: 700 !important;
   line-height: 1.3 !important;
   word-break: keep-all;
@@ -2026,25 +2026,25 @@ option,
 /* ==========================================================================
    자사 Hankook 행/셀 특화 강조 (Premium Orange-Peach Highlight System)
    ========================================================================== */
-/* 자사 Hankook 행의 기본 셀 배경색 - 초연한 오렌지/살구빛 틴트 */
+/* 자사 Hankook 행의 기본 셀 배경색 - 기존보다 좀 더 진하게 강조된 주황/살구빛 틴트 */
 .plc-matrix-table tr.hankook-row td {
-  background-color: rgba(254, 243, 199, 0.15) !important; /* 아주 연한 주황빛(살구빛) 배경 */
+  background-color: rgba(254, 215, 170, 0.32) !important; /* 선명해진 살구/주황빛 배경 */
 }
 
 /* 자사 행의 호버 효과 */
 .plc-matrix-table tr.hankook-row:hover td {
-  background-color: rgba(254, 243, 199, 0.3) !important;
+  background-color: rgba(254, 215, 170, 0.45) !important;
 }
 
 /* 병합 셀(Seg-col, Maker-col)에 대한 배경색 및 강조선 */
 .plc-matrix-table tr.hankook-row td.segment-col,
 .plc-matrix-table tr.hankook-row td.maker-col {
-  background: linear-gradient(90deg, #fffefc, rgba(254, 243, 199, 0.25)) !important;
+  background: linear-gradient(90deg, #fffefc, rgba(254, 215, 170, 0.4)) !important;
 }
 
 /* Hankook 메이커 라벨 강조 및 독보적인 하이라이트 글씨색 */
 .plc-maker-label.hankook-label .maker-name {
   color: #ff5d00 !important; /* 자사 포인트 강렬한 오렌지/주황 컬러 */
-  font-weight: 850 !important;
-  text-shadow: 0 0 10px rgba(255, 93, 0, 0.1);
+  font-weight: 900 !important; /* 더 굵고 선명하게 */
+  text-shadow: 0 0 12px rgba(255, 93, 0, 0.15);
 }

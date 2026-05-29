@@ -840,6 +840,11 @@ function renderTimeline() {
   table.appendChild(tbody);
   viewport.innerHTML = '';
   viewport.appendChild(table);
+
+  // 렌더링 후 가장 최근 연도(가장 오른쪽)를 우선적으로 볼 수 있도록 횡스크롤을 오른쪽 끝으로 자동 이동
+  setTimeout(() => {
+    viewport.scrollLeft = viewport.scrollWidth;
+  }, 100);
 }
 
 // 엑셀 내 구분(Division)을 실제 표시용 메이커로 매핑해주는 스마트 헬퍼 함수
