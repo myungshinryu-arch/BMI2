@@ -2031,8 +2031,8 @@ body {
   left: 0;
   background: #ffffff !important;
   z-index: 10;
-  min-width: 150px;
-  max-width: 150px;
+  min-width: 120px;
+  max-width: 120px;
   color: var(--text-primary);
   border-right: 1px solid rgba(249, 115, 22, 0.08) !important;
   border-bottom: 1px solid rgba(249, 115, 22, 0.12) !important;
@@ -2040,17 +2040,17 @@ body {
   
   text-align: center !important;
   vertical-align: middle !important;
-  padding: 14px 10px !important;
+  padding: 14px 8px !important;
 }
 
 .plc-matrix-table th.maker-col,
 .plc-matrix-table td.maker-col {
   position: sticky;
-  left: 150px;
+  left: 120px;
   background: #ffffff !important;
   z-index: 10;
-  min-width: 120px;
-  max-width: 120px;
+  min-width: 100px;
+  max-width: 100px;
   color: var(--text-primary);
   border-right: 2px solid rgba(249, 115, 22, 0.15) !important;
   border-bottom: 1px solid rgba(249, 115, 22, 0.12) !important;
@@ -2058,7 +2058,7 @@ body {
   
   text-align: center !important;
   vertical-align: middle !important;
-  padding: 14px 10px !important;
+  padding: 14px 8px !important;
 }
 
 .plc-matrix-table th.segment-col {
@@ -2126,4 +2126,41 @@ body {
   font-weight: 900 !important;
   text-shadow: 0 0 12px rgba(255, 93, 0, 0.15);
 }
+
+/* ==========================================================================
+   PLC Timeline 매트릭스 - 커스텀 프리미엄 멀티셀렉트 스타일
+   ========================================================================== */
+.plc-multiselect-dropdown {
+  box-sizing: border-box;
+}
+.plc-multiselect-option {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  user-select: none !important;
+  background: transparent !important;
+}
+.plc-multiselect-option:hover {
+  background: rgba(249, 115, 22, 0.08) !important;
+  color: var(--primary) !important;
+}
+.plc-multiselect-option input[type="checkbox"] {
+  width: 15px !important;
+  height: 15px !important;
+  accent-color: var(--primary) !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
