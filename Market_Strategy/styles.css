@@ -2462,6 +2462,18 @@ body {
     letter-spacing: 0.5px !important;
 }
 
+/* KPI Summary Card Title scale-up (2026년 판매 매출 / 세그먼트 벤치마크 1위 / 한국타이어 포지션 / 최우선 R&D 등) */
+#panel-competitiveness .kpi-card .kpi-title {
+    font-size: 1.15rem !important; /* 0.72rem -> 1.15rem 대폭 스케일업 */
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+    color: var(--text-primary) !important;
+}
+
+#panel-competitiveness .kpi-card.border-hankook-glow .kpi-title {
+    color: var(--color-hankook) !important; /* 자사 전용 주황 하이라이트 색상 보존 */
+}
+
 #panel-competitiveness .analytics-table th {
     font-size: 0.95rem !important;
     font-weight: 700 !important;
