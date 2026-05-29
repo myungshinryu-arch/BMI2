@@ -2556,77 +2556,77 @@ body {
    대표 상품 세대별 성능 변화 페이지 (#panel-generation-trends) Premium CSS Overrides
    ========================================================================== */
 
-/* 1. 전체 폰트 스케일 대폭 확대 */
+/* 1. 전체 폰트 스케일 미세 축소 및 조정 */
 #panel-generation-trends {
-    font-size: 1.12rem !important;
+    font-size: 1.05rem !important;
 }
 
 #panel-generation-trends .strategy-main-title {
-    font-size: 1.85rem !important; /* 1.5rem -> 1.85rem */
+    font-size: 1.68rem !important; /* 1.85rem -> 1.68rem */
     font-weight: 800 !important;
 }
 
 #panel-generation-trends .strategy-subtitle {
-    font-size: 1.08rem !important; /* 0.85rem -> 1.08rem */
-    font-weight: 700 !important;
+    font-size: 0.98rem !important; /* 1.08rem -> 0.98rem */
+    font-weight: 600 !important;
 }
 
 #panel-generation-trends .gt-section-title {
-    font-size: 1.4rem !important; /* 1.1rem -> 1.4rem */
+    font-size: 1.25rem !important; /* 1.4rem -> 1.25rem */
     font-weight: 800 !important;
     border-left: 5px solid var(--color-hankook) !important;
     padding-left: 12px !important;
 }
 
 #panel-generation-trends .chart-card-title {
-    font-size: 1.35rem !important;
+    font-size: 1.25rem !important;
     font-weight: 800 !important;
 }
 
 #panel-generation-trends .card-title-premium {
-    font-size: 1.35rem !important;
+    font-size: 1.25rem !important;
     font-weight: 800 !important;
     border-left: 5px solid var(--color-hankook) !important;
     padding-left: 12px !important;
 }
 
 #panel-generation-trends .gt-brochure-title {
-    font-size: 1.22rem !important;
+    font-size: 1.08rem !important;
     font-weight: 800 !important;
 }
 
 #panel-generation-trends .gt-brochure-year {
-    font-size: 0.88rem !important;
-    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
 }
 
 #panel-generation-trends .gt-brochure-slogan {
-    font-size: 1.05rem !important;
-    font-weight: 700 !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important; /* 주요 내용 외 보통(normal/500)으로 완화 */
 }
 
 #panel-generation-trends .gt-brochure-details {
-    font-size: 1.02rem !important;
+    font-size: 0.9rem !important;
 }
 
 #panel-generation-trends .gt-brochure-detail-label {
-    font-size: 1.02rem !important;
-    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important; /* 주요 내용 외 보통(normal/500)으로 완화 */
 }
 
 #panel-generation-trends .gt-brochure-detail-val {
-    font-size: 1.02rem !important;
-    font-weight: 800 !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important; /* 주요 내용 외 보통(normal/500)으로 완화 */
 }
 
 #panel-generation-trends .gt-insight-box-title {
-    font-size: 1.05rem !important;
+    font-size: 0.95rem !important;
     font-weight: 800 !important;
 }
 
 #panel-generation-trends .gt-insight-box-text {
-    font-size: 1.02rem !important;
-    line-height: 1.65 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
 }
 
 #panel-generation-trends .card-text-premium,
@@ -2635,13 +2635,13 @@ body {
 #panel-generation-trends #gt-direction-g1-g2,
 #panel-generation-trends #gt-direction-g2-g3,
 #panel-generation-trends #gt-direction-summary {
-    font-size: 1.08rem !important;
-    line-height: 1.7 !important;
+    font-size: 0.98rem !important;
+    line-height: 1.65 !important;
 }
 
 #panel-generation-trends .filter-select {
-    font-size: 0.95rem !important;
-    height: 34px !important;
+    font-size: 0.9rem !important;
+    height: 32px !important;
     font-weight: 700 !important;
 }
 
@@ -2669,7 +2669,7 @@ body {
 }
 
 
-/* 3. 맨 위 필터 한 줄에 좌/우로 가로 정렬, 배경색 주황색, 글자색 하얀색 변경 */
+/* 3. 맨 위 필터 한 줄에 좌/우로 가로 정렬, 배경색 주황색(연한 주황), 글자색 하얀색 변경 */
 #panel-generation-trends .panel-filter-bar {
     display: flex !important;
     flex-direction: row !important;
@@ -2677,12 +2677,12 @@ body {
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 30px !important;
-    background-color: #ff6b00 !important; /* 브랜드 오렌지 주황색 */
-    border: 1px solid #e05300 !important;
-    padding: 15px 25px !important;
+    background-color: #ff9d5c !important; /* 연한 주황색 (기존 #ff6b00 대비 한결 부드러움) */
+    border: 1px solid #e88043 !important;
+    padding: 12px 22px !important;
     border-radius: 12px !important;
     margin-bottom: 25px !important;
-    box-shadow: 0 4px 20px rgba(255, 107, 0, 0.15) !important;
+    box-shadow: 0 4px 18px rgba(255, 157, 92, 0.12) !important;
 }
 
 #panel-generation-trends .panel-filter-bar .filter-bar-group {
@@ -2694,7 +2694,7 @@ body {
 
 #panel-generation-trends .panel-filter-bar .filter-bar-title {
     color: #ffffff !important; /* 필터 타이틀 글자색 하얀색 */
-    font-size: 0.95rem !important; /* 필터 타이틀 폰트 크기 상향 */
+    font-size: 0.9rem !important; /* 필터 타이틀 폰트 크기 상향 */
     font-weight: 800 !important;
     letter-spacing: 0.5px !important;
     white-space: nowrap !important;
@@ -2702,9 +2702,9 @@ body {
 }
 
 #panel-generation-trends .panel-filter-bar .tab-btn-group {
-    background-color: rgba(255, 255, 255, 0.18) !important; /* 반투명 흰색 배경 */
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
-    padding: 4px !important;
+    background-color: rgba(255, 255, 255, 0.22) !important; /* 반투명 흰색 배경 */
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    padding: 3px !important;
     border-radius: 30px !important;
     display: flex !important;
     gap: 4px !important;
@@ -2712,27 +2712,27 @@ body {
 
 #panel-generation-trends .panel-filter-bar .tab-toggle-btn {
     background-color: transparent !important;
-    color: rgba(255, 255, 255, 0.9) !important; /* 기본 글자색 하얀색 */
-    font-size: 0.92rem !important; /* 폰트 크기 키움 */
+    color: #ffffff !important; /* 기본 글자색 하얀색 */
+    font-size: 0.88rem !important; /* 폰트 크기 미세 축소 */
     font-weight: 700 !important;
     border: 1px solid transparent !important;
     border-radius: 20px !important;
-    padding: 8px 18px !important;
+    padding: 6px 16px !important;
     transition: all 0.2s ease !important;
 }
 
 #panel-generation-trends .panel-filter-bar .tab-toggle-btn:hover {
-    background-color: rgba(255, 255, 255, 0.25) !important;
+    background-color: rgba(255, 255, 255, 0.28) !important;
     color: #ffffff !important;
 }
 
 /* 필터 버튼 Active: 하얀색 배경에 글씨 주황색 */
 #panel-generation-trends .panel-filter-bar .tab-toggle-btn.active {
     background-color: #ffffff !important; /* 활성 버튼 배경: 하얀색 */
-    color: #ff6b00 !important; /* 활성 버튼 글자: 주황색 */
+    color: #ff8533 !important; /* 활성 버튼 글자: 연한 주황빛 매칭 */
     font-weight: 800 !important;
     border: 1px solid #ffffff !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 

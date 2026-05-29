@@ -3122,7 +3122,7 @@ class TireDashboard {
         // 5. 한국타이어 R&D 대응 액션 제안 주입
         const proposalBox = document.getElementById('gt-rd-proposal');
         if (proposalBox) {
-            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:1.05rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
+            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:0.98rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
         }
 
         // 6. 세대별 세부 성능 항목 Radar Chart 시각화
