@@ -2982,7 +2982,7 @@ class TireDashboard {
                 headerTitle.textContent = `${data.brand || ''} ${data.lineupName || ''} 대표 상품 세대별 성능 변화 분석`;
             }
             if (headerSubtitle) {
-                headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU || 'UHP'} | 북미 US — ${data.segmentUS || 'Passenger'} <span style="margin-left:12px; color:var(--color-hankook);">[대표 경쟁 라인: ${data.flagshipLine || ''} ➔ 대응 한국 라인: ${data.hankookLine || ''}]</span>`;
+                headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU || 'UHP'} | 북미 US — ${data.segmentUS || 'Passenger'}<br><span style="display: block; margin-top: 8px; color: var(--color-hankook); font-weight: 700;">[대표 경쟁 라인: ${data.flagshipLine || ''} ➔ 대응 한국 라인: ${data.hankookLine || ''}]</span>`;
             }
 
         // 2. 세대별 브로셔 카드 레이아웃 렌더링 (Left Column - Side by Side)
