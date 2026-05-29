@@ -731,23 +731,73 @@ body {
   border-bottom: none;
 }
  
-/* Sticky Segment Category Left Column */
-.plc-matrix-table th.sticky-col, .plc-matrix-table td.sticky-col {
+/* 이중 고정 열 디자인 스타일 (Double Sticky Column Layout) */
+.plc-matrix-table th.segment-col,
+.plc-matrix-table td.segment-col {
   position: sticky;
   left: 0;
-  background: #ffffff;
+  background: #ffffff !important;
   z-index: 10;
-  min-width: 160px;
-  max-width: 180px;
+  min-width: 140px;
+  max-width: 140px;
   font-weight: 600;
   color: var(--text-primary);
-  border-right: 2px solid var(--card-border);
-  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+  border-right: 1px solid rgba(249, 115, 22, 0.08) !important;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
 }
- 
-.plc-matrix-table th.sticky-col {
-  z-index: 12;
-  background: #fdfcf9;
+
+.plc-matrix-table th.maker-col,
+.plc-matrix-table td.maker-col {
+  position: sticky;
+  left: 140px; /* .segment-col의 가로폭 만큼 정밀 오프셋 */
+  background: #ffffff !important;
+  z-index: 10;
+  min-width: 110px;
+  max-width: 110px;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-right: 2px solid rgba(249, 115, 22, 0.15) !important;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 헤더가 가로 스크롤 및 세로 스크롤 시 겹치지 않도록 안전한 z-index 부여 */
+.plc-matrix-table th.segment-col {
+  z-index: 12 !important;
+  background: #fdfcf9 !important;
+}
+
+.plc-matrix-table th.maker-col {
+  z-index: 12 !important;
+  background: #fdfcf9 !important;
+}
+
+/* 엑셀 병합 셀 효과를 위한 가시성 처리 */
+.plc-matrix-table td.segment-col.group-child {
+  border-bottom: none !important;
+}
+
+.plc-matrix-table td.segment-col.group-child .plc-segment-label {
+  visibility: hidden; /* 이전 행과 카테고리가 같으면 빈 셀처럼 보이도록 숨김 */
+}
+
+.plc-matrix-table td.maker-col.group-child {
+  border-bottom: none !important;
+}
+
+.plc-matrix-table td.maker-col.group-child .plc-maker-label {
+  visibility: hidden; /* 이전 행과 메이커가 같고 카테고리도 같으면 숨김 */
+}
+
+.plc-maker-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plc-maker-label .maker-name {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 700;
 }
  
 /* Matrix Column Header (Years) */
@@ -1573,8 +1623,14 @@ body {
   background: rgba(255, 255, 255, 0.7) !important;
 }
 
-.plc-matrix-table th.sticky-col, 
-.plc-matrix-table td.sticky-col {
+.plc-matrix-table th.segment-col, 
+.plc-matrix-table td.segment-col {
+  background: #ffffff !important;
+  border-right: 1px solid rgba(249, 115, 22, 0.08) !important;
+}
+
+.plc-matrix-table th.maker-col, 
+.plc-matrix-table td.maker-col {
   background: #ffffff !important;
   border-right: 2px solid rgba(249, 115, 22, 0.15) !important;
 }

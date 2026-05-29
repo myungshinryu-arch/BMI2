@@ -14,7 +14,7 @@
   <!-- FontAwesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Core stylesheet -->
-  <link rel="stylesheet" href="index.css?v=1.2.0">
+  <link rel="stylesheet" href="index.css?v=2.2.0">
 </head>
 <body>
  
@@ -267,18 +267,30 @@
         <section id="tab-timeline" class="tab-content">
           
           <!-- Matrix Sheet Navigation Sub-Tabs -->
-          <div class="plc-sub-tabs-container">
+          <div class="plc-sub-tabs-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-radius: 12px;">
             <button class="plc-sub-tab active" data-plc-sheet="Summer" id="subtab-summer">
-              <i class="fa-solid fa-sun"></i> Summer (썸머)
+              <i class="fa-solid fa-sun" style="color: #ff9100; margin-right: 6px;"></i> Summer (썸머)
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Winter-Alpin" id="subtab-winter-alpin">
+              <i class="fa-solid fa-snowflake" style="color: #38bdf8; margin-right: 6px;"></i> Winter-Alpin (겨울-알핀)
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Winter-Nordic" id="subtab-winter-nordic">
+              <i class="fa-solid fa-icicles" style="color: #0ea5e9; margin-right: 6px;"></i> Winter-Nordic (겨울-노르딕)
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="All Weather" id="subtab-all-weather">
+              <i class="fa-solid fa-cloud-sun" style="color: #10b981; margin-right: 6px;"></i> All Weather (사계절용)
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="NA All season" id="subtab-na-all-season">
+              <i class="fa-solid fa-globe" style="color: #6366f1; margin-right: 6px;"></i> NA All Season (북미용)
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Pick Up" id="subtab-pick-up">
+              <i class="fa-solid fa-truck-pickup" style="color: #f97316; margin-right: 6px;"></i> Pick Up (픽업)
             </button>
             <button class="plc-sub-tab" data-plc-sheet="SUV" id="subtab-suv">
-              <i class="fa-solid fa-mountain-sun"></i> SUV (레저용)
+              <i class="fa-solid fa-mountain-sun" style="color: #84cc16; margin-right: 6px;"></i> SUV (레저용)
             </button>
-            <button class="plc-sub-tab" data-plc-sheet="Winter-Alpin" id="subtab-winter">
-              <i class="fa-solid fa-snowflake"></i> Winter-Alpin (겨울용)
-            </button>
-            <button class="plc-sub-tab" data-plc-sheet="All Weather" id="subtab-allweather">
-              <i class="fa-solid fa-cloud-sun"></i> All Weather (사계절용)
+            <button class="plc-sub-tab" data-plc-sheet="VAN" id="subtab-van">
+              <i class="fa-solid fa-shuttle-space" style="color: #a855f7; margin-right: 6px;"></i> Van (밴)
             </button>
           </div>
  
