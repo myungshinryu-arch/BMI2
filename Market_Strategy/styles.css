@@ -2438,6 +2438,108 @@ body {
     text-shadow: none !important; /* 검정색 폰트이므로 텍스트 섀도우 불필요하여 제거 */
 }
 
+/* ==========================================================================
+   Technical Competitiveness Overview (#panel-competitiveness) Custom Styling
+   - Overall font size scale-up (about 10~15% larger)
+   - Filter bar container, label & control elements high contrast style tuning
+   - Specific buttons/dropdown filters with orange background and black text
+   - Major table title scale-up & visual enhancement
+   ========================================================================== */
+
+/* 1. Overall Font Size Scale-up within Technical Competitiveness panel */
+#panel-competitiveness {
+    font-size: 1.05rem !important; /* 전체적으로 폰트 크기 증대 */
+}
+
+/* Specific elements size scale-up within panel-competitiveness */
+#panel-competitiveness .chart-card-title,
+#panel-competitiveness .table-card-title {
+    font-size: 1.35rem !important; /* 웅장하고 선명하게 */
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    border-left: 5px solid var(--color-hankook) !important; /* 한국타이어 주황색 포인트 바 데코 */
+    padding-left: 12px !important;
+    letter-spacing: 0.5px !important;
+}
+
+#panel-competitiveness .analytics-table th {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+}
+
+#panel-competitiveness .analytics-table td {
+    font-size: 0.92rem !important;
+}
+
+/* 2. Filter Bar Container & Text styling */
+#panel-competitiveness .panel-filter-bar {
+    background-color: rgba(253, 186, 116, 0.25) !important; /* 연한 주황색 계열 (Cozy light orange cream과 살짝 다른) */
+    border: 1px solid rgba(249, 115, 22, 0.3) !important;
+    padding: 14px 22px !important;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.05) !important;
+}
+
+#panel-competitiveness .panel-filter-bar .filter-bar-title {
+    font-size: 0.85rem !important; /* 폰트 살짝 확대 */
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 3. Dropdown Filters (Select elements) - Orange background & Black text */
+#panel-competitiveness .panel-filter-bar .filter-select {
+    background-color: #fed7aa !important; /* 화사하고 부드러운 주황색 */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important; /* 검정색 화살표 */
+    border: 1px solid rgba(249, 115, 22, 0.45) !important;
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 700 !important;
+    font-size: 0.88rem !important; /* 폰트 살짝 확대 */
+    border-radius: 20px !important;
+    padding: 8px 30px 8px 14px !important;
+    height: 36px !important;
+}
+
+#panel-competitiveness .panel-filter-bar .filter-select option {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+#panel-competitiveness .panel-filter-bar .filter-select:focus {
+    border-color: #ea580c !important;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.3) !important;
+}
+
+/* 4. Tab Button Group in Filter Bar - Orange background & Black text */
+#panel-competitiveness .panel-filter-bar .tab-btn-group {
+    background-color: rgba(254, 215, 170, 0.45) !important; /* 연한 주황색 계열 */
+    border: 1px solid rgba(249, 115, 22, 0.35) !important;
+    padding: 4px !important;
+}
+
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn {
+    font-size: 0.85rem !important; /* 폰트 살짝 확대 */
+    font-weight: 700 !important;
+    color: #374151 !important; /* 비활성: 고대비 차콜 블랙 */
+    padding: 6px 16px !important;
+}
+
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn:hover {
+    color: #000000 !important;
+    background-color: rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Active State override - Stronger contrast & Orange background with Black text */
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn.active,
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn[data-market="na"].active,
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn[data-market="eu"].active {
+    background: linear-gradient(135deg, #fed7aa, #fdb07c) !important; /* 화사하고 부드러운 오렌지 그라데이션 */
+    border: 1px solid rgba(249, 115, 22, 0.5) !important;
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 800 !important;
+    box-shadow: 0 3px 10px rgba(249, 115, 22, 0.25) !important;
+    text-shadow: none !important;
+}
+
 
 
 

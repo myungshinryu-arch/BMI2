@@ -1712,10 +1712,11 @@ class TireDashboard {
                         labels: {
                             boxWidth: 12,
                             font: {
-                                size: 11,
+                                size: 12,
+                                weight: '700',
                                 family: "'Inter', 'Outfit', 'sans-serif'"
                             },
-                            color: '#e2e8f0'
+                            color: '#111827'
                         }
                     },
                     tooltip: {
@@ -1736,25 +1737,27 @@ class TireDashboard {
                         max: 10,
                         ticks: {
                             stepSize: 1,
-                            color: '#94a3b8'
+                            font: { size: 12, weight: '700' },
+                            color: '#111827'
                         },
                         title: {
                             display: true,
                             text: '성능 항목별 점수 (0-10 Scale)',
-                            color: '#94a3b8',
+                            color: '#111827',
                             font: {
-                                size: 11,
-                                weight: 'bold'
+                                size: 12,
+                                weight: '800'
                             }
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)',
+                            color: 'rgba(0, 0, 0, 0.06)',
                             drawBorder: false
                         }
                     },
                     x: {
                         ticks: {
-                            color: '#94a3b8'
+                            font: { size: 12, weight: '700' },
+                            color: '#111827'
                         },
                         grid: {
                             display: false
@@ -2646,7 +2649,7 @@ class TireDashboard {
                 tr.innerHTML = `
                     <td><strong>${brandNamesKo[row.brand] || row.brand}</strong></td>
                     <td>${row.model}</td>
-                    <td><span style="font-size: 0.75rem; color: var(--text-secondary); background: #161c33; padding: 3px 8px; border-radius: 4px;">${segmentNamesKo[row.segment] || row.segment}</span></td>
+                    <td><span style="font-size: 0.8rem; color: #000000; background: var(--color-hankook); padding: 4px 10px; border-radius: 4px; font-weight: 800;">${segmentNamesKo[row.segment] || row.segment}</span></td>
                     <td class="numeric">${salesFormatted}</td>
                     <td class="numeric" style="color: var(--color-blue); font-weight: 500;">${(row.tirerack / 10).toFixed(2)} / 10</td>
                     <td class="numeric" style="color: var(--color-gold); font-weight: 500;">${row.consumerreports.toFixed(1)} / 100</td>
@@ -2664,7 +2667,7 @@ class TireDashboard {
                 tr.innerHTML = `
                     <td><strong>${brandNamesKo[row.brand] || row.brand}</strong></td>
                     <td>${row.model}</td>
-                    <td><span style="font-size: 0.75rem; color: var(--text-secondary); background: #161c33; padding: 3px 8px; border-radius: 4px;">${segmentNamesKo[row.segment] || row.segment}</span></td>
+                    <td><span style="font-size: 0.8rem; color: #000000; background: var(--color-hankook); padding: 4px 10px; border-radius: 4px; font-weight: 800;">${segmentNamesKo[row.segment] || row.segment}</span></td>
                     <td class="numeric">${salesFormatted}</td>
                     <td class="numeric" style="color: var(--color-blue); font-weight: 500;">${row.adac.toFixed(1)} 학점</td>
                     <td class="numeric" style="color: var(--color-gold); font-weight: 500;">${abLabel}</td>
