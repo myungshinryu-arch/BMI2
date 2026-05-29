@@ -157,22 +157,33 @@
           
           <!-- 꼭지 1 (좌측 상단): 전체 매출 & 판매량 (글로벌 매출액 및 판매량 비교) -->
           <div class="quad-panel panel-global-market">
-            <div class="panel-header">
+            <div class="panel-header trend-header-filters">
               <h3 class="panel-title"><i class="fa-solid fa-earth-americas"></i> 전체 매출 & 판매량</h3>
               
-              <!-- 연도 변화 색인 드롭다운 -->
-              <div class="filter-group" style="margin-left: auto;">
-                <label for="global-market-year" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-calendar-days"></i> 분석 연도</label>
-                <select id="global-market-year" class="filter-select">
-                  <option value="2021">2021년</option>
-                  <option value="2022">2022년</option>
-                  <option value="2023">2023년</option>
-                  <option value="2024">2024년</option>
-                  <option value="2025">2025년</option>
-                  <option value="2026" selected>2026년(E)</option>
-                </select>
+              <!-- 상단 색인 필터 영역 -->
+              <div class="trend-filters">
+                <div class="filter-group">
+                  <label for="global-market-year"><i class="fa-solid fa-calendar-days"></i> 분석 연도</label>
+                  <select id="global-market-year" class="filter-select">
+                    <option value="2021">2021년</option>
+                    <option value="2022">2022년</option>
+                    <option value="2023">2023년</option>
+                    <option value="2024">2024년</option>
+                    <option value="2025">2025년</option>
+                    <option value="2026" selected>2026년(E)</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="global-market-seg"><i class="fa-solid fa-layer-group"></i> 세그먼트</label>
+                  <select id="global-market-seg" class="filter-select">
+                    <option value="All" selected>전체 (All)</option>
+                    <option value="PCR">승용차용 (PCR)</option>
+                    <option value="TBR">트럭/버스용 (TBR)</option>
+                  </select>
+                </div>
+                
+                <div class="panel-meta" style="margin-left: auto; align-self: center;">단위: 매출액(십억 USD) / 판매량(백만 본)</div>
               </div>
-              <div class="panel-meta">단위: 매출액(십억 USD) / 판매량(백만 본)</div>
             </div>
             <div class="panel-content chart-container">
               <canvas id="global-market-chart"></canvas>
@@ -209,9 +220,9 @@
                 <div class="filter-group performance-source-group">
                   <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
                   <div class="btn-group-performance" role="group">
-                    <button type="button" class="btn-source active" data-source="Wear">마모 (Wear)</button>
-                    <button type="button" class="btn-source" data-source="Braking">제동 (Braking)</button>
-                    <button type="button" class="btn-source" data-source="RR">전비 (RR)</button>
+                    <button type="button" class="btn-source active" data-source="Wear">북미종합평점</button>
+                    <button type="button" class="btn-source" data-source="Braking">북미 Tire rack 평가</button>
+                    <button type="button" class="btn-source" data-source="RR">북미 consumer 평가</button>
                   </div>
                 </div>
               </div>

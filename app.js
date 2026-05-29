@@ -1364,31 +1364,91 @@ let globalMarketChart = null;
 let trendPerformanceChart = null;
 let rdPriorityChart = null;
 
-// 연도별 글로벌 전체 매출 및 판매량 데이터베이스
+// 연도별 글로벌 전체 매출 및 판매량 데이터베이스 (세그먼트 세분화: All, PCR, TBR)
 const GLOBAL_MARKET_DATABASE = {
   "2021": {
-    revenue: [5.9, 25.1, 10.8, 24.5],
-    sales: [88, 158, 112, 151]
+    "All": {
+      revenue: [5.9, 25.1, 10.8, 24.5],
+      sales: [88, 158, 112, 151]
+    },
+    "PCR": {
+      revenue: [4.2, 18.1, 7.8, 17.2],
+      sales: [66, 119, 84, 113]
+    },
+    "TBR": {
+      revenue: [1.7, 7.0, 3.0, 7.3],
+      sales: [22, 39, 28, 38]
+    }
   },
   "2022": {
-    revenue: [6.1, 26.3, 11.2, 25.0],
-    sales: [91, 162, 115, 154]
+    "All": {
+      revenue: [6.1, 26.3, 11.2, 25.0],
+      sales: [91, 162, 115, 154]
+    },
+    "PCR": {
+      revenue: [4.3, 19.0, 8.1, 17.6],
+      sales: [68, 122, 86, 115]
+    },
+    "TBR": {
+      revenue: [1.8, 7.3, 3.1, 7.4],
+      sales: [23, 40, 29, 39]
+    }
   },
   "2023": {
-    revenue: [6.3, 27.0, 11.5, 25.8],
-    sales: [94, 166, 118, 159]
+    "All": {
+      revenue: [6.3, 27.0, 11.5, 25.8],
+      sales: [94, 166, 118, 159]
+    },
+    "PCR": {
+      revenue: [4.5, 19.5, 8.3, 18.1],
+      sales: [71, 125, 89, 119]
+    },
+    "TBR": {
+      revenue: [1.8, 7.5, 3.2, 7.7],
+      sales: [23, 41, 29, 40]
+    }
   },
   "2024": {
-    revenue: [6.5, 27.8, 11.9, 26.5],
-    sales: [97, 170, 121, 163]
+    "All": {
+      revenue: [6.5, 27.8, 11.9, 26.5],
+      sales: [97, 170, 121, 163]
+    },
+    "PCR": {
+      revenue: [4.6, 20.1, 8.6, 18.6],
+      sales: [73, 128, 91, 122]
+    },
+    "TBR": {
+      revenue: [1.9, 7.7, 3.3, 7.9],
+      sales: [24, 42, 30, 41]
+    }
   },
   "2025": {
-    revenue: [6.8, 28.5, 12.4, 27.2],
-    sales: [102, 175, 125, 168]
+    "All": {
+      revenue: [6.8, 28.5, 12.4, 27.2],
+      sales: [102, 175, 125, 168]
+    },
+    "PCR": {
+      revenue: [4.8, 20.6, 8.9, 19.1],
+      sales: [77, 132, 94, 126]
+    },
+    "TBR": {
+      revenue: [2.0, 7.9, 3.5, 8.1],
+      sales: [25, 43, 31, 42]
+    }
   },
   "2026": {
-    revenue: [7.1, 29.3, 12.9, 28.0],
-    sales: [106, 180, 129, 173]
+    "All": {
+      revenue: [7.1, 29.3, 12.9, 28.0],
+      sales: [106, 180, 129, 173]
+    },
+    "PCR": {
+      revenue: [5.0, 21.2, 9.3, 19.7],
+      sales: [80, 136, 97, 130]
+    },
+    "TBR": {
+      revenue: [2.1, 8.1, 3.6, 8.3],
+      sales: [26, 44, 32, 43]
+    }
   }
 };
 
@@ -1529,7 +1589,9 @@ function initStrategyDashboard() {
 
 function initGlobalMarketChart(ctx) {
   const selectedYear = document.getElementById('global-market-year').value;
-  const dataForYear = GLOBAL_MARKET_DATABASE[selectedYear] || GLOBAL_MARKET_DATABASE["2026"];
+  const selectedSeg = document.getElementById('global-market-seg').value;
+  const yearData = GLOBAL_MARKET_DATABASE[selectedYear] || GLOBAL_MARKET_DATABASE["2026"];
+  const dataForYear = yearData[selectedSeg] || yearData["All"];
 
   if (globalMarketChart) globalMarketChart.destroy();
   
@@ -1539,7 +1601,7 @@ function initGlobalMarketChart(ctx) {
       labels: ['HANKOOK', 'MICHELIN', 'CONTINENTAL', 'BRIDGESTONE'],
       datasets: [
         {
-          label: `${selectedYear}년 글로벌 전체 매출액 (십억 USD)`,
+          label: `${selectedYear}년 글로벌 전체 매출액 [${selectedSeg}] (십억 USD)`,
           data: dataForYear.revenue,
           backgroundColor: 'rgba(249, 115, 22, 0.75)',
           borderColor: 'rgba(249, 115, 22, 1)',
@@ -1548,7 +1610,7 @@ function initGlobalMarketChart(ctx) {
           borderRadius: 8
         },
         {
-          label: `${selectedYear}년 글로벌 전체 판매량 (백만 본)`,
+          label: `${selectedYear}년 글로벌 전체 판매량 [${selectedSeg}] (백만 본)`,
           data: dataForYear.sales,
           type: 'line',
           backgroundColor: 'rgba(59, 130, 246, 0.15)',
@@ -1614,6 +1676,13 @@ function initTrendPerformanceChart(ctx) {
 
   if (trendPerformanceChart) trendPerformanceChart.destroy();
 
+  const sourceNameMap = {
+    "Wear": "북미종합평점",
+    "Braking": "북미 Tire rack 평가",
+    "RR": "북미 consumer 평가"
+  };
+  const sourceLabel = sourceNameMap[source] || source;
+
   trendPerformanceChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -1629,7 +1698,7 @@ function initTrendPerformanceChart(ctx) {
           borderRadius: 6
         },
         {
-          label: `${mfg} - 종합 성능 점수 [${source}] (Score)`,
+          label: `${mfg} - ${sourceLabel} (Score)`,
           data: dataset.score,
           type: 'line',
           backgroundColor: 'rgba(249, 115, 22, 0.15)',
@@ -1773,10 +1842,17 @@ window.showNewsMockToast = function(mfg, title) {
 function setupStrategyEventListeners() {
   // 연도별 마켓 데이터 필터링
   const yearSelect = document.getElementById('global-market-year');
+  const segSelectMarket = document.getElementById('global-market-seg');
+  
+  const updateMarketChart = () => {
+    initGlobalMarketChart(document.getElementById('global-market-chart'));
+  };
+  
   if (yearSelect) {
-    yearSelect.addEventListener('change', () => {
-      initGlobalMarketChart(document.getElementById('global-market-chart'));
-    });
+    yearSelect.addEventListener('change', updateMarketChart);
+  }
+  if (segSelectMarket) {
+    segSelectMarket.addEventListener('change', updateMarketChart);
   }
 
   // 연도별 필터링
