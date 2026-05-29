@@ -1060,6 +1060,16 @@ class TireDashboard {
     switchView(view) {
         this.activeView = view;
         
+        // panel-hankook-strategy 의 인라인 display 속성이 'flex' 로 남아 타 화면(Market 등)에 중복 노출되는 것 방지
+        const strategyPanel = document.getElementById('panel-hankook-strategy');
+        if (strategyPanel) {
+            if (view === 'hankook-strategy') {
+                strategyPanel.style.display = 'flex';
+            } else {
+                strategyPanel.style.display = 'none';
+            }
+        }
+
         // 1. 모든 탭과 패널의 활성화 클래스 제거
         document.querySelectorAll('.view-tab').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));

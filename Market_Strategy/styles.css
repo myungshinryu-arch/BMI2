@@ -1628,8 +1628,8 @@ body {
 }
 
 .calc-step-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(249, 115, 22, 0.03);
+    border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 16px;
     display: flex;
@@ -1640,8 +1640,8 @@ body {
 
 .calc-step-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(249, 115, 22, 0.25);
+    background: rgba(249, 115, 22, 0.05);
 }
 
 .calc-step-header {
@@ -1678,7 +1678,7 @@ body {
     font-family: 'Outfit', sans-serif;
     font-size: 1.35rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .calc-step-math {
@@ -1808,20 +1808,20 @@ body {
 
 /* .card-premium Glassmorphism & Micro-animations */
 .card-premium {
-    background: linear-gradient(135deg, rgba(13, 18, 38, 0.6) 0%, rgba(21, 28, 53, 0.4) 100%);
+    background: var(--bg-card);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--border-light);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-premium);
     transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .card-premium:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 107, 0, 0.25);
-    box-shadow: 0 15px 45px -10px rgba(255, 107, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--shadow-premium);
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: 0 15px 45px -10px rgba(249, 115, 22, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.95), var(--shadow-premium);
 }
 
 /* Restructured SWOT Analysis Grid (2x2 Structure) */
@@ -1998,14 +1998,14 @@ body {
     flex-wrap: wrap;
     gap: 24px;
     align-items: center;
-    background: rgba(13, 18, 38, 0.45);
+    background: var(--bg-card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 12px 20px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-premium);
 }
 
 .filter-bar-group {
@@ -2326,8 +2326,8 @@ body {
 }
 
 .gt-insight-box {
-    background: rgba(15, 23, 42, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(254, 215, 170, 0.25);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
     padding: 15px;
 }
@@ -2343,7 +2343,7 @@ body {
 .gt-insight-box-text {
     font-size: 0.85rem;
     line-height: 1.55;
-    color: #cbd5e1;
+    color: var(--text-secondary);
 }
 
 /* Responsive adjustments for side-by-side brochure cards */
