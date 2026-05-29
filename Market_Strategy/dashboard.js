@@ -3010,11 +3010,11 @@ class TireDashboard {
                 rowHeader.style.marginBottom = '10px';
                 rowHeader.style.padding = '0 5px';
                 rowHeader.innerHTML = `
-                    <div style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
-                        <span style="background: ${idx === 2 ? 'var(--color-hankook)' : 'rgba(255,255,255,0.1)'}; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">GEN ${idx + 1}</span>
+                    <div style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--color-hankook); display: flex; align-items: center; gap: 8px;">
+                        <span style="background: ${idx === 2 ? 'var(--color-hankook)' : 'rgba(0,0,0,0.15)'}; color: ${idx === 2 ? '#fff' : '#000000'}; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">GEN ${idx + 1}</span>
                         GEN ${idx + 1} 세대별 비교
                     </div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700;">
                         ${idx === 2 ? '🔥 최신 플래그십 매칭' : idx === 1 ? '⚡ 2세대 볼륨 매칭' : '❄️ 1세대 히스토리 매칭'}
                     </div>
                 `;
@@ -3122,7 +3122,7 @@ class TireDashboard {
         // 5. 한국타이어 R&D 대응 액션 제안 주입
         const proposalBox = document.getElementById('gt-rd-proposal');
         if (proposalBox) {
-            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#e2e8f0; font-size:0.95rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
+            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:1.05rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
         }
 
         // 6. 세대별 세부 성능 항목 Radar Chart 시각화
@@ -3367,8 +3367,8 @@ class TireDashboard {
                     legend: {
                         position: 'top',
                         labels: {
-                            font: { size: 10, weight: '700' },
-                            color: '#cbd5e1',
+                            font: { size: 12, weight: '700' },
+                            color: '#111827',
                             padding: 8
                         }
                     },
@@ -3393,21 +3393,21 @@ class TireDashboard {
                         max: 10,
                         ticks: {
                             stepSize: 1,
-                            font: { size: 9 },
-                            color: '#64748b',
+                            font: { size: 11, weight: '700' },
+                            color: '#111827',
                             backdropColor: 'transparent',
                             showLabelBackdrop: false
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)',
+                            color: 'rgba(0, 0, 0, 0.06)',
                             circular: circularGrid => true
                         },
                         angleLines: {
-                            color: 'rgba(255, 255, 255, 0.08)'
+                            color: 'rgba(0, 0, 0, 0.08)'
                         },
                         pointLabels: {
-                            font: { size: 10, weight: '700' },
-                            color: '#cbd5e1',
+                            font: { size: 12, weight: '700' },
+                            color: '#111827',
                             padding: 8
                         }
                     }
