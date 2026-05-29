@@ -124,19 +124,10 @@
 
             <!-- ==================== TAB 1: Market & Sales Overview ==================== -->
             <div id="panel-market" class="view-panel active">
-                <div class="panel-filter-bar">
-                    <div class="filter-bar-group">
-                        <span class="filter-bar-title">분석 지표 기준 (GLOBAL METRIC):</span>
-                        <div class="tab-btn-group" id="brand-metric-selector">
-                            <button class="metric-btn active" data-metric="revenue">글로벌 매출액 (Global Revenue)</button>
-                            <button class="metric-btn" data-metric="sales">글로벌 판매량 (Global Volume)</button>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Brand Chip Selectors for Multi-select -->
                 <div class="brand-select-card card-premium">
-                    <div class="brand-select-label">비교 제조사 멀티 셀렉터 (MULTI-SELECT BRAND):</div>
+                    <div class="brand-select-label">제조사 선택:</div>
                     <div class="brand-chip-container" id="brand-chart-selector">
                         <label class="brand-chip active locked">
                             <input type="checkbox" value="Hankook" checked disabled style="display: none;">
@@ -178,7 +169,13 @@
 
                 <!-- Market Overview Main Chart -->
                 <div class="chart-card full-width-chart">
-                    <h2 class="chart-card-title">제조사별 글로벌 전사 실적 추이 비교 (2021-2026)</h2>
+                    <div class="chart-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                        <h2 class="chart-card-title" style="margin-bottom: 0;">제조사별 글로벌 전사 실적 추이 비교 (2021-2026)</h2>
+                        <div class="tab-btn-group" id="brand-metric-selector" style="margin-bottom: 0;">
+                            <button class="metric-btn active" data-metric="revenue">글로벌 매출액 (Global Revenue)</button>
+                            <button class="metric-btn" data-metric="sales">글로벌 판매량 (Global Volume)</button>
+                        </div>
+                    </div>
                     <div class="chart-wrapper" style="height: 450px;">
                         <canvas id="chart-bar-brands"></canvas>
                     </div>
@@ -492,7 +489,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
                 <!-- Model Change Direction Analysis Card -->
                 <div class="card-premium border-hankook-glow-subtle" style="margin-top: 20px; padding: 25px;" id="gt-direction-card">

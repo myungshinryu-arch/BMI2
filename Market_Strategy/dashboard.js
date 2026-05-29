@@ -2868,67 +2868,71 @@ class TireDashboard {
      * 경쟁사별 라인업 버튼들을 동적으로 생성하고 첫 번째 라인업을 선택함
      */
     renderGenerationTrendsLineupButtons(brand) {
-        const selector = document.getElementById('gt-lineup-selector');
-        if (!selector) return;
+        try {
+            const selector = document.getElementById('gt-lineup-selector');
+            if (!selector) return;
 
-        // 기존 라인업 버튼 제거
-        selector.innerHTML = '';
+            // 기존 라인업 버튼 제거
+            selector.innerHTML = '';
 
-        if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
-            console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
-            return;
-        }
-
-        const brandColors = {
-            Michelin: '#5cb2ff',
-            Continental: '#ff9f24',
-            Pirelli: '#3b82f6'
-        };
-        const themeColor = brandColors[brand] || '#3b82f6';
-
-        let firstKey = null;
-        Object.keys(window.TIRE_EVOLUTION_DATABASE).forEach(key => {
-            const data = window.TIRE_EVOLUTION_DATABASE[key];
-            if (data.brand === brand) {
-                if (!firstKey) firstKey = key;
-
-                const btn = document.createElement('button');
-                btn.className = 'tab-toggle-btn';
-                btn.setAttribute('data-lineup', key);
-                btn.style.borderLeftColor = themeColor;
-                btn.style.borderLeftWidth = '4px';
-                btn.textContent = data.lineupName;
-
-                btn.addEventListener('click', () => {
-                    selector.querySelectorAll('.tab-toggle-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    this.selectedGenTrendsLineup = key;
-                    const gtGenSelect = document.getElementById('gt-generation-selector');
-                    const mode = gtGenSelect ? gtGenSelect.value : 'gen3';
-                    this.renderGenerationTrends(key, mode);
-                });
-
-                selector.appendChild(btn);
+            if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+                console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
+                return;
             }
-        });
 
-        // 기본 첫 번째 라인업 활성화
-        if (firstKey) {
-            const firstBtn = selector.querySelector(`[data-lineup="${firstKey}"]`);
-            if (firstBtn) firstBtn.classList.add('active');
-            this.selectedGenTrendsLineup = firstKey;
-        }
+            const brandColors = {
+                Michelin: '#5cb2ff',
+                Continental: '#ff9f24',
+                Pirelli: '#3b82f6'
+            };
+            const themeColor = brandColors[brand] || '#3b82f6';
 
-        // 제너레이션 선택기 드롭다운을 'gen3'로 리셋
-        const gtGenSelect = document.getElementById('gt-generation-selector');
-        if (gtGenSelect) {
-            gtGenSelect.value = 'gen3';
-        }
+            let firstKey = null;
+            Object.keys(window.TIRE_EVOLUTION_DATABASE).forEach(key => {
+                const data = window.TIRE_EVOLUTION_DATABASE[key];
+                if (data && data.brand === brand) {
+                    if (!firstKey) firstKey = key;
 
-        // 최초 렌더링
-        if (firstKey) {
-            this.renderGenerationTrends(firstKey, 'gen3');
+                    const btn = document.createElement('button');
+                    btn.className = 'tab-toggle-btn';
+                    btn.setAttribute('data-lineup', key);
+                    btn.style.borderLeftColor = themeColor;
+                    btn.style.borderLeftWidth = '4px';
+                    btn.textContent = data.lineupName || '알 수 없음';
+
+                    btn.addEventListener('click', () => {
+                        selector.querySelectorAll('.tab-toggle-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        this.selectedGenTrendsLineup = key;
+                        const gtGenSelect = document.getElementById('gt-generation-selector');
+                        const mode = gtGenSelect ? gtGenSelect.value : 'gen3';
+                        this.renderGenerationTrends(key, mode);
+                    });
+
+                    selector.appendChild(btn);
+                }
+            });
+
+            // 기본 첫 번째 라인업 활성화
+            if (firstKey) {
+                const firstBtn = selector.querySelector(`[data-lineup="${firstKey}"]`);
+                if (firstBtn) firstBtn.classList.add('active');
+                this.selectedGenTrendsLineup = firstKey;
+            }
+
+            // 제너레이션 선택기 드롭다운을 'gen3'로 리셋
+            const gtGenSelect = document.getElementById('gt-generation-selector');
+            if (gtGenSelect) {
+                gtGenSelect.value = 'gen3';
+            }
+
+            // 최초 렌더링
+            if (firstKey) {
+                this.renderGenerationTrends(firstKey, 'gen3');
+            }
+        } catch (error) {
+            console.error('renderGenerationTrendsLineupButtons 실행 오류:', error);
         }
     }
 
@@ -2936,28 +2940,29 @@ class TireDashboard {
      * 경쟁사 플래그십 상품군 세대별 혁신 트렌드 분석 포털 렌더링
      */
     renderGenerationTrends(lineupKey, chartMode = 'gen3') {
-        if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
-            console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
-            return;
-        }
+        try {
+            if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+                console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
+                return;
+            }
 
-        const data = window.TIRE_EVOLUTION_DATABASE[lineupKey];
-        if (!data) {
-            console.error(`${lineupKey} 라인업의 세대별 진화 데이터가 존재하지 않습니다.`);
-            return;
-        }
+            const data = window.TIRE_EVOLUTION_DATABASE[lineupKey];
+            if (!data) {
+                console.error(`${lineupKey} 라인업의 세대별 진화 데이터가 존재하지 않습니다.`);
+                return;
+            }
 
-        this.selectedGenTrendsLineup = lineupKey;
+            this.selectedGenTrendsLineup = lineupKey;
 
-        // 1. 헤더 타이틀 및 세그먼트 요약 패널 갱신
-        const headerTitle = document.getElementById('gt-header-title');
-        const headerSubtitle = document.getElementById('gt-header-subtitle');
-        if (headerTitle) {
-            headerTitle.textContent = `${data.brand} ${data.lineupName} 대표 상품 세대별 성능 변화 분석`;
-        }
-        if (headerSubtitle) {
-            headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU} | 북미 US — ${data.segmentUS} <span style="margin-left:12px; color:var(--color-hankook);">[대표 경쟁 라인: ${data.flagshipLine} ➔ 대응 한국 라인: ${data.hankookLine}]</span>`;
-        }
+            // 1. 헤더 타이틀 및 세그먼트 요약 패널 갱신
+            const headerTitle = document.getElementById('gt-header-title');
+            const headerSubtitle = document.getElementById('gt-header-subtitle');
+            if (headerTitle) {
+                headerTitle.textContent = `${data.brand || ''} ${data.lineupName || ''} 대표 상품 세대별 성능 변화 분석`;
+            }
+            if (headerSubtitle) {
+                headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU || 'UHP'} | 북미 US — ${data.segmentUS || 'Passenger'} <span style="margin-left:12px; color:var(--color-hankook);">[대표 경쟁 라인: ${data.flagshipLine || ''} ➔ 대응 한국 라인: ${data.hankookLine || ''}]</span>`;
+            }
 
         // 2. 세대별 브로셔 카드 레이아웃 렌더링 (Left Column - Side by Side)
         const container = document.getElementById('gt-brochure-container');
@@ -3010,26 +3015,26 @@ class TireDashboard {
                 }
                 compCard.innerHTML = `
                     <div class="gt-brochure-header">
-                        <span class="gt-brochure-title" style="color: ${themeColor}; font-size: 0.95rem;">${g.compModel}</span>
-                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px;">COMPETITOR (${g.compYear || g.year}년 출시)</span>
+                        <span class="gt-brochure-title" style="color: ${themeColor}; font-size: 0.95rem;">${g.compModel || '알 수 없음'}</span>
+                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px;">COMPETITOR (${g.compYear || g.year || '미정'}년 출시)</span>
                     </div>
-                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.compSlogan}"</div>
+                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.compSlogan || '데이터 준비 중...'}"</div>
                     <div class="gt-brochure-details">
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">배합 소재</span>
-                            <span class="gt-brochure-detail-val" title="${g.compBrochure.compound}">${g.compBrochure.compound}</span>
+                            <span class="gt-brochure-detail-val" title="${g.compBrochure?.compound || '데이터 준비 중...'}">${g.compBrochure?.compound || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">핵심 기술</span>
-                            <span class="gt-brochure-detail-val" style="color: ${themeColor}" title="${g.compBrochure.tech}">${g.compBrochure.tech}</span>
+                            <span class="gt-brochure-detail-val" style="color: ${themeColor}" title="${g.compBrochure?.tech || '데이터 준비 중...'}">${g.compBrochure?.tech || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">트레드웨어</span>
-                            <span class="gt-brochure-detail-val">${g.compBrochure.treadwear}</span>
+                            <span class="gt-brochure-detail-val">${g.compBrochure?.treadwear || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">R&D 소구점</span>
-                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.compBrochure.focus}">${g.compBrochure.focus}</span>
+                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.compBrochure?.focus || '데이터 준비 중...'}">${g.compBrochure?.focus || '데이터 준비 중...'}</span>
                         </div>
                     </div>
                 `;
@@ -3044,26 +3049,26 @@ class TireDashboard {
                 }
                 hkCard.innerHTML = `
                     <div class="gt-brochure-header">
-                        <span class="gt-brochure-title" style="color: #ff6b00; font-size: 0.95rem;">${g.hkModel}</span>
-                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px; background: rgba(255, 107, 0, 0.1); border-color: rgba(255, 107, 0, 0.2); color: #ff6b00;">HANKOOK (${g.hkYear || g.year}년 출시)</span>
+                        <span class="gt-brochure-title" style="color: #ff6b00; font-size: 0.95rem;">${g.hkModel || '알 수 없음'}</span>
+                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px; background: rgba(255, 107, 0, 0.1); border-color: rgba(255, 107, 0, 0.2); color: #ff6b00;">HANKOOK (${g.hkYear || g.year || '미정'}년 출시)</span>
                     </div>
-                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.hkSlogan}"</div>
+                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.hkSlogan || '데이터 준비 중...'}"</div>
                     <div class="gt-brochure-details">
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">배합 소재</span>
-                            <span class="gt-brochure-detail-val" title="${g.hkBrochure.compound}">${g.hkBrochure.compound}</span>
+                            <span class="gt-brochure-detail-val" title="${g.hkBrochure?.compound || '데이터 준비 중...'}">${g.hkBrochure?.compound || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">핵심 기술</span>
-                            <span class="gt-brochure-detail-val" style="color: #ffaa66" title="${g.hkBrochure.tech}">${g.hkBrochure.tech}</span>
+                            <span class="gt-brochure-detail-val" style="color: #ffaa66" title="${g.hkBrochure?.tech || '데이터 준비 중...'}">${g.hkBrochure?.tech || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">트레드웨어</span>
-                            <span class="gt-brochure-detail-val">${g.hkBrochure.treadwear}</span>
+                            <span class="gt-brochure-detail-val">${g.hkBrochure?.treadwear || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">R&D 소구점</span>
-                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.hkBrochure.focus}">${g.hkBrochure.focus}</span>
+                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.hkBrochure?.focus || '데이터 준비 중...'}">${g.hkBrochure?.focus || '데이터 준비 중...'}</span>
                         </div>
                     </div>
                 `;
@@ -3080,23 +3085,23 @@ class TireDashboard {
         const presentBox = document.getElementById('gt-insight-present');
         const futureBox = document.getElementById('gt-insight-future');
 
-        if (pastBox) pastBox.innerHTML = `<strong>[과거 지향점]</strong><br>${data.insights.past}`;
-        if (presentBox) presentBox.innerHTML = `<strong>[현재 지향점]</strong><br>${data.insights.present}`;
-        if (futureBox) futureBox.innerHTML = `<strong>[중장기 R&D 예측]</strong><br>${data.insights.future}`;
+        if (pastBox) pastBox.innerHTML = `<strong>[과거 지향점]</strong><br>${data.insights?.past || '데이터 준비 중...'}`;
+        if (presentBox) presentBox.innerHTML = `<strong>[현재 지향점]</strong><br>${data.insights?.present || '데이터 준비 중...'}`;
+        if (futureBox) futureBox.innerHTML = `<strong>[중장기 R&D 예측]</strong><br>${data.insights?.future || '데이터 준비 중...'}`;
 
         // 4. 세대별 모델 체인지 R&D 개발 방향성 차이 분석 주입
         const g1g2Box = document.getElementById('gt-direction-g1-g2');
         const g2g3Box = document.getElementById('gt-direction-g2-g3');
         const summaryBox = document.getElementById('gt-direction-summary');
 
-        if (g1g2Box) g1g2Box.textContent = data.evolutionDirection.gen1_to_gen2 || '데이터 준비 중...';
-        if (g2g3Box) g2g3Box.textContent = data.evolutionDirection.gen2_to_gen3 || '데이터 준비 중...';
-        if (summaryBox) summaryBox.textContent = data.evolutionDirection.comparisonSummary || '데이터 준비 중...';
+        if (g1g2Box) g1g2Box.textContent = data.evolutionDirection?.gen1_to_gen2 || '데이터 준비 중...';
+        if (g2g3Box) g2g3Box.textContent = data.evolutionDirection?.gen2_to_gen3 || '데이터 준비 중...';
+        if (summaryBox) summaryBox.textContent = data.evolutionDirection?.comparisonSummary || '데이터 준비 중...';
 
         // 5. 한국타이어 R&D 대응 액션 제안 주입
         const proposalBox = document.getElementById('gt-rd-proposal');
         if (proposalBox) {
-            proposalBox.innerHTML = `<strong>${data.brand}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#e2e8f0; font-size:0.95rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal}</span>`;
+            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#e2e8f0; font-size:0.95rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
         }
 
         // 6. 세대별 세부 성능 항목 Radar Chart 시각화
@@ -3123,13 +3128,14 @@ class TireDashboard {
         ];
 
         const getScoresArray = (scoresObj) => {
+            if (!scoresObj) return [0, 0, 0, 0, 0, 0];
             return [
-                scoresObj.dry_grip,
-                scoresObj.wet_grip,
-                scoresObj.hydro_resist,
-                scoresObj.comfort_noise,
-                scoresObj.tread_life,
-                scoresObj.efficiency
+                scoresObj.dry_grip || 0,
+                scoresObj.wet_grip || 0,
+                scoresObj.hydro_resist || 0,
+                scoresObj.comfort_noise || 0,
+                scoresObj.tread_life || 0,
+                scoresObj.efficiency || 0
             ];
         };
 
@@ -3146,173 +3152,183 @@ class TireDashboard {
             const genIndex = chartMode === 'gen3' ? 2 : chartMode === 'gen2' ? 1 : 0;
             const g = data.generations[genIndex];
 
-            // Competitor Dataset
-            datasets.push({
-                label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
-                data: getScoresArray(g.compScores),
-                borderColor: compColor,
-                backgroundColor: `${compColor}1a`,
-                borderWidth: 3,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: compColor,
-                pointHoverBackgroundColor: compColor,
-                pointHoverBorderColor: '#fff',
-                pointRadius: 5,
-                fill: true
-            });
-
-            // Hankook Dataset
-            datasets.push({
-                label: `${g.hkModel} (${g.hkYear || g.year}년 출시)`,
-                data: getScoresArray(g.hkScores),
-                borderColor: '#ff6b00',
-                backgroundColor: 'rgba(255, 107, 0, 0.15)',
-                borderWidth: 3,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#ff6b00',
-                pointHoverBackgroundColor: '#ff6b00',
-                pointHoverBorderColor: '#fff',
-                pointRadius: 5,
-                fill: true
-            });
-        } else if (chartMode === 'all-comp') {
-            data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(148, 163, 184, 0.7)';
-                    bgColor = 'rgba(148, 163, 184, 0.05)';
-                    borderW = 1.5;
-                    radius = 3;
-                } else if (idx === 1) {
-                    color = `${compColor}aa`;
-                    bgColor = `${compColor}15`;
-                    borderW = 2;
-                    radius = 4;
-                } else {
-                    color = compColor;
-                    bgColor = `${compColor}33`;
-                    borderW = 3;
-                    radius = 5;
-                }
-
+            if (g) {
+                // Competitor Dataset
                 datasets.push({
-                    label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
+                    label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
                     data: getScoresArray(g.compScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
+                    borderColor: compColor,
+                    backgroundColor: `${compColor}1a`,
+                    borderWidth: 3,
                     pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
+                    pointBorderColor: compColor,
+                    pointHoverBackgroundColor: compColor,
                     pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
+                    pointRadius: 5,
                     fill: true
                 });
+
+                // Hankook Dataset
+                datasets.push({
+                    label: `${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+                    data: getScoresArray(g.hkScores),
+                    borderColor: '#ff6b00',
+                    backgroundColor: 'rgba(255, 107, 0, 0.15)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#ff6b00',
+                    pointHoverBackgroundColor: '#ff6b00',
+                    pointHoverBorderColor: '#fff',
+                    pointRadius: 5,
+                    fill: true
+                });
+            }
+        } else if (chartMode === 'all-comp') {
+            data.generations.forEach((g, idx) => {
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(148, 163, 184, 0.7)';
+                        bgColor = 'rgba(148, 163, 184, 0.05)';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else if (idx === 1) {
+                        color = `${compColor}aa`;
+                        bgColor = `${compColor}15`;
+                        borderW = 2;
+                        radius = 4;
+                    } else {
+                        color = compColor;
+                        bgColor = `${compColor}33`;
+                        borderW = 3;
+                        radius = 5;
+                    }
+
+                    datasets.push({
+                        label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.compScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
         } else if (chartMode === 'all-hk') {
             data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(148, 163, 184, 0.7)';
-                    bgColor = 'rgba(148, 163, 184, 0.05)';
-                    borderW = 1.5;
-                    radius = 3;
-                } else if (idx === 1) {
-                    color = '#ff9f55';
-                    bgColor = 'rgba(255, 159, 85, 0.08)';
-                    borderW = 2;
-                    radius = 4;
-                } else {
-                    color = '#ff6b00';
-                    bgColor = 'rgba(255, 107, 0, 0.2)';
-                    borderW = 3;
-                    radius = 5;
-                }
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(148, 163, 184, 0.7)';
+                        bgColor = 'rgba(148, 163, 184, 0.05)';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else if (idx === 1) {
+                        color = '#ff9f55';
+                        bgColor = 'rgba(255, 159, 85, 0.08)';
+                        borderW = 2;
+                        radius = 4;
+                    } else {
+                        color = '#ff6b00';
+                        bgColor = 'rgba(255, 107, 0, 0.2)';
+                        borderW = 3;
+                        radius = 5;
+                    }
 
-                datasets.push({
-                    label: `${g.hkModel} (${g.hkYear || g.year}년 출시)`,
-                    data: getScoresArray(g.hkScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
-                    pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
-                    fill: true
-                });
+                    datasets.push({
+                        label: `${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.hkScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
         } else if (chartMode === 'all-six') {
             // Competitor Solid Lines
             data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(148, 163, 184, 0.5)';
-                    bgColor = 'rgba(148, 163, 184, 0.02)';
-                    borderW = 1;
-                    radius = 2;
-                } else if (idx === 1) {
-                    color = `${compColor}80`;
-                    bgColor = 'transparent';
-                    borderW = 1.5;
-                    radius = 3;
-                } else {
-                    color = compColor;
-                    bgColor = `${compColor}1a`;
-                    borderW = 3;
-                    radius = 5;
-                }
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(148, 163, 184, 0.5)';
+                        bgColor = 'rgba(148, 163, 184, 0.02)';
+                        borderW = 1;
+                        radius = 2;
+                    } else if (idx === 1) {
+                        color = `${compColor}80`;
+                        bgColor = 'transparent';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else {
+                        color = compColor;
+                        bgColor = `${compColor}1a`;
+                        borderW = 3;
+                        radius = 5;
+                    }
 
-                datasets.push({
-                    label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
-                    data: getScoresArray(g.compScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
-                    pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
-                    fill: true
-                });
+                    datasets.push({
+                        label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.compScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
 
             // Hankook Dashed Lines
             data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(255, 107, 0, 0.3)';
-                    bgColor = 'transparent';
-                    borderW = 1;
-                    radius = 2;
-                } else if (idx === 1) {
-                    color = 'rgba(255, 107, 0, 0.6)';
-                    bgColor = 'transparent';
-                    borderW = 1.5;
-                    radius = 3;
-                } else {
-                    color = '#ff6b00';
-                    bgColor = 'rgba(255, 107, 0, 0.08)';
-                    borderW = 3;
-                    radius = 5;
-                }
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(255, 107, 0, 0.3)';
+                        bgColor = 'transparent';
+                        borderW = 1;
+                        radius = 2;
+                    } else if (idx === 1) {
+                        color = 'rgba(255, 107, 0, 0.6)';
+                        bgColor = 'transparent';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else {
+                        color = '#ff6b00';
+                        bgColor = 'rgba(255, 107, 0, 0.08)';
+                        borderW = 3;
+                        radius = 5;
+                    }
 
-                datasets.push({
-                    label: `[HK] ${g.hkModel} (${g.hkYear || g.year}년 출시)`,
-                    data: getScoresArray(g.hkScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
-                    borderDash: [5, 5],
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
-                    pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
-                    fill: true
-                });
+                    datasets.push({
+                        label: `[HK] ${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.hkScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
         }
 
@@ -3377,6 +3393,9 @@ class TireDashboard {
                 }
             }
         });
+        } catch (error) {
+            console.error('renderGenerationTrends 실행 오류:', error);
+        }
     }
 }
 
