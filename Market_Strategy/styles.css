@@ -4,29 +4,29 @@
 
 /* Custom Design Token System with Hankook Corporate identity */
 :root {
-    --bg-deep: #060913;
-    --bg-sidebar: #0b0f20;
-    --bg-card: rgba(13, 18, 38, 0.8);
-    --bg-input: #151c35;
+    --bg-deep: #fffcf9;          /* Warm light cream canvas */
+    --bg-sidebar: rgba(255, 255, 255, 0.7); /* Translucent frosted glass sidebar */
+    --bg-card: rgba(255, 255, 255, 0.6);   /* Translucent frosted glass fill */
+    --bg-input: rgba(255, 255, 255, 0.85); /* Clean glass input background */
     
-    --border-light: rgba(255, 255, 255, 0.06);
-    --border-focus: #ff6b00; /* Hankook Orange */
+    --border-light: rgba(249, 115, 22, 0.1);    /* Frosted soft orange border */
+    --border-focus: #f97316;             /* Vibrant Cyber Orange */
 
     /* Theme Accents */
-    --color-hankook: #ff6b00; /* Vivid Hankook Orange */
-    --color-hankook-glow: rgba(255, 107, 0, 0.4);
-    --color-blue: #3b82f6;
-    --color-emerald: #10b981;
-    --color-gold: #f59e0b;
-    --color-purple: #a855f7;
-    --color-red: #ef4444;
+    --color-hankook: #f97316;             /* Cyber Orange */
+    --color-hankook-glow: rgba(249, 115, 22, 0.22);
+    --color-blue: #3b82f6;               /* Cyber Blue */
+    --color-emerald: #10b981;            /* Eco Mint Green */
+    --color-gold: #fd974f;               /* Warm Soft Peach */
+    --color-purple: #a855f7;             /* Elegant Purple */
+    --color-red: #ef4444;                /* Danger Rose Red */
     
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-primary: #1e293b;             /* Slate 800 */
+    --text-secondary: #64748b;           /* Slate 500 */
+    --text-muted: #94a3b8;               /* Slate 400 */
     
-    --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
-    --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-premium: 0 20px 45px rgba(249, 115, 22, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+    --transition-fast: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Global resets & scrollbar tweaks */
@@ -53,7 +53,7 @@ body {
     background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
-    background: #1b233a;
+    background: rgba(249, 115, 22, 0.12);
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -75,6 +75,8 @@ body {
 /* Sidebar Styling */
 .sidebar {
     background-color: var(--bg-sidebar);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-right: 1px solid var(--border-light);
     padding: 24px;
     display: flex;
@@ -94,8 +96,8 @@ body {
 
 /* Sidebar Toggle Button Styling */
 .sidebar-toggle-btn {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(249, 115, 22, 0.03);
+    border: 1px solid rgba(249, 115, 22, 0.1);
     color: var(--text-secondary);
     width: 28px;
     height: 28px;
@@ -111,10 +113,10 @@ body {
 }
 
 .sidebar-toggle-btn:hover {
-    background: rgba(255, 107, 0, 0.15);
+    background: rgba(249, 115, 22, 0.15);
     border-color: var(--color-hankook);
     color: var(--color-hankook);
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
 }
 
 .toggle-icon {
@@ -168,7 +170,7 @@ body {
     font-weight: 800;
     font-size: 0.92rem;
     letter-spacing: 1.0px;
-    background: linear-gradient(to right, #ffffff, var(--color-hankook));
+    background: linear-gradient(to right, var(--text-primary), var(--color-hankook));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     white-space: nowrap;
@@ -216,7 +218,7 @@ body {
 
 .filter-select:focus {
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 .year-range-grid {
@@ -357,17 +359,18 @@ body {
 
 .kpi-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(249, 115, 22, 0.3);
+    box-shadow: 0 15px 35px rgba(249, 115, 22, 0.08);
 }
 
 .kpi-card.border-hankook-glow {
-    border: 1px solid rgba(255, 107, 0, 0.25);
-    background: linear-gradient(135deg, rgba(13, 18, 38, 0.9) 0%, rgba(30, 20, 10, 0.4) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.25);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(254, 215, 170, 0.2) 100%);
 }
 
 .kpi-card.border-hankook-glow:hover {
     border-color: var(--color-hankook);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.15), var(--shadow-premium);
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.15), var(--shadow-premium);
 }
 
 .kpi-card-header {
@@ -458,15 +461,15 @@ body {
 }
 
 .chart-card.border-hankook-glow-subtle {
-    border-color: rgba(255, 107, 0, 0.15);
+    border-color: rgba(249, 115, 22, 0.15);
 }
 
 .chart-card:hover {
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(249, 115, 22, 0.3);
 }
 
 .chart-card.border-hankook-glow-subtle:hover {
-    border-color: rgba(255, 107, 0, 0.3);
+    border-color: rgba(249, 115, 22, 0.35);
 }
 
 .chart-card.span-2 {
@@ -493,13 +496,13 @@ body {
  * Hankook Strategic SWOT & Gap Action Panel Styling
  * ------------------------------------------------------------- */
 .strategy-card {
-    background: linear-gradient(135deg, rgba(16, 21, 41, 0.85) 0%, rgba(9, 11, 23, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(249, 115, 22, 0.05) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 107, 0, 0.15); /* Orange-tinted border for Hankook brand */
+    border: 1px solid rgba(249, 115, 22, 0.15); /* Orange-tinted border for Hankook brand */
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 15px 35px rgba(255, 107, 0, 0.04), var(--shadow-premium);
+    box-shadow: 0 15px 35px rgba(249, 115, 22, 0.04), var(--shadow-premium);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -509,8 +512,8 @@ body {
 }
 
 .strategy-card:hover {
-    border-color: rgba(255, 107, 0, 0.35);
-    box-shadow: 0 15px 40px rgba(255, 107, 0, 0.08), var(--shadow-premium);
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: 0 15px 40px rgba(249, 115, 22, 0.08), var(--shadow-premium);
 }
 
 .strategy-card::before {
@@ -554,8 +557,8 @@ body {
 }
 
 .strategy-badge {
-    background: rgba(255, 107, 0, 0.08);
-    border: 1px solid rgba(255, 107, 0, 0.25);
+    background: rgba(249, 115, 22, 0.08);
+    border: 1px solid rgba(249, 115, 22, 0.25);
     color: var(--color-hankook);
     font-family: 'Outfit', sans-serif;
     font-size: 0.72rem;
@@ -563,7 +566,7 @@ body {
     padding: 6px 12px;
     border-radius: 6px;
     letter-spacing: 0.5px;
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.05);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.05);
 }
 
 .strategy-grid {
@@ -580,7 +583,7 @@ body {
 }
 
 .swot-box {
-    background: rgba(10, 14, 28, 0.55);
+    background: rgba(255, 255, 255, 0.85);
     border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 16px;
@@ -592,7 +595,7 @@ body {
 
 .swot-box:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(249, 115, 22, 0.25);
 }
 
 .swot-box.swot-strength { border-left: 3px solid var(--color-emerald); }
@@ -639,7 +642,7 @@ body {
 
 /* Gap Analysis Styling */
 .gap-analysis-container {
-    background: rgba(10, 14, 28, 0.4);
+    background: rgba(255, 255, 255, 0.85);
     border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 18px;
@@ -709,7 +712,7 @@ body {
 
 .gap-bar-container {
     height: 7px;
-    background-color: #12182c;
+    background-color: rgba(249, 115, 22, 0.1);
     border-radius: 4px;
     overflow: hidden;
     display: flex;
@@ -728,8 +731,8 @@ body {
     top: 0;
     width: 2px;
     height: 100%;
-    background-color: #ffffff;
-    box-shadow: 0 0 6px #ffffff;
+    background-color: var(--text-primary);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2;
 }
@@ -799,7 +802,7 @@ body {
 
 #model-search:focus {
     border-color: var(--color-hankook);
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 /* Structured Table Details */
@@ -821,7 +824,7 @@ body {
 }
 
 .analytics-table th {
-    background-color: rgba(11, 15, 32, 0.5);
+    background-color: rgba(249, 115, 22, 0.04);
     font-weight: 600;
     color: var(--text-secondary);
     font-size: 0.78rem;
@@ -856,16 +859,16 @@ body {
 }
 
 .analytics-table tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.015);
+    background-color: rgba(249, 115, 22, 0.03);
 }
 
 .analytics-table tbody tr.row-hankook {
-    background-color: rgba(255, 107, 0, 0.02);
-    border-left: 2px solid rgba(255, 107, 0, 0.3);
+    background-color: rgba(249, 115, 22, 0.03);
+    border-left: 2px solid rgba(249, 115, 22, 0.3);
 }
 
 .analytics-table tbody tr.row-hankook:hover {
-    background-color: rgba(255, 107, 0, 0.04);
+    background-color: rgba(249, 115, 22, 0.06);
 }
 
 .analytics-table td.numeric {
@@ -1121,7 +1124,7 @@ body {
 
 /* Briefing Panel Details */
 .strategy-briefing-panel {
-    background: linear-gradient(135deg, rgba(13, 18, 38, 0.85) 0%, rgba(9, 11, 23, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(249, 115, 22, 0.03) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-light);
@@ -1135,7 +1138,7 @@ body {
 }
 
 .strategy-briefing-panel:hover {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(249, 115, 22, 0.25);
 }
 
 .briefing-header {
@@ -1376,7 +1379,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(3, 5, 11, 0.85);
+    background: rgba(253, 251, 247, 0.65);
     backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
@@ -1393,9 +1396,9 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 32, 0.98));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 252, 249, 0.98));
+    border: 1px solid var(--border-light);
+    box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.12), 0 0 40px rgba(249, 115, 22, 0.05);
     width: 90%;
     max-width: 750px;
     max-height: 85vh;
@@ -1415,8 +1418,8 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     color: var(--text-secondary);
     border-radius: 50%;
     width: 36px;
@@ -1515,8 +1518,8 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(249, 115, 22, 0.03);
+    border: 1px solid rgba(249, 115, 22, 0.1);
     color: var(--text-secondary);
     font-family: inherit;
     font-size: 0.82rem;
@@ -1529,8 +1532,8 @@ body {
 }
 
 .btn-header-sources:hover {
-    background: rgba(255, 107, 0, 0.1);
-    border-color: rgba(255, 107, 0, 0.3);
+    background: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.3);
     color: var(--color-hankook);
 }
 
@@ -1555,12 +1558,12 @@ body {
 }
 
 .calc-model-summary {
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.08) 0%, rgba(10, 14, 28, 0.6) 100%);
-    border: 1px solid rgba(255, 107, 0, 0.25);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.06) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.25);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.03);
 }
 
 .calc-summary-brand {
@@ -1578,7 +1581,6 @@ body {
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 8px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .calc-summary-details {
@@ -1657,7 +1659,7 @@ body {
     font-size: 0.8rem;
     color: var(--text-muted);
     font-family: 'Inter', monospace;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(249, 115, 22, 0.05);
     padding: 4px 10px;
     border-radius: 4px;
     align-self: flex-start;
@@ -1692,14 +1694,14 @@ body {
 }
 
 .calc-step-card.highlight-card {
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(15, 23, 42, 0.9) 100%);
-    border: 1px solid rgba(255, 107, 0, 0.3);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.1);
 }
 
 .calc-source-card {
-    background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 16px;
     margin-top: 10px;
@@ -2101,16 +2103,15 @@ body {
 
 .sidebar .view-tab:hover {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.05);
+    background: rgba(249, 115, 22, 0.04);
+    border-color: rgba(249, 115, 22, 0.1);
 }
 
 .sidebar .view-tab.active {
-    color: #ffffff !important;
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(255, 107, 0, 0.03));
-    border: 1px solid rgba(255, 107, 0, 0.3) !important;
-    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.1);
-    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+    color: var(--color-hankook) !important;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.02));
+    border: 1px solid rgba(249, 115, 22, 0.25) !important;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.08);
 }
 
 .sidebar .view-tab .tab-icon {
@@ -2200,11 +2201,11 @@ body {
 }
 
 .gt-brochure-card {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.75) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 252, 249, 0.65) 100%);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.05);
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     position: relative;
     overflow: hidden;
@@ -2212,8 +2213,8 @@ body {
 
 .gt-brochure-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(249, 115, 22, 0.25);
+    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.08);
 }
 
 .gt-brochure-card::before {

@@ -755,12 +755,12 @@ class TireDashboard {
             });
         });
 
-        // Chart.js 글로벌 다크 테마 기본값 설정
+        // Chart.js 글로벌 라이트 테마 기본값 설정
         if (typeof Chart !== 'undefined') {
-            Chart.defaults.color = '#94a3b8'; // Slate 그레이 텍스트
+            Chart.defaults.color = '#64748b'; // Slate 그레이 텍스트
             Chart.defaults.font.family = "'Inter', sans-serif";
             if (Chart.defaults.scale && Chart.defaults.scale.grid) {
-                Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
+                Chart.defaults.scale.grid.color = 'rgba(249, 115, 22, 0.06)';
             }
         }
 
@@ -1231,13 +1231,13 @@ class TireDashboard {
                             stepSize: 10,
                             callback: function(value) { return value + '%'; }
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                        grid: { color: 'rgba(249, 115, 22, 0.06)' }
                     },
                     y: {
                         grid: { display: false },
                         ticks: {
                             font: { size: 11, weight: '600' },
-                            color: '#f8fafc'
+                            color: '#1e293b'
                         }
                     }
                 }
@@ -1837,11 +1837,11 @@ class TireDashboard {
                         min: 0,
                         max: 10,
                         ticks: { stepSize: 2, display: false },
-                        angleLines: { color: 'rgba(255, 255, 255, 0.06)' },
-                        grid: { color: 'rgba(255, 255, 255, 0.06)' },
+                        angleLines: { color: 'rgba(249, 115, 22, 0.06)' },
+                        grid: { color: 'rgba(249, 115, 22, 0.06)' },
                         pointLabels: { 
                             font: { size: 10, weight: '600' }, 
-                            color: '#94a3b8' 
+                            color: '#64748b' 
                         }
                     }
                 }
@@ -1985,8 +1985,8 @@ class TireDashboard {
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                        ticks: { font: { size: 10, weight: '700' }, color: '#f8fafc' }
+                        grid: { color: 'rgba(249, 115, 22, 0.06)' },
+                        ticks: { font: { size: 10, weight: '700' }, color: '#1e293b' }
                     },
                     y: {
                         type: 'linear',
@@ -1997,7 +1997,7 @@ class TireDashboard {
                             color: activeMetric === 'revenue' ? '#3b82f6' : '#10b981', 
                             font: { size: 10, weight: '600' } 
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        grid: { color: 'rgba(249, 115, 22, 0.06)' }
                     }
                 }
             }
