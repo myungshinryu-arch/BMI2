@@ -174,11 +174,14 @@
                   </select>
                 </div>
                 <div class="filter-group">
-                  <label for="global-market-seg"><i class="fa-solid fa-layer-group"></i> 세그먼트</label>
+                  <label for="global-market-seg"><i class="fa-solid fa-layer-group"></i> 대상 세그먼트</label>
                   <select id="global-market-seg" class="filter-select">
-                    <option value="All" selected>전체 (All)</option>
-                    <option value="PCR">승용차용 (PCR)</option>
-                    <option value="TBR">트럭/버스용 (TBR)</option>
+                    <option value="all" selected>전체 세그먼트 (All Segments)</option>
+                    <option value="Ultra High Performance (UHP)">초고성능 스포츠 (UHP)</option>
+                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
+                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
+                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
+                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
                   </select>
                 </div>
                 
@@ -207,12 +210,13 @@
                   </select>
                 </div>
                 <div class="filter-group">
-                  <label for="trend-seg"><i class="fa-solid fa-layer-group"></i> 세그먼트</label>
+                  <label for="trend-seg"><i class="fa-solid fa-layer-group"></i> 대상 세그먼트</label>
                   <select id="trend-seg" class="filter-select">
-                    <option value="Summer" selected>Summer</option>
-                    <option value="Winter">Winter</option>
-                    <option value="SUV">SUV</option>
-                    <option value="All Weather">All Weather</option>
+                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠 (UHP)</option>
+                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
+                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
+                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
+                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
                   </select>
                 </div>
                 
@@ -237,10 +241,10 @@
             <div class="panel-header rd-header-filters">
               <h3 class="panel-title"><i class="fa-solid fa-compass-drafting"></i> 경쟁사 R&D 테마 집중도 가중치</h3>
               
-              <!-- 글로벌 탑 4 탭 버튼 -->
+              <!-- 글로벌 탑 4 탭 버튼 (복수 선택 가능, 디폴트 Hankook & Michelin 활성) -->
               <div class="rd-mfg-tabs" id="rd-mfg-tabs">
                 <button class="rd-tab-btn active" data-mfg="HANKOOK">HANKOOK</button>
-                <button class="rd-tab-btn" data-mfg="MICHELIN">MICHELIN</button>
+                <button class="rd-tab-btn active" data-mfg="MICHELIN">MICHELIN</button>
                 <button class="rd-tab-btn" data-mfg="CONTINENTAL">CONTINENTAL</button>
                 <button class="rd-tab-btn" data-mfg="BRIDGESTONE">BRIDGESTONE</button>
               </div>

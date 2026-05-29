@@ -1364,197 +1364,181 @@ let globalMarketChart = null;
 let trendPerformanceChart = null;
 let rdPriorityChart = null;
 
-// 연도별 글로벌 전체 매출 및 판매량 데이터베이스 (세그먼트 세분화: All, PCR, TBR)
+// 연도별 글로벌 전체 매출 및 판매량 데이터베이스 (세그먼트 세분화: All, UHP, Grand Touring, All-Season, Winter, SUV)
 const GLOBAL_MARKET_DATABASE = {
   "2021": {
-    "All": {
-      revenue: [5.9, 25.1, 10.8, 24.5],
-      sales: [88, 158, 112, 151]
-    },
-    "PCR": {
-      revenue: [4.2, 18.1, 7.8, 17.2],
-      sales: [66, 119, 84, 113]
-    },
-    "TBR": {
-      revenue: [1.7, 7.0, 3.0, 7.3],
-      sales: [22, 39, 28, 38]
-    }
+    "all": { revenue: [5.9, 25.1, 10.8, 24.5], sales: [88, 158, 112, 151] },
+    "Ultra High Performance (UHP)": { revenue: [2.1, 8.8, 3.8, 8.6], sales: [31, 55, 39, 53] },
+    "Grand Touring (All-Season)": { revenue: [1.5, 6.3, 2.7, 6.1], sales: [22, 40, 28, 38] },
+    "All-Season Passenger": { revenue: [1.2, 5.0, 2.2, 4.9], sales: [18, 32, 22, 30] },
+    "Winter / Snow": { revenue: [0.6, 2.5, 1.1, 2.5], sales: [9, 16, 11, 15] },
+    "All-Terrain (SUV/Truck)": { revenue: [0.6, 2.5, 1.1, 2.5], sales: [9, 16, 11, 15] }
   },
   "2022": {
-    "All": {
-      revenue: [6.1, 26.3, 11.2, 25.0],
-      sales: [91, 162, 115, 154]
-    },
-    "PCR": {
-      revenue: [4.3, 19.0, 8.1, 17.6],
-      sales: [68, 122, 86, 115]
-    },
-    "TBR": {
-      revenue: [1.8, 7.3, 3.1, 7.4],
-      sales: [23, 40, 29, 39]
-    }
+    "all": { revenue: [6.1, 26.3, 11.2, 25.0], sales: [91, 162, 115, 154] },
+    "Ultra High Performance (UHP)": { revenue: [2.1, 9.2, 3.9, 8.8], sales: [32, 57, 40, 54] },
+    "Grand Touring (All-Season)": { revenue: [1.5, 6.6, 2.8, 6.3], sales: [23, 41, 29, 39] },
+    "All-Season Passenger": { revenue: [1.2, 5.3, 2.2, 5.0], sales: [18, 32, 23, 31] },
+    "Winter / Snow": { revenue: [0.6, 2.6, 1.1, 2.5], sales: [9, 16, 12, 15] },
+    "All-Terrain (SUV/Truck)": { revenue: [0.6, 2.6, 1.1, 2.5], sales: [9, 16, 12, 15] }
   },
   "2023": {
-    "All": {
-      revenue: [6.3, 27.0, 11.5, 25.8],
-      sales: [94, 166, 118, 159]
-    },
-    "PCR": {
-      revenue: [4.5, 19.5, 8.3, 18.1],
-      sales: [71, 125, 89, 119]
-    },
-    "TBR": {
-      revenue: [1.8, 7.5, 3.2, 7.7],
-      sales: [23, 41, 29, 40]
-    }
+    "all": { revenue: [6.3, 27.0, 11.5, 25.8], sales: [94, 166, 118, 159] },
+    "Ultra High Performance (UHP)": { revenue: [2.2, 9.5, 4.0, 9.0], sales: [33, 58, 41, 56] },
+    "Grand Touring (All-Season)": { revenue: [1.6, 6.8, 2.9, 6.5], sales: [24, 42, 30, 40] },
+    "All-Season Passenger": { revenue: [1.3, 5.4, 2.3, 5.2], sales: [19, 33, 24, 32] },
+    "Winter / Snow": { revenue: [0.6, 2.7, 1.2, 2.6], sales: [9, 17, 12, 16] },
+    "All-Terrain (SUV/Truck)": { revenue: [0.6, 2.7, 1.2, 2.6], sales: [9, 17, 12, 16] }
   },
   "2024": {
-    "All": {
-      revenue: [6.5, 27.8, 11.9, 26.5],
-      sales: [97, 170, 121, 163]
-    },
-    "PCR": {
-      revenue: [4.6, 20.1, 8.6, 18.6],
-      sales: [73, 128, 91, 122]
-    },
-    "TBR": {
-      revenue: [1.9, 7.7, 3.3, 7.9],
-      sales: [24, 42, 30, 41]
-    }
+    "all": { revenue: [6.5, 27.8, 11.9, 26.5], sales: [97, 170, 121, 163] },
+    "Ultra High Performance (UHP)": { revenue: [2.3, 9.7, 4.2, 9.3], sales: [34, 60, 42, 57] },
+    "Grand Touring (All-Season)": { revenue: [1.6, 7.0, 3.0, 6.6], sales: [24, 43, 30, 41] },
+    "All-Season Passenger": { revenue: [1.3, 5.6, 2.4, 5.3], sales: [19, 34, 24, 33] },
+    "Winter / Snow": { revenue: [0.7, 2.8, 1.2, 2.7], sales: [10, 17, 12, 16] },
+    "All-Terrain (SUV/Truck)": { revenue: [0.7, 2.8, 1.2, 2.7], sales: [10, 17, 12, 16] }
   },
   "2025": {
-    "All": {
-      revenue: [6.8, 28.5, 12.4, 27.2],
-      sales: [102, 175, 125, 168]
-    },
-    "PCR": {
-      revenue: [4.8, 20.6, 8.9, 19.1],
-      sales: [77, 132, 94, 126]
-    },
-    "TBR": {
-      revenue: [2.0, 7.9, 3.5, 8.1],
-      sales: [25, 43, 31, 42]
-    }
+    "all": { revenue: [6.8, 28.5, 12.4, 27.2], sales: [102, 175, 125, 168] },
+    "Ultra High Performance (UHP)": { revenue: [2.4, 10.0, 4.3, 9.5], sales: [36, 61, 44, 59] },
+    "Grand Touring (All-Season)": { revenue: [1.7, 7.1, 3.1, 6.8], sales: [26, 44, 31, 42] },
+    "All-Season Passenger": { revenue: [1.4, 5.7, 2.5, 5.4], sales: [20, 35, 25, 34] },
+    "Winter / Snow": { revenue: [0.7, 2.9, 1.2, 2.7], sales: [10, 18, 13, 17] },
+    "All-Terrain (SUV/Truck)": { revenue: [0.7, 2.9, 1.2, 2.7], sales: [10, 18, 13, 17] }
   },
   "2026": {
-    "All": {
-      revenue: [7.1, 29.3, 12.9, 28.0],
-      sales: [106, 180, 129, 173]
-    },
-    "PCR": {
-      revenue: [5.0, 21.2, 9.3, 19.7],
-      sales: [80, 136, 97, 130]
-    },
-    "TBR": {
-      revenue: [2.1, 8.1, 3.6, 8.3],
-      sales: [26, 44, 32, 43]
-    }
+    "all": { revenue: [7.1, 29.3, 12.9, 28.0], sales: [106, 180, 129, 173] },
+    "Ultra High Performance (UHP)": { revenue: [2.5, 10.3, 4.5, 9.8], sales: [37, 63, 45, 61] },
+    "Grand Touring (All-Season)": { revenue: [1.8, 7.3, 3.2, 7.0], sales: [27, 45, 32, 43] },
+    "All-Season Passenger": { revenue: [1.4, 5.9, 2.6, 5.6], sales: [21, 36, 26, 35] },
+    "Winter / Snow": { revenue: [0.7, 2.9, 1.3, 2.8], sales: [11, 18, 13, 17] },
+    "All-Terrain (SUV/Truck)": { revenue: [0.7, 2.9, 1.3, 2.8], sales: [11, 18, 13, 17] }
   }
 };
 
-// 뉴스 데이터셋
+// 뉴스 데이터셋 (실제 보도 자료 페이지로 연동하여 고품질 링크 구현)
 const STRATEGY_NEWS_DATA = [
-  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "#" },
-  { mfg: "HANKOOK", title: "HANKOOK, 포르쉐 타이칸 전용 초고성능 iON Evo 신형 OE 공급 체결", date: "2026-04-29", snippet: "포르쉐와 파트너십을 더욱 공고히 하며, 최고 사양 컴파운드 배합 기술력을 세계 시장에 증명했습니다.", url: "#" },
-  { mfg: "MICHELIN", title: "미쉐린, 순환 원료 비중 45% 초과 달성 '친환경 컴파운드 배합' 발표", date: "2026-05-12", snippet: "100% 지속가능한 타이어 실현을 선언하며 친환경 실리카 및 재생 고무 배합 원천 기술 개발에 한발 앞섰습니다.", url: "#" },
-  { mfg: "MICHELIN", title: "MICHELIN, 지능형 센서 내장 '스마트 트레드' 자율주행 OE 최초 양산", date: "2026-03-15", snippet: "실시간 마모 및 제동 성능 모니터링 센서를 트레드 고무 내에 안착시켜 완성차 안전 지표와 직접 연동합니다.", url: "#" },
-  { mfg: "CONTINENTAL", title: "콘티넨탈, AI 딥러닝 기반 '컴파운드 물성 실시간 연산 시뮬레이터' 상용화", date: "2026-05-02", snippet: "물리적 가황 가공 전에 Tg 및 Tan delta 예측 정밀도를 98%까지 달성하여 R&D 개발 주기를 대폭 단축했습니다.", url: "#" },
-  { mfg: "CONTINENTAL", title: "CONTINENTAL, 자율주행 특화 저소음 컴파운드 'Contact Silence' 유럽 출시", date: "2026-03-22", snippet: "특수 흡음재 폼과 고감도 정숙 컴파운드를 적용하여 고속 주행 시 전기차 특유의 실내 NVH 지표를 극대화 개선했습니다.", url: "#" },
-  { mfg: "BRIDGESTONE", title: "브리지스톤, 글로벌 모터스포츠 '포뮬러 E' 차세대 타이어 단독 공급 선정", date: "2026-05-20", snippet: "극한의 전비와 고그립 제동 성능이 요구되는 전동 레이싱 트랙에서 브리지스톤의 가치를 재입증하는 기회입니다.", url: "#" },
-  { mfg: "BRIDGESTONE", title: "BRIDGESTONE, ENLITEN 경량 친환경 컴파운드 세그먼트 전격 확대", date: "2026-04-05", snippet: "이산화탄소 배출 저감 및 원자료 경량화 설계를 바탕으로 컴팩트 전기 SUV 타이어 신규 표준을 제시했습니다.", url: "#" }
+  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "https://www.hankooktire.com/kr/ko/news-event/press-release.html" },
+  { mfg: "HANKOOK", title: "HANKOOK, 포르쉐 타이칸 전용 초고성능 iON Evo 신형 OE 공급 체결", date: "2026-04-29", snippet: "포르쉐와 파트너십을 더욱 공고히 하며, 최고 사양 컴파운드 배합 기술력을 세계 시장에 증명했습니다.", url: "https://www.hankooktire.com/kr/ko/news-event/press-release.html" },
+  { mfg: "MICHELIN", title: "미쉐린, 순환 원료 비중 45% 초과 달성 '친환경 컴파운드 배합' 발표", date: "2026-05-12", snippet: "100% 지속가능한 타이어 실현을 선언하며 친환경 실리카 및 재생 고무 배합 원천 기술 개발에 한발 앞섰습니다.", url: "https://www.michelin.co.kr/news" },
+  { mfg: "MICHELIN", title: "MICHELIN, 지능형 센서 내장 '스마트 트레드' 자율주행 OE 최초 양산", date: "2026-03-15", snippet: "실시간 마모 및 제동 성능 모니터링 센서를 트레드 고무 내에 안착시켜 완성차 안전 지표와 직접 연동합니다.", url: "https://www.michelin.co.kr/news" },
+  { mfg: "CONTINENTAL", title: "콘티넨탈, AI 딥러닝 기반 '컴파운드 물성 실시간 연산 시뮬레이터' 상용화", date: "2026-05-02", snippet: "물리적 가황 가공 전에 Tg 및 Tan delta 예측 정밀도를 98%까지 달성하여 R&D 개발 주기를 대폭 단축했습니다.", url: "https://www.continental-tires.com/kr/ko.html" },
+  { mfg: "CONTINENTAL", title: "CONTINENTAL, 자율주행 특화 저소음 컴파운드 'Contact Silence' 유럽 출시", date: "2026-03-22", snippet: "특수 흡음재 폼과 고감도 정숙 컴파운드를 적용하여 고속 주행 시 전기차 특유의 실내 NVH 지표를 극대화 개선했습니다.", url: "https://www.continental-tires.com/kr/ko.html" },
+  { mfg: "BRIDGESTONE", title: "브리지스톤, 글로벌 모터스포츠 '포뮬러 E' 차세대 타이어 단독 공급 선정", date: "2026-05-20", snippet: "극한의 전비와 고그립 제동 성능이 요구되는 전동 레이싱 트랙에서 브리지스톤의 가치를 재입증하는 기회입니다.", url: "https://www.bridgestone.co.kr/" },
+  { mfg: "BRIDGESTONE", title: "BRIDGESTONE, ENLITEN 경량 친환경 컴파운드 세그먼트 전격 확대", date: "2026-04-05", snippet: "이산화탄소 배출 저감 및 원자료 경량화 설계를 바탕으로 컴팩트 전기 SUV 타이어 신규 표준을 제시했습니다.", url: "https://www.bridgestone.co.kr/" }
 ];
 
 // 트렌드 가상 성능 및 판매 데이터맵 (제조사 x 세그먼트 x 성능데이터소스)
 const TREND_PERFORMANCE_DATABASE = {
   "HANKOOK": {
-    "Summer": {
+    "Ultra High Performance (UHP)": {
       "Wear":    { sales: [92, 95, 98, 102, 106, 110], score: [88, 89, 91, 92, 94, 95] },
       "Braking": { sales: [92, 95, 98, 102, 106, 110], score: [92, 93, 95, 96, 97, 98] },
       "RR":      { sales: [92, 95, 98, 102, 106, 110], score: [90, 92, 94, 97, 98, 99] }
     },
-    "Winter": {
+    "Grand Touring (All-Season)": {
+      "Wear":    { sales: [55, 60, 65, 72, 78, 85], score: [86, 88, 90, 91, 92, 94] },
+      "Braking": { sales: [55, 60, 65, 72, 78, 85], score: [89, 90, 91, 93, 94, 95] },
+      "RR":      { sales: [55, 60, 65, 72, 78, 85], score: [87, 89, 90, 92, 93, 95] }
+    },
+    "All-Season Passenger": {
+      "Wear":    { sales: [30, 35, 42, 50, 58, 65], score: [82, 84, 86, 88, 90, 92] },
+      "Braking": { sales: [30, 35, 42, 50, 58, 65], score: [88, 89, 91, 93, 94, 96] },
+      "RR":      { sales: [30, 35, 42, 50, 58, 65], score: [85, 87, 89, 91, 93, 95] }
+    },
+    "Winter / Snow": {
       "Wear":    { sales: [40, 42, 45, 48, 50, 52], score: [85, 86, 88, 89, 90, 92] },
       "Braking": { sales: [40, 42, 45, 48, 50, 52], score: [94, 95, 96, 97, 98, 98] },
       "RR":      { sales: [40, 42, 45, 48, 50, 52], score: [87, 88, 89, 91, 92, 93] }
     },
-    "SUV": {
+    "All-Terrain (SUV/Truck)": {
       "Wear":    { sales: [60, 64, 68, 72, 76, 80], score: [89, 90, 91, 93, 94, 96] },
       "Braking": { sales: [60, 64, 68, 72, 76, 80], score: [91, 92, 93, 95, 96, 97] },
       "RR":      { sales: [60, 64, 68, 72, 76, 80], score: [88, 90, 92, 94, 96, 97] }
-    },
-    "All Weather": {
-      "Wear":    { sales: [30, 35, 42, 50, 58, 65], score: [82, 84, 86, 88, 90, 92] },
-      "Braking": { sales: [30, 35, 42, 50, 58, 65], score: [88, 89, 91, 93, 94, 96] },
-      "RR":      { sales: [30, 35, 42, 50, 58, 65], score: [85, 87, 89, 91, 93, 95] }
     }
   },
   "MICHELIN": {
-    "Summer": {
+    "Ultra High Performance (UHP)": {
       "Wear":    { sales: [160, 163, 167, 170, 172, 175], score: [94, 95, 95, 96, 96, 97] },
       "Braking": { sales: [160, 163, 167, 170, 172, 175], score: [95, 96, 97, 97, 98, 99] },
       "RR":      { sales: [160, 163, 167, 170, 172, 175], score: [91, 92, 93, 93, 94, 95] }
     },
-    "Winter": {
+    "Grand Touring (All-Season)": {
+      "Wear":    { sales: [85, 90, 96, 102, 108, 115], score: [91, 92, 93, 94, 95, 96] },
+      "Braking": { sales: [85, 90, 96, 102, 108, 115], score: [92, 93, 94, 95, 96, 97] },
+      "RR":      { sales: [85, 90, 96, 102, 108, 115], score: [89, 90, 91, 92, 93, 94] }
+    },
+    "All-Season Passenger": {
+      "Wear":    { sales: [60, 65, 72, 80, 88, 95], score: [90, 91, 92, 93, 94, 95] },
+      "Braking": { sales: [60, 65, 72, 80, 88, 95], score: [91, 92, 93, 94, 95, 96] },
+      "RR":      { sales: [60, 65, 72, 80, 88, 95], score: [88, 89, 90, 91, 92, 93] }
+    },
+    "Winter / Snow": {
       "Wear":    { sales: [75, 78, 80, 82, 85, 87], score: [92, 93, 94, 94, 95, 96] },
       "Braking": { sales: [75, 78, 80, 82, 85, 87], score: [96, 97, 97, 98, 98, 99] },
       "RR":      { sales: [75, 78, 80, 82, 85, 87], score: [89, 90, 91, 92, 92, 93] }
     },
-    "SUV": {
+    "All-Terrain (SUV/Truck)": {
       "Wear":    { sales: [110, 114, 118, 122, 126, 130], score: [93, 94, 95, 95, 96, 97] },
       "Braking": { sales: [110, 114, 118, 122, 126, 130], score: [94, 95, 96, 96, 97, 98] },
       "RR":      { sales: [110, 114, 118, 122, 126, 130], score: [90, 91, 92, 93, 94, 95] }
-    },
-    "All Weather": {
-      "Wear":    { sales: [60, 65, 72, 80, 88, 95], score: [90, 91, 92, 93, 94, 95] },
-      "Braking": { sales: [60, 65, 72, 80, 88, 95], score: [91, 92, 93, 94, 95, 96] },
-      "RR":      { sales: [60, 65, 72, 80, 88, 95], score: [88, 89, 90, 91, 92, 93] }
     }
   },
   "CONTINENTAL": {
-    "Summer": {
+    "Ultra High Performance (UHP)": {
       "Wear":    { sales: [110, 113, 117, 120, 122, 125], score: [90, 91, 92, 92, 93, 94] },
       "Braking": { sales: [110, 113, 117, 120, 122, 125], score: [94, 95, 96, 97, 97, 98] },
       "RR":      { sales: [110, 113, 117, 120, 122, 125], score: [89, 90, 92, 93, 94, 95] }
     },
-    "Winter": {
+    "Grand Touring (All-Season)": {
+      "Wear":    { sales: [65, 70, 76, 82, 88, 95], score: [88, 89, 90, 91, 92, 94] },
+      "Braking": { sales: [65, 70, 76, 82, 88, 95], score: [91, 92, 93, 94, 95, 96] },
+      "RR":      { sales: [65, 70, 76, 82, 88, 95], score: [87, 88, 90, 91, 93, 95] }
+    },
+    "All-Season Passenger": {
+      "Wear":    { sales: [45, 49, 54, 60, 67, 74], score: [86, 87, 89, 90, 91, 93] },
+      "Braking": { sales: [45, 49, 54, 60, 67, 74], score: [90, 91, 93, 94, 95, 96] },
+      "RR":      { sales: [45, 49, 54, 60, 67, 74], score: [86, 88, 89, 91, 92, 94] }
+    },
+    "Winter / Snow": {
       "Wear":    { sales: [55, 58, 60, 63, 65, 68], score: [87, 88, 89, 90, 91, 92] },
       "Braking": { sales: [55, 58, 60, 63, 65, 68], score: [95, 96, 97, 98, 98, 99] },
       "RR":      { sales: [55, 58, 60, 63, 65, 68], score: [88, 89, 90, 91, 92, 93] }
     },
-    "SUV": {
+    "All-Terrain (SUV/Truck)": {
       "Wear":    { sales: [75, 78, 82, 86, 90, 94], score: [89, 90, 91, 92, 93, 94] },
       "Braking": { sales: [75, 78, 82, 86, 90, 94], score: [93, 94, 95, 96, 97, 98] },
       "RR":      { sales: [75, 78, 82, 86, 90, 94], score: [88, 89, 91, 92, 94, 95] }
-    },
-    "All Weather": {
-      "Wear":    { sales: [45, 49, 54, 60, 67, 74], score: [86, 87, 89, 90, 91, 93] },
-      "Braking": { sales: [45, 49, 54, 60, 67, 74], score: [90, 91, 93, 94, 95, 96] },
-      "RR":      { sales: [45, 49, 54, 60, 67, 74], score: [86, 88, 89, 91, 92, 94] }
     }
   },
   "BRIDGESTONE": {
-    "Summer": {
+    "Ultra High Performance (UHP)": {
       "Wear":    { sales: [152, 155, 159, 162, 165, 168], score: [91, 92, 92, 93, 94, 95] },
       "Braking": { sales: [152, 155, 159, 162, 165, 168], score: [93, 94, 95, 96, 97, 98] },
       "RR":      { sales: [152, 155, 159, 162, 165, 168], score: [90, 91, 92, 93, 95, 96] }
     },
-    "Winter": {
+    "Grand Touring (All-Season)": {
+      "Wear":    { sales: [75, 80, 86, 92, 98, 105], score: [89, 90, 91, 92, 93, 94] },
+      "Braking": { sales: [75, 80, 86, 92, 98, 105], score: [91, 92, 93, 94, 95, 96] },
+      "RR":      { sales: [75, 80, 86, 92, 98, 105], score: [88, 89, 90, 91, 93, 94] }
+    },
+    "All-Season Passenger": {
+      "Wear":    { sales: [50, 55, 61, 68, 75, 82], score: [87, 88, 89, 91, 92, 94] },
+      "Braking": { sales: [50, 55, 61, 68, 75, 82], score: [89, 90, 92, 93, 94, 96] },
+      "RR":      { sales: [50, 55, 61, 68, 75, 82], score: [86, 88, 89, 90, 92, 93] }
+    },
+    "Winter / Snow": {
       "Wear":    { sales: [68, 71, 73, 76, 78, 81], score: [88, 89, 90, 91, 92, 93] },
       "Braking": { sales: [68, 71, 73, 76, 78, 81], score: [94, 95, 96, 96, 97, 98] },
       "RR":      { sales: [68, 71, 73, 76, 78, 81], score: [87, 88, 89, 90, 91, 92] }
     },
-    "SUV": {
+    "All-Terrain (SUV/Truck)": {
       "Wear":    { sales: [95, 99, 103, 107, 111, 115], score: [90, 91, 92, 93, 94, 95] },
       "Braking": { sales: [95, 99, 103, 107, 111, 115], score: [92, 93, 94, 95, 96, 97] },
       "RR":      { sales: [95, 99, 103, 107, 111, 115], score: [89, 90, 91, 93, 94, 95] }
-    },
-    "All Weather": {
-      "Wear":    { sales: [50, 55, 61, 68, 75, 82], score: [87, 88, 89, 91, 92, 94] },
-      "Braking": { sales: [50, 55, 61, 68, 75, 82], score: [89, 90, 92, 93, 94, 96] },
-      "RR":      { sales: [50, 55, 61, 68, 75, 82], score: [86, 88, 89, 90, 92, 93] }
     }
   }
-};
+};;
 
 // R&D 집중도 가중치 데이터맵
 const RD_PRIORITY_DATABASE = {
@@ -1591,7 +1575,7 @@ function initGlobalMarketChart(ctx) {
   const selectedYear = document.getElementById('global-market-year').value;
   const selectedSeg = document.getElementById('global-market-seg').value;
   const yearData = GLOBAL_MARKET_DATABASE[selectedYear] || GLOBAL_MARKET_DATABASE["2026"];
-  const dataForYear = yearData[selectedSeg] || yearData["All"];
+  const dataForYear = yearData[selectedSeg] || yearData["all"];
 
   if (globalMarketChart) globalMarketChart.destroy();
   
@@ -1757,29 +1741,54 @@ function initTrendPerformanceChart(ctx) {
 }
 
 function initRdPriorityChart(ctx) {
-  const activeTab = document.querySelector('.rd-tab-btn.active');
-  const mfg = activeTab ? activeTab.getAttribute('data-mfg') : 'HANKOOK';
-  const data = RD_PRIORITY_DATABASE[mfg];
-
+  const activeTabs = document.querySelectorAll('.rd-tab-btn.active');
+  
   if (rdPriorityChart) rdPriorityChart.destroy();
+
+  // 각 제조사별 고유 브랜딩 컬러 매핑
+  const mfgColorMap = {
+    "HANKOOK": {
+      border: 'rgba(249, 115, 22, 1)', // 주황색
+      bg: 'rgba(249, 115, 22, 0.12)'
+    },
+    "MICHELIN": {
+      border: 'rgba(59, 130, 246, 1)', // 파란색
+      bg: 'rgba(59, 130, 246, 0.12)'
+    },
+    "CONTINENTAL": {
+      border: 'rgba(234, 179, 8, 1)', // 노란색
+      bg: 'rgba(234, 179, 8, 0.12)'
+    },
+    "BRIDGESTONE": {
+      border: 'rgba(239, 68, 68, 1)', // 빨간색
+      bg: 'rgba(239, 68, 68, 0.12)'
+    }
+  };
+
+  const datasets = Array.from(activeTabs).map(tab => {
+    const mfg = tab.getAttribute('data-mfg');
+    const data = RD_PRIORITY_DATABASE[mfg];
+    const colors = mfgColorMap[mfg] || mfgColorMap["HANKOOK"];
+
+    return {
+      label: `${mfg} R&D 집중도 (%)`,
+      data: data,
+      backgroundColor: colors.bg,
+      borderColor: colors.border,
+      borderWidth: 2.5,
+      pointBackgroundColor: colors.border,
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 4,
+      pointHoverRadius: 6
+    };
+  });
 
   rdPriorityChart = new Chart(ctx, {
     type: 'radar',
     data: {
       labels: ['친환경/ESG (Eco)', '초고성능 (Sport)', 'EV 전용 (EV Spec)', '디지털&AI (Smart)', '마모 수명 극대화 (Durability)'],
-      datasets: [
-        {
-          label: `${mfg} R&D 테마 집중도 가중치 (%)`,
-          data: data,
-          backgroundColor: 'rgba(249, 115, 22, 0.18)',
-          borderColor: 'rgba(249, 115, 22, 1)',
-          borderWidth: 2.5,
-          pointBackgroundColor: 'rgba(249, 115, 22, 1)',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 5
-        }
-      ]
+      datasets: datasets
     },
     options: {
       responsive: true,
@@ -1787,7 +1796,7 @@ function initRdPriorityChart(ctx) {
       plugins: {
         legend: {
           position: 'top',
-          labels: { font: { family: 'Pretendard', weight: '700', size: 11 }, color: '#475569' }
+          labels: { font: { family: 'Pretendard', weight: '700', size: 10.5 }, color: '#475569' }
         },
         tooltip: {
           backgroundColor: 'rgba(15, 23, 42, 0.9)',
@@ -1818,7 +1827,7 @@ function renderNewsScraps() {
   container.innerHTML = STRATEGY_NEWS_DATA.map(news => {
     const badgeClass = news.mfg.toLowerCase();
     return `
-      <div class="news-card-scrap" onclick="showNewsMockToast('${news.mfg}', '${news.title}')">
+      <div class="news-card-scrap" onclick="window.open('${news.url}', '_blank')" style="cursor: pointer;">
         <div class="news-meta-row">
           <span class="news-mfg-badge ${badgeClass}">${news.mfg}</span>
           <span class="news-date">${news.date}</span>
@@ -1871,12 +1880,21 @@ function setupStrategyEventListeners() {
     });
   });
 
-  // R&D 탭 버튼 클릭
+  // R&D 탭 버튼 복수 클릭 (토글)
   const tabBtns = document.querySelectorAll('.rd-tab-btn');
   tabBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
+      const activeBtns = document.querySelectorAll('.rd-tab-btn.active');
+      // 최소 1개는 활성화되어 있어야 에러가 안 남
+      if (e.currentTarget.classList.contains('active') && activeBtns.length <= 1) {
+        if (window.showToast) {
+          window.showToast("⚠️ 최소한 1개의 제조사는 선택되어 있어야 합니다.");
+        } else {
+          alert("최소한 1개의 제조사는 선택되어 있어야 합니다.");
+        }
+        return;
+      }
+      e.currentTarget.classList.toggle('active');
       initRdPriorityChart(document.getElementById('rd-priority-chart'));
     });
   });
