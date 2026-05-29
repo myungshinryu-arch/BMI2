@@ -223,10 +223,9 @@
                 <!-- 버튼식 성능 데이터 소스 -->
                 <div class="filter-group performance-source-group">
                   <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
-                  <div class="btn-group-performance" role="group">
-                    <button type="button" class="btn-source active" data-source="Wear">북미종합평점</button>
-                    <button type="button" class="btn-source" data-source="Braking">북미 Tire rack 평가</button>
-                    <button type="button" class="btn-source" data-source="RR">북미 consumer 평가</button>
+                  <div class="btn-group-performance" role="group" id="trend-source-group">
+                    <button type="button" class="btn-source active" data-source="NorthAmerica">북미종합평점</button>
+                    <button type="button" class="btn-source" data-source="Europe">유럽종합평점</button>
                   </div>
                 </div>
               </div>
@@ -241,8 +240,8 @@
             <div class="panel-header tech-header-filters">
               <h3 class="panel-title"><i class="fa-solid fa-gauge-high"></i> 상품 기술 경쟁력 비교</h3>
               
-              <!-- 전용 대상 세그먼트 필터 영역 (시장/상품전략 UI 연동) -->
-              <div class="trend-filters" style="margin-bottom: 0;">
+              <!-- 전용 대상 세그먼트 및 성능데이터소스 필터 영역 (시장/상품전략 UI 연동) -->
+              <div class="trend-filters" style="margin-bottom: 0; width: 100%;">
                 <div class="filter-group">
                   <label for="tech-seg"><i class="fa-solid fa-layer-group"></i> 분석 세그먼트</label>
                   <select id="tech-seg" class="filter-select">
@@ -252,6 +251,14 @@
                     <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
                     <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
                   </select>
+                </div>
+
+                <div class="filter-group tech-performance-source-group" style="margin-left: auto;">
+                  <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
+                  <div class="btn-group-performance" role="group" id="tech-source-group">
+                    <button type="button" class="btn-source active" data-source="NorthAmerica">북미종합평점</button>
+                    <button type="button" class="btn-source" data-source="Europe">유럽종합평점</button>
+                  </div>
                 </div>
               </div>
             </div>

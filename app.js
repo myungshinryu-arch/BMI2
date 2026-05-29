@@ -1433,113 +1433,93 @@ const STRATEGY_NEWS_DATA = [
 const TREND_PERFORMANCE_DATABASE = {
   "HANKOOK": {
     "Ultra High Performance (UHP)": {
-      "Wear":    { sales: [92, 95, 98, 102, 106, 110], score: [88, 89, 91, 92, 94, 95] },
-      "Braking": { sales: [92, 95, 98, 102, 106, 110], score: [92, 93, 95, 96, 97, 98] },
-      "RR":      { sales: [92, 95, 98, 102, 106, 110], score: [90, 92, 94, 97, 98, 99] }
+      "NorthAmerica": { sales: [92, 95, 98, 102, 106, 110], score: [90, 91, 93, 94, 95, 96] },
+      "Europe":       { sales: [92, 95, 98, 102, 106, 110], score: [92, 93, 95, 96, 97, 98] }
     },
     "Grand Touring (All-Season)": {
-      "Wear":    { sales: [55, 60, 65, 72, 78, 85], score: [86, 88, 90, 91, 92, 94] },
-      "Braking": { sales: [55, 60, 65, 72, 78, 85], score: [89, 90, 91, 93, 94, 95] },
-      "RR":      { sales: [55, 60, 65, 72, 78, 85], score: [87, 89, 90, 92, 93, 95] }
+      "NorthAmerica": { sales: [55, 60, 65, 72, 78, 85], score: [87, 89, 90, 92, 93, 95] },
+      "Europe":       { sales: [55, 60, 65, 72, 78, 85], score: [89, 90, 91, 93, 94, 95] }
     },
     "All-Season Passenger": {
-      "Wear":    { sales: [30, 35, 42, 50, 58, 65], score: [82, 84, 86, 88, 90, 92] },
-      "Braking": { sales: [30, 35, 42, 50, 58, 65], score: [88, 89, 91, 93, 94, 96] },
-      "RR":      { sales: [30, 35, 42, 50, 58, 65], score: [85, 87, 89, 91, 93, 95] }
+      "NorthAmerica": { sales: [30, 35, 42, 50, 58, 65], score: [85, 87, 89, 91, 93, 95] },
+      "Europe":       { sales: [30, 35, 42, 50, 58, 65], score: [88, 89, 91, 93, 94, 96] }
     },
     "Winter / Snow": {
-      "Wear":    { sales: [40, 42, 45, 48, 50, 52], score: [85, 86, 88, 89, 90, 92] },
-      "Braking": { sales: [40, 42, 45, 48, 50, 52], score: [94, 95, 96, 97, 98, 98] },
-      "RR":      { sales: [40, 42, 45, 48, 50, 52], score: [87, 88, 89, 91, 92, 93] }
+      "NorthAmerica": { sales: [40, 42, 45, 48, 50, 52], score: [87, 88, 89, 91, 92, 93] },
+      "Europe":       { sales: [40, 42, 45, 48, 50, 52], score: [94, 95, 96, 97, 98, 98] }
     },
     "All-Terrain (SUV/Truck)": {
-      "Wear":    { sales: [60, 64, 68, 72, 76, 80], score: [89, 90, 91, 93, 94, 96] },
-      "Braking": { sales: [60, 64, 68, 72, 76, 80], score: [91, 92, 93, 95, 96, 97] },
-      "RR":      { sales: [60, 64, 68, 72, 76, 80], score: [88, 90, 92, 94, 96, 97] }
+      "NorthAmerica": { sales: [60, 64, 68, 72, 76, 80], score: [88, 90, 92, 94, 96, 97] },
+      "Europe":       { sales: [60, 64, 68, 72, 76, 80], score: [91, 92, 93, 95, 96, 97] }
     }
   },
   "MICHELIN": {
     "Ultra High Performance (UHP)": {
-      "Wear":    { sales: [160, 163, 167, 170, 172, 175], score: [94, 95, 95, 96, 96, 97] },
-      "Braking": { sales: [160, 163, 167, 170, 172, 175], score: [95, 96, 97, 97, 98, 99] },
-      "RR":      { sales: [160, 163, 167, 170, 172, 175], score: [91, 92, 93, 93, 94, 95] }
+      "NorthAmerica": { sales: [160, 163, 167, 170, 172, 175], score: [94, 95, 95, 96, 96, 97] },
+      "Europe":       { sales: [160, 163, 167, 170, 172, 175], score: [95, 96, 97, 97, 98, 99] }
     },
     "Grand Touring (All-Season)": {
-      "Wear":    { sales: [85, 90, 96, 102, 108, 115], score: [91, 92, 93, 94, 95, 96] },
-      "Braking": { sales: [85, 90, 96, 102, 108, 115], score: [92, 93, 94, 95, 96, 97] },
-      "RR":      { sales: [85, 90, 96, 102, 108, 115], score: [89, 90, 91, 92, 93, 94] }
+      "NorthAmerica": { sales: [85, 90, 96, 102, 108, 115], score: [89, 90, 91, 92, 93, 94] },
+      "Europe":       { sales: [85, 90, 96, 102, 108, 115], score: [92, 93, 94, 95, 96, 97] }
     },
     "All-Season Passenger": {
-      "Wear":    { sales: [60, 65, 72, 80, 88, 95], score: [90, 91, 92, 93, 94, 95] },
-      "Braking": { sales: [60, 65, 72, 80, 88, 95], score: [91, 92, 93, 94, 95, 96] },
-      "RR":      { sales: [60, 65, 72, 80, 88, 95], score: [88, 89, 90, 91, 92, 93] }
+      "NorthAmerica": { sales: [60, 65, 72, 80, 88, 95], score: [88, 89, 90, 91, 92, 93] },
+      "Europe":       { sales: [60, 65, 72, 80, 88, 95], score: [91, 92, 93, 94, 95, 96] }
     },
     "Winter / Snow": {
-      "Wear":    { sales: [75, 78, 80, 82, 85, 87], score: [92, 93, 94, 94, 95, 96] },
-      "Braking": { sales: [75, 78, 80, 82, 85, 87], score: [96, 97, 97, 98, 98, 99] },
-      "RR":      { sales: [75, 78, 80, 82, 85, 87], score: [89, 90, 91, 92, 92, 93] }
+      "NorthAmerica": { sales: [75, 78, 80, 82, 85, 87], score: [89, 90, 91, 92, 92, 93] },
+      "Europe":       { sales: [75, 78, 80, 82, 85, 87], score: [96, 97, 97, 98, 98, 99] }
     },
     "All-Terrain (SUV/Truck)": {
-      "Wear":    { sales: [110, 114, 118, 122, 126, 130], score: [93, 94, 95, 95, 96, 97] },
-      "Braking": { sales: [110, 114, 118, 122, 126, 130], score: [94, 95, 96, 96, 97, 98] },
-      "RR":      { sales: [110, 114, 118, 122, 126, 130], score: [90, 91, 92, 93, 94, 95] }
+      "NorthAmerica": { sales: [110, 114, 118, 122, 126, 130], score: [90, 91, 92, 93, 94, 95] },
+      "Europe":       { sales: [110, 114, 118, 122, 126, 130], score: [94, 95, 96, 96, 97, 98] }
     }
   },
   "CONTINENTAL": {
     "Ultra High Performance (UHP)": {
-      "Wear":    { sales: [110, 113, 117, 120, 122, 125], score: [90, 91, 92, 92, 93, 94] },
-      "Braking": { sales: [110, 113, 117, 120, 122, 125], score: [94, 95, 96, 97, 97, 98] },
-      "RR":      { sales: [110, 113, 117, 120, 122, 125], score: [89, 90, 92, 93, 94, 95] }
+      "NorthAmerica": { sales: [110, 113, 117, 120, 122, 125], score: [89, 90, 92, 93, 94, 95] },
+      "Europe":       { sales: [110, 113, 117, 120, 122, 125], score: [94, 95, 96, 97, 97, 98] }
     },
     "Grand Touring (All-Season)": {
-      "Wear":    { sales: [65, 70, 76, 82, 88, 95], score: [88, 89, 90, 91, 92, 94] },
-      "Braking": { sales: [65, 70, 76, 82, 88, 95], score: [91, 92, 93, 94, 95, 96] },
-      "RR":      { sales: [65, 70, 76, 82, 88, 95], score: [87, 88, 90, 91, 93, 95] }
+      "NorthAmerica": { sales: [65, 70, 76, 82, 88, 95], score: [87, 88, 90, 91, 93, 95] },
+      "Europe":       { sales: [65, 70, 76, 82, 88, 95], score: [91, 92, 93, 94, 95, 96] }
     },
     "All-Season Passenger": {
-      "Wear":    { sales: [45, 49, 54, 60, 67, 74], score: [86, 87, 89, 90, 91, 93] },
-      "Braking": { sales: [45, 49, 54, 60, 67, 74], score: [90, 91, 93, 94, 95, 96] },
-      "RR":      { sales: [45, 49, 54, 60, 67, 74], score: [86, 88, 89, 91, 92, 94] }
+      "NorthAmerica": { sales: [45, 49, 54, 60, 67, 74], score: [86, 88, 89, 91, 92, 94] },
+      "Europe":       { sales: [45, 49, 54, 60, 67, 74], score: [90, 91, 93, 94, 95, 96] }
     },
     "Winter / Snow": {
-      "Wear":    { sales: [55, 58, 60, 63, 65, 68], score: [87, 88, 89, 90, 91, 92] },
-      "Braking": { sales: [55, 58, 60, 63, 65, 68], score: [95, 96, 97, 98, 98, 99] },
-      "RR":      { sales: [55, 58, 60, 63, 65, 68], score: [88, 89, 90, 91, 92, 93] }
+      "NorthAmerica": { sales: [55, 58, 60, 63, 65, 68], score: [88, 89, 90, 91, 92, 93] },
+      "Europe":       { sales: [55, 58, 60, 63, 65, 68], score: [95, 96, 97, 98, 98, 99] }
     },
     "All-Terrain (SUV/Truck)": {
-      "Wear":    { sales: [75, 78, 82, 86, 90, 94], score: [89, 90, 91, 92, 93, 94] },
-      "Braking": { sales: [75, 78, 82, 86, 90, 94], score: [93, 94, 95, 96, 97, 98] },
-      "RR":      { sales: [75, 78, 82, 86, 90, 94], score: [88, 89, 91, 92, 94, 95] }
+      "NorthAmerica": { sales: [75, 78, 82, 86, 90, 94], score: [88, 89, 91, 92, 94, 95] },
+      "Europe":       { sales: [75, 78, 82, 86, 90, 94], score: [93, 94, 95, 96, 97, 98] }
     }
   },
   "BRIDGESTONE": {
     "Ultra High Performance (UHP)": {
-      "Wear":    { sales: [152, 155, 159, 162, 165, 168], score: [91, 92, 92, 93, 94, 95] },
-      "Braking": { sales: [152, 155, 159, 162, 165, 168], score: [93, 94, 95, 96, 97, 98] },
-      "RR":      { sales: [152, 155, 159, 162, 165, 168], score: [90, 91, 92, 93, 95, 96] }
+      "NorthAmerica": { sales: [152, 155, 159, 162, 165, 168], score: [90, 91, 92, 93, 95, 96] },
+      "Europe":       { sales: [152, 155, 159, 162, 165, 168], score: [93, 94, 95, 96, 97, 98] }
     },
     "Grand Touring (All-Season)": {
-      "Wear":    { sales: [75, 80, 86, 92, 98, 105], score: [89, 90, 91, 92, 93, 94] },
-      "Braking": { sales: [75, 80, 86, 92, 98, 105], score: [91, 92, 93, 94, 95, 96] },
-      "RR":      { sales: [75, 80, 86, 92, 98, 105], score: [88, 89, 90, 91, 93, 94] }
+      "NorthAmerica": { sales: [75, 80, 86, 92, 98, 105], score: [88, 89, 90, 91, 93, 94] },
+      "Europe":       { sales: [75, 80, 86, 92, 98, 105], score: [91, 92, 93, 94, 95, 96] }
     },
     "All-Season Passenger": {
-      "Wear":    { sales: [50, 55, 61, 68, 75, 82], score: [87, 88, 89, 91, 92, 94] },
-      "Braking": { sales: [50, 55, 61, 68, 75, 82], score: [89, 90, 92, 93, 94, 96] },
-      "RR":      { sales: [50, 55, 61, 68, 75, 82], score: [86, 88, 89, 90, 92, 93] }
+      "NorthAmerica": { sales: [50, 55, 61, 68, 75, 82], score: [86, 88, 89, 90, 92, 93] },
+      "Europe":       { sales: [50, 55, 61, 68, 75, 82], score: [89, 90, 92, 93, 94, 96] }
     },
     "Winter / Snow": {
-      "Wear":    { sales: [68, 71, 73, 76, 78, 81], score: [88, 89, 90, 91, 92, 93] },
-      "Braking": { sales: [68, 71, 73, 76, 78, 81], score: [94, 95, 96, 96, 97, 98] },
-      "RR":      { sales: [68, 71, 73, 76, 78, 81], score: [87, 88, 89, 90, 91, 92] }
+      "NorthAmerica": { sales: [68, 71, 73, 76, 78, 81], score: [87, 88, 89, 90, 91, 92] },
+      "Europe":       { sales: [68, 71, 73, 76, 78, 81], score: [94, 95, 96, 96, 97, 98] }
     },
     "All-Terrain (SUV/Truck)": {
-      "Wear":    { sales: [95, 99, 103, 107, 111, 115], score: [90, 91, 92, 93, 94, 95] },
-      "Braking": { sales: [95, 99, 103, 107, 111, 115], score: [92, 93, 94, 95, 96, 97] },
-      "RR":      { sales: [95, 99, 103, 107, 111, 115], score: [89, 90, 91, 93, 94, 95] }
+      "NorthAmerica": { sales: [95, 99, 103, 107, 111, 115], score: [89, 90, 91, 93, 94, 95] },
+      "Europe":       { sales: [95, 99, 103, 107, 111, 115], score: [92, 93, 94, 95, 96, 97] }
     }
   }
-};;
+};;;
 
 // R&D 집중도 가중치 데이터맵
 const RD_PRIORITY_DATABASE = {
@@ -1550,52 +1530,107 @@ const RD_PRIORITY_DATABASE = {
 };
 
 // 신설: 한국타이어 vs. 벤치마크 핵심성능 비교 레이더 차트 및 3대 핵심 분석 카드 데이터베이스
-// 6대 축 순서: [마른 노면 접지력, 젖은 노면 제동력, 수막현상 방지, 승차감 및 소음, 트레드 수명, 연비 효율성]
+// 7대 축 순서: [마른 노면 접지력, 젖은 노면 제동력, 수막현상 방지, 승차감 및 소음, 트레드 수명, 눈길/빙판 제동, 연비 효율성]
 const PRODUCT_COMPETITIVENESS_DATABASE = {
   "Ultra High Performance (UHP)": {
-    chartData: {
-      hankook: [92, 88, 90, 91, 85, 87],
-      benchmark: [95, 94, 92, 93, 89, 86]
+    "NorthAmerica": {
+      chartData: {
+        hankook: [92, 88, 90, 91, 85, 75, 87],
+        benchmark: [95, 94, 92, 93, 89, 78, 86]
+      },
+      bestProduct: "MICHELIN Pilot Sport 5 (UHP - 북미)",
+      marketPosition: "북미 기술 추격형 (핵심 성능 격차 최저)",
+      priorityEnhancement: "눈길/빙판 제동력 보강 필요"
     },
-    bestProduct: "MICHELIN Pilot Sport 5",
-    marketPosition: "글로벌 기술 추격형 (성능차 최소화)",
-    priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+    "Europe": {
+      chartData: {
+        hankook: [91, 90, 89, 92, 84, 82, 88],
+        benchmark: [94, 93, 91, 94, 88, 85, 87]
+      },
+      bestProduct: "MICHELIN Pilot Sport 5 (UHP - 유럽)",
+      marketPosition: "유럽 기술 추격형 (젖은 노면 경쟁력 확보)",
+      priorityEnhancement: "눈길/빙판 제동력 보강 필요"
+    }
   },
   "Grand Touring (All-Season)": {
-    chartData: {
-      hankook: [89, 91, 88, 93, 92, 90],
-      benchmark: [92, 92, 90, 94, 94, 88]
+    "NorthAmerica": {
+      chartData: {
+        hankook: [89, 91, 88, 93, 92, 80, 90],
+        benchmark: [92, 92, 90, 94, 94, 82, 88]
+      },
+      bestProduct: "CONTINENTAL PremiumContact 7 (GT - 북미)",
+      marketPosition: "시장 선도형 동등 수준 (승차감 우수)",
+      priorityEnhancement: "수막현상 방지 (Hydroplaning)"
     },
-    bestProduct: "CONTINENTAL PremiumContact 7",
-    marketPosition: "시장 선도형 동등 수준 (승차감 우수)",
-    priorityEnhancement: "수막현상 방지 (Hydroplaning)"
+    "Europe": {
+      chartData: {
+        hankook: [88, 92, 89, 92, 91, 84, 89],
+        benchmark: [91, 93, 91, 93, 93, 86, 87]
+      },
+      bestProduct: "CONTINENTAL PremiumContact 7 (GT - 유럽)",
+      marketPosition: "유럽 표준 적합형 경쟁 (승차감 극대화)",
+      priorityEnhancement: "수막현상 방지 (Hydroplaning)"
+    }
   },
   "All-Season Passenger": {
-    chartData: {
-      hankook: [87, 86, 85, 92, 94, 91],
-      benchmark: [89, 88, 88, 91, 95, 89]
+    "NorthAmerica": {
+      chartData: {
+        hankook: [87, 86, 85, 92, 94, 76, 91],
+        benchmark: [89, 88, 88, 91, 95, 80, 89]
+      },
+      bestProduct: "MICHELIN CrossClimate 2 (AS - 북미)",
+      marketPosition: "안정성 지향형 추격 (수명 경쟁력 우수)",
+      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
     },
-    bestProduct: "MICHELIN CrossClimate 2",
-    marketPosition: "안정성 지향형 추격 (수명 경쟁력 우수)",
-    priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+    "Europe": {
+      chartData: {
+        hankook: [86, 88, 86, 91, 93, 80, 90],
+        benchmark: [88, 90, 89, 90, 94, 83, 88]
+      },
+      bestProduct: "MICHELIN CrossClimate 2 (AS - 유럽)",
+      marketPosition: "올시즌 유럽형 제동 우수 (마일리 가성비 우위)",
+      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+    }
   },
   "Winter / Snow": {
-    chartData: {
-      hankook: [85, 93, 91, 90, 86, 84],
-      benchmark: [88, 95, 93, 92, 88, 85]
+    "NorthAmerica": {
+      chartData: {
+        hankook: [85, 93, 91, 90, 86, 94, 84],
+        benchmark: [88, 95, 93, 92, 88, 96, 85]
+      },
+      bestProduct: "CONTINENTAL VikingContact 7 (WT - 북미)",
+      marketPosition: "특화 성능 추격형 (눈길 그립 확보)",
+      priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
     },
-    bestProduct: "CONTINENTAL VikingContact 7",
-    marketPosition: "특화 성능 추격형 (눈길 그립 확보)",
-    priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
+    "Europe": {
+      chartData: {
+        hankook: [84, 94, 90, 89, 85, 95, 83],
+        benchmark: [87, 96, 92, 91, 87, 97, 84]
+      },
+      bestProduct: "CONTINENTAL VikingContact 7 (WT - 유럽)",
+      marketPosition: "유럽 빙판 전용 고그립 (극저온 컴파운드 최적화)",
+      priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
+    }
   },
   "All-Terrain (SUV/Truck)": {
-    chartData: {
-      hankook: [91, 86, 88, 89, 90, 85],
-      benchmark: [93, 89, 90, 90, 92, 84]
+    "NorthAmerica": {
+      chartData: {
+        hankook: [91, 86, 88, 89, 90, 72, 85],
+        benchmark: [93, 89, 90, 90, 92, 75, 84]
+      },
+      bestProduct: "GOODYEAR Wrangler Duratrac (AT - 북미)",
+      marketPosition: "내구성 중심 경쟁형 (오프로드 강화)",
+      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
     },
-    bestProduct: "GOODYEAR Wrangler Duratrac",
-    marketPosition: "내구성 중심 경쟁형 (오프로드 강화)",
-    priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+    "Europe": {
+      chartData: {
+        hankook: [90, 88, 87, 88, 89, 75, 84],
+        benchmark: [92, 90, 89, 89, 91, 78, 83]
+      },
+      bestProduct: "GOODYEAR Wrangler Duratrac (AT - 유럽)",
+      marketPosition: "온/오프로드 전천후형 (유럽 친환경 연비 대응)",
+      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+    }
   }
 };
 
@@ -1605,7 +1640,15 @@ function initProductCompChart(ctx) {
   if (!segSelect) return;
   
   const selectedSeg = segSelect.value;
-  const techData = PRODUCT_COMPETITIVENESS_DATABASE[selectedSeg];
+  
+  // 액티브 소스 버튼 가져오기 (상품 기술 경쟁력 전용 필터)
+  const activeTechBtn = document.querySelector('#tech-source-group .btn-source.active');
+  const source = activeTechBtn ? activeTechBtn.getAttribute('data-source') : 'NorthAmerica';
+  
+  const segData = PRODUCT_COMPETITIVENESS_DATABASE[selectedSeg];
+  if (!segData) return;
+  
+  const techData = segData[source];
   if (!techData) return;
 
   if (productCompChart) productCompChart.destroy();
@@ -1613,7 +1656,15 @@ function initProductCompChart(ctx) {
   productCompChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: ['마른 노면 접지력', '젖은 노면 제동력', '수막현상 방지', '승차감 및 소음', '트레드 수명', '연비 효율성'],
+      labels: [
+        '마른 노면 접지력', 
+        '젖은 노면 제동력', 
+        '수막현상 방지', 
+        '승차감 및 소음', 
+        '트레드 수명', 
+        '눈길/빙판 제동', 
+        '연비 효율성'
+      ],
       datasets: [
         {
           label: 'HANKOOK',
@@ -1788,17 +1839,16 @@ function initGlobalMarketChart(ctx) {
 function initTrendPerformanceChart(ctx) {
   const mfg = document.getElementById('trend-mfg').value;
   const seg = document.getElementById('trend-seg').value;
-  const activeBtn = document.querySelector('.btn-source.active');
-  const source = activeBtn ? activeBtn.getAttribute('data-source') : 'Wear';
+  const activeBtn = document.querySelector('#trend-source-group .btn-source.active');
+  const source = activeBtn ? activeBtn.getAttribute('data-source') : 'NorthAmerica';
 
   const dataset = TREND_PERFORMANCE_DATABASE[mfg][seg][source];
 
   if (trendPerformanceChart) trendPerformanceChart.destroy();
 
   const sourceNameMap = {
-    "Wear": "북미종합평점",
-    "Braking": "북미 Tire rack 평가",
-    "RR": "북미 consumer 평가"
+    "NorthAmerica": "북미종합평점",
+    "Europe": "유럽종합평점"
   };
   const sourceLabel = sourceNameMap[source] || source;
 
@@ -1884,19 +1934,19 @@ function initRdPriorityChart(ctx) {
   const mfgColorMap = {
     "HANKOOK": {
       border: 'rgba(249, 115, 22, 1)', // 주황색
-      bg: 'rgba(249, 115, 22, 0.12)'
+      bg: 'rgba(249, 115, 22, 0.75)'
     },
     "MICHELIN": {
       border: 'rgba(59, 130, 246, 1)', // 파란색
-      bg: 'rgba(59, 130, 246, 0.12)'
+      bg: 'rgba(59, 130, 246, 0.75)'
     },
     "CONTINENTAL": {
       border: 'rgba(234, 179, 8, 1)', // 노란색
-      bg: 'rgba(234, 179, 8, 0.12)'
+      bg: 'rgba(234, 179, 8, 0.75)'
     },
     "BRIDGESTONE": {
       border: 'rgba(239, 68, 68, 1)', // 빨간색
-      bg: 'rgba(239, 68, 68, 0.12)'
+      bg: 'rgba(239, 68, 68, 0.75)'
     }
   };
 
@@ -1906,26 +1956,25 @@ function initRdPriorityChart(ctx) {
     const colors = mfgColorMap[mfg] || mfgColorMap["HANKOOK"];
 
     return {
-      label: `${mfg} R&D 집중도 (%)`,
+      label: `${mfg} R&D (%)`,
       data: data,
       backgroundColor: colors.bg,
       borderColor: colors.border,
-      borderWidth: 2.5,
-      pointBackgroundColor: colors.border,
-      pointBorderColor: '#fff',
-      pointBorderWidth: 2,
-      pointRadius: 4,
-      pointHoverRadius: 6
+      borderWidth: 1.5,
+      borderRadius: 6,
+      barPercentage: 0.8,
+      categoryPercentage: 0.75
     };
   });
 
   rdPriorityChart = new Chart(ctx, {
-    type: 'radar',
+    type: 'bar',
     data: {
       labels: ['친환경/ESG (Eco)', '초고성능 (Sport)', 'EV 전용 (EV Spec)', '디지털&AI (Smart)', '마모 수명 극대화 (Durability)'],
       datasets: datasets
     },
     options: {
+      indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
@@ -1942,13 +1991,16 @@ function initRdPriorityChart(ctx) {
         }
       },
       scales: {
-        r: {
-          angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
-          grid: { color: 'rgba(0, 0, 0, 0.08)' },
+        x: {
           min: 50,
           max: 100,
-          ticks: { stepSize: 10, backdropColor: 'transparent', font: { family: 'Pretendard', size: 9 }, color: '#94a3b8' },
-          pointLabels: { font: { family: 'Pretendard', weight: '700', size: 10.5 }, color: '#334155' }
+          grid: { color: 'rgba(0, 0, 0, 0.04)' },
+          ticks: { font: { family: 'Pretendard', size: 10 }, color: '#64748b' },
+          title: { display: true, text: '집중도 (%)', font: { family: 'Pretendard', weight: '700', size: 10 } }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { font: { family: 'Pretendard', weight: '700', size: 10.5 }, color: '#334155' }
         }
       }
     }
@@ -2005,13 +2057,23 @@ function setupStrategyEventListeners() {
   if (mfgSelect) mfgSelect.addEventListener('change', () => initTrendPerformanceChart(document.getElementById('trend-performance-chart')));
   if (segSelect) segSelect.addEventListener('change', () => initTrendPerformanceChart(document.getElementById('trend-performance-chart')));
 
-  // 연도별 성능 지표 버튼
-  const btns = document.querySelectorAll('.btn-source');
-  btns.forEach(btn => {
+  // 연도별 성능 지표 버튼 필터 (트렌드 전용)
+  const trendBtns = document.querySelectorAll('#trend-source-group .btn-source');
+  trendBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      btns.forEach(b => b.classList.remove('active'));
+      trendBtns.forEach(b => b.classList.remove('active'));
       e.target.classList.add('active');
       initTrendPerformanceChart(document.getElementById('trend-performance-chart'));
+    });
+  });
+
+  // 상품 기술 경쟁력 비교 성능 지표 버튼 필터 (기술력 전용)
+  const techBtns = document.querySelectorAll('#tech-source-group .btn-source');
+  techBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      techBtns.forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      initProductCompChart(document.getElementById('product-comp-chart'));
     });
   });
 

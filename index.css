@@ -1520,9 +1520,21 @@ body {
 
 .strategy-quad-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(10, 1fr);
   gap: 24px;
   margin-top: 16px;
+}
+
+.panel-global-market, .panel-trend-performance {
+  grid-column: span 5;
+}
+
+.panel-product-competitiveness {
+  grid-column: span 6;
+}
+
+.panel-rd-priority {
+  grid-column: span 4;
 }
 
 .quad-panel {
@@ -1806,6 +1818,9 @@ body {
 @media (max-width: 1200px) {
   .strategy-quad-grid {
     grid-template-columns: 1fr;
+  }
+  .panel-global-market, .panel-trend-performance, .panel-product-competitiveness, .panel-rd-priority {
+    grid-column: auto;
   }
   .performance-source-group {
     margin-left: 0;
