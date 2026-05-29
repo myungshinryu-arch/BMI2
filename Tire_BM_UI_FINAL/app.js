@@ -665,9 +665,16 @@ function renderTimeline() {
   const matrixRows = excelRows.map(rowNum => {
     const rowItems = sheetItems.filter(item => item.excelRow === rowNum);
     const sample = rowItems[0];
+    
+    // 카테고리 명칭에서 괄호 및 개행 설명 정밀 사전 절삭 (예: "Super Sport (dry 성능 위주...)" -> "Super Sport")
+    let rawCategory = (sample.category || '').trim();
+    if (rawCategory.includes('(')) {
+      rawCategory = rawCategory.split('(')[0].trim();
+    }
+    
     return {
       excelRow: rowNum,
-      category: (sample.category || '').trim(),
+      category: rawCategory,
       division: (sample.division || '').trim(),
       items: rowItems
     };
@@ -742,6 +749,12 @@ function renderTimeline() {
   matrixRows.forEach((row) => {
     const tr = document.createElement('tr');
     
+    // 자사 Hankook 행 판별하여 행(tr) 강조용 클래스 주입
+    const isHankookRow = (row.division.toUpperCase() === 'HK' || row.division === '자사' || row.division.toUpperCase() === 'HANKOOK');
+    if (isHankookRow) {
+      tr.classList.add('hankook-row');
+    }
+    
     // 7-1. Segment (Category) 셀 렌더링 (동적 rowspan 적용)
     if (row.categorySpan > 0) {
       const segmentTd = document.createElement('td');
@@ -762,8 +775,10 @@ function renderTimeline() {
       makerTd.rowSpan = row.divisionSpan;
       
       const makerDisplayName = getMakerDisplayName(row.division, row.items);
+      const isHankookLabel = (makerDisplayName === 'Hankook');
+      
       makerTd.innerHTML = `
-        <div class="plc-maker-label">
+        <div class="plc-maker-label ${isHankookLabel ? 'hankook-label' : ''}">
           <span class="maker-name">${makerDisplayName}</span>
         </div>
       `;
@@ -838,9 +853,9 @@ function getMakerDisplayName(division, items) {
     'PR': 'Pirelli',
     'GY': 'Goodyear',
     'BS': 'Bridgestone',
-    'HK': 'Hankook (자사)',
-    '자사': 'Hankook (자사)',
-    'HANKOOK': 'Hankook (자사)'
+    'HK': 'Hankook',
+    '자사': 'Hankook',
+    'HANKOOK': 'Hankook'
   };
   
   if (mapping[cleanDiv]) {
@@ -852,7 +867,7 @@ function getMakerDisplayName(division, items) {
     for (const item of items) {
       const detected = detectMaker(item.productName);
       if (detected && detected !== '기타') {
-        if (detected === 'Hankook') return 'Hankook (자사)';
+        if (detected === 'Hankook') return 'Hankook';
         return detected;
       }
     }
@@ -1082,8 +1097,16 @@ function showTimelineDetails(item) {
   makerBadge.style.background = getMakerBadgeColor(maker);
 
   document.getElementById('plc-spec-sheet').textContent = item.sheet;
-  document.getElementById('plc-spec-category').textContent = item.category;
-  document.getElementById('plc-spec-division').textContent = item.division;
+  
+  let cleanCategory = (item.category || '').trim();
+  if (cleanCategory.includes('(')) {
+    cleanCategory = cleanCategory.split('(')[0].trim();
+  }
+  document.getElementById('plc-spec-category').textContent = cleanCategory;
+  
+  const cleanDivision = getMakerDisplayName(item.division, [item]);
+  document.getElementById('plc-spec-division').textContent = cleanDivision;
+  
   document.getElementById('plc-spec-year').textContent = `${item.year} 년`;
   document.getElementById('plc-spec-type').textContent = '벤치마킹 타이어';
 
@@ -1146,7 +1169,13 @@ function showEVDetails(item) {
   makerBadge.style.background = getMakerBadgeColor(item.maker);
 
   document.getElementById('plc-spec-sheet').textContent = 'EV 친환경 Board';
-  document.getElementById('plc-spec-category').textContent = item.segment;
+  
+  let cleanSegment = (item.segment || '').trim();
+  if (cleanSegment.includes('(')) {
+    cleanSegment = cleanSegment.split('(')[0].trim();
+  }
+  document.getElementById('plc-spec-category').textContent = cleanSegment;
+  
   document.getElementById('plc-spec-division').textContent = item.maker;
   document.getElementById('plc-spec-year').textContent = item.rank ? `우선순위 Rank ${item.rank}` : 'EV 특화';
   document.getElementById('plc-spec-type').textContent = item.type; // 전용상품 / 호환상품

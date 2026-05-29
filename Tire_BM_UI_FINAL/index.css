@@ -2023,5 +2023,28 @@ option,
   color: var(--primary) !important;
 }
 
+/* ==========================================================================
+   자사 Hankook 행/셀 특화 강조 (Premium Orange-Peach Highlight System)
+   ========================================================================== */
+/* 자사 Hankook 행의 기본 셀 배경색 - 초연한 오렌지/살구빛 틴트 */
+.plc-matrix-table tr.hankook-row td {
+  background-color: rgba(254, 243, 199, 0.15) !important; /* 아주 연한 주황빛(살구빛) 배경 */
+}
 
+/* 자사 행의 호버 효과 */
+.plc-matrix-table tr.hankook-row:hover td {
+  background-color: rgba(254, 243, 199, 0.3) !important;
+}
 
+/* 병합 셀(Seg-col, Maker-col)에 대한 배경색 및 강조선 */
+.plc-matrix-table tr.hankook-row td.segment-col,
+.plc-matrix-table tr.hankook-row td.maker-col {
+  background: linear-gradient(90deg, #fffefc, rgba(254, 243, 199, 0.25)) !important;
+}
+
+/* Hankook 메이커 라벨 강조 및 독보적인 하이라이트 글씨색 */
+.plc-maker-label.hankook-label .maker-name {
+  color: #ff5d00 !important; /* 자사 포인트 강렬한 오렌지/주황 컬러 */
+  font-weight: 850 !important;
+  text-shadow: 0 0 10px rgba(255, 93, 0, 0.1);
+}
