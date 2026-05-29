@@ -143,7 +143,14 @@ const TIRE_UNIT_PRICES = {
     "Solus TA51a": 115,
     "Ecsta PS71": 125,
     "WinterCraft WP72": 120,
-    "Road Venture AT52": 135
+    "Road Venture AT52": 135,
+    
+    // New Competitor SUV Grand Touring Tires
+    "CrossClimate 2 SUV": 185,
+    "Alenza AS Ultra": 180,
+    "CrossContact LX25": 160,
+    "Scorpion AS Plus 3": 170,
+    "Assurance MaxLife (SUV)": 150
 };
 
 // =============================================================
@@ -171,7 +178,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.28,
-                "Grand Touring (All-Season)": 0.22,
+                "Grand Touring (All-Season) - Passenger": 0.12,
+                "Grand Touring (All-Season) - SUV": 0.10,
                 "All-Season Passenger": 0.25,
                 "Winter / Snow": 0.15,
                 "All-Terrain (SUV/Truck)": 0.10
@@ -205,7 +213,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.35,
-                "Grand Touring (All-Season)": 0.30,
+                "Grand Touring (All-Season) - Passenger": 0.16,
+                "Grand Touring (All-Season) - SUV": 0.14,
                 "All-Season Passenger": 0.20,
                 "Winter / Snow": 0.10,
                 "All-Terrain (SUV/Truck)": 0.05
@@ -239,7 +248,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.30,
-                "Grand Touring (All-Season)": 0.35,
+                "Grand Touring (All-Season) - Passenger": 0.18,
+                "Grand Touring (All-Season) - SUV": 0.17,
                 "All-Season Passenger": 0.20,
                 "Winter / Snow": 0.08,
                 "All-Terrain (SUV/Truck)": 0.07
@@ -273,7 +283,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.32,
-                "Grand Touring (All-Season)": 0.28,
+                "Grand Touring (All-Season) - Passenger": 0.15,
+                "Grand Touring (All-Season) - SUV": 0.13,
                 "All-Season Passenger": 0.20,
                 "Winter / Snow": 0.15,
                 "All-Terrain (SUV/Truck)": 0.05
@@ -307,7 +318,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.22,
-                "Grand Touring (All-Season)": 0.28,
+                "Grand Touring (All-Season) - Passenger": 0.15,
+                "Grand Touring (All-Season) - SUV": 0.13,
                 "All-Season Passenger": 0.25,
                 "Winter / Snow": 0.10,
                 "All-Terrain (SUV/Truck)": 0.15
@@ -341,7 +353,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.55,
-                "Grand Touring (All-Season)": 0.25,
+                "Grand Touring (All-Season) - Passenger": 0.13,
+                "Grand Touring (All-Season) - SUV": 0.12,
                 "All-Season Passenger": 0.10,
                 "Winter / Snow": 0.08,
                 "All-Terrain (SUV/Truck)": 0.02
@@ -375,7 +388,8 @@ const BRAND_IR_METADATA = {
         marketSegmentAlloc: {
             na: {
                 "Ultra High Performance (UHP)": 0.25,
-                "Grand Touring (All-Season)": 0.30,
+                "Grand Touring (All-Season) - Passenger": 0.16,
+                "Grand Touring (All-Season) - SUV": 0.14,
                 "All-Season Passenger": 0.25,
                 "Winter / Snow": 0.12,
                 "All-Terrain (SUV/Truck)": 0.08
@@ -438,7 +452,8 @@ class TireDashboard {
         } else {
             return [
                 "Ultra High Performance (UHP)",
-                "Grand Touring (All-Season)",
+                "Grand Touring (All-Season) - Passenger",
+                "Grand Touring (All-Season) - SUV",
                 "All-Season Passenger",
                 "Winter / Snow",
                 "All-Terrain (SUV/Truck)"
@@ -538,7 +553,8 @@ class TireDashboard {
         if (!metadata) return 0;
 
         // 1. 공식 매출액 Baseline 구하기 (USD 단위)
-        const globalRevenue = metadata.globalRevenue[year] || 6000000000;
+        let globalRevenue = metadata.globalRevenue[year] || 6000000000;
+        if (brand === 'Pirelli') globalRevenue *= 1.10;
         const rAlloc = metadata.regionalAlloc[market] || 0.35;
         const actualRevenueRegion = globalRevenue * rAlloc;
 
@@ -612,6 +628,11 @@ class TireDashboard {
         }
 
         // Tab 2 필터 리스너 등록
+        if (this.brandSelect && this.brandSelect.addEventListener) {
+            this.brandSelect.addEventListener('change', () => {
+                this.handleFilterChange();
+            });
+        }
         if (this.segmentSelect) {
             this.segmentSelect.addEventListener('change', (e) => {
                 this.syncSegment(e.target.value, 'filter-segment');
@@ -749,6 +770,31 @@ class TireDashboard {
         // 신규: 전략 매트릭스 테이블 데이터 주입
         this.renderMatrixTable();
 
+        // 경쟁사 세대별 혁신 Portal - 브랜드 선택기 바인딩
+        this.selectedGenTrendsBrand = 'Michelin';
+        this.selectedGenTrendsLineup = 'Michelin_Sport';
+        const gtBrandBtns = document.querySelectorAll('#gt-brand-selector .tab-toggle-btn');
+        gtBrandBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                gtBrandBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const brand = btn.getAttribute('data-brand');
+                this.selectedGenTrendsBrand = brand;
+                this.renderGenerationTrendsLineupButtons(brand);
+            });
+        });
+
+        // 세대별 비교 모드 드롭다운 바인딩
+        const gtGenSelect = document.getElementById('gt-generation-selector');
+        if (gtGenSelect) {
+            gtGenSelect.addEventListener('change', (e) => {
+                const mode = e.target.value;
+                if (this.selectedGenTrendsLineup) {
+                    this.renderGenerationTrends(this.selectedGenTrendsLineup, mode);
+                }
+            });
+        }
+
         // 최초 전체 화면 렌더링 및 뷰 설정
         this.updateDashboard();
         this.switchView('market');
@@ -820,7 +866,8 @@ class TireDashboard {
                 selectEl.innerHTML = `
                     <option value="all">전체 세그먼트 (All Segments)</option>
                     <option value="Ultra High Performance (UHP)">초고성능 스포츠 (UHP)</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
+                    <option value="Grand Touring (All-Season) - Passenger">투어링 승용 사계절 (Grand Touring Passenger)</option>
+                    <option value="Grand Touring (All-Season) - SUV">투어링 SUV 사계절 (Grand Touring SUV)</option>
                     <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
                     <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
                     <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
@@ -828,7 +875,8 @@ class TireDashboard {
                 const validOptions = [
                     'all',
                     'Ultra High Performance (UHP)',
-                    'Grand Touring (All-Season)',
+                    'Grand Touring (All-Season) - Passenger',
+                    'Grand Touring (All-Season) - SUV',
                     'All-Season Passenger',
                     'Winter / Snow',
                     'All-Terrain (SUV/Truck)'
@@ -1038,6 +1086,11 @@ class TireDashboard {
                 const selectedYear = this.getSelectedYear();
                 const activeSegment = this.segmentSelect ? this.segmentSelect.value : 'all';
                 this.renderStrategyPanel(selectedYear, activeSegment);
+            }, 50);
+        } else if (view === 'generation-trends') {
+            setTimeout(() => {
+                const brand = this.selectedGenTrendsBrand || 'Michelin';
+                this.renderGenerationTrendsLineupButtons(brand);
             }, 50);
         }
     }
@@ -1464,7 +1517,51 @@ class TireDashboard {
     }
 
     /**
-     * 차트 1: 연도별 판매량(Bar) 및 평균 종합 성능 점수(Line) YoY 추이 분석 (2021~2026 고정 장기 추세 유지)
+     * 연도별 레코드에서 주요 성능 항목별 점수를 추출 (0-10 Scale)
+     */
+    getMetricScoresForRecord(rec, isNA, isSummer) {
+        if (!rec) return [];
+        if (isNA) {
+            if (isSummer) {
+                // Summer 타이어: 겨울용 성능인 snow_traction, ice_braking은 전격 제외(6축 재배치)
+                return [
+                    (rec.tirerack.dry_traction + rec.consumerreports.dry_braking/10) / 2,
+                    (rec.tirerack.wet_traction + rec.consumerreports.wet_braking/10) / 2,
+                    (rec.tirerack.hydroplaning + rec.consumerreports.handling/10) / 2,
+                    (rec.tirerack.comfort + rec.tirerack.noise) / 2,
+                    (rec.tirerack.treadwear + rec.consumerreports.tread_life/10) / 2,
+                    rec.consumerreports.fuel_economy / 10
+                ];
+            } else {
+                // All-Season 또는 Winter: 7개 성능 축 전부 연산
+                return [
+                    (rec.tirerack.dry_traction + rec.consumerreports.dry_braking/10) / 2,
+                    (rec.tirerack.wet_traction + rec.consumerreports.wet_braking/10) / 2,
+                    (rec.tirerack.hydroplaning + rec.consumerreports.handling/10) / 2,
+                    (rec.tirerack.comfort + rec.tirerack.noise) / 2,
+                    (rec.tirerack.treadwear + rec.consumerreports.tread_life/10) / 2,
+                    (rec.consumerreports.snow_traction/10 + rec.consumerreports.ice_braking/10) / 2,
+                    rec.consumerreports.fuel_economy / 10
+                ];
+            }
+        } else {
+            // 유럽 시장 (6개 성능 축 연산)
+            const adac = rec.europe ? rec.europe.adac : { dry_safety: 3.0, wet_safety: 3.0, mileage: 3.0, efficiency: 3.0, noise: 3.0 };
+            const ab = rec.europe ? rec.europe.autobild : { dry_performance: 7.0, wet_performance: 7.0, aquaplaning: 7.0, comfort: 7.0, treadwear: 7.0 };
+            
+            return [
+                ((6.0 - adac.dry_safety) * 2 + ab.dry_performance) / 2,
+                ((6.0 - adac.wet_safety) * 2 + ab.wet_performance) / 2,
+                ab.aquaplaning,
+                ((6.0 - adac.mileage) * 2 + ab.treadwear) / 2,
+                (6.0 - adac.efficiency) * 2,
+                ((6.0 - adac.noise) * 2 + ab.comfort) / 2
+            ];
+        }
+    }
+
+    /**
+     * 차트 1: 연도별(YoY) 주요 성능 항목별 점수 추이 분석 (0-10 Scale 고정 멀티라인 차트)
      */
     renderYoYChart(filteredData) {
         if (typeof Chart === 'undefined') return;
@@ -1472,96 +1569,178 @@ class TireDashboard {
         if (!chartCanvas) return;
 
         const yearsRange = ['2021', '2022', '2023', '2024', '2025', '2026'];
-        const metric = this.metricSelect ? this.metricSelect.value : 'volume';
-        
-        const salesByYear = yearsRange.map(() => 0);
-        const scoresByYear = yearsRange.map(() => 0);
-        const countsByYear = yearsRange.map(() => 0);
+        const activeSegment = this.segmentSelect ? this.segmentSelect.value : 'all';
+        const isNA = this.currentMarket === 'na';
 
-        filteredData.forEach(item => {
-            yearsRange.forEach((year, idx) => {
+        // 대표 시즌 판단
+        let targetSeason = 'Summer';
+        if (activeSegment === 'Winter / Snow' || activeSegment === 'Winter') {
+            targetSeason = 'Winter';
+        } else if (isNA) {
+            targetSeason = 'All-Season';
+        }
+        const isSummer = (targetSeason === 'Summer');
+
+        // 속성 명칭 정의 (레이더 차트 속성 명칭 및 개수와 완벽 대칭 구조)
+        const attributes = (isNA && !isSummer)
+            ? [
+                '마른 노면 접지력', 
+                '젖은 노면 제동력', 
+                '수막현상 방지', 
+                '승차감 및 소음', 
+                '트레드 수명', 
+                '눈길/빙판 제동', 
+                '연비 효율성'
+            ]
+            : isNA
+                ? [
+                    '마른 노면 접지력', 
+                    '젖은 노면 제동력', 
+                    '수막현상 방지', 
+                    '승차감 및 소음', 
+                    '트레드 수명', 
+                    '연비 효율성'
+                ]
+                : [
+                    '마른 노면 성능 (Dry)',
+                    '젖은 노면 성능 (Wet)',
+                    '수막현상 방지 (Hydro)',
+                    '수명 및 마일리지 (Tread)',
+                    '회전저항 (연비) (R.R.)',
+                    '승차감 및 소음 (Noise)'
+                ];
+
+        // 대표 시즌을 갖는 모델들만 필터링하여 일관성 유지 (수막현상/눈길 등 비교 항목 정합 확보)
+        const targetModels = filteredData.filter(item => item.season === targetSeason);
+
+        const numAttrs = attributes.length;
+        const attrSumsByYear = Array(numAttrs).fill(0).map(() => Array(yearsRange.length).fill(0));
+        const countsByYear = Array(yearsRange.length).fill(0);
+
+        targetModels.forEach(item => {
+            yearsRange.forEach((year, yrIdx) => {
                 const yearRec = item.yearlyData[year];
                 if (yearRec) {
-                    const itemSegment = this.getModelSegmentForMarket(item, this.currentMarket);
-                    if (metric === 'revenue') {
-                        const revMil = this.getModelSalesRevenue(item.brand, item.model, itemSegment, year, this.currentMarket, true);
-                        salesByYear[idx] += revMil;
-                    } else {
-                        const salesVolK = this.getModelSalesVolume(item.brand, item.model, itemSegment, year, this.currentMarket, true);
-                        salesByYear[idx] += salesVolK;
+                    const scores = this.getMetricScoresForRecord(yearRec, isNA, isSummer);
+                    if (scores && scores.length === numAttrs) {
+                        for (let a = 0; a < numAttrs; a++) {
+                            attrSumsByYear[a][yrIdx] += scores[a];
+                        }
+                        countsByYear[yrIdx]++;
                     }
-                    scoresByYear[idx] += this.calculateModelScore(yearRec, item.season);
-                    countsByYear[idx]++;
                 }
             });
         });
 
-        const avgScoresByYear = scoresByYear.map((sum, idx) => {
-            return countsByYear[idx] > 0 ? (sum / countsByYear[idx]) : 0;
-        });
+        // 연도별 가중평균 성능 점수 계산
+        const attrAvgsByYear = Array(numAttrs).fill(0).map(() => Array(yearsRange.length).fill(0));
+        for (let a = 0; a < numAttrs; a++) {
+            for (let yrIdx = 0; yrIdx < yearsRange.length; yrIdx++) {
+                const count = countsByYear[yrIdx];
+                attrAvgsByYear[a][yrIdx] = count > 0 ? (attrSumsByYear[a][yrIdx] / count) : 0;
+            }
+        }
 
         if (this.charts.yoy) {
             this.charts.yoy.destroy();
         }
 
-        const isHankookSelected = this.brandSelect.value === 'Hankook';
-        const barColor = isHankookSelected ? 'rgba(255, 107, 0, 0.4)' : 'rgba(59, 130, 246, 0.4)';
-        const barBorderColor = isHankookSelected ? '#ff6b00' : '#3b82f6';
+        // 성능 항목 성격에 맞는 직관적이고 고급스러운 컬러 팔레트 배정
+        let colors = [];
+        if (isNA) {
+            if (isSummer) {
+                // Dry (Orange), Wet (Blue), Hydro (Teal), Comfort (Purple), Tread (Green), Fuel (Amber)
+                colors = ['#ff6b00', '#3b82f6', '#06b6d4', '#8b5cf6', '#10b981', '#f59e0b'];
+            } else {
+                // Dry (Orange), Wet (Blue), Hydro (Teal), Comfort (Purple), Tread (Green), Snow (Pink), Fuel (Amber)
+                colors = ['#ff6b00', '#3b82f6', '#06b6d4', '#8b5cf6', '#10b981', '#ec4899', '#f59e0b'];
+            }
+        } else {
+            // Dry (Orange), Wet (Blue), Hydro (Teal), Tread (Green), Fuel (Amber), Comfort/Noise (Purple)
+            colors = ['#ff6b00', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6'];
+        }
 
-        const barLabel = metric === 'revenue' ? '연도별 매출액 (백만달러)' : '연도별 단일 판매량 (천본)';
-        const axisTitle = metric === 'revenue' ? '단일 연도 매출액 (백만달러)' : '단일 연도 판매량 (천본)';
+        const datasets = attributes.map((attr, a) => {
+            const color = colors[a] || '#6b7280';
+            return {
+                label: attr,
+                data: attrAvgsByYear[a],
+                borderColor: color,
+                backgroundColor: 'transparent',
+                pointBackgroundColor: color,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: color,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                borderWidth: 2.5,
+                tension: 0.25
+            };
+        });
 
         const ctx = chartCanvas.getContext('2d');
         this.charts.yoy = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: yearsRange.map(y => y + "년"),
-                datasets: [
-                    {
-                        label: barLabel,
-                        data: salesByYear,
-                        backgroundColor: barColor,
-                        borderColor: barBorderColor,
-                        borderWidth: 1.5,
-                        yAxisID: 'y-sales',
-                        order: 2
-                    },
-                    {
-                        label: '평균 종합 성능 점수 (0-100)',
-                        data: avgScoresByYear,
-                        type: 'line',
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#fff',
-                        pointRadius: 5,
-                        borderWidth: 3,
-                        yAxisID: 'y-score',
-                        order: 1,
-                        tension: 0.2
-                    }
-                ]
+                datasets: datasets
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'top', labels: { boxWidth: 15 } }
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 12,
+                            font: {
+                                size: 11,
+                                family: "'Inter', 'Outfit', 'sans-serif'"
+                            },
+                            color: '#e2e8f0'
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#e2e8f0',
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        padding: 10
+                    }
                 },
                 scales: {
-                    'y-sales': {
+                    y: {
                         type: 'linear',
-                        position: 'left',
-                        title: { display: true, text: axisTitle, color: barBorderColor },
-                        grid: { drawOnChartArea: true }
+                        min: 0,
+                        max: 10,
+                        ticks: {
+                            stepSize: 1,
+                            color: '#94a3b8'
+                        },
+                        title: {
+                            display: true,
+                            text: '성능 항목별 점수 (0-10 Scale)',
+                            color: '#94a3b8',
+                            font: {
+                                size: 11,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            drawBorder: false
+                        }
                     },
-                    'y-score': {
-                        type: 'linear',
-                        position: 'right',
-                        min: 50,
-                        max: 100,
-                        title: { display: true, text: '종합 성능 평점 (0-100)', color: '#10b981' },
-                        grid: { drawOnChartArea: false }
+                    x: {
+                        ticks: {
+                            color: '#94a3b8'
+                        },
+                        grid: {
+                            display: false
+                        }
                     }
                 }
             }
@@ -1736,9 +1915,10 @@ class TireDashboard {
                 }
                 
                 if (activeMetric === 'revenue') {
-                    const rawRevenue = typeof metadata.globalRevenue === 'object'
+                    let rawRevenue = typeof metadata.globalRevenue === 'object'
                         ? (metadata.globalRevenue[year] || 0)
                         : (metadata.globalRevenue || 0);
+                    if (brand === 'Pirelli') rawRevenue *= 1.10;
                     return (rawRevenue * alloc) / 1000000000; // Billion USD
                 } else {
                     const rawSales = typeof metadata.globalSales === 'object'
@@ -1853,8 +2033,12 @@ class TireDashboard {
         const targetSeason = selectedHankookModel.season;
 
         // 3. 한국타이어 대표 모델과 '완벽히 같은 시즌'을 갖는 제품군끼리만 엄격하게 매칭 (횡비교 왜곡 원천 차단)
+        const selectedBrand = this.brandSelect ? this.brandSelect.value : 'all';
         const hankookModels = allHankookInSegment.filter(item => item.season === targetSeason);
-        const competitorModels = segmentModels.filter(item => item.brand !== 'Hankook' && item.season === targetSeason);
+        let competitorModels = segmentModels.filter(item => item.brand !== 'Hankook' && item.season === targetSeason);
+        if (selectedBrand !== 'all' && selectedBrand !== 'Hankook') {
+            competitorModels = competitorModels.filter(item => item.brand === selectedBrand);
+        }
 
         // 한국타이어 모델 중 해당 연도/시즌에서 가장 평점이 높은 '최우수 대표 상품' 선정
         let bestHankook = null;
@@ -1869,6 +2053,14 @@ class TireDashboard {
         });
         if (bestHankook) {
             selectedHankookModel = bestHankook;
+        }
+
+        // 한국타이어 모델과 완벽히 동일한 세그먼트 제품들만 비교되도록 필터링 (승용/SUV 오비교 전격 방지)
+        if (selectedHankookModel) {
+            const sameSegmentCompetitors = competitorModels.filter(item => item.segment === selectedHankookModel.segment);
+            if (sameSegmentCompetitors.length > 0) {
+                competitorModels = sameSegmentCompetitors;
+            }
         }
 
         let bestCompetitor = null;
@@ -2029,7 +2221,8 @@ class TireDashboard {
         const segmentNamesKo = {
             'all': '전체 제품군 종합 라인업',
             'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
-            'Grand Touring (All-Season)': '투어링 사계절 (Grand Touring)',
+            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (Grand Touring Passenger)',
+            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (Grand Touring SUV)',
             'All-Season Passenger': '일반 승용 사계절 (All-Season)',
             'Winter / Snow': '겨울용 스노우 (Winter/Snow)',
             'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)'
@@ -2333,7 +2526,8 @@ class TireDashboard {
 
         const segmentNamesKo = {
             'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
-            'Grand Touring (All-Season)': '투어링 사계절 (GT)',
+            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (GT Passenger)',
+            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (GT SUV)',
             'All-Season Passenger': '일반 사계절 Passenger',
             'Winter / Snow': '겨울용 스노우',
             'All-Terrain (SUV/Truck)': '온/오프로드 SUV',
@@ -2564,7 +2758,8 @@ class TireDashboard {
         const marketText = this.currentMarket === 'na' ? '북미 시장 (North America - RE/OE)' : '유럽 시장 (Europe - RE/OE)';
         const segmentNamesKo = {
             'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
-            'Grand Touring (All-Season)': '투어링 사계절 (Grand Touring)',
+            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (Grand Touring Passenger)',
+            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (Grand Touring SUV)',
             'All-Season Passenger': '일반 승용 사계절 (All-Season)',
             'Winter / Snow': '겨울용 스노우 (Winter/Snow)',
             'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)',
@@ -2617,7 +2812,9 @@ class TireDashboard {
                 const itemPrice = TIRE_UNIT_PRICES[item.model] || 150;
                 retailRevenueTotalUSD += itemVolK * 1000 * itemPrice;
             });
-            const actualRevenueRegion = (metadata.globalRevenue[selectedYear] || 6000000000) * rAlloc;
+            let baseRevenue = metadata.globalRevenue[selectedYear] || 6000000000;
+            if (brand === 'Pirelli') baseRevenue *= 1.10;
+            const actualRevenueRegion = baseRevenue * rAlloc;
             const sf = retailRevenueTotalUSD > 0 ? (actualRevenueRegion / retailRevenueTotalUSD) : 1.0;
 
             document.getElementById('calc-result-value').textContent = `$${revenueMillion.toFixed(1)}M (USD)`;
@@ -2639,6 +2836,521 @@ class TireDashboard {
         if (modal) {
             modal.classList.add('active');
         }
+    }
+
+    /**
+     * 경쟁사별 라인업 버튼들을 동적으로 생성하고 첫 번째 라인업을 선택함
+     */
+    renderGenerationTrendsLineupButtons(brand) {
+        const selector = document.getElementById('gt-lineup-selector');
+        if (!selector) return;
+
+        // 기존 라인업 버튼 제거
+        selector.innerHTML = '';
+
+        if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+            console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
+            return;
+        }
+
+        const brandColors = {
+            Michelin: '#5cb2ff',
+            Continental: '#ff9f24',
+            Pirelli: '#3b82f6'
+        };
+        const themeColor = brandColors[brand] || '#3b82f6';
+
+        let firstKey = null;
+        Object.keys(window.TIRE_EVOLUTION_DATABASE).forEach(key => {
+            const data = window.TIRE_EVOLUTION_DATABASE[key];
+            if (data.brand === brand) {
+                if (!firstKey) firstKey = key;
+
+                const btn = document.createElement('button');
+                btn.className = 'tab-toggle-btn';
+                btn.setAttribute('data-lineup', key);
+                btn.style.borderLeftColor = themeColor;
+                btn.style.borderLeftWidth = '4px';
+                btn.textContent = data.lineupName;
+
+                btn.addEventListener('click', () => {
+                    selector.querySelectorAll('.tab-toggle-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    this.selectedGenTrendsLineup = key;
+                    const gtGenSelect = document.getElementById('gt-generation-selector');
+                    const mode = gtGenSelect ? gtGenSelect.value : 'gen3';
+                    this.renderGenerationTrends(key, mode);
+                });
+
+                selector.appendChild(btn);
+            }
+        });
+
+        // 기본 첫 번째 라인업 활성화
+        if (firstKey) {
+            const firstBtn = selector.querySelector(`[data-lineup="${firstKey}"]`);
+            if (firstBtn) firstBtn.classList.add('active');
+            this.selectedGenTrendsLineup = firstKey;
+        }
+
+        // 제너레이션 선택기 드롭다운을 'gen3'로 리셋
+        const gtGenSelect = document.getElementById('gt-generation-selector');
+        if (gtGenSelect) {
+            gtGenSelect.value = 'gen3';
+        }
+
+        // 최초 렌더링
+        if (firstKey) {
+            this.renderGenerationTrends(firstKey, 'gen3');
+        }
+    }
+
+    /**
+     * 경쟁사 플래그십 상품군 세대별 혁신 트렌드 분석 포털 렌더링
+     */
+    renderGenerationTrends(lineupKey, chartMode = 'gen3') {
+        if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+            console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
+            return;
+        }
+
+        const data = window.TIRE_EVOLUTION_DATABASE[lineupKey];
+        if (!data) {
+            console.error(`${lineupKey} 라인업의 세대별 진화 데이터가 존재하지 않습니다.`);
+            return;
+        }
+
+        this.selectedGenTrendsLineup = lineupKey;
+
+        // 1. 헤더 타이틀 및 세그먼트 요약 패널 갱신
+        const headerTitle = document.getElementById('gt-header-title');
+        const headerSubtitle = document.getElementById('gt-header-subtitle');
+        if (headerTitle) {
+            headerTitle.textContent = `${data.brand} ${data.lineupName} 대표 상품 세대별 성능 변화 분석`;
+        }
+        if (headerSubtitle) {
+            headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU} | 북미 US — ${data.segmentUS} <span style="margin-left:12px; color:var(--color-hankook);">[대표 경쟁 라인: ${data.flagshipLine} ➔ 대응 한국 라인: ${data.hankookLine}]</span>`;
+        }
+
+        // 2. 세대별 브로셔 카드 레이아웃 렌더링 (Left Column - Side by Side)
+        const container = document.getElementById('gt-brochure-container');
+        if (container) {
+            container.innerHTML = '';
+            const brandColors = {
+                Michelin: '#5cb2ff',
+                Continental: '#ff9f24',
+                Pirelli: '#3b82f6'
+            };
+            const themeColor = brandColors[data.brand] || '#3b82f6';
+
+            data.generations.forEach((g, idx) => {
+                // Generation Row
+                const row = document.createElement('div');
+                row.className = 'gt-generation-row';
+                row.style.marginBottom = '25px';
+
+                // Gen title header
+                const rowHeader = document.createElement('div');
+                rowHeader.style.display = 'flex';
+                rowHeader.style.justifyContent = 'space-between';
+                rowHeader.style.alignItems = 'center';
+                rowHeader.style.marginBottom = '10px';
+                rowHeader.style.padding = '0 5px';
+                rowHeader.innerHTML = `
+                    <div style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+                        <span style="background: ${idx === 2 ? 'var(--color-hankook)' : 'rgba(255,255,255,0.1)'}; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">GEN ${idx + 1}</span>
+                        GEN ${idx + 1} 세대별 비교
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">
+                        ${idx === 2 ? '🔥 최신 플래그십 매칭' : idx === 1 ? '⚡ 2세대 볼륨 매칭' : '❄️ 1세대 히스토리 매칭'}
+                    </div>
+                `;
+                row.appendChild(rowHeader);
+
+                const cardsContainer = document.createElement('div');
+                cardsContainer.className = 'gt-cards-container';
+                cardsContainer.style.display = 'grid';
+                cardsContainer.style.gridTemplateColumns = '1fr 1fr';
+                cardsContainer.style.gap = '15px';
+
+                // Competitor Card
+                const compCard = document.createElement('div');
+                compCard.className = 'gt-brochure-card';
+                compCard.style.setProperty('--theme-color', themeColor);
+                if (idx === 2) {
+                    compCard.style.borderColor = themeColor;
+                    compCard.style.boxShadow = `0 8px 30px ${themeColor}15`;
+                }
+                compCard.innerHTML = `
+                    <div class="gt-brochure-header">
+                        <span class="gt-brochure-title" style="color: ${themeColor}; font-size: 0.95rem;">${g.compModel}</span>
+                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px;">COMPETITOR (${g.compYear || g.year}년 출시)</span>
+                    </div>
+                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.compSlogan}"</div>
+                    <div class="gt-brochure-details">
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">배합 소재</span>
+                            <span class="gt-brochure-detail-val" title="${g.compBrochure.compound}">${g.compBrochure.compound}</span>
+                        </div>
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">핵심 기술</span>
+                            <span class="gt-brochure-detail-val" style="color: ${themeColor}" title="${g.compBrochure.tech}">${g.compBrochure.tech}</span>
+                        </div>
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">트레드웨어</span>
+                            <span class="gt-brochure-detail-val">${g.compBrochure.treadwear}</span>
+                        </div>
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">R&D 소구점</span>
+                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.compBrochure.focus}">${g.compBrochure.focus}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Hankook Card
+                const hkCard = document.createElement('div');
+                hkCard.className = 'gt-brochure-card';
+                hkCard.style.setProperty('--theme-color', '#ff6b00');
+                if (idx === 2) {
+                    hkCard.style.borderColor = '#ff6b00';
+                    hkCard.style.boxShadow = '0 8px 30px rgba(255, 107, 0, 0.15)';
+                }
+                hkCard.innerHTML = `
+                    <div class="gt-brochure-header">
+                        <span class="gt-brochure-title" style="color: #ff6b00; font-size: 0.95rem;">${g.hkModel}</span>
+                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px; background: rgba(255, 107, 0, 0.1); border-color: rgba(255, 107, 0, 0.2); color: #ff6b00;">HANKOOK (${g.hkYear || g.year}년 출시)</span>
+                    </div>
+                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.hkSlogan}"</div>
+                    <div class="gt-brochure-details">
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">배합 소재</span>
+                            <span class="gt-brochure-detail-val" title="${g.hkBrochure.compound}">${g.hkBrochure.compound}</span>
+                        </div>
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">핵심 기술</span>
+                            <span class="gt-brochure-detail-val" style="color: #ffaa66" title="${g.hkBrochure.tech}">${g.hkBrochure.tech}</span>
+                        </div>
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">트레드웨어</span>
+                            <span class="gt-brochure-detail-val">${g.hkBrochure.treadwear}</span>
+                        </div>
+                        <div class="gt-brochure-detail-item">
+                            <span class="gt-brochure-detail-label">R&D 소구점</span>
+                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.hkBrochure.focus}">${g.hkBrochure.focus}</span>
+                        </div>
+                    </div>
+                `;
+
+                cardsContainer.appendChild(compCard);
+                cardsContainer.appendChild(hkCard);
+                row.appendChild(cardsContainer);
+                container.appendChild(row);
+            });
+        }
+
+        // 3. 전략적 Insights 텍스트 박스 업데이트 (Right Column Bottom)
+        const pastBox = document.getElementById('gt-insight-past');
+        const presentBox = document.getElementById('gt-insight-present');
+        const futureBox = document.getElementById('gt-insight-future');
+
+        if (pastBox) pastBox.innerHTML = `<strong>[과거 지향점]</strong><br>${data.insights.past}`;
+        if (presentBox) presentBox.innerHTML = `<strong>[현재 지향점]</strong><br>${data.insights.present}`;
+        if (futureBox) futureBox.innerHTML = `<strong>[중장기 R&D 예측]</strong><br>${data.insights.future}`;
+
+        // 4. 세대별 모델 체인지 R&D 개발 방향성 차이 분석 주입
+        const g1g2Box = document.getElementById('gt-direction-g1-g2');
+        const g2g3Box = document.getElementById('gt-direction-g2-g3');
+        const summaryBox = document.getElementById('gt-direction-summary');
+
+        if (g1g2Box) g1g2Box.textContent = data.evolutionDirection.gen1_to_gen2 || '데이터 준비 중...';
+        if (g2g3Box) g2g3Box.textContent = data.evolutionDirection.gen2_to_gen3 || '데이터 준비 중...';
+        if (summaryBox) summaryBox.textContent = data.evolutionDirection.comparisonSummary || '데이터 준비 중...';
+
+        // 5. 한국타이어 R&D 대응 액션 제안 주입
+        const proposalBox = document.getElementById('gt-rd-proposal');
+        if (proposalBox) {
+            proposalBox.innerHTML = `<strong>${data.brand}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#e2e8f0; font-size:0.95rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal}</span>`;
+        }
+
+        // 6. 세대별 세부 성능 항목 Radar Chart 시각화
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js 라이브러리가 로드되지 않아 세대별 진화 차트를 표시할 수 없습니다.');
+            return;
+        }
+
+        const canvas = document.getElementById('chart-generation-evolution');
+        if (!canvas) return;
+
+        // 기존 차트 인스턴스 소멸 처리 (Canvas 메모리 릭 및 잔상 방지)
+        if (this.charts.generationEvolution) {
+            this.charts.generationEvolution.destroy();
+        }
+
+        const labels = [
+            "마른 노면 접지 (Dry Grip)",
+            "습윤 노면 접지 (Wet Grip)",
+            "수막 저항성 (Hydro Resist)",
+            "정숙성/승차감 (Comfort)",
+            "마모 수명 (Tread Life)",
+            "연비/친환경 (Efficiency)"
+        ];
+
+        const getScoresArray = (scoresObj) => {
+            return [
+                scoresObj.dry_grip,
+                scoresObj.wet_grip,
+                scoresObj.hydro_resist,
+                scoresObj.comfort_noise,
+                scoresObj.tread_life,
+                scoresObj.efficiency
+            ];
+        };
+
+        const brandColors = {
+            Michelin: '#3b82f6',
+            Continental: '#ff9f24',
+            Pirelli: '#10b981'
+        };
+        const compColor = brandColors[data.brand] || '#3b82f6';
+
+        let datasets = [];
+
+        if (chartMode === 'gen3' || chartMode === 'gen2' || chartMode === 'gen1') {
+            const genIndex = chartMode === 'gen3' ? 2 : chartMode === 'gen2' ? 1 : 0;
+            const g = data.generations[genIndex];
+
+            // Competitor Dataset
+            datasets.push({
+                label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
+                data: getScoresArray(g.compScores),
+                borderColor: compColor,
+                backgroundColor: `${compColor}1a`,
+                borderWidth: 3,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: compColor,
+                pointHoverBackgroundColor: compColor,
+                pointHoverBorderColor: '#fff',
+                pointRadius: 5,
+                fill: true
+            });
+
+            // Hankook Dataset
+            datasets.push({
+                label: `${g.hkModel} (${g.hkYear || g.year}년 출시)`,
+                data: getScoresArray(g.hkScores),
+                borderColor: '#ff6b00',
+                backgroundColor: 'rgba(255, 107, 0, 0.15)',
+                borderWidth: 3,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#ff6b00',
+                pointHoverBackgroundColor: '#ff6b00',
+                pointHoverBorderColor: '#fff',
+                pointRadius: 5,
+                fill: true
+            });
+        } else if (chartMode === 'all-comp') {
+            data.generations.forEach((g, idx) => {
+                let color, bgColor, borderW, radius;
+                if (idx === 0) {
+                    color = 'rgba(148, 163, 184, 0.7)';
+                    bgColor = 'rgba(148, 163, 184, 0.05)';
+                    borderW = 1.5;
+                    radius = 3;
+                } else if (idx === 1) {
+                    color = `${compColor}aa`;
+                    bgColor = `${compColor}15`;
+                    borderW = 2;
+                    radius = 4;
+                } else {
+                    color = compColor;
+                    bgColor = `${compColor}33`;
+                    borderW = 3;
+                    radius = 5;
+                }
+
+                datasets.push({
+                    label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
+                    data: getScoresArray(g.compScores),
+                    borderColor: color,
+                    backgroundColor: bgColor,
+                    borderWidth: borderW,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: color,
+                    pointHoverBackgroundColor: color,
+                    pointHoverBorderColor: '#fff',
+                    pointRadius: radius,
+                    fill: true
+                });
+            });
+        } else if (chartMode === 'all-hk') {
+            data.generations.forEach((g, idx) => {
+                let color, bgColor, borderW, radius;
+                if (idx === 0) {
+                    color = 'rgba(148, 163, 184, 0.7)';
+                    bgColor = 'rgba(148, 163, 184, 0.05)';
+                    borderW = 1.5;
+                    radius = 3;
+                } else if (idx === 1) {
+                    color = '#ff9f55';
+                    bgColor = 'rgba(255, 159, 85, 0.08)';
+                    borderW = 2;
+                    radius = 4;
+                } else {
+                    color = '#ff6b00';
+                    bgColor = 'rgba(255, 107, 0, 0.2)';
+                    borderW = 3;
+                    radius = 5;
+                }
+
+                datasets.push({
+                    label: `${g.hkModel} (${g.hkYear || g.year}년 출시)`,
+                    data: getScoresArray(g.hkScores),
+                    borderColor: color,
+                    backgroundColor: bgColor,
+                    borderWidth: borderW,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: color,
+                    pointHoverBackgroundColor: color,
+                    pointHoverBorderColor: '#fff',
+                    pointRadius: radius,
+                    fill: true
+                });
+            });
+        } else if (chartMode === 'all-six') {
+            // Competitor Solid Lines
+            data.generations.forEach((g, idx) => {
+                let color, bgColor, borderW, radius;
+                if (idx === 0) {
+                    color = 'rgba(148, 163, 184, 0.5)';
+                    bgColor = 'rgba(148, 163, 184, 0.02)';
+                    borderW = 1;
+                    radius = 2;
+                } else if (idx === 1) {
+                    color = `${compColor}80`;
+                    bgColor = 'transparent';
+                    borderW = 1.5;
+                    radius = 3;
+                } else {
+                    color = compColor;
+                    bgColor = `${compColor}1a`;
+                    borderW = 3;
+                    radius = 5;
+                }
+
+                datasets.push({
+                    label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
+                    data: getScoresArray(g.compScores),
+                    borderColor: color,
+                    backgroundColor: bgColor,
+                    borderWidth: borderW,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: color,
+                    pointHoverBackgroundColor: color,
+                    pointHoverBorderColor: '#fff',
+                    pointRadius: radius,
+                    fill: true
+                });
+            });
+
+            // Hankook Dashed Lines
+            data.generations.forEach((g, idx) => {
+                let color, bgColor, borderW, radius;
+                if (idx === 0) {
+                    color = 'rgba(255, 107, 0, 0.3)';
+                    bgColor = 'transparent';
+                    borderW = 1;
+                    radius = 2;
+                } else if (idx === 1) {
+                    color = 'rgba(255, 107, 0, 0.6)';
+                    bgColor = 'transparent';
+                    borderW = 1.5;
+                    radius = 3;
+                } else {
+                    color = '#ff6b00';
+                    bgColor = 'rgba(255, 107, 0, 0.08)';
+                    borderW = 3;
+                    radius = 5;
+                }
+
+                datasets.push({
+                    label: `[HK] ${g.hkModel} (${g.hkYear || g.year}년 출시)`,
+                    data: getScoresArray(g.hkScores),
+                    borderColor: color,
+                    backgroundColor: bgColor,
+                    borderWidth: borderW,
+                    borderDash: [5, 5],
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: color,
+                    pointHoverBackgroundColor: color,
+                    pointHoverBorderColor: '#fff',
+                    pointRadius: radius,
+                    fill: true
+                });
+            });
+        }
+
+        const ctx = canvas.getContext('2d');
+        this.charts.generationEvolution = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 10, weight: '700' },
+                            color: '#cbd5e1',
+                            padding: 8
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(11, 15, 32, 0.95)',
+                        titleColor: '#fff',
+                        titleFont: { size: 12, weight: '700' },
+                        bodyFont: { size: 11 },
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
+                        borderWidth: 1,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.dataset.label}: ${context.parsed.r} / 10`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        min: 5,
+                        max: 10,
+                        ticks: {
+                            stepSize: 1,
+                            font: { size: 9 },
+                            color: '#64748b',
+                            backdropColor: 'transparent',
+                            showLabelBackdrop: false
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            circular: circularGrid => true
+                        },
+                        angleLines: {
+                            color: 'rgba(255, 255, 255, 0.08)'
+                        },
+                        pointLabels: {
+                            font: { size: 10, weight: '700' },
+                            color: '#cbd5e1',
+                            padding: 8
+                        }
+                    }
+                }
+            }
+        });
     }
 }
 

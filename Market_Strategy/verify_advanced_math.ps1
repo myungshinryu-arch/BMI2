@@ -270,6 +270,9 @@ function Get-ModelSalesRevenue {
             $globalRevenue = [double]$val
         }
     }
+    if ($brand -eq "Pirelli") {
+        $globalRevenue = $globalRevenue * 1.10
+    }
     
     $regionalAllocObj = Get-SafeProperty $metadata "regionalAlloc"
     $rAlloc = 0.35
@@ -388,6 +391,9 @@ foreach ($brand in $brands) {
                 if ($val -ne $null) {
                     $expectedGlobalRev = [double]$val
                 }
+            }
+            if ($brand -eq "Pirelli") {
+                $expectedGlobalRev = $expectedGlobalRev * 1.10
             }
             $expectedRegRev = [double]$expectedGlobalRev * [double]$rAlloc
             $expectedRevMillion = $expectedRegRev / 1000000.0 # Million USD
