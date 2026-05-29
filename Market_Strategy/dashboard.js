@@ -2762,7 +2762,7 @@ class TireDashboard {
         
         tbody.innerHTML = matrixData.map(row => `
             <tr>
-                <td style="font-weight: 700; color: #fff; vertical-align: top; padding-top: 15px;">${row.brand}</td>
+                <td style="font-weight: 700; color: var(--color-hankook); vertical-align: top; padding-top: 15px;">${row.brand}</td>
                 <td style="vertical-align: top; padding-top: 15px;">${row.tech}</td>
                 <td style="vertical-align: top; padding-top: 15px;">${row.marketing}</td>
                 <td style="vertical-align: top; padding-top: 15px;">${row.restructuring}</td>
