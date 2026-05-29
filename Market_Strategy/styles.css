@@ -4,29 +4,30 @@
 
 /* Custom Design Token System with Hankook Corporate identity */
 :root {
-    --bg-deep: #fffcf9;          /* Warm light cream canvas */
-    --bg-sidebar: rgba(255, 255, 255, 0.7); /* Translucent frosted glass sidebar */
-    --bg-card: rgba(255, 255, 255, 0.6);   /* Translucent frosted glass fill */
-    --bg-input: rgba(255, 255, 255, 0.85); /* Clean glass input background */
+    --bg-deep: #fff9f5;          /* Warm apricot cream deep canvas */
+    --bg-sidebar: rgba(255, 247, 237, 0.96); /* Translucent soft peach sidebar */
+    --bg-card: rgba(255, 243, 230, 0.95);   /* Cozy light orange cream card */
+    --bg-input: rgba(255, 255, 255, 0.98); /* Solid white high contrast input background */
     
-    --border-light: rgba(249, 115, 22, 0.1);    /* Frosted soft orange border */
+    --border-light: rgba(249, 115, 22, 0.18);    /* Frosted warm orange border */
     --border-focus: #f97316;             /* Vibrant Cyber Orange */
 
     /* Theme Accents */
     --color-hankook: #f97316;             /* Cyber Orange */
     --color-hankook-glow: rgba(249, 115, 22, 0.22);
-    --color-blue: #3b82f6;               /* Cyber Blue */
-    --color-emerald: #10b981;            /* Eco Mint Green */
-    --color-gold: #fd974f;               /* Warm Soft Peach */
-    --color-purple: #a855f7;             /* Elegant Purple */
-    --color-red: #ef4444;                /* Danger Rose Red */
+    --color-blue: #2563eb;               /* Premium Vivid Blue */
+    --color-emerald: #059669;            /* Eco Mint Green */
+    --color-gold: #ea580c;               /* Warm Gold-Orange */
+    --color-purple: #9333ea;             /* Elegant Purple */
+    --color-red: #dc2626;                /* Danger Rose Red */
     
-    --text-primary: #1e293b;             /* Slate 800 */
-    --text-secondary: #64748b;           /* Slate 500 */
-    --text-muted: #94a3b8;               /* Slate 400 */
+    --text-primary: #0a0f1d;             /* Pure Sleek Black (High contrast readability) */
+    --text-secondary: #2d3748;           /* High contrast charcoal grey */
+    --text-muted: #4a5568;               /* Medium-dark slate gray for legible helper text */
     
-    --shadow-premium: 0 20px 45px rgba(249, 115, 22, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.95);
-    --transition-fast: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-premium: 0 10px 40px rgba(249, 115, 22, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+    --transition-fast: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --sidebar-width: 290px;
 }
 
 /* Global resets & scrollbar tweaks */
@@ -40,6 +41,7 @@ body {
     background-color: var(--bg-deep);
     color: var(--text-primary);
     font-family: 'Inter', sans-serif;
+    font-size: 16px; /* Increased base typography scale */
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -62,75 +64,96 @@ body {
 
 /* Dashboard Sidebar-Main Outer Grid */
 .dashboard-container {
-    display: grid;
-    grid-template-columns: 290px 1fr;
+    display: block;
     min-height: 100vh;
-    transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
-.dashboard-container.sidebar-collapsed {
-    grid-template-columns: 75px 1fr;
-}
-
-/* Sidebar Styling */
+/* Sidebar Styling - Matches Tire BM UI Premium Hover Style */
 .sidebar {
+    width: var(--sidebar-width);
     background-color: var(--bg-sidebar);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid var(--border-light);
-    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    height: 100vh;
-    position: sticky;
+    position: fixed;
     top: 0;
-    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    transform: translateX(-275px); /* 15px만 남기고 완전히 왼쪽으로 숨김 */
+    opacity: 0.15;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: none;
+    padding: 24px 0; /* padding 조정 */
 }
 
-.sidebar.collapsed {
-    padding: 24px 12px;
+.sidebar:hover,
+.sidebar.active {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: 0 10px 40px rgba(249, 115, 22, 0.18), var(--shadow-premium);
+}
+
+.sidebar-brand {
+    height: 70px;
+    padding: 0 24px;
+    display: flex;
     align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: 15px;
 }
 
-/* Sidebar Toggle Button Styling */
-.sidebar-toggle-btn {
-    background: rgba(249, 115, 22, 0.03);
-    border: 1px solid rgba(249, 115, 22, 0.1);
-    color: var(--text-secondary);
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    cursor: pointer;
+.sidebar-brand .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-hankook), #ff9f55);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 800;
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.sidebar-brand .logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--color-hankook);
+}
+
+/* Sidebar Toggle Button in Header Styling */
+.sidebar-toggle-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-light);
+    color: var(--color-hankook);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     transition: all var(--transition-fast);
-    margin-left: auto;
-    outline: none;
-    padding: 0;
+    box-shadow: var(--shadow-premium);
 }
 
 .sidebar-toggle-btn:hover {
-    background: rgba(249, 115, 22, 0.15);
+    background: rgba(249, 115, 22, 0.1);
     border-color: var(--color-hankook);
-    color: var(--color-hankook);
-    box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+    transform: scale(1.05);
 }
 
-.toggle-icon {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.sidebar-toggle-btn i {
+    font-size: 1.15rem;
 }
-
-.sidebar.collapsed .toggle-icon {
-    transform: rotate(180deg);
-}
-
-/* Collapsed Hidden Elements */
-.sidebar.collapsed .logo-text,
 .sidebar.collapsed .sidebar-section-title,
 .sidebar.collapsed .filters-group,
 .sidebar.collapsed .sidebar-footer {
@@ -275,7 +298,9 @@ body {
 
 /* Main Canvas Panel Container */
 .dashboard-main {
+    margin-left: 0; /* 사이드바 기본 숨김으로 마진 제거 */
     padding: 30px;
+    padding-left: 45px; /* 왼쪽 숨김 힌트 바(15px) + 30px 패딩 */
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -283,6 +308,7 @@ body {
     width: 100%;
     margin: 0 auto;
     overflow-y: auto;
+    transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Header Section */
@@ -297,12 +323,12 @@ body {
 .header-title {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
-    font-size: 1.7rem;
+    font-size: 1.95rem; /* Enlarge typography scale */
     letter-spacing: -0.5px;
 }
 
 .header-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.92rem; /* Enlarge typography scale */
     font-weight: 500;
     color: var(--text-secondary);
     margin-top: 4px;
@@ -2080,71 +2106,76 @@ body {
     flex: 1; /* Pushes the footer to the bottom of the sidebar */
 }
 
-/* Custom styles for vertical view-tab buttons inside sidebar */
+/* Custom styles for vertical view-tab buttons inside sidebar - Larger typography & premium indicators */
 .sidebar .view-tab {
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-secondary);
-    padding: 12px 16px;
+    padding: 12px 20px;
     font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 1.05rem; /* Increased size to match other sub-UIs */
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     border-radius: 8px;
     transition: all var(--transition-fast);
-    width: 100%;
+    width: calc(100% - 32px);
+    margin: 0 16px;
     text-align: left;
     box-sizing: border-box;
     outline: none;
 }
 
 .sidebar .view-tab:hover {
-    color: var(--text-primary);
-    background: rgba(249, 115, 22, 0.04);
-    border-color: rgba(249, 115, 22, 0.1);
+    color: var(--color-hankook);
+    background: rgba(249, 115, 22, 0.05);
+    border-color: rgba(249, 115, 22, 0.15);
 }
 
 .sidebar .view-tab.active {
     color: var(--color-hankook) !important;
-    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.02));
+    background: rgba(249, 115, 22, 0.08) !important;
     border: 1px solid rgba(249, 115, 22, 0.25) !important;
-    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.08);
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.05);
 }
 
-.sidebar .view-tab .tab-icon {
-    width: 18px;
-    height: 18px;
+.sidebar .view-tab i {
+    font-size: 1.15rem;
+    width: 20px;
+    text-align: center;
     color: var(--text-secondary);
     transition: color var(--transition-fast);
 }
 
-.sidebar .view-tab:hover .tab-icon {
-    color: var(--text-primary);
-}
-
-.sidebar .view-tab.active .tab-icon {
+.sidebar .view-tab:hover i,
+.sidebar .view-tab.active i {
     color: var(--color-hankook) !important;
-    filter: drop-shadow(0 0 4px var(--color-hankook-glow));
 }
 
-/* Collapsed Sidebar Navigation */
-.sidebar.collapsed .sidebar-nav {
-    align-items: center;
+/* Compatible Collapsed States for Scripts */
+.sidebar.collapsed {
+    transform: translateX(-275px) !important;
+    opacity: 0.15 !important;
+}
+.sidebar.collapsed:hover,
+.sidebar.collapsed.active {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
 }
 
-.sidebar.collapsed .view-tab {
-    padding: 12px;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
+/* Global Cross-System Quick Navigation (NAVIGATE) Shortcuts styling */
+.global-nav-links .nav-shortcut-btn {
+    transition: all var(--transition-fast) !important;
 }
-
-.sidebar.collapsed .view-tab span {
-    display: none !important;
+.global-nav-links .nav-shortcut-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.15) !important;
+    border-color: var(--color-hankook) !important;
+}
+.global-nav-links .nav-shortcut-btn.active:hover {
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.3) !important;
 }
 
 /* Local Filter Bar Select Elements Styling */

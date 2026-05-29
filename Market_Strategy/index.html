@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons for sidebar navigation and look & feel matching -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="styles.css">
     <!-- Chart.js library via CDN -->
@@ -16,69 +18,77 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar Navigation & Common Filters -->
-        <aside class="sidebar">
-            <div class="brand-logo">
-                <svg class="logo-icon" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5" fill="none"/>
-                    <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                    <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
-                    <line x1="12" y1="2" x2="12" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="12" y1="18" x2="12" y2="22" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="12" x2="6" y2="12" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="18" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-                <span class="logo-text">BENCHMARKING TO STRATEGY</span>
-                <button id="sidebar-toggle" class="sidebar-toggle-btn" title="사이드바 접기/펼치기">
-                    <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <polyline points="15 18 9 12 15 6"/>
-                    </svg>
-                </button>
+        <!-- Sidebar Left Navigation (Hover Mechanism & Connected shortcuts) -->
+        <aside class="sidebar" id="sidebar-nav">
+            <div class="sidebar-brand">
+                <div class="logo-icon"><i class="fa-solid fa-globe"></i></div>
+                <div class="logo-text">시장/상품전략</div>
             </div>
             
-            <p class="sidebar-section-title">분석 뷰 네비게이션</p>
-            <nav class="sidebar-nav">
-                <button class="view-tab active" id="tab-market" onclick="window.TireDashboardApp.switchView('market')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="20" x2="18" y2="10"/>
-                        <line x1="12" y1="20" x2="12" y2="4"/>
-                        <line x1="6" y1="20" x2="6" y2="14"/>
-                    </svg>
+            <p class="sidebar-section-title" style="padding: 15px 16px 4px 16px; margin: 0; font-weight: 800; text-transform: uppercase;">분석 뷰 네비게이션</p>
+            <ul class="sidebar-menu" style="list-style: none; padding: 0 16px; display: flex; flex-direction: column; gap: 8px;">
+                <li class="view-tab menu-item active" id="tab-market" onclick="window.TireDashboardApp.switchView('market')" style="list-style: none;">
+                    <i class="fa-solid fa-chart-column" style="width: 20px; text-align: center;"></i>
                     <span>Market & Sales Overview</span>
-                </button>
-                <button class="view-tab" id="tab-competitiveness" onclick="window.TireDashboardApp.switchView('competitiveness')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
+                </li>
+                <li class="view-tab menu-item" id="tab-competitiveness" onclick="window.TireDashboardApp.switchView('competitiveness')" style="list-style: none;">
+                    <i class="fa-solid fa-layer-group" style="width: 20px; text-align: center;"></i>
                     <span>기술 경쟁력 Overview</span>
-                </button>
-                <button class="view-tab" id="tab-generation-trends" onclick="window.TireDashboardApp.switchView('generation-trends')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                    </svg>
+                </li>
+                <li class="view-tab menu-item" id="tab-generation-trends" onclick="window.TireDashboardApp.switchView('generation-trends')" style="list-style: none;">
+                    <i class="fa-solid fa-chart-line" style="width: 20px; text-align: center;"></i>
                     <span>대표 상품 세대별 성능 변화</span>
-                </button>
-                <button class="view-tab" id="tab-tech-strategy" onclick="window.TireDashboardApp.switchView('tech-strategy')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                        <polyline points="2 17 12 22 22 17"/>
-                        <polyline points="2 12 12 17 22 12"/>
-                    </svg>
+                </li>
+                <li class="view-tab menu-item" id="tab-tech-strategy" onclick="window.TireDashboardApp.switchView('tech-strategy')" style="list-style: none;">
+                    <i class="fa-solid fa-compass" style="width: 20px; text-align: center;"></i>
                     <span>기술 전략 Overview</span>
-                </button>
-                <button class="view-tab" id="tab-hankook-strategy" onclick="window.TireDashboardApp.switchView('hankook-strategy')">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
+                </li>
+                <li class="view-tab menu-item" id="tab-hankook-strategy" onclick="window.TireDashboardApp.switchView('hankook-strategy')" style="list-style: none;">
+                    <i class="fa-solid fa-route" style="width: 20px; text-align: center;"></i>
                     <span>대응 전략 & 로드맵</span>
-                </button>
-            </nav>
-
-            <div class="sidebar-footer">
-                <p class="footer-source-note">출처: Consumer Reports 연구소 정량 측정, TireRack.com 북미 소비자 평가, 독일 ADAC 공인 등급, 독일 Auto Bild 전문 비교 평가 (2021-2026).</p>
+                </li>
+                
+                <!-- 시스템 간 빠른 연동 파이프라인 (Divider & External Links) -->
+                <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 15px 0; list-style: none;"></li>
+                
+                <li class="menu-title" style="padding: 0; font-size: 0.68rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+                  글로벌 시스템 이동 (NAVIGATE)
+                </li>
+                
+                <li style="list-style: none; padding: 0; margin-top: 5px;">
+                  <div class="global-nav-links" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                      <a href="../Market_Strategy/index.html" class="nav-shortcut-btn active" title="시장/상품전략" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: #f97316; color: #fff; border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid #f97316;">
+                          <i class="fa-solid fa-globe" style="font-size: 15px; color: #fff;"></i>
+                          <span>시장/전략</span>
+                      </a>
+                      <a href="../Tire_BM_UI_FINAL/index.html" class="nav-shortcut-btn" title="Tire BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--border-light);">
+                          <i class="fa-solid fa-chart-line" style="font-size: 15px; color: #f97316;"></i>
+                          <span style="color: var(--text-primary);">Tire BM</span>
+                      </a>
+                      <a href="../Compd BM/index.html" class="nav-shortcut-btn" title="Compound BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--border-light);">
+                          <i class="fa-solid fa-flask-vial" style="font-size: 15px; color: #10b981;"></i>
+                          <span style="color: var(--text-primary);">Comp'd BM</span>
+                      </a>
+                      <a href="../AI_Simulator/index.html" class="nav-shortcut-btn" title="AI Simulator" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition-fast); border: 1px solid var(--border-light);">
+                          <i class="fa-solid fa-robot" style="font-size: 15px; color: #a855f7;"></i>
+                          <span style="color: var(--text-primary);">AI 시뮬</span>
+                      </a>
+                  </div>
+                </li>
+        
+                <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 15px 0; list-style: none;"></li>
+        
+                <li class="menu-item-link" style="list-style: none;">
+                  <a href="../index.html" style="display: flex; align-items: center; gap: 14px; padding: 10px 16px; color: var(--text-secondary); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; transition: var(--transition-fast);">
+                    <i class="fa-solid fa-house-laptop" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--color-hankook);"></i>
+                    <span>통합 포털 홈</span>
+                  </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer" style="padding: 15px 16px; border-top: 1px solid var(--border-light); text-align: center; font-size: 0.75rem; color: var(--text-secondary); margin-top: auto;">
+                <p>© 2026 Tire Benchmarking</p>
+                <p style="font-size: 0.7rem; margin-top: 4px; color: var(--color-hankook); font-weight: 700;">Premium V1.2.0 Stable</p>
             </div>
         </aside>
 
@@ -86,9 +96,14 @@
         <main class="dashboard-main">
             <!-- Header Section -->
             <header class="dashboard-header">
-                <div>
-                    <h1 class="header-title">한국타이어 상품 전략 분석 시스템</h1>
-                    <p class="header-subtitle">BENCHMARKING TO STRATEGY</p>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button class="sidebar-toggle-btn" id="sidebar-toggle" title="메뉴 열기/닫기">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h1 class="header-title">한국타이어 상품 전략 분석 시스템</h1>
+                        <p class="header-subtitle">BENCHMARKING TO STRATEGY</p>
+                    </div>
                 </div>
                 <div class="header-right-controls" style="display: flex; align-items: center; gap: 10px;">
                     <button class="btn-header-sources" onclick="location.href='../index.html'" title="메인 포털 바로가기">
@@ -921,7 +936,16 @@
                     </div>
                 </div>
             </div>
-        </div>
+            
+            <!-- Main Footer -->
+            <footer class="main-footer" style="padding: 30px 40px; border-top: 1px solid var(--border-light); text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-top: 50px; background: rgba(255, 247, 237, 0.4); border-radius: 12px; margin-bottom: 20px;">
+                <p style="font-weight: 700; color: var(--text-primary);">© 2026 Tire Benchmarking 상품 전략 분석 시스템. All Rights Reserved.</p>
+                <p style="margin-top: 8px; color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5;">
+                    <i class="fa-solid fa-circle-info" style="color: var(--color-hankook); margin-right: 4px;"></i>
+                    출처: Consumer Reports 연구소 정량 측정, TireRack.com 북미 소비자 평가, 독일 ADAC 공인 등급, 독일 Auto Bild 전문 비교 평가 (2021-2026).
+                </p>
+            </footer>
+        </main>
     </div>
 
     <!-- Script imports -->
