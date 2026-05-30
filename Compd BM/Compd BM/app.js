@@ -786,8 +786,8 @@ function handleRowSelection(checked, dataIndex, trElement) {
   if (window.ReportGenerator) {
     window.ReportGenerator.updateSelectedSummary();
   }
-  if (window.TireCharts && window.TireCharts.updateRadarChart) {
-    window.TireCharts.updateRadarChart();
+  if (window.TireCharts && window.TireCharts.updateAllCharts) {
+    window.TireCharts.updateAllCharts();
   }
 }
 
