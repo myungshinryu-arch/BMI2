@@ -339,6 +339,8 @@ h1, h2, h3, h4, .logo-text {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -617,12 +619,16 @@ h1, h2, h3, h4, .logo-text {
 /* Original Excel-style Report Table Container */
 .report-sheet-outer {
   width: 100%;
+  max-width: 100%;
+  display: block;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 16px;
   border: 1px solid var(--card-border);
   background: var(--bg-grid);
   box-shadow: var(--shadow);
   padding: 4px;
+  box-sizing: border-box;
 }
 
 .report-excel-table {
