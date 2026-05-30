@@ -1172,7 +1172,7 @@ window.AverageCompare = (function() {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'bottom', labels: { color: '#f1f5f9', font: { size: 10 } } },
+          legend: { position: 'bottom', labels: { color: '#1e293b', font: { size: 10 } } },
           tooltip: {
             callbacks: {
               label: function(context) {
@@ -1186,12 +1186,12 @@ window.AverageCompare = (function() {
         scales: {
           x: { 
             grid: { color: 'rgba(255,255,255,0.05)' }, 
-            ticks: { color: '#f1f5f9', font: { size: 9 }, autoSkip: true, maxRotation: 0 } 
+            ticks: { color: '#1e293b', font: { size: 9 }, autoSkip: true, maxRotation: 0 } 
           },
           y: { 
             grid: { color: 'rgba(255,255,255,0.05)' }, 
-            ticks: { color: '#f1f5f9', font: { size: 10 } },
-            title: { display: true, text: yTitle, color: '#f1f5f9', font: { size: 10 } }
+            ticks: { color: '#1e293b', font: { size: 10 } },
+            title: { display: true, text: yTitle, color: '#1e293b', font: { size: 10 } }
           }
         }
       }
@@ -1234,11 +1234,11 @@ window.AverageCompare = (function() {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: '#f1f5f9', font: { size: 10 } } }
+            legend: { labels: { color: '#1e293b', font: { size: 10 } } }
           },
           scales: {
-            x: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#f1f5f9', font: { size: 10 } } },
-            y: { stacked: true, grid: { display: false }, ticks: { color: '#fff', font: { size: 9 } } }
+            x: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#1e293b', font: { size: 10 } } },
+            y: { stacked: true, grid: { display: false }, ticks: { color: '#1e293b', font: { size: 9 } } }
           }
         }
       });
@@ -1287,14 +1287,14 @@ window.AverageCompare = (function() {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'bottom', labels: { color: '#f1f5f9', font: { size: 10 } } }
+            legend: { position: 'bottom', labels: { color: '#1e293b', font: { size: 10 } } }
           },
           scales: {
             r: {
-              grid: { color: 'rgba(255,255,255,0.06)' },
-              angleLines: { color: 'rgba(255,255,255,0.06)' },
+              grid: { color: 'rgba(0,0,0,0.06)' },
+              angleLines: { color: 'rgba(0,0,0,0.06)' },
               ticks: { display: false, stepSize: 20 },
-              pointLabels: { color: '#fff', font: { size: 9, weight: 'bold' } }
+              pointLabels: { color: '#1e293b', font: { size: 9, weight: 'bold' } }
             }
           }
         }
@@ -1320,11 +1320,11 @@ window.AverageCompare = (function() {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: '#f1f5f9', font: { size: 10 } } }
+            legend: { labels: { color: '#1e293b', font: { size: 10 } } }
           },
           scales: {
-            x: { grid: { display: false }, ticks: { color: '#fff', font: { size: 9 } } },
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#f1f5f9', font: { size: 10 } } }
+            x: { grid: { display: false }, ticks: { color: '#1e293b', font: { size: 9 } } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#1e293b', font: { size: 10 } } }
           }
         }
       });
