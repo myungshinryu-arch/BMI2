@@ -168,6 +168,9 @@ h1, h2, h3, h4, .logo-text {
 /* Main Content Area */
 .main-content {
   flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   margin-left: var(--sidebar-width);
   min-height: 100vh;
   display: flex;
@@ -241,6 +244,9 @@ h1, h2, h3, h4, .logo-text {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .tab-content {
