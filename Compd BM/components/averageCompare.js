@@ -1143,18 +1143,18 @@ window.AverageCompare = (function() {
     let yTitle = 'Loss Tangent (tanδ)';
     let valSuffix = '';
     let captionText = '* -60℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 평균 수윕 데이터 추이를 비교 분석합니다.';
-    let titleText = '3. 선택 컴파운드 ARES Full Curve (온도별 거동 분석 - tanδ)';
+    let titleText = '3. 선택 컴파운드 ARES Full Curve - tanδ';
 
     if (state.activeCompareChartMode === 'gp') {
       yTitle = 'Storage Modulus G\' (E+07 Pa)';
       valSuffix = ' E+07 Pa';
       captionText = '* 극저온 범위에서의 유리 거동 한계점과 핵심 실측점들을 정교한 시그모이드 전이 보간 수식으로 물리적 모델링한 G\' 평균 연속 추이 곡선입니다.';
-      titleText = '3. 선택 컴파운드 ARES Full Curve (온도별 거동 분석 - G\')';
+      titleText = '3. 선택 컴파운드 ARES Full Curve - G\'';
     } else if (state.activeCompareChartMode === 'gpp') {
       yTitle = 'Loss Modulus G" (E+06 Pa)';
       valSuffix = ' E+06 Pa';
       captionText = '* 복원된 저장탄성률(G\')과 손실탄젠트(tanδ) 간의 동적 물리 공식(G" = G\' * tanδ)을 적용하여 완성한 0.1M ~ 100M Pa 영역 평균 스펙트럼 곡선입니다.';
-      titleText = '3. 선택 컴파운드 ARES Full Curve (온도별 거동 분석 - G")';
+      titleText = '3. 선택 컴파운드 ARES Full Curve - G"';
     }
 
     const titleEl = document.getElementById('compare-ares-title');
@@ -1172,7 +1172,7 @@ window.AverageCompare = (function() {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'bottom', labels: { color: '#8a99ad', font: { size: 10 } } },
+          legend: { position: 'bottom', labels: { color: '#f1f5f9', font: { size: 10 } } },
           tooltip: {
             callbacks: {
               label: function(context) {
@@ -1186,12 +1186,12 @@ window.AverageCompare = (function() {
         scales: {
           x: { 
             grid: { color: 'rgba(255,255,255,0.05)' }, 
-            ticks: { color: '#8a99ad', font: { size: 9 }, autoSkip: true, maxRotation: 0 } 
+            ticks: { color: '#f1f5f9', font: { size: 9 }, autoSkip: true, maxRotation: 0 } 
           },
           y: { 
             grid: { color: 'rgba(255,255,255,0.05)' }, 
-            ticks: { color: '#8a99ad', font: { size: 10 } },
-            title: { display: true, text: yTitle, color: '#8a99ad', font: { size: 10 } }
+            ticks: { color: '#f1f5f9', font: { size: 10 } },
+            title: { display: true, text: yTitle, color: '#f1f5f9', font: { size: 10 } }
           }
         }
       }
@@ -1234,10 +1234,10 @@ window.AverageCompare = (function() {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: '#8a99ad', font: { size: 10 } } }
+            legend: { labels: { color: '#f1f5f9', font: { size: 10 } } }
           },
           scales: {
-            x: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8a99ad', font: { size: 10 } } },
+            x: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#f1f5f9', font: { size: 10 } } },
             y: { stacked: true, grid: { display: false }, ticks: { color: '#fff', font: { size: 9 } } }
           }
         }
@@ -1287,7 +1287,7 @@ window.AverageCompare = (function() {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'bottom', labels: { color: '#8a99ad', font: { size: 10 } } }
+            legend: { position: 'bottom', labels: { color: '#f1f5f9', font: { size: 10 } } }
           },
           scales: {
             r: {
@@ -1320,11 +1320,11 @@ window.AverageCompare = (function() {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: '#8a99ad', font: { size: 10 } } }
+            legend: { labels: { color: '#f1f5f9', font: { size: 10 } } }
           },
           scales: {
             x: { grid: { display: false }, ticks: { color: '#fff', font: { size: 9 } } },
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8a99ad', font: { size: 10 } } }
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#f1f5f9', font: { size: 10 } } }
           }
         }
       });
