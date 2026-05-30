@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compound BM Report</title>
   <!-- CSS Stylesheets -->
-  <link rel="stylesheet" href="index.css?v=3.2.5">
+  <link rel="stylesheet" href="index.css?v=3.2.6">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Chart.js CDN -->
@@ -367,8 +367,11 @@
               <div class="card-title">
                 <h3><i class="fa-solid fa-list"></i> 컴파운드 원본 데이터셋</h3>
               </div>
-              <div style="font-size: 0.85rem; color: var(--primary);">
-                * BM Report 생성을 원하시면 비교할 타이어들의 좌측 체크박스를 선택해주세요.
+              <div id="explorer-to-report-container" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">* 타이어를 선택한 후 보고서를 즉시 생성해 이동할 수 있습니다.</span>
+                <button id="btn-go-to-report" class="btn btn-primary" style="padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; display: flex; align-items: center; gap: 6px; box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); transition: all 0.3s ease; border: none; cursor: pointer; font-weight: 600; background: var(--primary); color: #fff;">
+                  <i class="fa-solid fa-file-invoice"></i> BM Report 생성 및 이동
+                </button>
               </div>
             </div>
             <div class="card-body" style="padding: 0;">
@@ -733,9 +736,9 @@
   </div>
 
   <!-- JS Components and App Logic -->
-  <script src="components/charts.js?v=3.2.5"></script>
-  <script src="components/reportGenerator.js?v=3.2.5"></script>
-  <script src="components/averageCompare.js?v=3.2.5"></script>
-  <script src="app.js?v=3.2.5"></script>
+  <script src="components/charts.js?v=3.2.6"></script>
+  <script src="components/reportGenerator.js?v=3.2.6"></script>
+  <script src="components/averageCompare.js?v=3.2.6"></script>
+  <script src="app.js?v=3.2.6"></script>
 </body>
 </html>
