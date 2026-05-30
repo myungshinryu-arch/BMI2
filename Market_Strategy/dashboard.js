@@ -805,7 +805,30 @@ class TireDashboard {
 
         // 최초 전체 화면 렌더링 및 뷰 설정
         this.updateDashboard();
-        this.switchView('competitiveness');
+        
+        // 해시 기반 초기 탭 활성화 지원 (포털 연계 라우팅 기믹)
+        const hash = window.location.hash;
+        let initialView = 'competitiveness';
+        if (hash) {
+            const possibleView = hash.replace('#tab-', '').replace('#', '');
+            const allowedViews = ['competitiveness', 'generation-trends', 'hankook-strategy', 'market', 'tech-strategy'];
+            if (allowedViews.includes(possibleView)) {
+                initialView = possibleView;
+            }
+        }
+        this.switchView(initialView);
+
+        // hashchange 이벤트 등록으로 실시간 해시 변경 대응
+        window.addEventListener('hashchange', () => {
+            const currentHash = window.location.hash;
+            if (currentHash) {
+                const viewFromHash = currentHash.replace('#tab-', '').replace('#', '');
+                const allowedViews = ['competitiveness', 'generation-trends', 'hankook-strategy', 'market', 'tech-strategy'];
+                if (allowedViews.includes(viewFromHash)) {
+                    this.switchView(viewFromHash);
+                }
+            }
+        });
     }
 
     /**
