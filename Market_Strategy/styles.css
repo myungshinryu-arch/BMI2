@@ -299,40 +299,57 @@ body {
 /* Main Canvas Panel Container */
 .dashboard-main {
     margin-left: 0; /* 사이드바 기본 숨김으로 마진 제거 */
-    padding: 30px;
-    padding-left: 45px; /* 왼쪽 숨김 힌트 바(15px) + 30px 패딩 */
+    padding: 0; /* Sticky 헤더가 상단에 밀착되도록 기본 패딩 제거 */
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    max-width: 1600px;
+    gap: 0; /* 헤더와 본문 간의 여백 제어 */
+    max-width: 100%;
     width: 100%;
     margin: 0 auto;
     overflow-y: auto;
     transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Header Section */
-.dashboard-header {
+/* Unified Top Sticky Header Bar (Tire BM & Compd BM Style) */
+.main-header {
+    height: 70px;
+    background: rgba(255, 249, 245, 0.75) !important; /* 바디 배경색과 어울리는 75% 반투명 크림 */
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 0 40px 0 45px; /* 양측 내부 여백 맞춤 */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 20px;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
 }
 
 .header-title {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 1.95rem; /* Enlarge typography scale */
-    letter-spacing: -0.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.header-subtitle {
-    font-size: 0.92rem; /* Enlarge typography scale */
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-top: 4px;
-    letter-spacing: 1px;
+.header-app-title {
+    font-size: 1.45rem !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    font-family: 'Outfit', sans-serif !important;
+    line-height: 1.2;
+}
+
+#header-title-text {
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: var(--color-hankook) !important;
+    margin: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
 .header-status {
@@ -1065,6 +1082,11 @@ body {
     display: none;
     flex-direction: column;
     gap: 30px;
+    padding: 30px 40px 30px 45px; /* 상 30px, 우 40px, 하 30px, 좌 45px (사이드바 힌트 바 고려) */
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .view-panel.active {
@@ -2794,11 +2816,20 @@ body {
     border-left: 3px solid var(--color-hankook) !important; /* 슬로건의 보더 색상 주황색 변경 */
 }
 
-
-
-
-
-
-
-
-
+/* Unified Main Footer Style with proper layout margins */
+.main-footer {
+    padding: 30px 40px !important;
+    border-top: 1px solid var(--border-light) !important;
+    text-align: center !important;
+    font-size: 0.85rem !important;
+    color: var(--text-secondary) !important;
+    margin-top: 50px !important;
+    background: rgba(255, 247, 237, 0.4) !important;
+    border-radius: 12px !important;
+    margin-bottom: 20px !important;
+    margin-left: 45px !important; /* 사이드바 힌트 바 여백 고려 */
+    margin-right: 40px !important;
+    max-width: 1515px !important;
+    width: calc(100% - 85px) !important;
+    box-sizing: border-box !important;
+}

@@ -1083,6 +1083,21 @@ class TireDashboard {
     switchView(view) {
         this.activeView = view;
         
+        // 0. 헤더 타이틀 텍스트 동적 변경 (Tire BM & Compd BM 일관성 연동)
+        const titleTextEl = document.getElementById('header-title-text');
+        if (titleTextEl) {
+            const viewTitleMap = {
+                'market': 'Market & Sales Overview',
+                'competitiveness': '기술 경쟁력 Overview',
+                'tech-strategy': '경쟁사 R&D 전략',
+                'hankook-strategy': '대응 전략 & 로드맵',
+                'generation-trends': '대표 상품 세대별 성능'
+            };
+            if (viewTitleMap[view]) {
+                titleTextEl.textContent = viewTitleMap[view];
+            }
+        }
+        
         // panel-hankook-strategy 의 인라인 display 속성이 'flex' 로 남아 타 화면(Market 등)에 중복 노출되는 것 방지
         const strategyPanel = document.getElementById('panel-hankook-strategy');
         if (strategyPanel) {

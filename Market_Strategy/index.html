@@ -94,18 +94,18 @@
 
         <!-- Main Dashboard Content -->
         <main class="dashboard-main">
-            <!-- Header Section -->
-            <header class="dashboard-header">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <button class="sidebar-toggle-btn" id="sidebar-toggle" title="메뉴 열기/닫기">
+            <!-- Top Sticky Header Section (Tire BM & Compd BM Unified Design) -->
+            <header class="main-header">
+                <div style="display: flex; align-items: center;">
+                    <button class="sidebar-toggle-btn" id="sidebar-toggle" title="메뉴 열기/닫기" style="margin-right: 16px;">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <div>
-                        <h1 class="header-title">한국타이어 상품 전략 분석 시스템</h1>
-                        <p class="header-subtitle">BENCHMARKING TO STRATEGY</p>
+                    <div class="header-title" style="display: flex; flex-direction: column; gap: 4px;">
+                        <h1 class="header-app-title" style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0; font-family: 'Outfit', sans-serif;">시장/상품전략</h1>
+                        <h2 id="header-title-text" style="font-size: 1.05rem; font-weight: 600; color: var(--color-hankook); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">기술 경쟁력 Overview</h2>
                     </div>
                 </div>
-                <div class="header-right-controls" style="display: flex; align-items: center; gap: 10px;">
+                <div class="header-right-controls" style="display: flex; align-items: center; gap: 12px;">
                     <button id="btn-show-sources" class="btn-header-sources">
                         <svg class="sources-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
