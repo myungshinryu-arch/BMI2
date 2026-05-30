@@ -370,18 +370,18 @@ window.ReportGenerator = (function() {
     let yTitle = 'Loss Tangent (tanδ)';
     let valSuffix = '';
     let captionText = '* -60℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 스윕 데이터 추이를 실시간 대조 선형 차트로 시각화합니다.';
-    let titleText = '온도별 손실 탄젠트 거동 분석 (ARES Sweep - tanδ)';
+    let titleText = '온도별 손실 탄젠트 거동 분석 (tanδ)';
 
     if (activeChartMode === 'gp') {
       yTitle = 'Storage Modulus G\' (E+07 Pa)';
       valSuffix = ' E+07 Pa';
       captionText = '* 극저온에서의 유리 거동 한계점과 핵심 실측점들을 정교한 시그모이드 전이 보간 수식으로 물리적 모델링한 G\' 연속 추이 곡선입니다.';
-      titleText = '온도별 저장 탄성률 거동 분석 (ARES Sweep - G\')';
+      titleText = '온도별 저장 탄성률 거동 분석 (G\')';
     } else if (activeChartMode === 'gpp') {
       yTitle = 'Loss Modulus G" (E+06 Pa)';
       valSuffix = ' E+06 Pa';
       captionText = '* 복원된 저장탄성률(G\')과 손실탄젠트(tanδ) 간의 동적 물리 공식(G" = G\' * tanδ)을 적용하여 완성한 0.1M ~ 100M Pa 영역 스펙트럼 곡선입니다.';
-      titleText = '온도별 손실 탄성률 거동 분석 (ARES Sweep - G")';
+      titleText = '온도별 손실 탄성률 거동 분석 (G")';
     }
 
     // Update Text Labels in HTML
@@ -416,7 +416,7 @@ window.ReportGenerator = (function() {
         },
         scales: {
           x: {
-            title: { display: true, text: '온도 (Temperature)', color: '#1e293b', font: { size: 11, weight: '600' } },
+            title: { display: true, text: '온도', color: '#1e293b', font: { size: 11, weight: '600' } },
             grid: { color: 'rgba(0, 0, 0, 0.06)' },
             ticks: { color: '#334155', font: { size: 9.5, weight: '500' } }
           },
@@ -486,19 +486,19 @@ window.ReportGenerator = (function() {
       { label: "DOT / 분석년도", keys: ["DOT", "분석년도"] },
       { label: "의뢰 번호", keys: ["Cutting 의뢰번호", "물성 의뢰번호", "Request #"] },
       
-      { label: "고무 배합제 성분 분석 (Polymer & Filler)", isSectionHeader: true },
+      { label: "고무 배합제 성분 분석", isSectionHeader: true },
       { label: "Polymer Blend", keys: ["NR / SBR / BR_GC", "NR / SBR / BR_NMR"] },
       { label: "Styrene / Vinyl Ratio (%)", keys: ["Styrene / Vinyl_NMR (%, in SBR) ", "Styrene / Vinyl in SBR", "Styrene / Vinyl_NMR (%, in SBR)"] },
       { label: "Carbon Black / Silica (phr)", keys: ["Carbon Black / Silica (phr)", "Carbon Black / Silica"] },
       { label: "Acetone / ZnO / Sulfur (phr)", keys: ["Aceton / ZnO / T.Sulfur (phr) ", "Aceton / ZnO / T.Sulfur", "Aceton / ZnO / T.Sulfur (phr)"] },
       
-      { label: "기계적 인장 물성 (Tensile Properties)", isSectionHeader: true },
+      { label: "기계적 인장 물성", isSectionHeader: true },
       { label: "Hardness (Shore A)", keys: ["Hardness ", "Hardness"], isHardness: true },
       { label: "Modulus 10% / 50% (MPa)", keys: ["M10% / M50%", "M10 / M50"] },
       { label: "Modulus 100% / 300% (MPa)", keys: ["M100% / M300%", "M100 / M300"] },
       { label: "Elongation / Tensile Strength", keys: ["Elong. / T.S. ", "Elong. / T.S."] },
       
-      { label: "동적 점탄성 특성 (Dynamic Viscoelasticity - 요약 12대 물성)", isSectionHeader: true },
+      { label: "동적 점탄성 특성", isSectionHeader: true },
       { label: "Tg_peak temp. (℃)", keys: ["Tg_peak temp. (℃)", "Tg_peak temp. (C)", "Tg", "ARES Tg_peak temp. (℃)", "Dynamic Tg"], isTg: true },
       { label: "-40 / -30 / -20 / -10℃ G’ (E+07)", keys: ["-40 / -30 / -20 / -10℃ G’ (E+07)", "-40 / -30 / -20 / -10C G'", "ARES"] },
       { label: "G’ Avg. / G* @ -15℃ (E+07)", keys: ["G’ Avg. / G* @ -15℃ (E+07)", "G' Avg. / G* @ -15C"] },
