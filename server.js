@@ -3,8 +3,146 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// BM_FINAL 폴더 전체를 정적 웹 파일 경로로 지정합니다.
+// JSON 바디 및 정적 폴더 미들웨어 설정
+app.use(express.json());
 app.use(express.static(__dirname));
+
+// 1. LLM Prompt Context용 사내 데이터베이스 정의 (RAG 컨텍스트 주입용)
+const COMPANY_KNOWLEDGE_CONTEXT = {
+  IR_FINANCIAL_DATA: {
+    Hankook: {
+      nameKo: "한국타이어",
+      globalSales: { "2021": "9,200만 본", "2022": "8,900만 본", "2023": "9,100만 본", "2024": "9,500만 본", "2025(E)": "10,000만 본", "2026(E)": "10,500만 본" },
+      globalRevenue: { "2021": "6.1 Billion USD (한화 약 8.2조원)", "2022": "6.3 Billion USD (한화 약 8.5조원)", "2023": "6.6 Billion USD (한화 약 8.9조원)", "2024": "6.8 Billion USD (한화 약 9.18조원)", "2025(E)": "7.1 Billion USD (한화 약 9.58조원)", "2026(E)": "7.5 Billion USD (한화 약 10.1조원)" }
+    },
+    Michelin: {
+      nameKo: "미쉐린",
+      globalSales: { "2021": "17,500만 본", "2022": "16,800만 본", "2023": "17,000만 본", "2024": "17,600만 본", "2025(E)": "18,000만 본", "2026(E)": "18,500만 본" },
+      globalRevenue: { "2021": "27.5 Billion USD (한화 약 37.1조원)", "2022": "28.6 Billion USD (한화 약 38.6조원)", "2023": "29.8 Billion USD (한화 약 40.2조원)", "2024": "30.5 Billion USD (한화 약 41.1조원)", "2025(E)": "31.5 Billion USD (한화 약 42.5조원)", "2026(E)": "32.5 Billion USD (한화 약 43.8조원)" }
+    },
+    Continental: {
+      nameKo: "콘티넨탈",
+      globalSales: { "2021": "12,800만 본", "2022": "12,100만 본", "2023": "12,500만 본", "2024": "12,900만 본", "2025(E)": "13,300만 본", "2026(E)": "13,800만 본" },
+      globalRevenue: { "2021": "19.8 Billion USD (한화 약 26.7조원)", "2022": "20.4 Billion USD (한화 약 27.5조원)", "2023": "21.2 Billion USD (한화 약 28.6조원)", "2024": "21.8 Billion USD (한화 약 29.4조원)", "2025(E)": "22.5 Billion USD (한화 약 30.3조원)", "2026(E)": "23.2 Billion USD (한화 약 31.3조원)" }
+    },
+    Bridgestone: {
+      nameKo: "브리지스톤",
+      globalSales: { "2021": "16,000만 본", "2022": "15,500만 본", "2023": "15,800만 본", "2024": "16,300만 본", "2025(E)": "16,700만 본", "2026(E)": "17,200만 본" },
+      globalRevenue: { "2021": "25.1 Billion USD (한화 약 33.8조원)", "2022": "26.2 Billion USD (한화 약 35.3조원)", "2023": "27.5 Billion USD (한화 약 37.1조원)", "2024": "28.2 Billion USD (한화 약 38.0조원)", "2025(E)": "29.1 Billion USD (한화 약 39.2조원)", "2026(E)": "30.0 Billion USD (한화 약 40.5조원)" }
+    }
+  },
+  COMPOUND_BM_KNOWLEDGE: {
+    Hankook: { treadModel: "Ventus S1 evo3 (초고성능)", silicaRate: "78%", hardness: "68 Shore A", wearIndex: "94 (양호)", wetGrip: "A 등급" },
+    Michelin: { treadModel: "Pilot Sport 5 (초고성능)", silicaRate: "85%", hardness: "65 Shore A", wearIndex: "100 (매우 우수)", wetGrip: "A+ 등급" },
+    Continental: { treadModel: "SportContact 7 (초고성능)", silicaRate: "82%", hardness: "66 Shore A", wearIndex: "96 (우수)", wetGrip: "A+ 등급" },
+    Bridgestone: { treadModel: "Potenza Sport (초고성능)", silicaRate: "75%", hardness: "70 Shore A", wearIndex: "90 (보통)", wetGrip: "A 등급" }
+  },
+  TIRE_BM_PLC_MAPPED_MODELS: [
+    { brand: "HANKOOK", summer: "Ventus S1 evo3", winter: "Winter i*cept evo3", allSeason: "Kinergy 4S2", evSpec: "iON evo (아이온 에보)" },
+    { brand: "MICHELIN", summer: "Pilot Sport 5", winter: "Alpin 6", allSeason: "CrossClimate 2 (크로스클라이메이트 2)", evSpec: "Pilot Sport EV" },
+    { brand: "CONTINENTAL", summer: "SportContact 7", winter: "WinterContact TS870", allSeason: "AllSeasonContact 2", evSpec: "UltraContact NXT" },
+    { brand: "BRIDGESTONE", summer: "Potenza Sport", winter: "Blizzak LM005", allSeason: "Weather Control A005", evSpec: "Turanza EV" }
+  ],
+  SEGMENT_STATISTICS: {
+    uhp: { nameKo: "초고성능 스포츠 (UHP)", compoundCount: "342건 검출 (점유율 27.6%)", description: "고출력 및 고속 코너링 안정성, 젖은 노면 제동 극대화 특화 세그먼트." },
+    ev: { nameKo: "전기차 친환경 전용 (EV)", compoundCount: "185건 검출 (점유율 14.9%)", description: "고토크 즉각 반응, 고하중 지지, 회전저항(LRR) 저감, 극대화된 마모 제어 특화 세그먼트." },
+    allseason: { nameKo: "사계절 투어링 (All-Season)", compoundCount: "412건 검출 (점유율 33.2%)", description: "연중 다양한 가혹 노면, 눈길 그립성(3PMSF) 확보 및 컴포트 수명 믹스 세그먼트." },
+    winter: { nameKo: "겨울용 스노우 (Winter / Snow)", compoundCount: "163건 검출 (점유율 13.1%)", description: "영하 7도 이하 극저온 하에서도 경화되지 않는 친환경 저결빙 고무 폴리머 최적화 세그먼트." },
+    totalTreadRecords: "1,240건 (Compd BM 누적 데이터 정밀 매핑)"
+  },
+  ARENA_REPORTS_LIBRARY: [
+    { id: "VPR-2026-04", name: "글로벌 프리미엄 초고성능 스포츠(UHP) 연간 동향 보고서", dept: "시장상품전략팀", size: "14.2 MB", desc: "미쉐린 PS5와 자사 S1 evo3의 나노 실리카 배합 격차 실증" },
+    { id: "VPR-2025-11", name: "4대 제조사 EV 친환경 전용 타이어 트레드 물성 크로스 대조표", dept: "컴파운드R&D센터", size: "8.9 MB", desc: "iON evo vs PS EV 친환경 컴파운드 물성 실측 (185건)" },
+    { id: "VPR-2025-08", name: "유럽 타이어 라벨링 규제 개정에 따른 자사 PLC 로드맵 기안", dept: "Tire BM 파트", size: "11.5 MB", desc: "분진 마모 라벨 규제 선제 대응 전략 및 올시즌 PLC 맵" },
+    { id: "VPR-2024-12", name: "실리카 고배합 타이어 회전저항(LRR) 극대화 실차 연비 테스트 결과", dept: "재료연구 기획소", size: "6.3 MB", desc: "실리카 80% 이상 배합 시 저온 그립력과 연비 트레이드오프 극복 실증" }
+  ]
+};
+
+// 2. 고성능 LLM (Gemini API) 중계 API 라우트 신설
+app.post('/api/chat', async (req, res) => {
+  const { query, apiKey } = req.body;
+
+  if (!query) {
+    return res.status(400).json({ error: "질문 텍스트(query)가 누락되었습니다." });
+  }
+
+  // API 키가 없으면 로컬 fallback 안내 처리
+  const activeApiKey = apiKey || process.env.GEMINI_API_KEY;
+  if (!activeApiKey) {
+    return res.json({ 
+      status: "fallback", 
+      message: "로컬 패턴 매칭 엔진을 사용해 주십시오." 
+    });
+  }
+
+  // RAG 가이드를 포함한 강력한 System Prompt 설계
+  const systemInstruction = `
+역할: 사내 R&D 전문가이자 BM-Intelligence 통합 포털을 총괄하는 "AI Insight Agent" 수석 컨설턴트입니다.
+사용자에게 답변할 때, 아래의 [사내 지식 정보] 데이터를 무조건 사실적 팩트(Fact)의 근거로 삼아야 합니다. 임의로 숫자를 조작하거나 상상해내지 마십시오.
+
+[사내 지식 정보]
+${JSON.stringify(COMPANY_KNOWLEDGE_CONTEXT, null, 2)}
+
+답변 작성 규칙:
+1. 반드시 예외 없이 한국어로만 격식 있고 품위 넘치게 답변해 주십시오. (RULE[user_global] 적용)
+2. 표(Table)나 마크다운(GFM Markdown) 양식을 활용하여 비교 대조를 아름답게 가독성 있게 구조화하십시오.
+3. 사용자가 "아레나 보고서"나 "기안문" 등을 지칭할 경우, 반드시 해당 보고서 코드(예: VPR-2025-11)를 언급하며 이와 연결되는 "Arena 기안 이동" 링크를 HTML <a> 태그나 마크다운 형태로 우아하게 디자인해 주십시오.
+   - 아레나 리포트 링크 형식은 무조건 다음과 같아야 합니다: '../Tire_BM_UI_FINAL/index.html#tab-reports'
+4. 사용자가 특정 세그먼트("초고성능 스포츠(uhp)", "전기차(ev)", "사계절(allseason)", "겨울용(winter)")를 이야기하면, Compd BM 검출 결과 건수(예: UHP 342건, EV 185건 등)와 각 제조사별 대표 타이어 대조 및 R&D 성격을 전문적으로 비교해주십시오.
+5. 단순한 답변 대신, R&D 재료 공학적 분석과 시장/상품 전략 관점의 전문적인 제언을 2~3줄 추가하여 지극히 가치 있는 프리미엄 보고서 느낌을 완성하십시오.
+`;
+
+  try {
+    const apiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeApiKey}`;
+    
+    const requestBody = {
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: `${systemInstruction}\n\n사용자 실제 질문: ${query}` }]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.2, // 정밀도 극대화를 위해 낮춤
+        maxOutputTokens: 2048
+      }
+    };
+
+    const response = await fetch(apiEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.ok) {
+      const errDetails = await response.text();
+      return res.status(response.status).json({ 
+        error: "Gemini API 호출에 실패했습니다.", 
+        details: errDetails 
+      });
+    }
+
+    const data = await response.json();
+    
+    // 안전하게 답변 텍스트 추출
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+      const aiResponseText = data.candidates[0].content.parts[0].text;
+      return res.json({ 
+        status: "success", 
+        model: "gemini-1.5-flash",
+        response: aiResponseText 
+      });
+    } else {
+      return res.status(500).json({ error: "AI 응답 형식이 올바르지 않습니다.", raw: data });
+    }
+
+  } catch (error) {
+    console.error("Gemini API Proxy Error:", error);
+    return res.status(500).json({ error: "서버 내부 연산 중 에러가 발생했습니다.", message: error.message });
+  }
+});
 
 // 루트 접속 시 통합 포털 index.html을 서빙합니다.
 app.get('/', (req, res) => {
@@ -13,7 +151,7 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`================================================================`);
-  console.log(`  BM-Intelligence Integrated Portal Server is now running!`);
+  console.log(`  BM-Intelligence Integrated Portal Server with LLM RAG Bridge Active!`);
   console.log(`  Access URL: http://localhost:${PORT}`);
   console.log(`================================================================`);
 });

@@ -48,6 +48,15 @@
         <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
         <h1 class="logo-text">BM-Intelligence</h1>
       </div>
+      
+      <!-- Premium Link Action: AI에게 질문하기 버튼 신설 -->
+      <div class="header-actions">
+        <a href="chat-bot/index.html" class="ai-ask-link-btn">
+          <i class="fa-solid fa-robot pulse-icon"></i>
+          <span>AI에게 질문하기</span>
+          <span class="ai-pulse-light"></span>
+        </a>
+      </div>
     </header>
 
     <!-- HERO SEARCH AREA (네이버 메인 스타일 대형 검색 바) -->
@@ -71,6 +80,10 @@
             <div class="results-category" id="res-compounds-cat">
               <div class="cat-header"><i class="fa-solid fa-flask"></i> 컴파운드 BM 데이터 (<span id="count-compounds">0</span>)</div>
               <ul class="results-list" id="res-compounds-list"></ul>
+            </div>
+            <div class="results-category" id="res-strategy-cat" style="display: none;">
+              <div class="cat-header"><i class="fa-solid fa-globe"></i> 시장/상품전략 데이터 (<span id="count-strategy">0</span>)</div>
+              <ul class="results-list" id="res-strategy-list"></ul>
             </div>
             <div class="no-results-msg" id="no-results-message" style="display: none;">
               <i class="fa-solid fa-magnifying-glass"></i> 일치하는 데이터가 없습니다.

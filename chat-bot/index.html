@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local AI Insight Agent - BM-Intelligence</title>
+  <meta name="description" content="BM-Intelligence Hub 포털의 통합 IR 실적 및 컴파운드 R&D 데이터 전문 자연어 질의응답 솔루션">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Pretendard Korean Font -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Marked Markdown Parser CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Decorative Glow Background Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <div class="chat-portal-container">
+    
+    <!-- HEADER AREA -->
+    <header class="chat-header">
+      <div class="header-left">
+        <a href="../index.html" class="back-btn" title="메인 포털로 돌아가기">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>메인 포털</span>
+        </a>
+        <div class="divider"></div>
+        <div class="brand-logo">
+          <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
+          <h1 class="logo-text">AI Insight Agent</h1>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="ai-status">
+          <span class="ai-status-dot"></span>
+          <span>Smart Local Model Active</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- CHAT INTERFACE LAYOUT -->
+    <main class="chat-main">
+      
+      <!-- LEFT SIDEBAR: Instructions & Presets -->
+      <aside class="chat-sidebar">
+        <div class="sidebar-card intro-card">
+          <h3><i class="fa-solid fa-circle-info"></i> 시스템 소개</h3>
+          <p>포털 내부의 실시간 IR 공시 실적 및 트레드 컴파운드 물성 지식을 완벽 분석하는 <strong>독자적 로컬 지능형 AI 에이전트</strong>입니다.</p>
+          <div class="data-badge-list">
+            <span class="data-badge"><i class="fa-solid fa-database"></i> IR Data</span>
+            <span class="data-badge"><i class="fa-solid fa-flask"></i> Compound R&D</span>
+            <span class="data-badge"><i class="fa-solid fa-chart-line"></i> Top 4 Brands</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card guide-card">
+          <h3><i class="fa-solid fa-magnifying-glass-chart"></i> 추천 질문 칩</h3>
+          <p class="guide-desc">질문하기 어렵다면 아래 추천 질문을 클릭해 보세요. 실시간 분석 결과를 표와 리포트, 그리고 출처 링크로 구성해 드립니다.</p>
+          <div class="preset-chips-grid">
+            <button class="ai-preset-chip" data-query="미쉐린의 2024년 총 매출액 알려줘">
+              <i class="fa-solid fa-comment-dots"></i> 💰 미쉐린 24년 매출액 (IR)
+            </button>
+            <button class="ai-preset-chip" data-query="각 제조사들의 EV 친환경 특화 타이어 비교해줘">
+              <i class="fa-solid fa-comment-dots"></i> 🛞 EV 친환경 타이어 비교 (Tire BM)
+            </button>
+            <button class="ai-preset-chip" data-query="실리카 고배합 컴파운드 물성 효과와 메이커별 비교">
+              <i class="fa-solid fa-comment-dots"></i> 🧪 실리카 컴파운드 비교 (Compd BM)
+            </button>
+            <button class="ai-preset-chip" data-query="한국타이어 종합 평점 순위와 보강 필요 성능">
+              <i class="fa-solid fa-comment-dots"></i> 📈 기술 경쟁력 및 보강 성능 (전략)
+            </button>
+            <button class="ai-preset-chip" data-query="콘티넨탈 중장기 R&D 우선순위 테마가 뭐야">
+              <i class="fa-solid fa-comment-dots"></i> 🧭 경쟁사 R&D 로드맵 (전략)
+            </button>
+          </div>
+        </div>
+
+        <!-- System Stats Mini-Card -->
+        <div class="sidebar-card stats-card">
+          <div class="stat-row">
+            <span class="stat-label">분석 지표 커버리지</span>
+            <span class="stat-value">100%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">데이터 동기화 상태</span>
+            <span class="stat-value text-green">최신 (2026-E)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">연산 엔진 형태</span>
+            <span class="stat-value text-orange" id="active-engine-type">Local ML Model</span>
+          </div>
+        </div>
+
+        <!-- 💡 NEW: High-End LLM Engine Config Panel -->
+        <div class="sidebar-card llm-config-card">
+          <h3><i class="fa-solid fa-microchip" style="color: var(--secondary);"></i> LLM 모델 고도화 설정</h3>
+          <p class="config-desc" style="margin-bottom: 12px; font-size: 0.78rem; line-height: 1.45;">Google Gemini LLM을 연동하여 질문을 완벽히 이해하는 전문가 R&D 분석 및 상세 기안 보고서 자동 작성 성능을 가동합니다.</p>
+          
+          <div class="llm-toggle-row" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(0,0,0,0.02); padding: 8px 12px; border-radius: 8px; border: 1px dashed rgba(249,115,22,0.1);">
+            <span class="toggle-label" style="font-size: 0.8rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-bolt" style="color: var(--primary);"></i> Gemini LLM 모드
+            </span>
+            <label class="switch" style="position: relative; display: inline-block; width: 38px; height: 20px;">
+              <input type="checkbox" id="llm-toggle" style="opacity: 0; width: 0; height: 0;">
+              <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 20px;"></span>
+            </label>
+          </div>
+
+          <div id="llm-key-container" class="llm-key-container" style="display: none; flex-direction: column; gap: 8px;">
+            <div class="input-with-icon" style="position: relative; display: flex; align-items: center;">
+              <i class="fa-solid fa-key key-icon" style="position: absolute; left: 10px; color: var(--text-muted); font-size: 0.8rem;"></i>
+              <input type="password" id="gemini-api-key" placeholder="API Key 입력 후 Enter" style="width: 100%; padding: 8px 10px 8px 28px; border-radius: 8px; border: 1.5px solid rgba(249, 115, 22, 0.15); font-size: 0.75rem; font-weight: 600; outline: none; transition: var(--transition); background: #fff;">
+            </div>
+            <p class="key-tip" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600; line-height: 1.3;">* 입력된 API Key는 로컬 브라우저 보안 스토리지에만 안전하게 보관됩니다.</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT AREA: Chat Messenger Viewport -->
+      <section class="chat-viewport-container">
+        
+        <!-- Chat History Scroll View -->
+        <div id="chat-history" class="chat-history-viewport">
+          
+          <!-- Bot Welcome Message -->
+          <div class="chat-msg bot-message">
+            <div class="msg-avatar">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="msg-bubble-wrapper">
+              <div class="msg-sender-name">Local AI Insight Agent</div>
+              <div class="msg-bubble">
+                <p>안녕하세요! <strong>BM-Intelligence 통합 포털</strong> 내에 탑재된 로컬 데이터 마이닝 AI 분석기입니다. ⚡</p>
+                <p>글로벌 Top 4 제조사의 실적 지표(매출액/판매량), R&D 분석 자료, 또는 트레드 컴파운드 물성 배합에 관련된 궁금증을 자연어로 입력해 주시면 즉각 분석 보고서를 표와 함께 답변해 드립니다.</p>
+                <div class="bubble-guide-box">
+                  <strong>질문 예시:</strong>
+                  <ul>
+                    <li>"미쉐린의 2024년 총 매출액 알려줘"</li>
+                    <li>"한국타이어의 2026년 예상 판매량 알려줘"</li>
+                    <li>"각 제조사들의 2024년 글로벌 총 매출액 비교해줘"</li>
+                    <li>"실리카 고배합 컴파운드의 효과가 뭐야?"</li>
+                  </ul>
+                </div>
+              </div>
+              <span class="msg-timestamp">방금 전</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Chat Input Fixed Panel -->
+        <div class="chat-input-panel">
+          <div id="ai-typing-indicator" class="ai-typing-indicator" style="display: none;">
+            <div class="typing-pulse-dot"></div>
+            <div class="typing-pulse-dot"></div>
+            <div class="typing-pulse-dot"></div>
+            <span>AI Agent가 실시간 원시 공시 데이터를 연산 집계하는 중입니다...</span>
+          </div>
+
+          <div class="chat-input-wrapper">
+            <textarea id="chat-input" placeholder="여기에 자연어로 실적이나 컴파운드 정보를 질문하세요... (Enter 키로 전송, Shift+Enter로 줄바꿈)" rows="1" autocomplete="off"></textarea>
+            <button id="chat-send-btn" class="chat-send-btn" title="질문하기">
+              <span>질문하기</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER AREA -->
+    <footer class="chat-footer">
+      <p>© 2026 <strong>BM-Intelligence Portal</strong> • AI Agent Solution v3.2</p>
+      <div class="system-status" id="system-status-container">
+        <span class="pulse-dot" id="system-status-dot"></span> <span id="system-status-text">Offline Engine Active</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
