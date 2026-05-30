@@ -24,7 +24,7 @@
   --text-dark: #0f172a;           /* Slate 900 */
   
   /* Layout Dimensions */
-  --portal-max-width: 1440px;
+  --portal-max-width: 1800px;
   
   /* Dynamic Grid Layout Calculation for exact 5 years view */
   --sticky-col-width: 270px;

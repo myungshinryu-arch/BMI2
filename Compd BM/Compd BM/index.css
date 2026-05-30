@@ -245,7 +245,9 @@ h1, h2, h3, h4, .logo-text {
   flex-direction: column;
   gap: 24px;
   min-width: 0;
-  max-width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
   overflow-x: hidden;
 }
 
