@@ -1186,6 +1186,39 @@ body {
   margin-top: 4px;
 }
 
+/* Portal Help Button Styling */
+.btn-portal-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #000000 !important; /* 글씨색 검정색 변경 */
+  border-radius: 20px;
+  font-weight: 800; /* 가독성을 위해 800으로 두껍게 조정 */
+  font-size: 0.85rem;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-portal-help:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.45);
+  filter: brightness(1.1);
+  color: #000000 !important; /* 호버시에도 글씨색 검정색 유지 */
+}
+
+.btn-portal-help:active {
+  transform: translateY(0);
+}
+
+.btn-portal-help i {
+  font-size: 1rem;
+  color: #000000 !important; /* 아이콘 색상도 검정색 통일 */
+}
+
 .status-indicator {
   display: flex;
   align-items: center;
