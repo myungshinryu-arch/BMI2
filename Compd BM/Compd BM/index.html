@@ -578,28 +578,28 @@
                 <div class="card" style="padding: 16px;">
                   <div class="card-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px;">
                     <div class="card-title">
-                      <h3><i class="fa-solid fa-chart-simple"></i> 대표 상품 물성 및 배합 대조 대시보드 (3분할 분석)</h3>
+                      <h3><i class="fa-solid fa-chart-simple"></i> 대표 상품 물성 및 배합 대조 대시보드</h3>
                     </div>
                   </div>
                   <div class="card-body" style="padding: 0;">
                     <div class="compare-charts-split-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
                       <!-- 1분할: Radar chart -->
                       <div class="chart-card-nested" style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-circle-nodes" style="color: var(--primary); margin-right: 6px;"></i>물성 밸런스 비교 레이더 (Radar)</h4>
+                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-circle-nodes" style="color: var(--primary); margin-right: 6px;"></i>물성 밸런스 비교 레이더</h4>
                         <div class="chart-container" style="height: 250px; position: relative;">
                           <canvas id="chart-compare-radar"></canvas>
                         </div>
                       </div>
                       <!-- 2분할: 고무 Blend 차트 -->
                       <div class="chart-card-nested" style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-flask" style="color: var(--accent-orange); margin-right: 6px;"></i>고무 블렌딩 비율 분포 (NR/SBR/BR, %)</h4>
+                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-flask" style="color: var(--accent-orange); margin-right: 6px;"></i>고무 블렌딩 비율 분포</h4>
                         <div class="chart-container" style="height: 250px; position: relative;">
                           <canvas id="chart-compare-polymer"></canvas>
                         </div>
                       </div>
                       <!-- 3분할: 보강제 차트 -->
                       <div class="chart-card-nested" style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-dumbbell" style="color: var(--accent-green); margin-right: 6px;"></i>보강제 함량 비교 (CB vs Silica, phr)</h4>
+                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-dumbbell" style="color: var(--accent-green); margin-right: 6px;"></i>보강제 함량 비교</h4>
                         <div class="chart-container" style="height: 250px; position: relative;">
                           <canvas id="chart-compare-fillers"></canvas>
                         </div>
@@ -612,7 +612,7 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="card-title">
-                      <h3><i class="fa-solid fa-flask"></i> 1. 대표 배합제 평균 함량 대조 (Polymer / Reinforcement / Cure)</h3>
+                      <h3><i class="fa-solid fa-flask"></i> 1. 대표 배합제 평균 함량 대조</h3>
                     </div>
                   </div>
                   <div class="card-body" style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
@@ -628,7 +628,7 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="card-title">
-                      <h3><i class="fa-solid fa-wave-square"></i> 2. 가류 기계 물성 및 점탄성(ARES) 편차 대조 그리드</h3>
+                      <h3><i class="fa-solid fa-wave-square"></i> 2. 가류 기계 물성 및 점탄성 ARES 편차 대조 그리드</h3>
                     </div>
                   </div>
                   <div class="card-body" style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
@@ -644,7 +644,7 @@
                 <div class="card">
                   <div class="card-header" style="background: rgba(255, 255, 255, 0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div class="card-title">
-                      <h3 id="compare-ares-title"><i class="fa-solid fa-chart-line"></i> 3. 선택 컴파운드 ARES Full Curve (온도별 거동 분석 - tanδ)</h3>
+                      <h3 id="compare-ares-title"><i class="fa-solid fa-chart-line"></i> 3. 선택 컴파운드 ARES Full Curve - tanδ</h3>
                     </div>
                     <!-- 실시간 점탄성 지표 전환 탭 컨트롤러 신설 -->
                     <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
@@ -690,9 +690,9 @@
   </div>
 
   <!-- JS Components and App Logic -->
-  <script src="components/charts.js"></script>
-  <script src="components/reportGenerator.js"></script>
-  <script src="components/averageCompare.js"></script>
-  <script src="app.js"></script>
+  <script src="components/charts.js?v=3.2.1"></script>
+  <script src="components/reportGenerator.js?v=3.2.1"></script>
+  <script src="components/averageCompare.js?v=3.2.1"></script>
+  <script src="app.js?v=3.2.1"></script>
 </body>
 </html>
