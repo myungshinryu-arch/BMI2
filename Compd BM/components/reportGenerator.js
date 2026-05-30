@@ -46,6 +46,10 @@ window.ReportGenerator = (function() {
       summaryText.innerHTML = `<span style="color: var(--danger); font-weight: 600;">선택된 타이어가 없습니다.</span> '컴파운드 탐색기' 탭에서 비교할 타이어들을 체크해 주세요.`;
       triggerBtn.disabled = true;
       triggerBtn.style.opacity = '0.5';
+    } else if (selected.length > 5) {
+      summaryText.innerHTML = `현재 <strong style="color: var(--primary); font-size: 1.05rem;">${selected.length}개</strong>의 타이어가 선택되었습니다. <span style="color: #f97316; font-weight: 600; margin-left: 8px;">(가장 상단의 5개 타이어만 비교 리포트에 노출됩니다.)</span>`;
+      triggerBtn.disabled = false;
+      triggerBtn.style.opacity = '1';
     } else {
       summaryText.innerHTML = `현재 <strong style="color: var(--primary); font-size: 1.05rem;">${selected.length}개</strong>의 타이어가 선택되었습니다.`;
       triggerBtn.disabled = false;
@@ -193,7 +197,7 @@ window.ReportGenerator = (function() {
       reportRadarChart.destroy();
     }
 
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) return;
 
     // Collect values to perform normalized scoring (0 ~ 100)
@@ -320,7 +324,7 @@ window.ReportGenerator = (function() {
       viscoChart.destroy();
     }
 
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) return;
 
     // Define X-Axis temperatures from -60 to 60 with 5 degree steps
@@ -428,7 +432,7 @@ window.ReportGenerator = (function() {
 
   // Main Report Render Logic (Translating to Excel-style horizontal replica)
   function generateReport() {
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) {
       window.showToast("오류: 리포트를 생성할 타이어가 선택되지 않았습니다.");
       return;
@@ -581,7 +585,7 @@ window.ReportGenerator = (function() {
 
   // UTF-8 BOM CSV Downloader (Excel compatible)
   function downloadRawCSV() {
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) {
       window.showToast("오류: 다운로드할 데이터가 없습니다. 먼저 리포트를 생성해주세요.");
       return;
@@ -629,7 +633,7 @@ window.ReportGenerator = (function() {
 
   // Engineering AI Comments Generator based on normalized metrics
   function generateAIComments() {
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     const commentEl = document.getElementById('report-ai-comments');
     if (!commentEl || selected.length === 0) return;
 
