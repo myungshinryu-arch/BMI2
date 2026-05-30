@@ -468,18 +468,18 @@
             </div>
 
             <!-- 온도별 점탄성 특성 곡선 및 물성 밸런스 비교 대시보드 (ARES Sweep & Radar) -->
-            <div class="card" id="report-visco-chart-card">
-              <div class="card-header" style="background: rgba(255, 255, 255, 0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div class="card" id="report-visco-chart-card" style="background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;">
+              <div class="card-header" style="background: #f8fafc !important; border-bottom: 1px solid #cbd5e1 !important; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 20px;">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-chart-line"></i> 선택 컴파운드 다차원 물성 및 온도 스윕 분석 (ARES Sweep &amp; Radar)</h3>
+                  <h3 style="color: #0f172a !important; font-size: 1.20rem !important; font-weight: 700 !important; display: flex; align-items: center; gap: 8px; margin: 0;"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Comp'd Radar Chart &amp; ARES curve</h3>
                 </div>
                 <!-- 실시간 점탄성 지표 전환 탭 컨트롤러 신설 -->
                 <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">분석 지표:</span>
-                  <div class="visco-mode-tabs" style="display: flex; background: rgba(0,0,0,0.25); padding: 2px; border-radius: 8px; border: 1px solid var(--card-border);">
-                    <button class="visco-mode-btn active" data-mode="tand">tanδ</button>
-                    <button class="visco-mode-btn" data-mode="gp">G'</button>
-                    <button class="visco-mode-btn" data-mode="gpp">G"</button>
+                  <span style="font-size: 0.95rem !important; color: #0f172a !important; font-weight: 600 !important; margin-right: 4px;">분석 지표:</span>
+                  <div class="visco-mode-tabs" style="display: flex; background: #f1f5f9 !important; padding: 2px; border-radius: 8px; border: 1px solid #cbd5e1 !important;">
+                    <button class="visco-mode-btn active" data-mode="tand" style="color: #334155; font-weight: 600;">tanδ</button>
+                    <button class="visco-mode-btn" data-mode="gp" style="color: #334155; font-weight: 600;">G'</button>
+                    <button class="visco-mode-btn" data-mode="gpp" style="color: #334155; font-weight: 600;">G"</button>
                   </div>
                 </div>
               </div>
@@ -488,28 +488,28 @@
                   
                   <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 (Radar) -->
                   <div class="visco-left-radar-panel">
-                    <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <h4 style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
                       <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
                       컴파운드 종합 물성 밸런스 (Radar)
                     </h4>
                     <div class="chart-container" style="height: 310px; position: relative;">
                       <canvas id="chart-report-radar"></canvas>
                     </div>
-                    <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px; line-height: 1.4;">
+                    <div style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
                       * 6대 핵심 지표(경도, Tg, 저온유연 G', 0℃ G", 0℃ tanδ, 60℃ tanδ) 상대 비교 점수(0~100)를 대조 시각화합니다.
                     </div>
                   </div>
                   
                   <!-- [오른쪽] ARES Sweep Line Chart -->
                   <div class="visco-right-line-panel">
-                    <h4 id="visco-line-title" style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <h4 id="visco-line-title" style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
                       <i class="fa-solid fa-chart-area" style="color: var(--primary);"></i>
                       온도별 손실 탄젠트 거동 분석 (ARES Sweep - tanδ)
                     </h4>
                     <div class="chart-container" style="height: 310px; position: relative;">
                       <canvas id="chart-visco-temperature"></canvas>
                     </div>
-                    <div id="visco-line-caption" style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px; line-height: 1.4;">
+                    <div id="visco-line-caption" style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
                       * -80℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 스윕 데이터 추이를 실시간 대조 선형 차트로 시각화합니다.
                     </div>
                   </div>
@@ -736,9 +736,9 @@
   </div>
 
   <!-- JS Components and App Logic -->
-  <script src="components/charts.js?v=3.2.6"></script>
-  <script src="components/reportGenerator.js?v=3.2.6"></script>
-  <script src="components/averageCompare.js?v=3.2.6"></script>
-  <script src="app.js?v=3.2.6"></script>
+  <script src="components/charts.js?v=3.2.7"></script>
+  <script src="components/reportGenerator.js?v=3.2.7"></script>
+  <script src="components/averageCompare.js?v=3.2.7"></script>
+  <script src="app.js?v=3.2.7"></script>
 </body>
 </html>
