@@ -766,13 +766,24 @@ body {
 /* Performance Dashboard Layout */
 .comparison-dashboard-layout {
   display: grid;
-  grid-template-columns: 38% 1fr;
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   gap: 24px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-@media (max-width: 900px) {
+.comparison-dashboard-layout > * {
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
   .comparison-dashboard-layout {
     grid-template-columns: 1fr;
+  }
+  
+  .comparison-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -956,12 +967,25 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .comparison-legend {
+  max-width: 100%;
+  overflow: hidden;
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  gap: 8px;
+}
+
+.comparison-legend .legend-label {
+  max-width: 220px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .legend-badge {
@@ -979,8 +1003,11 @@ body {
 
 .comparison-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 @media (max-width: 900px) {
@@ -1000,6 +1027,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .comparison-card:hover {
@@ -1141,6 +1170,10 @@ body {
   font-size: 0.8rem;
   line-height: 1.45;
   color: var(--text-primary);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .comparison-insight-box i {
