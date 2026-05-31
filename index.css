@@ -453,7 +453,7 @@ body {
 
 .m-title {
   font-family: var(--font-display);
-  font-size: 1.1rem; /* 1.45rem에서 1.1rem으로 축소하여 한국어 타이틀 깨짐 현상 차단 */
+  font-size: 1.22rem; /* 1.1rem에서 가독성 향상을 위해 1.22rem으로 적절히 상향 */
   font-weight: 800;
   color: var(--text-dark);
   display: flex;
