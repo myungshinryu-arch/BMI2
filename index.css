@@ -2430,83 +2430,85 @@ body {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  gap: 12px !important;
+  gap: 10px !important;
 }
 
 #panel-generation-trends .panel-filter-bar .filter-bar-title {
-  font-size: 0.85rem !important;
-  color: #000000 !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.5px !important;
+  font-family: 'Pretendard', sans-serif !important;
+  font-size: 0.78rem !important;
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0px !important;
   white-space: nowrap !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
 }
 
-/* 드롭다운 필터 (Select) - 연주황 배경 & 검정 글씨 */
+/* 드롭다운 필터 (Select) - 화이트 배경 & 가벼운 볼드체로 전체매출 필터와 정교하게 통일 */
 #panel-generation-trends .panel-filter-bar .filter-select {
-  background-color: #fed7aa !important;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+  background-color: #ffffff !important;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
   background-repeat: no-repeat !important;
-  background-position: right 12px center !important;
-  background-size: 10px auto !important;
-  border: 1px solid rgba(249, 115, 22, 0.45) !important;
-  color: #000000 !important;
-  font-weight: 700 !important;
-  font-size: 0.85rem !important;
-  border-radius: 20px !important;
-  padding: 6px 30px 6px 14px !important;
-  height: 34px !important;
+  background-position: right 10px center !important;
+  background-size: 8px auto !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  color: var(--text-dark) !important;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+  padding: 5px 26px 5px 12px !important;
+  height: 32px !important;
   appearance: none !important;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
+  font-family: 'Pretendard', sans-serif !important;
 }
 
 #panel-generation-trends .panel-filter-bar .filter-select option {
   background-color: #ffffff !important;
-  color: #000000 !important;
+  color: var(--text-dark) !important;
 }
 
 #panel-generation-trends .panel-filter-bar .filter-select:focus {
-  border-color: #ea580c !important;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.3) !important;
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  box-shadow: none !important;
 }
 
-/* 필터 내 탭 버튼 그룹 (Tab Button Group) - 연한 주황색 배경 */
+/* 필터 내 탭 버튼 그룹 (Tab Button Group) - 슬림하고 플랫한 디자인 */
 #panel-generation-trends .panel-filter-bar .tab-btn-group {
-  background-color: rgba(254, 215, 170, 0.45) !important;
-  border: 1px solid rgba(249, 115, 22, 0.35) !important;
-  padding: 4px !important;
-  border-radius: 30px !important;
+  background-color: rgba(249, 115, 22, 0.02) !important;
+  border: 1px solid rgba(249, 115, 22, 0.1) !important;
+  padding: 3px !important;
+  border-radius: 8px !important;
   display: flex !important;
-  gap: 4px !important;
+  gap: 3px !important;
 }
 
 /* 탭 버튼 기본 (비활성) */
 #panel-generation-trends .panel-filter-bar .tab-toggle-btn {
   background-color: transparent !important;
-  color: #374151 !important;
-  font-size: 0.85rem !important;
-  font-weight: 700 !important;
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
   border: 1px solid transparent !important;
-  border-radius: 20px !important;
-  padding: 6px 16px !important;
+  border-radius: 6px !important;
+  padding: 5px 14px !important;
   cursor: pointer;
   transition: all 0.2s ease !important;
+  font-family: 'Pretendard', sans-serif !important;
 }
 
 #panel-generation-trends .panel-filter-bar .tab-toggle-btn:hover {
-  color: #000000 !important;
-  background-color: rgba(249, 115, 22, 0.15) !important;
+  color: var(--text-dark) !important;
+  background-color: rgba(249, 115, 22, 0.05) !important;
 }
 
-/* 탭 버튼 Active: 연한 주황빛 고대비 그라데이션 */
+/* 탭 버튼 Active: 볼드체 제거 및 차분한 한한국 컬러 소프트 매칭 */
 #panel-generation-trends .panel-filter-bar .tab-toggle-btn.active {
-  background: linear-gradient(135deg, #fed7aa, #fdb07c) !important;
-  border: 1px solid rgba(249, 115, 22, 0.5) !important;
-  color: #000000 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 3px 10px rgba(249, 115, 22, 0.25) !important;
-  text-shadow: none !important;
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  color: #ff6b00 !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
 }
 
 
