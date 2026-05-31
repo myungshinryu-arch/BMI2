@@ -271,7 +271,9 @@ async def run_ai_advisor(req: AdvisorRequest):
             ref_tg=req.reference_tg,
             ref_name=req.reference_name,
             material_stats=material_stats,
-            distribution_bounds=req.distribution_bounds
+            distribution_bounds=req.distribution_bounds,
+            run_inference_fn=run_inference,
+            calculate_tg_fn=calculate_tg
         )
         optimized_recipe = calculate_optimized_recipe(
             recipe=req.recipe,

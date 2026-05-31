@@ -49,7 +49,9 @@ def get_ai_advisor_report(
     ref_tg: float,
     ref_name: str,
     material_stats: list,
-    distribution_bounds: Dict[str, Dict[str, float]] = None
+    distribution_bounds: Dict[str, Dict[str, float]] = None,
+    run_inference_fn = None,
+    calculate_tg_fn = None
 ) -> str:
     """
     Expert Compounding Heuristic Report Generator.
@@ -64,6 +66,8 @@ def get_ai_advisor_report(
         sim_tg=sim_tg,
         ref_tg=ref_tg,
         material_stats=material_stats,
+        run_inference_fn=run_inference_fn,
+        calculate_tg_fn=calculate_tg_fn,
         distribution_bounds=distribution_bounds
     )
     
