@@ -81,8 +81,8 @@
             <button class="ai-preset-chip" data-query="한국타이어 종합 평점 순위와 보강 필요 성능">
               <i class="fa-solid fa-comment-dots"></i> 📈 기술 경쟁력 및 보강 성능 (전략)
             </button>
-            <button class="ai-preset-chip" data-query="콘티넨탈 중장기 R&D 우선순위 테마가 뭐야">
-              <i class="fa-solid fa-comment-dots"></i> 🧭 경쟁사 R&D 로드맵 (전략)
+            <button class="ai-preset-chip" data-query="최근 추가된 경쟁사 BI 뉴스 및 R&D 동향 전부 요약해줘">
+              <i class="fa-solid fa-comment-dots"></i> 📰 경쟁사 BI 뉴스 & R&D 동향 요약
             </button>
           </div>
         </div>
@@ -143,13 +143,13 @@
               <div class="msg-sender-name">Local AI Insight Agent</div>
               <div class="msg-bubble">
                 <p>안녕하세요! <strong>BM-Intelligence 통합 포털</strong> 내에 탑재된 로컬 데이터 마이닝 AI 분석기입니다. ⚡</p>
-                <p>글로벌 Top 4 제조사의 실적 지표(매출액/판매량), R&D 분석 자료, 또는 트레드 컴파운드 물성 배합에 관련된 궁금증을 자연어로 입력해 주시면 즉각 분석 보고서를 표와 함께 답변해 드립니다.</p>
+                <p>글로벌 Top 4 제조사의 실적 지표(매출액/판매량), R&D 분석 자료, 최근 구글 크롤링된 경쟁사 BI 뉴스(R&D/마케팅), 또는 트레드 컴파운드 물성 배합에 관련된 궁금증을 자연어로 입력해 주시면 즉각 분석 보고서를 표와 함께 답변해 드립니다.</p>
                 <div class="bubble-guide-box">
                   <strong>질문 예시:</strong>
                   <ul>
                     <li>"미쉐린의 2024년 총 매출액 알려줘"</li>
-                    <li>"한국타이어의 2026년 예상 판매량 알려줘"</li>
-                    <li>"각 제조사들의 2024년 글로벌 총 매출액 비교해줘"</li>
+                    <li>"최근 크롤링된 경쟁사 BI 뉴스 동향 브리핑해줘"</li>
+                    <li>"콘티넨탈의 R&D 관련 최신 뉴스 기사 보여줘"</li>
                     <li>"실리카 고배합 컴파운드의 효과가 뭐야?"</li>
                   </ul>
                 </div>
@@ -192,6 +192,7 @@
 
   </div>
 
+  <script src="../BI/news_data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

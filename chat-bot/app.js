@@ -445,6 +445,120 @@ function performAiNaturalQuery(rawQuery) {
 
   // --- 4.2. Intent Routing & Advanced Answers Generation ---
 
+  // CASE 0: Competitor BI News Trend & Crawled Feeds
+  const isNewsQuery = query.includes('뉴스') || query.includes('news') || query.includes('기사') || query.includes('동향') || query.includes('최근 소식') || query.includes('최근소식') || query.includes('크롤링') || query.includes('bi 뉴스') || query.includes('최신 뉴스') || query.includes('최신 기사') || query.includes('피드') || query.includes('소식') || query.includes('정보');
+  if (isNewsQuery) {
+    const newsDb = typeof BI_NEWS_DATA !== 'undefined' ? BI_NEWS_DATA : [];
+    
+    // 브랜드별로 필터링
+    let filteredNews = newsDb;
+    if (matchedBrand) {
+      filteredNews = newsDb.filter(n => n.brand.toLowerCase() === matchedBrand.toLowerCase() || n.brandName.toLowerCase() === matchedBrand.toLowerCase());
+    }
+
+    let displayHtml = '';
+    if (filteredNews.length === 0) {
+      displayHtml = `
+        <div style="background: rgba(249, 115, 22, 0.05); padding: 15px; border-radius: 8px; border: 1px dashed rgba(249, 115, 22, 0.2); text-align: center;">
+          <p style="margin: 0; font-weight: 700; color: var(--text-dark);">검색된 최근 경쟁사 BI 뉴스가 없습니다.</p>
+          <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: var(--text-muted);">BI/news_data.js 리포지토리가 유효한지 확인해 주세요.</p>
+        </div>
+      `;
+    } else {
+      const topNews = filteredNews.slice(0, 4); // 최대 4개 기사 노출
+      
+      const newsCards = topNews.map(n => {
+        let sentimentIcon = '<i class="fa-solid fa-circle-minus" style="color: #64748b;"></i>';
+        let sentimentText = 'Neutral';
+        let sentimentColor = '#64748b';
+        if (n.sentiment === 'positive') {
+          sentimentIcon = '<i class="fa-solid fa-circle-up" style="color: var(--accent-green);"></i>';
+          sentimentText = 'Positive';
+          sentimentColor = 'var(--accent-green)';
+        } else if (n.sentiment === 'negative') {
+          sentimentIcon = '<i class="fa-solid fa-circle-down" style="color: #ef4444;"></i>';
+          sentimentText = 'Negative';
+          sentimentColor = '#ef4444';
+        }
+
+        const tagsHtml = (n.tags || []).map(t => `<span style="font-size: 0.65rem; background: rgba(0,0,0,0.04); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; font-weight: 700;">#${t}</span>`).join(' ');
+
+        return `
+          <div class="news-feed-card" style="background: rgba(255,255,255,0.7); border: 1px solid rgba(249,115,22,0.15); border-radius: 10px; padding: 15px; margin-bottom: 12px; transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-size: 0.72rem; font-weight: 800; background: rgba(249,115,22,0.1); color: var(--accent-orange); padding: 2px 8px; border-radius: 12px; text-transform: uppercase;">
+                ${n.brandName} • ${n.category}
+              </span>
+              <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">
+                <i class="fa-regular fa-calendar-days"></i> ${n.date}
+              </span>
+            </div>
+            <h4 style="margin: 0 0 6px 0; font-size: 0.9rem; font-weight: 800; color: var(--text-dark); line-height: 1.4;">
+              ${n.title}
+            </h4>
+            <p style="margin: 0 0 10px 0; font-size: 0.8rem; line-height: 1.5; color: var(--text-main); font-weight: 500;">
+              ${n.excerpt || n.content.substring(0, 100) + '...'}
+            </p>
+            <div style="background: rgba(249,115,22,0.02); border-left: 3px solid var(--accent-orange); padding: 8px 10px; margin-bottom: 10px; border-radius: 0 6px 6px 0;">
+              <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-dark); margin-bottom: 3px;">
+                <i class="fa-solid fa-microchip" style="color: var(--primary);"></i> AI 분석 브리핑
+              </div>
+              <div style="font-size: 0.72rem; line-height: 1.4; color: var(--text-main); font-weight: 500;">
+                <strong>요약:</strong> ${n.aiAnalysis.summary}<br>
+                <strong>영향:</strong> <span style="color: #ef4444; font-weight: 700;">${n.aiAnalysis.impact}</span><br>
+                <strong>대응책:</strong> <span style="color: var(--primary); font-weight: 700;">${n.aiAnalysis.recommendation}</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem;">
+              <div style="display: flex; gap: 4px;">
+                ${tagsHtml}
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-weight: 700; color: ${sentimentColor};">
+                  ${sentimentIcon} ${sentimentText} (${n.sentimentScore}점)
+                </span>
+                <a href="${n.raw_link}" target="_blank" style="color: var(--primary); font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 2px;">
+                  출처 뉴스 <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.65rem;"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      displayHtml = `
+        <div style="max-height: 450px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
+          ${newsCards}
+        </div>
+      `;
+    }
+
+    const titleText = matchedBrand ? `📰 [실시간 BI 뉴스] ${brandDisplayName} 최신 뉴스 피드` : '📰 [실시간 BI 뉴스] 글로벌 Top4 경쟁사 뉴스 종합 분석';
+    const descText = matchedBrand 
+      ? `크롤링된 100건 이상의 데이터베이스 중 <strong>${brandDisplayName}</strong>의 R&D 및 비즈니스 동향 뉴스를 실시간 파싱했습니다. AI 에이전트가 위협 영향도를 분석하여 드립니다.`
+      : `실시간 구글 뉴스를 통해 수집된 <strong>100건 이상의 프리미엄 비즈니스 뉴스</strong> 중, 글로벌 Top4 타이어 제조사의 최신 R&D 기술 및 지속가능 특허 동향을 AI 기반으로 요약·추출했습니다.`;
+
+    return `
+      <p style="margin: 0 0 10px 0; color: var(--accent-orange); font-weight: 800; font-size: 1.05rem;">
+        ${titleText}
+      </p>
+      <p style="margin: 0 0 12px 0; color: var(--text-main); font-weight: 500; line-height: 1.5;">
+        ${descText}
+      </p>
+      
+      ${displayHtml}
+
+      <div class="ai-sources-wrapper">
+        <span class="source-label"><i class="fa-solid fa-circle-nodes"></i> 뉴스 포털 전체 이동:</span>
+        <div class="source-links-row">
+          <a href="../BI/index.html" class="ai-source-btn" target="_blank">
+            <i class="fa-solid fa-newspaper"></i> 글로벌 Top4 경쟁사 BI 뉴스 전용 분석기 바로가기
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
   // CASE 1: Specific Report ID or Details Requested
   if (matchedReport) {
     const details = RICH_REPORT_DETAILS[matchedReport.id] || {

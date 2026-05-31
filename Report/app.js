@@ -827,6 +827,74 @@ function buildIntegratedReport(brandKey, modelKey) {
   activeReportState.hankookSpec = hankookSpec;
   activeReportState.activeChartMode = 'tand'; // Reset to tanδ on new generation
 
+  // 2-2. Retrieve and parse Competitor BI News Trend data
+  const newsDb = typeof BI_NEWS_DATA !== 'undefined' ? BI_NEWS_DATA : [];
+  let brandNews = newsDb.filter(n => n.brand.toLowerCase() === brandKey.toLowerCase() || n.brandName.toLowerCase() === brandKey.toLowerCase());
+  if (brandNews.length === 0) {
+    brandNews = newsDb.slice(0, 2);
+  } else {
+    brandNews = brandNews.slice(0, 2);
+  }
+
+  const newsRowsHtml = brandNews.map((n, idx) => {
+    let sentimentIcon = '<i class="fa-solid fa-circle-minus" style="color: #64748b;"></i>';
+    let sentimentColor = '#64748b';
+    if (n.sentiment === 'positive') {
+      sentimentIcon = '<i class="fa-solid fa-circle-up" style="color: var(--accent-green);"></i>';
+      sentimentColor = 'var(--accent-green)';
+    } else if (n.sentiment === 'negative') {
+      sentimentIcon = '<i class="fa-solid fa-circle-down" style="color: #ef4444;"></i>';
+      sentimentColor = '#ef4444';
+    }
+
+    return `
+      <div class="arena-report-item" style="flex-direction: column; align-items: stretch; gap: 10px; padding: 15px; background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 8px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 6px; margin-bottom: 4px;">
+          <span style="font-size: 0.72rem; font-weight: 800; background: rgba(249, 115, 22, 0.08); color: var(--primary); padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">
+            [BI동향 #${idx + 1}] ${n.brandName} • ${n.category}
+          </span>
+          <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">
+            <i class="fa-regular fa-calendar-days"></i> ${n.date}
+          </span>
+        </div>
+        <div>
+          <h4 style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark); margin: 0 0 6px 0; line-height: 1.4;">
+            ${n.title}
+          </h4>
+          <p style="font-size: 0.78rem; color: var(--text-main); line-height: 1.5; margin: 0 0 8px 0; font-weight: 500;">
+            ${n.excerpt || n.content.substring(0, 100) + '...'}
+          </p>
+        </div>
+        
+        <table class="rep-table" style="margin: 0; font-size: 0.72rem; border-top: none; width: 100%;">
+          <tbody>
+            <tr style="background: rgba(249, 115, 22, 0.01);">
+              <td style="width: 25%; font-weight: 800; padding: 4px 8px; border-top: none; border-bottom: 1px solid rgba(0,0,0,0.03);">R&D 요약</td>
+              <td style="padding: 4px 8px; border-top: none; border-bottom: 1px solid rgba(0,0,0,0.03);">${n.aiAnalysis.summary}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; padding: 4px 8px; color: #ef4444; border-bottom: 1px solid rgba(0,0,0,0.03);">위협 영향도</td>
+              <td style="padding: 4px 8px; font-weight: 600; color: #ef4444; border-bottom: 1px solid rgba(0,0,0,0.03);">${n.aiAnalysis.impact}</td>
+            </tr>
+            <tr style="background: rgba(16, 185, 129, 0.01);">
+              <td style="font-weight: 800; padding: 4px 8px; color: var(--accent-green);">자사 대응전략</td>
+              <td style="padding: 4px 8px; font-weight: 600; color: var(--accent-green);">${n.aiAnalysis.recommendation}</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 0.7rem;">
+          <span style="font-weight: 700; color: ${sentimentColor};">
+            감성 분석: ${sentimentIcon} ${n.sentiment.toUpperCase()} (${n.sentimentScore}점)
+          </span>
+          <a href="${n.raw_link}" target="_blank" style="color: var(--primary); font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 2px;">
+            기사 원문 <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.6rem;"></i>
+          </a>
+        </div>
+      </div>
+    `;
+  }).join('');
+
   // Retrieve IR financial & strategy info
   const compBrandData = REPORT_IR_DATABASE[brandKey];
   const hankookBrandData = REPORT_IR_DATABASE["HANKOOK"];
@@ -1414,6 +1482,20 @@ function buildIntegratedReport(brandKey, modelKey) {
             <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px; color: var(--primary);"></i> 본 해당 상품 모델군에 직결된 사내 Arena 결재 완료 보고서 이력이 데이터베이스에 부재합니다.
           </div>
         `}
+    </div>
+
+    <!-- SECTION 6: COMPETITOR BI NEWS & THREAT INTELLIGENCE ANALYSIS -->
+    <div class="rep-section" style="page-break-inside: avoid;">
+      <h3 class="rep-section-title">
+        <i class="fa-solid fa-newspaper"></i> 6. 경쟁사 실시간 BI 뉴스 & R&D 위협 동향 분석
+        <span class="live-db-badge" style="background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.25); color: var(--primary);"><i class="fa-solid fa-square-rss"></i> BI News 실시간 연동</span>
+      </h3>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+        실시간 구글 뉴스를 통해 수집 및 크롤링된 <strong>100건 이상의 프리미엄 비즈니스 데이터베이스</strong>에서, 현재 비교 대상인 <strong>${compBrandData.nameKo}</strong>에 관련된 최신 R&D 및 마케팅 위협 요소를 추출했습니다.
+      </p>
+
+      <div class="arena-report-list">
+        ${newsRowsHtml}
       </div>
     </div>
 
