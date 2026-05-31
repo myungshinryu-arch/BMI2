@@ -2549,6 +2549,9 @@ function renderGenerationTrends(lineupKey, chartMode = 'gen3') {
       const themeColor = brandColors[data.brand] || '#3b82f6';
 
       data.generations.forEach((g, idx) => {
+        // 압축된 화면 구성을 위해 오직 3세대 최신 모델 브로셔만 렌더링함
+        if (idx !== 2) return;
+
         // Generation Row Container
         const row = document.createElement('div');
         row.className = 'gt-generation-row';
