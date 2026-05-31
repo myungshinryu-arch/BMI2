@@ -1,8 +1,8 @@
 /**
- * 한국타이어 상품 전략 분석 시스템 - 대시보드 로직 (dashboard.js)
+ * 한국타이어 상품 전략 분석 시스템 - 대시보드 로직
  * 글로벌 필터 이벤트 처리, 세그먼트별 상품 포지셔닝 및 랭킹 계산,
  * 동적 SWOT R&D 매트릭스 엔진, Gap Analysis 가이드 생성, Chart.js 시각화 제어,
- * 유럽 전문 분석(ADAC, Auto Bild) 통합 평점 연계 및 글로벌 탑 4 경쟁사 실시간 리포팅 포털.
+ * 유럽 전문 분석 통합 평점 연계 및 글로벌 탑 4 경쟁사 실시간 리포팅 포털.
  */
 
 const TIRE_STRATEGY_DB = {
@@ -12,15 +12,15 @@ const TIRE_STRATEGY_DB = {
         color: "#5cb2ff",
         period: "2025-2026 글로벌 분기 IR 보고서 분석",
         marketing: {
-            fact: "미쉐린은 '마모 수명 한계점(1.6mm)까지 일관된 제동 안전성을 유지하는 지속가능 성능(Sustainable Performance)'을 최우선 소구점으로 공식 선언하여 내세우고 있습니다. 단순 새 제품 평가 중심에서 탈피해 수명이 완전히 끝나는 시점까지 균일한 제동 신뢰를 제공하는 것을 핵심 USP로 삼고 있습니다.",
+            fact: "미쉐린은 '마모 수명 한계점까지 일관된 제동 안전성을 유지하는 지속가능 성능'을 최우선 소구점으로 공식 선언하여 내세우고 있습니다. 단순 새 제품 평가 중심에서 탈피해 수명이 완전히 끝나는 시점까지 균일한 제동 신뢰를 제공하는 것을 핵심 USP로 삼고 있습니다.",
             estimation: "이는 마모 한계 시점 경쟁력이 상대적으로 취약한 아시아계 후발 제조사들의 진입 장벽을 공고히 쌓고, 프리미엄 초고단가 가격 정책을 흔들림 없이 고수하기 위한 가격 방어 전략으로 추정됩니다."
         },
         product: {
-            fact: "자료에 따르면 미쉐린은 18인치 이상의 고인치 고수익 승용 세그먼트와 HL(High Load Capacity) 전기차 규격 타이어 수주에 전력을 집중하고 있습니다. 수익성이 낮은 유럽 내 일부 승용 공장을 폐쇄/감축하는 한편, 글로벌 완성차 프리미엄 세그먼트 OE(신차 장착) 공급 비중을 45% 이상으로 상향 유지하고 있습니다.",
+            fact: "자료에 따르면 미쉐린은 18인치 이상의 고인치 고수익 승용 세그먼트와 HL(High Load Capacity) 전기차 규격 타이어 수주에 전력을 집중하고 있습니다. 수익성이 낮은 유럽 내 일부 승용 공장을 폐쇄/감축하는 한편, 글로벌 완성차 프리미엄 세그먼트 OE 공급 비중을 45% 이상으로 상향 유지하고 있습니다.",
             estimation: "일반 범용 타이어 시장의 고열 마진 경쟁을 기피하고, 고수익 하이엔드 럭셔리 및 고하중 EV 제품 위주로 믹스를 정렬하여 고정비를 낮추고 제조 효율을 극대화하려는 목적을 지닌 것으로 해석됩니다."
         },
         tech: {
-            fact: "2030년까지 타이어 제조 원료의 40% 이상을 재생 원료 및 친환경 페트(PET) 수지로 충당하겠다는 지속가능 ESG 로드맵을 가동하고 있습니다. 트레드가 마모될수록 내부 패턴 홈이 스스로 열려 젖은 제동력을 역동적으로 유지시키는 '자가 재생 트레드 패턴' 연구에 R&D 자원의 30%를 고정 투입 중입니다.",
+            fact: "2030년까지 타이어 제조 원료의 40% 이상을 재생 원료 및 친환경 페트 수지로 충당하겠다는 지속가능 ESG 로드맵을 가동하고 있습니다. 트레드가 마모될수록 내부 패턴 홈이 스스로 열려 젖은 제동력을 역동적으로 유지시키는 '자가 재생 트레드 패턴' 연구에 R&D 자원의 30%를 고정 투입 중입니다.",
             estimation: "유럽 Euro 7 등 고난도 환경 규제(미세먼지 마모 배출 가이드라인)에 능동적으로 대처하며, 패턴 수명 소실에 따른 그립 감소 한계를 지능적인 하이테크 트레드 형상 설계 기술로 극복하려는 시도로 분석됩니다."
         },
         chartLabels: ["바이오 원료 대체 컴파운딩", "자가 재생 트레드 패턴", "EV 전용 고강성 HL 최적화", "초저마모 트레드 수명 연장", "지능형 소음 차단 폼 기술"],
@@ -40,10 +40,10 @@ const TIRE_STRATEGY_DB = {
             estimation: "제조업의 한계를 넘어서 클라우드 구독 MaaS(Mobility as a Service) 사업자로 도약해 고정적인 유입 마진 구조를 정립하고, 자사 유통 거점 강화를 통해 OE/RE 시장 지배력을 복합적으로 고정 확보하려는 구상으로 풀이됩니다."
         },
         tech: {
-            fact: "브랜드 최우선 기술인 'ENLITEN(인라이튼)' 플랫폼에 투자를 집중하여 타이어 총 중량을 최대 20% 경량화하고 회전저항을 15% 삭감시켜 전기차 주행 거리 증가 가이드를 제시했습니다. 고온 배합 시 이산화탄소 배출을 줄이기 위한 정밀 제어 고무 수지 컴파운딩 신공정 구축에 막대한 연구비를 투자 중입니다.",
-            estimation: "배터리 무게로 인한 하중 증가 극대화가 불가피한 차세대 EV 제조사의 경량화 니즈를 정확히 공략함으로써 EV 순정 장착(OE) 시장의 절대 지배자로 포지셔닝하고자 하는 적극적인 행보로 분석됩니다."
+            fact: "브랜드 최우선 기술인 'ENLITEN' 플랫폼에 투자를 집중하여 타이어 총 중량을 최대 20% 경량화하고 회전저항을 15% 삭감시켜 전기차 주행 거리 증가 가이드를 제시했습니다. 고온 배합 시 이산화탄소 배출을 줄이기 위한 정밀 제어 고무 수지 컴파운딩 신공정 구축에 막대한 연구비를 투자 중입니다.",
+            estimation: "배터리 무게로 인한 하중 증가 극대화가 불가피한 차세대 EV 제조사의 경량화 니즈를 정확히 공략함으로써 EV 순정 장착 시장의 절대 지배자로 포지셔닝하고자 하는 적극적인 행보로 분석됩니다."
         },
-        chartLabels: ["ENLITEN 경량 설계 기술", "초저 회전저항(RR) 컴파운드", "IoT 원격 공기압 모니터링", "특수 합성수지 컴파운딩 연구", "생산 라인 친환경 저탄소 공정"],
+        chartLabels: ["ENLITEN 경량 설계 기술", "초저 회전저항 컴파운드", "IoT 원격 공기압 모니터링", "특수 합성수지 컴파운딩 연구", "생산 라인 친환경 저탄소 공정"],
         chartData: [40, 22, 18, 12, 8]
     },
     Continental: {
@@ -60,7 +60,7 @@ const TIRE_STRATEGY_DB = {
             estimation: "중국 및 범용 브랜드의 저가 믹스 공세를 원천 방어하고자 타사의 침입이 원천 차단되는 고정밀 기술 타이어 시장의 입지를 완전히 다지겠다는 고품격 고마진 집중화 전략으로 읽힙니다."
         },
         tech: {
-            fact: "러시아산 천연고무 의존도를 극복하기 위해 민들레 뿌리 추출 친환경 대체 고무 'Taraxagum'의 승용 타이어 양산 라인 적용 공정을 세계 최초로 상용화했습니다. 타이어 내부 가황 센서가 마모 진행도와 노면 수막현상(Hydroplaning)을 체크하여 차량 구동 장치(ABS/ESC)에 실시간 정보를 제공하는 주행 인텔리전스 시스템 고도화에 주력하고 있습니다.",
+            fact: "러시아산 천연고무 의존도를 극복하기 위해 민들레 뿌리 추출 친환경 대체 고무 'Taraxagum'의 승용 타이어 양산 라인 적용 공정을 세계 최초로 상용화했습니다. 타이어 내부 가황 센서가 마모 진행도와 노면 수막현상을 체크하여 차량 구동 장치에 실시간 정보를 제공하는 주행 인텔리전스 시스템 고도화에 주력하고 있습니다.",
             estimation: "친환경 원료 수급 안보 확보는 물론, 다가올 자율주행 차량 환경에서 타이어 섀시가 직접 노면 물리 마찰 정보를 전달하는 인공지능 주행 데이터 비즈니스의 원천 기술을 확보하기 위한 R&D 지향점으로 판단됩니다."
         },
         chartLabels: ["지능형 무선 센서 섀시 연계", "민들레 고무 Taraxagum 상용화", "고온/습윤 복합 정밀 제동 소재", "전기차 최적 강성 보강 패키지", "타이어 내측 저온 융착 가동 공정"],
@@ -72,15 +72,15 @@ const TIRE_STRATEGY_DB = {
         color: "#ca8aff",
         period: "2025-2026 Goodyear Forward 경영 전략안",
         marketing: {
-            fact: "굿이어는 기후 변화가 유발하는 거친 노면과 급격한 일교차 하에서도 완벽한 그립을 지원하는 '전천후 안전성 (All-Weather Security)'을 마케팅 중심 테마로 투영하고 있습니다. 북미 오토클럽과 유대를 공고히 하고 가상 주행 시뮬레이션 매체를 활용한 고객 접점을 넓히고 있습니다.",
+            fact: "굿이어는 기후 변화가 유발하는 거친 노면과 급격한 일교차 하에서도 완벽한 그립을 지원하는 '전천후 안전성'을 마케팅 중심 테마로 투영하고 있습니다. 북미 오토클럽과 유대를 공고히 하고 가상 주행 시뮬레이션 매체를 활용한 고객 접점을 넓히고 있습니다.",
             estimation: "미국 본토 특유의 극심한 폭설과 우천 기후를 중시하는 대륙 소비자에게 '사계절 무중단 안전 신뢰성'의 대명사 격인 자사 타이어 이미지를 고착화하여 충성 고객 이탈을 통제하려는 목적입니다."
         },
         product: {
-            fact: "체질 개선 프로그램 'Goodyear Forward'를 선언하며 아시아/유럽 내 비수익성 승용 공장 자산을 전격 매각하고, 특수 화학 소재 자회사를 분할 정리했습니다. 이에 따라 보존된 현금을 미국 본토 내 SUV, 라이트트럭(LT) 및 험로 All-Terrain 라인업의 단가 마진 증대 정책에 쏟아 붓고 있습니다.",
+            fact: "체질 개선 프로그램 'Goodyear Forward'를 선언하며 아시아/유럽 내 비수익성 승용 공장 자산을 전격 매각하고, 특수 화학 소재 자회사를 분할 정리했습니다. 이에 따라 보존된 현금을 미국 본토 내 SUV, 라이트트럭 및 험로 All-Terrain 라인업의 단가 마진 증대 정책에 쏟아 붓고 있습니다.",
             estimation: "과도한 부채와 이자 리스크 부담을 해소하기 위해 저수익 해외 공장을 구조조정하고, 북미 본토에서 가장 마진율이 견고하고 점유율이 탄탄한 픽업트럭/SUV 믹스에 리소스를 봉쇄 수렴하여 수익성을 가속화하려는 구도로 분석됩니다."
         },
         tech: {
-            fact: "클라우드 인프라 기반의 모빌리티 분석 툴 'SightLine' 시스템을 보급하고 있습니다. 타이어 내장 칩이 잔여 트레드웨어 수명 속도와 젖은 배수 한계 데이터를 실시간 계측하여 데이터 서버에 무선 송출합니다. 더불어 대두유(Soybean oil) 친환경 원료 배합을 전체 패신저 라인업에 확대 적용하고 있습니다.",
+            fact: "클라우드 인프라 기반의 모빌리티 분석 툴 'SightLine' 시스템을 보급하고 있습니다. 타이어 내장 칩이 잔여 트레드웨어 수명 속도와 젖은 배수 한계 데이터를 실시간 계측하여 데이터 서버에 무선 송출합니다. 더불어 대두유 친환경 원료 배합을 전체 패신저 라인업에 확대 적용하고 있습니다.",
             estimation: "렌터카 및 카셰어링, 상용 플릿을 아우르는 지능형 통합 모빌리티 관리 자동화 리더십을 점하고, 대두유 대체 고무 적용으로 미국 행정부의 친환경 조달 우대 및 관세 혜택을 획득하려는 일석이조의 기술 전략입니다."
         },
         chartLabels: ["SightLine 클라우드 AI 분석칩", "대두유 바이오 원료 대치 제조", "험로 내구 성능 컴파운딩", "북미 볼륨 생산 공정 자동화", "차세대 사계절 하이브리드 패턴"],
@@ -89,7 +89,7 @@ const TIRE_STRATEGY_DB = {
 };
 
 // =============================================================
-// 3. 글로벌 타이어 제품별 가중평균 평균 단가 (Unit Price Table, USD)
+// 3. 글로벌 타이어 제품별 가중평균 평균 단가
 // =============================================================
 const TIRE_UNIT_PRICES = {
     // Hankook
@@ -190,7 +190,7 @@ const BRAND_IR_METADATA = {
                 "Winter": 0.25
             }
         },
-        source: "한국타이어앤테크놀로지 정기주주총회 주주설명회 및 IR 분기 실적보고서 공시 (2025-2026)"
+        source: "한국타이어앤테크놀로지 정기주주총회 주주설명회 및 IR 분기 실적보고서 공시"
     },
     Michelin: {
         globalSales: {
@@ -400,7 +400,7 @@ const BRAND_IR_METADATA = {
                 "Winter": 0.20
             }
         },
-        source: "금호타이어 주식회사 영업보고서 및 분기 사업보고서 공시 (2025)"
+        source: "금호타이어 주식회사 영업보고서 및 분기 사업보고서 공시"
     }
 };
 
@@ -463,8 +463,8 @@ class TireDashboard {
 
     /**
      * 특정 타이어 아이템이 특정 시장에서 어느 세그먼트에 매핑되는지 반환한다.
-     * 북미('na')에서는 기존 item.segment를 그대로 유지하고,
-     * 유럽('eu')에서는 item.season 속성('Summer', 'All-Season', 'Winter')을 반환한다.
+     * 북미에서는 기존 item.segment를 그대로 유지하고,
+     * 유럽에서는 item.season 속성을 반환한다.
      */
     getModelSegmentForMarket(item, market) {
         if (market === 'eu') {
@@ -476,14 +476,14 @@ class TireDashboard {
 
     /**
      * 주주총회 보고서 기반 글로벌 판매량과 지역/세그먼트 비율 및 모델 인지도 지분율을 결합하여
-     * 특정 시장(market) 및 특정 연도(year)에서의 모델별 실질 판매량(k units)을 역산하여 반환한다.
-     * highPrecision이 true이면 최종 반올림(toFixed)을 생략한 원시 float 값을 반환하여 누적 오차를 방지한다.
+     * 특정 시장 및 특정 연도에서의 모델별 실질 판매량을 역산하여 반환한다.
+     * highPrecision이 true이면 최종 반올림을 생략한 원시 float 값을 반환하여 누적 오차를 방지한다.
      */
     getModelSalesVolume(brand, model, segment, year, market, highPrecision = false) {
         const metadata = BRAND_IR_METADATA[brand];
         if (!metadata) return 0;
 
-        // 1. 해당 연도의 공식 글로벌 판매량 (Baseline)
+        // 1. 해당 연도의 공식 글로벌 판매량
         const globalSales = typeof metadata.globalSales === 'object' 
             ? (metadata.globalSales[year] || metadata.globalSales["2025"] || 100000000)
             : (metadata.globalSales || 100000000);
@@ -544,8 +544,8 @@ class TireDashboard {
     }
 
     /**
-     * 해당 연도 및 시장의 공식 매출총액(Revenue)과 소매 단가 비율에 의거하여,
-     * 특정 타이어 모델의 정밀 보정 매출액(Million USD)을 역산하여 반환한다.
+     * 해당 연도 및 시장의 공식 매출총액과 소매 단가 비율에 의거하여,
+     * 특정 타이어 모델의 정밀 보정 매출액을 역산하여 반환한다.
      * highPrecision이 true이면 반올림을 배제한 원시 float 값을 리턴한다.
      */
     getModelSalesRevenue(brand, model, segment, year, market, highPrecision = false) {
@@ -571,7 +571,7 @@ class TireDashboard {
 
         if (retailRevenueTotalUSD === 0) return 0;
 
-        // 3. 비례 조정 계수 (Scale Factor) 산출
+        // 3. 비례 조정 계수 산출
         const scaleFactor = actualRevenueRegion / retailRevenueTotalUSD;
 
         // 4. 대상 모델의 1차 소매 매출액 계산
@@ -582,7 +582,7 @@ class TireDashboard {
         const modelPrice = TIRE_UNIT_PRICES[model] || 150;
         const modelRetailUSD = modelVolumeK * 1000 * modelPrice;
 
-        // 5. 최종 보정 매출액 산출 (USD) -> Million USD 변환 (divide by 1,000,000)
+        // 5. 최종 보정 매출액 산출 -> Million USD 변환
         const modelCalibratedUSD = modelRetailUSD * scaleFactor;
         const modelCalibratedMillionUSD = modelCalibratedUSD / 1000000;
 
@@ -590,31 +590,39 @@ class TireDashboard {
     }
 
     init() {
-        // 사이드바 토글 이벤트 바인딩
+        // 사이드바 토글 이벤트 바인딩 (Tire BM UI 표준 기믹 탑재)
         const sidebarToggleBtn = document.getElementById('sidebar-toggle');
         const sidebar = document.querySelector('.sidebar');
-        const dashboardContainer = document.querySelector('.dashboard-container');
         
-        // localStorage에서 이전 상태 불러오기
-        const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-        if (isCollapsed && sidebar && dashboardContainer) {
-            sidebar.classList.add('collapsed');
-            dashboardContainer.classList.add('sidebar-collapsed');
-        }
-        
-        if (sidebarToggleBtn && sidebar && dashboardContainer) {
-            sidebarToggleBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                dashboardContainer.classList.toggle('sidebar-collapsed');
-                const nowCollapsed = sidebar.classList.contains('collapsed');
-                localStorage.setItem('sidebar-collapsed', nowCollapsed);
+        if (sidebarToggleBtn && sidebar) {
+            sidebarToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('active');
+                const nowActive = sidebar.classList.contains('active');
+                localStorage.setItem('sidebar-active', nowActive);
                 
                 // 차트 크기 재조정 트리거 (전환 애니메이션 고려)
                 setTimeout(() => {
                     this.resizeAllCharts();
                 }, 300);
             });
+
+            // 마우스가 사이드바에서 사라질 때 닫히도록 마우스 리브 이벤트 탑재
+            sidebar.addEventListener('mouseleave', () => {
+                sidebar.classList.remove('active');
+                localStorage.setItem('sidebar-active', 'false');
+            });
         }
+
+        // 사이드바 외부 클릭 시 닫히도록 하는 글로벌 리스너 (Tire BM UI 연동 호환 기믹)
+        document.addEventListener('click', (e) => {
+            if (sidebar && sidebar.classList.contains('active')) {
+                if (!sidebar.contains(e.target) && e.target !== sidebarToggleBtn && !sidebarToggleBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                    localStorage.setItem('sidebar-active', 'false');
+                }
+            }
+        });
 
         // 필터 변경 시 대시보드 갱신
         if (this.form) {
@@ -744,7 +752,7 @@ class TireDashboard {
             });
         });
 
-        // Tab 1: 대상 시장(Global, NA, EU) 변경 이벤트 바인딩
+        // Tab 1: 대상 시장 변경 이벤트 바인딩
         const marketButtons = document.querySelectorAll('#tab1-market-selector .tab-toggle-btn');
         marketButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -755,12 +763,12 @@ class TireDashboard {
             });
         });
 
-        // Chart.js 글로벌 다크 테마 기본값 설정
+        // Chart.js 글로벌 라이트 테마 기본값 설정
         if (typeof Chart !== 'undefined') {
-            Chart.defaults.color = '#94a3b8'; // Slate 그레이 텍스트
+            Chart.defaults.color = '#64748b'; // Slate 그레이 텍스트
             Chart.defaults.font.family = "'Inter', sans-serif";
             if (Chart.defaults.scale && Chart.defaults.scale.grid) {
-                Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
+                Chart.defaults.scale.grid.color = 'rgba(249, 115, 22, 0.06)';
             }
         }
 
@@ -797,7 +805,30 @@ class TireDashboard {
 
         // 최초 전체 화면 렌더링 및 뷰 설정
         this.updateDashboard();
-        this.switchView('market');
+        
+        // 해시 기반 초기 탭 활성화 지원 (포털 연계 라우팅 기믹)
+        const hash = window.location.hash;
+        let initialView = 'competitiveness';
+        if (hash) {
+            const possibleView = hash.replace('#tab-', '').replace('#', '');
+            const allowedViews = ['competitiveness', 'generation-trends', 'hankook-strategy', 'market', 'tech-strategy'];
+            if (allowedViews.includes(possibleView)) {
+                initialView = possibleView;
+            }
+        }
+        this.switchView(initialView);
+
+        // hashchange 이벤트 등록으로 실시간 해시 변경 대응
+        window.addEventListener('hashchange', () => {
+            const currentHash = window.location.hash;
+            if (currentHash) {
+                const viewFromHash = currentHash.replace('#tab-', '').replace('#', '');
+                const allowedViews = ['competitiveness', 'generation-trends', 'hankook-strategy', 'market', 'tech-strategy'];
+                if (allowedViews.includes(viewFromHash)) {
+                    this.switchView(viewFromHash);
+                }
+            }
+        });
     }
 
     /**
@@ -814,7 +845,7 @@ class TireDashboard {
     }
 
     /**
-     * 현재 시장 상태(this.currentMarket)에 맞게 사이드바 성능 데이터 소스 셀렉트 옵션을 동적 재구축
+     * 현재 시장 상태에 맞게 사이드바 성능 데이터 소스 셀렉트 옵션을 동적 재구축
      */
     updateSourceFilterOptions() {
         if (!this.sourceSelect) return;
@@ -824,9 +855,9 @@ class TireDashboard {
         
         if (this.currentMarket === 'na') {
             this.sourceSelect.innerHTML = `
-                <option value="combined">북미 종합 평점 (Tire Rack + CR)</option>
+                <option value="combined">북미 종합 평점</option>
                 <option value="tirerack">북미 Tire Rack 평가 (소비자)</option>
-                <option value="consumerreports">북미 Consumer Reports (연구소)</option>
+                <option value="consumerreports">북미 Consumer Reports</option>
             `;
             if (['combined', 'tirerack', 'consumerreports'].includes(prevValue)) {
                 this.sourceSelect.value = prevValue;
@@ -835,7 +866,7 @@ class TireDashboard {
             }
         } else if (this.currentMarket === 'eu') {
             this.sourceSelect.innerHTML = `
-                <option value="combined">유럽 종합 평점 (ADAC + Auto Bild)</option>
+                <option value="combined">유럽 종합 평점</option>
                 <option value="adac">유럽 ADAC 테스트 (독일 학교식)</option>
                 <option value="autobild">유럽 Auto Bild 테스트 (정성 등급)</option>
             `;
@@ -851,7 +882,7 @@ class TireDashboard {
     }
 
     /**
-     * 현재 시장 상태(this.currentMarket)에 맞게 세그먼트 드롭다운 필터 옵션을 동적 재구축
+     * 현재 시장 상태에 맞게 세그먼트 드롭다운 필터 옵션을 동적 재구축
      */
     updateSegmentDropdown() {
         if (!this.segmentSelect && !this.segmentSelectT4) return;
@@ -864,12 +895,12 @@ class TireDashboard {
             
             if (this.currentMarket === 'na') {
                 selectEl.innerHTML = `
-                    <option value="all">전체 세그먼트 (All Segments)</option>
-                    <option value="Ultra High Performance (UHP)">초고성능 스포츠 (UHP)</option>
-                    <option value="Grand Touring (All-Season) - Passenger">투어링 승용 사계절 (Grand Touring Passenger)</option>
-                    <option value="Grand Touring (All-Season) - SUV">투어링 SUV 사계절 (Grand Touring SUV)</option>
-                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
-                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
+                    <option value="all">전체 세그먼트</option>
+                    <option value="Ultra High Performance (UHP)">초고성능 스포츠</option>
+                    <option value="Grand Touring (All-Season) - Passenger">투어링 승용 사계절</option>
+                    <option value="Grand Touring (All-Season) - SUV">투어링 SUV 사계절</option>
+                    <option value="All-Season Passenger">일반 승용 사계절</option>
+                    <option value="Winter / Snow">겨울용 스노우</option>
                     <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
                 `;
                 const validOptions = [
@@ -888,10 +919,10 @@ class TireDashboard {
                 }
             } else if (this.currentMarket === 'eu') {
                 selectEl.innerHTML = `
-                    <option value="all">전체 세그먼트 (All Segments)</option>
-                    <option value="Summer">여름용 (Summer)</option>
-                    <option value="All-Season">사계절용 (All-Season)</option>
-                    <option value="Winter">겨울용 (Winter)</option>
+                    <option value="all">전체 세그먼트</option>
+                    <option value="Summer">여름용</option>
+                    <option value="All-Season">사계절용</option>
+                    <option value="Winter">겨울용</option>
                 `;
                 const validOptions = ['all', 'Summer', 'All-Season', 'Winter'];
                 if (validOptions.includes(prevValue)) {
@@ -931,7 +962,7 @@ class TireDashboard {
     }
 
     /**
-     * 전역 시장 상태('na' | 'eu')를 설정하고 관련된 모든 UI 컴포넌트(Tab 2, Tab 4)를 동기화
+     * 전역 시장 상태를 설정하고 관련된 모든 UI 컴포넌트를 동기화
      */
     setMarket(market) {
         this.currentMarket = market;
@@ -1036,7 +1067,7 @@ class TireDashboard {
 
         this.updateSourceFilterOptions();
         this.updateDashboard();
-        this.switchView('market');
+        this.switchView('competitiveness');
     }
 
     /**
@@ -1052,6 +1083,31 @@ class TireDashboard {
     switchView(view) {
         this.activeView = view;
         
+        // 0. 헤더 타이틀 텍스트 동적 변경 (Tire BM & Compd BM 일관성 연동)
+        const titleTextEl = document.getElementById('header-title-text');
+        if (titleTextEl) {
+            const viewTitleMap = {
+                'market': 'Market & Sales Overview',
+                'competitiveness': '기술 경쟁력 Overview',
+                'tech-strategy': '경쟁사 R&D 전략',
+                'hankook-strategy': '대응 전략 & 로드맵',
+                'generation-trends': '대표 상품 세대별 성능'
+            };
+            if (viewTitleMap[view]) {
+                titleTextEl.textContent = viewTitleMap[view];
+            }
+        }
+        
+        // panel-hankook-strategy 의 인라인 display 속성이 'flex' 로 남아 타 화면(Market 등)에 중복 노출되는 것 방지
+        const strategyPanel = document.getElementById('panel-hankook-strategy');
+        if (strategyPanel) {
+            if (view === 'hankook-strategy') {
+                strategyPanel.style.display = 'flex';
+            } else {
+                strategyPanel.style.display = 'none';
+            }
+        }
+
         // 1. 모든 탭과 패널의 활성화 클래스 제거
         document.querySelectorAll('.view-tab').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
@@ -1149,24 +1205,24 @@ class TireDashboard {
                         </div>
                     </div>
                     <div class="briefing-section">
-                        <h4 class="briefing-section-title title-marketing" style="color: var(--text-primary);">글로벌 마케팅 및 브랜드 소구 전략 (USP)</h4>
+                        <h4 class="briefing-section-title title-marketing" style="color: var(--text-primary);">글로벌 마케팅 및 브랜드 소구 전략</h4>
                         <div class="briefing-content">
-                            <p style="margin-bottom: 8px;"><span class="badge-fact">실측 팩트 (Fact)</span> ${data.marketing.fact}</p>
-                            <p style="margin-top: 6px;"><span class="badge-estimation">R&D 전략 추정 (Estimation)</span> ${data.marketing.estimation}</p>
+                            <p style="margin-bottom: 8px;"><span class="badge-fact">실측 팩트</span> ${data.marketing.fact}</p>
+                            <p style="margin-top: 6px;"><span class="badge-estimation">R&D 전략 추정</span> ${data.marketing.estimation}</p>
                         </div>
                     </div>
                     <div class="briefing-section">
                         <h4 class="briefing-section-title title-product" style="color: var(--text-primary);">상품 포트폴리오 및 믹스 전환 방향</h4>
                         <div class="briefing-content">
-                            <p style="margin-bottom: 8px;"><span class="badge-fact">실측 팩트 (Fact)</span> ${data.product.fact}</p>
-                            <p style="margin-top: 6px;"><span class="badge-estimation">R&D 전략 추정 (Estimation)</span> ${data.product.estimation}</p>
+                            <p style="margin-bottom: 8px;"><span class="badge-fact">실측 팩트</span> ${data.product.fact}</p>
+                            <p style="margin-top: 6px;"><span class="badge-estimation">R&D 전략 추정</span> ${data.product.estimation}</p>
                         </div>
                     </div>
                     <div class="briefing-section">
                         <h4 class="briefing-section-title title-tech" style="color: var(--text-primary);">R&D 신기술 및 지속가능 경영 로드맵</h4>
                         <div class="briefing-content">
-                            <p style="margin-bottom: 8px;"><span class="badge-fact">실측 팩트 (Fact)</span> ${data.tech.fact}</p>
-                            <p style="margin-top: 6px;"><span class="badge-estimation">R&D 전략 추정 (Estimation)</span> ${data.tech.estimation}</p>
+                            <p style="margin-bottom: 8px;"><span class="badge-fact">실측 팩트</span> ${data.tech.fact}</p>
+                            <p style="margin-top: 6px;"><span class="badge-estimation">R&D 전략 추정</span> ${data.tech.estimation}</p>
                         </div>
                     </div>
                 `;
@@ -1231,13 +1287,13 @@ class TireDashboard {
                             stepSize: 10,
                             callback: function(value) { return value + '%'; }
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                        grid: { color: 'rgba(249, 115, 22, 0.06)' }
                     },
                     y: {
                         grid: { display: false },
                         ticks: {
                             font: { size: 11, weight: '600' },
-                            color: '#f8fafc'
+                            color: '#1e293b'
                         }
                     }
                 }
@@ -1356,7 +1412,7 @@ class TireDashboard {
     }
 
     /**
-     * 대시보드 상단 핵심 요약 지표(KPI) 동적 연산 및 표기 (단일 연도 기준 스냅샷)
+     * 대시보드 상단 핵심 요약 지표 동적 연산 및 표기 (단일 연도 기준 스냅샷)
      */
     renderKPIs(filteredData, selectedYear, activeSegment) {
         // KPI 1. 단일 연도의 판매량 또는 판매 금액 계산
@@ -1385,14 +1441,14 @@ class TireDashboard {
                 kpiSalesValEl.textContent = `$${totalVal.toFixed(1)}M`;
                 
                 const unitEl = kpiSalesCard ? kpiSalesCard.querySelector('.kpi-unit') : null;
-                if (unitEl) unitEl.textContent = '백만 달러 (Million USD) *공시역산';
+                if (unitEl) unitEl.textContent = '백만 달러 *공시역산';
             } else {
                 kpiSalesValEl.textContent = totalVal >= 1000 
                     ? (totalVal / 1000).toFixed(1) + 'M' 
                     : totalVal.toFixed(0) + 'k';
                 
                 const unitEl = kpiSalesCard ? kpiSalesCard.querySelector('.kpi-unit') : null;
-                if (unitEl) unitEl.textContent = '천본 (k units)';
+                if (unitEl) unitEl.textContent = '천본';
             }
         }
         
@@ -1517,7 +1573,7 @@ class TireDashboard {
     }
 
     /**
-     * 연도별 레코드에서 주요 성능 항목별 점수를 추출 (0-10 Scale)
+     * 연도별 레코드에서 주요 성능 항목별 점수를 추출
      */
     getMetricScoresForRecord(rec, isNA, isSummer) {
         if (!rec) return [];
@@ -1561,7 +1617,7 @@ class TireDashboard {
     }
 
     /**
-     * 차트 1: 연도별(YoY) 주요 성능 항목별 점수 추이 분석 (0-10 Scale 고정 멀티라인 차트)
+     * 차트 1: 연도별 주요 성능 항목별 점수 추이 분석 (0-10 Scale 고정 멀티라인 차트)
      */
     renderYoYChart(filteredData) {
         if (typeof Chart === 'undefined') return;
@@ -1602,12 +1658,12 @@ class TireDashboard {
                     '연비 효율성'
                 ]
                 : [
-                    '마른 노면 성능 (Dry)',
-                    '젖은 노면 성능 (Wet)',
-                    '수막현상 방지 (Hydro)',
-                    '수명 및 마일리지 (Tread)',
+                    '마른 노면 성능',
+                    '젖은 노면 성능',
+                    '수막현상 방지',
+                    '수명 및 마일리지',
                     '회전저항 (연비) (R.R.)',
-                    '승차감 및 소음 (Noise)'
+                    '승차감 및 소음'
                 ];
 
         // 대표 시즌을 갖는 모델들만 필터링하여 일관성 유지 (수막현상/눈길 등 비교 항목 정합 확보)
@@ -1694,10 +1750,11 @@ class TireDashboard {
                         labels: {
                             boxWidth: 12,
                             font: {
-                                size: 11,
+                                size: 12,
+                                weight: '700',
                                 family: "'Inter', 'Outfit', 'sans-serif'"
                             },
-                            color: '#e2e8f0'
+                            color: '#111827'
                         }
                     },
                     tooltip: {
@@ -1714,29 +1771,28 @@ class TireDashboard {
                 scales: {
                     y: {
                         type: 'linear',
-                        min: 0,
-                        max: 10,
                         ticks: {
-                            stepSize: 1,
-                            color: '#94a3b8'
+                            font: { size: 12, weight: '700' },
+                            color: '#111827'
                         },
                         title: {
                             display: true,
-                            text: '성능 항목별 점수 (0-10 Scale)',
-                            color: '#94a3b8',
+                            text: '성능 항목별 점수',
+                            color: '#111827',
                             font: {
-                                size: 11,
-                                weight: 'bold'
+                                size: 12,
+                                weight: '800'
                             }
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)',
+                            color: 'rgba(0, 0, 0, 0.06)',
                             drawBorder: false
                         }
                     },
                     x: {
                         ticks: {
-                            color: '#94a3b8'
+                            font: { size: 12, weight: '700' },
+                            color: '#111827'
                         },
                         grid: {
                             display: false
@@ -1784,12 +1840,12 @@ class TireDashboard {
                     '연비 효율성'
                 ]
                 : [
-                    '마른 노면 성능 (Dry)',
-                    '젖은 노면 성능 (Wet)',
-                    '수막현상 방지 (Hydro)',
-                    '수명 및 마일리지 (Tread)',
+                    '마른 노면 성능',
+                    '젖은 노면 성능',
+                    '수막현상 방지',
+                    '수명 및 마일리지',
                     '회전저항 (연비) (R.R.)',
-                    '승차감 및 소음 (Noise)'
+                    '승차감 및 소음'
                 ];
 
         const ctx = chartCanvas.getContext('2d');
@@ -1837,11 +1893,11 @@ class TireDashboard {
                         min: 0,
                         max: 10,
                         ticks: { stepSize: 2, display: false },
-                        angleLines: { color: 'rgba(255, 255, 255, 0.06)' },
-                        grid: { color: 'rgba(255, 255, 255, 0.06)' },
+                        angleLines: { color: 'rgba(249, 115, 22, 0.06)' },
+                        grid: { color: 'rgba(249, 115, 22, 0.06)' },
                         pointLabels: { 
                             font: { size: 10, weight: '600' }, 
-                            color: '#94a3b8' 
+                            color: '#64748b' 
                         }
                     }
                 }
@@ -1964,9 +2020,20 @@ class TireDashboard {
                 plugins: {
                     legend: {
                         position: 'top',
-                        labels: { boxWidth: 12, font: { size: 10, weight: '600' } }
+                        labels: { 
+                            boxWidth: 14, 
+                            font: { size: 13, weight: '700' },
+                            color: '#111827'
+                        }
                     },
                     tooltip: {
+                        backgroundColor: 'rgba(11, 15, 32, 0.95)',
+                        titleColor: '#fff',
+                        titleFont: { size: 13, weight: '700' },
+                        bodyFont: { size: 12 },
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
+                        borderWidth: 1,
+                        padding: 12,
                         callbacks: {
                             title: function(tooltipItems) {
                                 return tooltipItems[0].label + " 실적 비교";
@@ -1985,8 +2052,11 @@ class TireDashboard {
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                        ticks: { font: { size: 10, weight: '700' }, color: '#f8fafc' }
+                        grid: { color: 'rgba(0, 0, 0, 0.06)' },
+                        ticks: { 
+                            font: { size: 12, weight: '700' }, 
+                            color: '#111827'
+                        }
                     },
                     y: {
                         type: 'linear',
@@ -1994,10 +2064,14 @@ class TireDashboard {
                         title: { 
                             display: true, 
                             text: activeMetric === 'revenue' ? '글로벌 매출액 (십억 USD)' : '글로벌 판매량 (백만 본)', 
-                            color: activeMetric === 'revenue' ? '#3b82f6' : '#10b981', 
-                            font: { size: 10, weight: '600' } 
+                            color: '#ea580c', 
+                            font: { size: 13, weight: '800' } 
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        ticks: {
+                            font: { size: 12, weight: '700' },
+                            color: '#111827'
+                        },
+                        grid: { color: 'rgba(0, 0, 0, 0.06)' }
                     }
                 }
             }
@@ -2022,10 +2096,10 @@ class TireDashboard {
             selectedHankookModel = allHankookInSegment.find(item => item.season === 'Winter') || allHankookInSegment[0];
         } else {
             if (this.currentMarket === 'na') {
-                // 북미용 상품 비교는 사계절용(All-Season) 제품 위주
+                // 북미용 상품 비교는 사계절용 제품 위주
                 selectedHankookModel = allHankookInSegment.find(item => item.season === 'All-Season') || allHankookInSegment[0];
             } else {
-                // 유럽용 상품 비교는 여름용(Summer) 제품 위주
+                // 유럽용 상품 비교는 여름용 제품 위주
                 selectedHankookModel = allHankookInSegment.find(item => item.season === 'Summer') || allHankookInSegment[0];
             }
         }
@@ -2078,7 +2152,7 @@ class TireDashboard {
         const isNA = this.currentMarket === 'na';
         const isSummer = targetSeason === 'Summer';
         
-        // 북미 시장이면서 Summer 제품 비교 시 눈길 제동 성능(Winter/Snow) 항목은 완전 제외하여 6개 축이 됨.
+        // 북미 시장이면서 Summer 제품 비교 시 눈길 제동 성능 항목은 완전 제외하여 6개 축이 됨.
         // 유럽 시장은 항상 6개 축이 됨.
         const numAttrs = (isNA && !isSummer) ? 7 : 6;
         
@@ -2220,44 +2294,44 @@ class TireDashboard {
 
         const segmentNamesKo = {
             'all': '전체 제품군 종합 라인업',
-            'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
-            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (Grand Touring Passenger)',
-            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (Grand Touring SUV)',
-            'All-Season Passenger': '일반 승용 사계절 (All-Season)',
-            'Winter / Snow': '겨울용 스노우 (Winter/Snow)',
+            'Ultra High Performance (UHP)': '초고성능 스포츠',
+            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절',
+            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절',
+            'All-Season Passenger': '일반 승용 사계절',
+            'Winter / Snow': '겨울용 스노우',
             'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)'
         };
         
-        const marketNameKo = this.currentMarket === 'na' ? '북미 시장 (All-Season)' : '유럽 시장 (Summer/Winter)';
+        const marketNameKo = this.currentMarket === 'na' ? '북미 시장' : '유럽 시장';
         subtitleText.textContent = `분석 영역: ${marketNameKo} | 대상 세그먼트: ${segmentNamesKo[activeSegment] || activeSegment} ㅡ 한국타이어 [${strategyData.hankookName}] VS 벤치마크 [${strategyData.benchmarkName}] 입체 비교`;
 
         const isNA = this.currentMarket === 'na';
         const attributeNamesKorean = (isNA && !strategyData.isSummer)
             ? [
-                '마른 노면 접지력 (Dry Traction)', 
-                '젖은 노면 제동력 (Wet Traction)', 
-                '수막현상 방지 (Hydroplaning)', 
-                '승차감 및 소음 (Comfort/Noise)', 
-                '트레드 수명 (Treadwear Life)', 
-                '눈길/빙판 제동 (Winter/Snow)', 
-                '연비 효율성 (Fuel Economy)'
+                '마른 노면 접지력', 
+                '젖은 노면 제동력', 
+                '수막현상 방지', 
+                '승차감 및 소음', 
+                '트레드 수명', 
+                '눈길/빙판 제동', 
+                '연비 효율성'
             ]
             : isNA
                 ? [
-                    '마른 노면 접지력 (Dry Traction)', 
-                    '젖은 노면 제동력 (Wet Traction)', 
-                    '수막현상 방지 (Hydroplaning)', 
-                    '승차감 및 소음 (Comfort/Noise)', 
-                    '트레드 수명 (Treadwear Life)', 
-                    '연비 효율성 (Fuel Economy)'
+                    '마른 노면 접지력', 
+                    '젖은 노면 제동력', 
+                    '수막현상 방지', 
+                    '승차감 및 소음', 
+                    '트레드 수명', 
+                    '연비 효율성'
                 ]
                 : [
-                    '마른 노면 성능 (Dry Road Performance)',
-                    '젖은 노면 성능 (Wet Road Performance)',
-                    '수막현상 방지 (Hydroplaning Resistance)',
-                    '수명 및 마일리지 (Treadwear/Mileage)',
-                    '회전저항 및 연비 (Rolling Resistance/Fuel)',
-                    '승차감 및 소음 (Comfort/Noise)'
+                    '마른 노면 성능',
+                    '젖은 노면 성능',
+                    '수막현상 방지',
+                    '수명 및 마일리지',
+                    '회전저항 및 연비',
+                    '승차감 및 소음'
                 ];
 
         const hkName = `한국타이어 ${strategyData.hankookName}`;
@@ -2268,23 +2342,23 @@ class TireDashboard {
         // S (Strength) - 강점
         document.getElementById('swot-s-content').innerHTML = `
             <div style="margin-bottom: 8px;">
-                <span class="badge-fact">실측 팩트 (Fact)</span> 
+                <span class="badge-fact">실측 팩트</span> 
                 당사 <strong>${hkName}</strong>은(는) 선택 연도(${selectedYear}년) <strong>${maxPosAttr}</strong> 부문에서 평점 <strong>${strategyData.hankookScores[strategyData.maxPosIdx].toFixed(1)}점</strong>을 기록해, 경쟁사 최고 벤치마크 모델인 <strong>${compName}</strong>(${strategyData.benchmarkScores[strategyData.maxPosIdx].toFixed(1)}점) 대비 기술적 우위(<span class="gap-diff-positive" style="font-weight:700;">+${strategyData.maxPosValue.toFixed(1)}점</span>)를 공식 실측 확보했습니다.
             </div>
             <div>
-                <span class="badge-estimation">전략 추정 (Estimation)</span> 
-                이 강점은 원천 고무 분자 중합 가공 특허와 횡방향 사이드 구조 강성 제어의 시너지 결과로 추정되며, 해당 대륙 마케팅 캠페인 시 한국타이어 브랜드 기술 신뢰도를 보장하는 핵심 셀링포인트(USP)로 집중 소구할 것을 강력히 제언합니다.
+                <span class="badge-estimation">전략 추정</span> 
+                이 강점은 원천 고무 분자 중합 가공 특허와 횡방향 사이드 구조 강성 제어의 시너지 결과로 추정되며, 해당 대륙 마케팅 캠페인 시 한국타이어 브랜드 기술 신뢰도를 보장하는 핵심 셀링포인트로 집중 소구할 것을 강력히 제언합니다.
             </div>
         `;
 
         // W (Weakness) - 약점
         document.getElementById('swot-w-content').innerHTML = `
             <div style="margin-bottom: 8px;">
-                <span class="badge-fact">실측 팩트 (Fact)</span> 
+                <span class="badge-fact">실측 팩트</span> 
                 경쟁사 대비 성능 열세가 가장 도드라진 최우선 보강 항목은 <strong>${maxNegAttr}</strong>입니다. 당사 모델은 <strong>${strategyData.hankookScores[strategyData.maxNegIdx].toFixed(1)}점</strong>으로 경쟁사 제품(${strategyData.benchmarkScores[strategyData.maxNegIdx].toFixed(1)}점) 대비 <span class="gap-diff-negative" style="font-weight:700;">${strategyData.maxNegValue.toFixed(1)}점</span>의 성능 부족 현상이 검증되었습니다.
             </div>
             <div>
-                <span class="badge-estimation">전략 추정 (Estimation)</span> 
+                <span class="badge-estimation">전략 추정</span> 
                 대륙 기후(북미 All-season / 유럽 Summer) 특성에 따른 트레드 배수 구조 및 실리카 원료 배합 튜닝 불균형이 주 원인으로 추정되며, R&D 부서에서 즉각적인 마이너 트레드 피치 홈 수정 및 실리카 함량 고온 배합 공법 패치 연구를 착수해야 할 시점입니다.
             </div>
         `;
@@ -2296,26 +2370,26 @@ class TireDashboard {
             oFactText = `글로벌 거시 경제 둔화 현상 속에서 장기적인 유지비용 메리트를 대변하는 당사의 최고 우위인 ${maxPosAttr} (평가 등급 우수) 데이터가 객체 지표로 지속 포착되고 있습니다.`;
             oEstText = `북미 사계절 및 유럽 친환경 ADAC 마일리지 부문의 압도적 평점을 무기로 삼아 장거리 패밀리카 소유주 및 대형 상용 렌터카 플릿 영업망에 가성비 최상위 보증 마케팅을 전개하여 시장 영토를 확장하기에 절호의 모멘텀으로 추정됩니다.`;
         } else {
-            oFactText = `친환경 고성능 전기차(EV) 및 럭셔리 스포츠 완성차 사양 입찰 시 고속 주행 시 주행 거동을 결정하는 당사의 독보적 ${maxPosAttr} 지표가 벤치마크 상위를 지켜내고 있습니다.`;
+            oFactText = `친환경 고성능 전기차 및 럭셔리 스포츠 완성차 사양 입찰 시 고속 주행 시 주행 거동을 결정하는 당사의 독보적 ${maxPosAttr} 지표가 벤치마크 상위를 지켜내고 있습니다.`;
             oEstText = `기술적 신뢰성을 극한으로 요구하는 글로벌 프리미엄 브랜드(독일 3사 등) 전용 신차 장착 OE 수주 활동 시, 이 데이터를 R&D 입증 실측 장표로 활용해 독점 장착 공급권을 쟁취하고 글로벌 공급망 진입을 촉진할 수 있을 것으로 추정됩니다.`;
         }
         document.getElementById('swot-o-content').innerHTML = `
             <div style="margin-bottom: 8px;">
-                <span class="badge-fact">실측 팩트 (Fact)</span> ${oFactText}
+                <span class="badge-fact">실측 팩트</span> ${oFactText}
             </div>
             <div>
-                <span class="badge-estimation">전략 추정 (Estimation)</span> ${oEstText}
+                <span class="badge-estimation">전략 추정</span> ${oEstText}
             </div>
         `;
 
         // T (Threat) - 위협
         document.getElementById('swot-t-content').innerHTML = `
             <div style="margin-bottom: 8px;">
-                <span class="badge-fact">실측 팩트 (Fact)</span> 
+                <span class="badge-fact">실측 팩트</span> 
                 글로벌 Top 1 경쟁 벤치마크 브랜드인 <strong>${compName}</strong>이 당사의 보강 영역인 <strong>${maxNegAttr}</strong> 지표 우위를 바탕으로 프리미엄 시장 지배력을 공고화하고 있으며, 가성비를 강화한 중국계 및 아시아 경쟁 제조사들의 젖은 제동 추격 성능이 위협 수치로 가속화되고 있습니다.
             </div>
             <div>
-                <span class="badge-estimation">전략 추정 (Estimation)</span> 
+                <span class="badge-estimation">전략 추정</span> 
                 당사 원천 엔지니어링 개선 및 미세 마Minor 컴파운드 패치가 적기에 지원되지 못한다면, 고수익 세그먼트인 고인치 프리미엄 믹스 점유를 해외 브랜드에 잠식당하고 원가 기반 가격 할인 출혈 경쟁 구조로 퇴보할 리스크가 극히 고조될 우려가 존재합니다.
             </div>
         `;
@@ -2496,7 +2570,7 @@ class TireDashboard {
 
             if (this.sortColumn === 'adac') {
                 return this.sortDirection === 'desc'
-                    ? valA - valB // 내림차순(가장 우수함 정렬) -> 학점 수치는 낮을수록 우수하므로 오름차순(a-b)
+                    ? valA - valB // 내림차순(가장 우수함 정렬) -> 학점 수치는 낮을수록 우수하므로 오름차순
                     : valB - valA;
             }
 
@@ -2525,25 +2599,25 @@ class TireDashboard {
         }
 
         const segmentNamesKo = {
-            'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
-            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (GT Passenger)',
-            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (GT SUV)',
+            'Ultra High Performance (UHP)': '초고성능 스포츠',
+            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절',
+            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절',
             'All-Season Passenger': '일반 사계절 Passenger',
             'Winter / Snow': '겨울용 스노우',
             'All-Terrain (SUV/Truck)': '온/오프로드 SUV',
-            'Summer': '여름용 (Summer)',
-            'All-Season': '사계절용 (All-Season)',
-            'Winter': '겨울용 (Winter)'
+            'Summer': '여름용',
+            'All-Season': '사계절용',
+            'Winter': '겨울용'
         };
 
         const brandNamesKo = {
-            'Hankook': '한국타이어 (Hankook)',
-            'Michelin': '미쉐린 (Michelin)',
-            'Bridgestone': '브리지스톤 (Bridgestone)',
-            'Continental': '콘티넨탈 (Continental)',
-            'Goodyear': '굿이어 (Goodyear)',
-            'Pirelli': '피렐리 (Pirelli)',
-            'Kumho': '금호타이어 (Kumho)'
+            'Hankook': '한국타이어',
+            'Michelin': '미쉐린',
+            'Bridgestone': '브리지스톤',
+            'Continental': '콘티넨탈',
+            'Goodyear': '굿이어',
+            'Pirelli': '피렐리',
+            'Kumho': '금호타이어'
         };
 
         tableRows.forEach(row => {
@@ -2576,16 +2650,16 @@ class TireDashboard {
                 const score = row.autobild;
                 if (score >= 90) {
                     badgeClass = 'badge-excellent';
-                    badgeText = 'Vorbildlich (최우수)';
+                    badgeText = 'Vorbildlich';
                 } else if (score >= 80) {
                     badgeClass = 'badge-good';
-                    badgeText = 'Gut (우수)';
+                    badgeText = 'Gut';
                 } else if (score >= 70) {
                     badgeClass = 'badge-fair';
-                    badgeText = 'Befriedigend (만족)';
+                    badgeText = 'Befriedigend';
                 } else {
                     badgeClass = 'badge-poor';
-                    badgeText = 'Ausreichend (충분)';
+                    badgeText = 'Ausreichend';
                 }
             } else {
                 badgeText = row.combined.toFixed(1);
@@ -2602,7 +2676,7 @@ class TireDashboard {
                 tr.innerHTML = `
                     <td><strong>${brandNamesKo[row.brand] || row.brand}</strong></td>
                     <td>${row.model}</td>
-                    <td><span style="font-size: 0.75rem; color: var(--text-secondary); background: #161c33; padding: 3px 8px; border-radius: 4px;">${segmentNamesKo[row.segment] || row.segment}</span></td>
+                    <td><span style="font-size: 0.8rem; color: #000000; background: var(--color-hankook); padding: 4px 10px; border-radius: 4px; font-weight: 800;">${segmentNamesKo[row.segment] || row.segment}</span></td>
                     <td class="numeric">${salesFormatted}</td>
                     <td class="numeric" style="color: var(--color-blue); font-weight: 500;">${(row.tirerack / 10).toFixed(2)} / 10</td>
                     <td class="numeric" style="color: var(--color-gold); font-weight: 500;">${row.consumerreports.toFixed(1)} / 100</td>
@@ -2612,15 +2686,15 @@ class TireDashboard {
                 `;
             } else {
                 let abLabel = '미평가';
-                if (row.autobild >= 95) abLabel = '최우수 (Vorbildlich)';
-                else if (row.autobild >= 85) abLabel = '우수 (Gut)';
-                else if (row.autobild >= 75) abLabel = '만족 (Befriedigend)';
-                else if (row.autobild >= 65) abLabel = '충분 (Ausreichend)';
+                if (row.autobild >= 95) abLabel = '최우수';
+                else if (row.autobild >= 85) abLabel = '우수';
+                else if (row.autobild >= 75) abLabel = '만족';
+                else if (row.autobild >= 65) abLabel = '충분';
                 
                 tr.innerHTML = `
                     <td><strong>${brandNamesKo[row.brand] || row.brand}</strong></td>
                     <td>${row.model}</td>
-                    <td><span style="font-size: 0.75rem; color: var(--text-secondary); background: #161c33; padding: 3px 8px; border-radius: 4px;">${segmentNamesKo[row.segment] || row.segment}</span></td>
+                    <td><span style="font-size: 0.8rem; color: #000000; background: var(--color-hankook); padding: 4px 10px; border-radius: 4px; font-weight: 800;">${segmentNamesKo[row.segment] || row.segment}</span></td>
                     <td class="numeric">${salesFormatted}</td>
                     <td class="numeric" style="color: var(--color-blue); font-weight: 500;">${row.adac.toFixed(1)} 학점</td>
                     <td class="numeric" style="color: var(--color-gold); font-weight: 500;">${abLabel}</td>
@@ -2684,38 +2758,38 @@ class TireDashboard {
         
         const matrixData = [
             {
-                brand: "미쉐린 (Michelin)",
+                brand: "미쉐린",
                 tech: "<ul><li>2030년까지 재생 가능/친환경 원재료 40% 도입 로드맵 가동</li><li>자가 재생 트레드 패턴 특허(트레드가 마모될수록 배수 성능 유지)</li><li>EV 맞춤형 HL(High Load) 타이어 수주 및 구조 강성 설계</li></ul>",
-                marketing: "<ul><li>'마모 한계점(1.6mm)까지 일관된 제동 성능' 중심의 수명 보증 소구</li><li>프리미엄 세그먼트 고단가 고마진 유지 전략 일관성 유지</li></ul>",
-                restructuring: "<ul><li>유럽 내 저수익 한계 공장 점진적 폐쇄 및 생산 설비 재배치</li><li>고수익 18인치 이상 프리미엄 OE(신차 장착) 시장 비중 45% 이상 집중</li></ul>",
+                marketing: "<ul><li>'마모 한계점까지 일관된 제동 성능' 중심의 수명 보증 소구</li><li>프리미엄 세그먼트 고단가 고마진 유지 전략 일관성 유지</li></ul>",
+                restructuring: "<ul><li>유럽 내 저수익 한계 공장 점진적 폐쇄 및 생산 설비 재배치</li><li>고수익 18인치 이상 프리미엄 OE 시장 비중 45% 이상 집중</li></ul>",
                 action: "<ul><li>당사 초저마모 트레드 신소재 기술(i-Flex 등) 상용화 가속 필요</li><li>수명 연도별 제동 성능 하락 방지를 위한 컴파운드 분자 연구 연계</li></ul>"
             },
             {
-                brand: "브리지스톤 (Bridgestone)",
+                brand: "브리지스톤",
                 tech: "<ul><li>ENLITEN 기술 플랫폼 핵심 적용(타이어 중량 20%, RR 15% 경감)</li><li>클라우드 연계 타이어 센서 및 원격 공기압 IoT 솔루션 상용화</li></ul>",
                 marketing: "<ul><li>ENLITEN 플랫폼을 활용한 '프리미엄 성능과 지속가능성의 완벽한 조화' 전면 소구</li><li>주행 경량감 및 최적의 연비 효율성 부각</li></ul>",
-                restructuring: "<ul><li>디지털 구독형 모빌리티 플릿 마일리지 관리 솔루션(Webfleet) 확장</li><li>가치사슬 고도화를 위한 저인치 소매 대리점 유통 구조 정비</li></ul>",
+                restructuring: "<ul><li>디지털 구독형 모빌리티 플릿 마일리지 관리 솔루션 확장</li><li>가치사슬 고도화를 위한 저인치 소매 대리점 유통 구조 정비</li></ul>",
                 action: "<ul><li>전기차 전용 경량화 타이어 기술 대응(당사 EV 전용 라인업의 경량 컴파운드 최적화)</li><li>센서 내장 스마트 타이어 및 빅데이터 분석 구독 비즈니스 탐색</li></ul>"
             },
             {
-                brand: "콘티넨탈 (Continental)",
-                tech: "<ul><li>민들레 뿌리 추출 친환경 대체 고무 'Taraxagum' 글로벌 양산 승인</li><li>가황 센서를 통한 마모도 및 실시간 수막현상(Hydroplaning) 예보 섀시 시스템</li></ul>",
-                marketing: "<ul><li>독일 엔지니어링 정밀성과 전장 제어 장치(ABS, ESC) 연계의 '무결점 안전성'</li><li>글로벌 공인 테스트 및 미디어 벤치마크 1위 등 정량적 안전성 강조</li></ul>",
+                brand: "콘티넨탈",
+                tech: "<ul><li>민들레 뿌리 추출 친환경 대체 고무 'Taraxagum' 글로벌 양산 승인</li><li>가황 센서를 통한 마모도 및 실시간 수막현상 예보 섀시 시스템</li></ul>",
+                marketing: "<ul><li>독일 엔지니어링 정밀성과 전장 제어 장치 연계의 '무결점 안전성'</li><li>글로벌 공인 테스트 및 미디어 벤치마크 1위 등 정량적 안전성 강조</li></ul>",
                 restructuring: "<ul><li>스포츠 슈퍼카 및 하이퍼카 전용 OE 초고성능 타이어 공급 계약 독점 수주 추진</li><li>소형 규격 생산 축소 및 프리미엄 스포츠 제품군 믹스 고정화</li></ul>",
                 action: "<ul><li>전장 제어장치 신호 및 노면 마찰 지수를 예측하는 섀시-타이어 R&D 부서 간 융합 체계 마련</li><li>민들레 고무 등 생분해 원료 조기 확보 및 친환경 컴파운딩 기술 선점</li></ul>"
             },
             {
-                brand: "굿이어 (Goodyear)",
-                tech: "<ul><li>SightLine 클라우드 AI 분석 칩 기반의 타이어 수명 예측 인프라 구축</li><li>패신저 전 라인업에 대두유(Soybean Oil) 기반의 친환경 대체 고무 실장</li></ul>",
-                marketing: "<ul><li>기후 변화 대응 '전천후 무중단 사계절 안전 주행 (All-Weather)' 대륙 소구</li><li>북미 오토클럽(AAA) 연대 및 고객 접점 디지털 가상 체험</li></ul>",
-                restructuring: "<ul><li>'Goodyear Forward' 쇄신안 적용: 비수익 해외 공장 매각 및 화학 부문 분사</li><li>북미 본토 수익성이 견고한 SUV, 라이트트럭(LT) 세그먼트 역량 총집중</li></ul>",
+                brand: "굿이어",
+                tech: "<ul><li>SightLine 클라우드 AI 분석 칩 기반의 타이어 수명 예측 인프라 구축</li><li>패신저 전 라인업에 대두유 기반의 친환경 대체 고무 실장</li></ul>",
+                marketing: "<ul><li>기후 변화 대응 '전천후 무중단 사계절 안전 주행' 대륙 소구</li><li>북미 오토클럽 연대 및 고객 접점 디지털 가상 체험</li></ul>",
+                restructuring: "<ul><li>'Goodyear Forward' 쇄신안 적용: 비수익 해외 공장 매각 및 화학 부문 분사</li><li>북미 본토 수익성이 견고한 SUV, 라이트트럭 세그먼트 역량 총집중</li></ul>",
                 action: "<ul><li>북미 All-Weather 사계절 타이어 시장 경쟁력 강화를 위한 트레드 설계 변경</li><li>친환경 대두유 등 대체 화학물질 배합을 통한 비용 감축 및 관세 대응책 검토</li></ul>"
             }
         ];
         
         tbody.innerHTML = matrixData.map(row => `
             <tr>
-                <td style="font-weight: 700; color: #fff; vertical-align: top; padding-top: 15px;">${row.brand}</td>
+                <td style="font-weight: 700; color: var(--color-hankook); vertical-align: top; padding-top: 15px;">${row.brand}</td>
                 <td style="vertical-align: top; padding-top: 15px;">${row.tech}</td>
                 <td style="vertical-align: top; padding-top: 15px;">${row.marketing}</td>
                 <td style="vertical-align: top; padding-top: 15px;">${row.restructuring}</td>
@@ -2755,26 +2829,26 @@ class TireDashboard {
         
         // 4. 모달 DOM 요소 업데이트
         // 상단 요약 헤더 카드
-        const marketText = this.currentMarket === 'na' ? '북미 시장 (North America - RE/OE)' : '유럽 시장 (Europe - RE/OE)';
+        const marketText = this.currentMarket === 'na' ? '북미 시장' : '유럽 시장';
         const segmentNamesKo = {
-            'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
-            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (Grand Touring Passenger)',
-            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (Grand Touring SUV)',
-            'All-Season Passenger': '일반 승용 사계절 (All-Season)',
-            'Winter / Snow': '겨울용 스노우 (Winter/Snow)',
+            'Ultra High Performance (UHP)': '초고성능 스포츠',
+            'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절',
+            'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절',
+            'All-Season Passenger': '일반 승용 사계절',
+            'Winter / Snow': '겨울용 스노우',
             'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)',
-            'Summer': '여름용 (Summer)',
-            'All-Season': '사계절용 (All-Season)',
-            'Winter': '겨울용 (Winter)'
+            'Summer': '여름용',
+            'All-Season': '사계절용',
+            'Winter': '겨울용'
         };
         const brandNamesKo = {
-            'Hankook': '한국타이어 (Hankook)',
-            'Michelin': '미쉐린 (Michelin)',
-            'Bridgestone': '브리지스톤 (Bridgestone)',
-            'Continental': '콘티넨탈 (Continental)',
-            'Goodyear': '굿이어 (Goodyear)',
-            'Pirelli': '피렐리 (Pirelli)',
-            'Kumho': '금호타이어 (Kumho)'
+            'Hankook': '한국타이어',
+            'Michelin': '미쉐린',
+            'Bridgestone': '브리지스톤',
+            'Continental': '콘티넨탈',
+            'Goodyear': '굿이어',
+            'Pirelli': '피렐리',
+            'Kumho': '금호타이어'
         };
         
         document.getElementById('calc-summary-brand').textContent = brandNamesKo[brand] || brand;
@@ -2783,15 +2857,15 @@ class TireDashboard {
         document.getElementById('calc-summary-year').textContent = selectedYear + "년 기준";
         document.getElementById('calc-summary-market').textContent = marketText;
         
-        // Step 1: 글로벌 그룹 연간 총 판매량 (Baseline)
-        document.getElementById('calc-step1-value').textContent = globalSales.toLocaleString() + " 본 (Global Units)";
+        // Step 1: 글로벌 그룹 연간 총 판매량
+        document.getElementById('calc-step1-value').textContent = globalSales.toLocaleString() + " 본";
         
         // Step 2: 대륙별 배분 볼륨
-        document.getElementById('calc-step2-value').textContent = Math.round(regionalSales).toLocaleString() + " 본 (Regional Units)";
+        document.getElementById('calc-step2-value').textContent = Math.round(regionalSales).toLocaleString() + " 본";
         document.getElementById('calc-step2-math').textContent = `${globalSales.toLocaleString()} 본 × ${(rAlloc * 100).toFixed(1)}% (기업 공시 대륙 매출 비중)`;
         
         // Step 3: 세그먼트 믹스 배분량
-        document.getElementById('calc-step3-value').textContent = Math.round(segmentSales).toLocaleString() + " 본 (Segment Units)";
+        document.getElementById('calc-step3-value').textContent = Math.round(segmentSales).toLocaleString() + " 본";
         document.getElementById('calc-step3-math').textContent = `${Math.round(regionalSales).toLocaleString()} 본 × ${(sAlloc * 100).toFixed(1)}% (제품 카테고리 믹스 비중)`;
         
         // Step 4: 제품 인지도 및 유통 채널 가중치
@@ -2818,10 +2892,10 @@ class TireDashboard {
             const sf = retailRevenueTotalUSD > 0 ? (actualRevenueRegion / retailRevenueTotalUSD) : 1.0;
 
             document.getElementById('calc-result-value').textContent = `$${revenueMillion.toFixed(1)}M (USD)`;
-            document.getElementById('calc-result-math').textContent = `[공식 매출총액 비례 역산 배분 공식 (Scale-to-Actual)]
+            document.getElementById('calc-result-math').textContent = `[공식 매출총액 비례 역산 배분 공식]
 1차 소매 매출액: ${modelVolumeK.toFixed(1)}k 본 × 소매 가격 $${price} = $${Math.round(retailUSD).toLocaleString()}
 지역 공시 총매출: $${(actualRevenueRegion / 1000000).toFixed(1)}M
-비례 조정 계수 (Scale Factor): ${(sf).toFixed(4)}
+비례 조정 계수: ${(sf).toFixed(4)}
 보정 매출액: $${Math.round(retailUSD).toLocaleString()} × ${(sf).toFixed(4)} = $${Math.round(revenueUSD).toLocaleString()} (약 $${revenueMillion.toFixed(1)} Million)`;
         } else {
             document.getElementById('calc-result-value').textContent = `${modelVolumeK.toFixed(1)}k 본 (${Math.round(modelVolumeActual).toLocaleString()} 본)`;
@@ -2842,67 +2916,71 @@ class TireDashboard {
      * 경쟁사별 라인업 버튼들을 동적으로 생성하고 첫 번째 라인업을 선택함
      */
     renderGenerationTrendsLineupButtons(brand) {
-        const selector = document.getElementById('gt-lineup-selector');
-        if (!selector) return;
+        try {
+            const selector = document.getElementById('gt-lineup-selector');
+            if (!selector) return;
 
-        // 기존 라인업 버튼 제거
-        selector.innerHTML = '';
+            // 기존 라인업 버튼 제거
+            selector.innerHTML = '';
 
-        if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
-            console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
-            return;
-        }
-
-        const brandColors = {
-            Michelin: '#5cb2ff',
-            Continental: '#ff9f24',
-            Pirelli: '#3b82f6'
-        };
-        const themeColor = brandColors[brand] || '#3b82f6';
-
-        let firstKey = null;
-        Object.keys(window.TIRE_EVOLUTION_DATABASE).forEach(key => {
-            const data = window.TIRE_EVOLUTION_DATABASE[key];
-            if (data.brand === brand) {
-                if (!firstKey) firstKey = key;
-
-                const btn = document.createElement('button');
-                btn.className = 'tab-toggle-btn';
-                btn.setAttribute('data-lineup', key);
-                btn.style.borderLeftColor = themeColor;
-                btn.style.borderLeftWidth = '4px';
-                btn.textContent = data.lineupName;
-
-                btn.addEventListener('click', () => {
-                    selector.querySelectorAll('.tab-toggle-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    this.selectedGenTrendsLineup = key;
-                    const gtGenSelect = document.getElementById('gt-generation-selector');
-                    const mode = gtGenSelect ? gtGenSelect.value : 'gen3';
-                    this.renderGenerationTrends(key, mode);
-                });
-
-                selector.appendChild(btn);
+            if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+                console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
+                return;
             }
-        });
 
-        // 기본 첫 번째 라인업 활성화
-        if (firstKey) {
-            const firstBtn = selector.querySelector(`[data-lineup="${firstKey}"]`);
-            if (firstBtn) firstBtn.classList.add('active');
-            this.selectedGenTrendsLineup = firstKey;
-        }
+            const brandColors = {
+                Michelin: '#5cb2ff',
+                Continental: '#ff9f24',
+                Pirelli: '#3b82f6'
+            };
+            const themeColor = brandColors[brand] || '#3b82f6';
 
-        // 제너레이션 선택기 드롭다운을 'gen3'로 리셋
-        const gtGenSelect = document.getElementById('gt-generation-selector');
-        if (gtGenSelect) {
-            gtGenSelect.value = 'gen3';
-        }
+            let firstKey = null;
+            Object.keys(window.TIRE_EVOLUTION_DATABASE).forEach(key => {
+                const data = window.TIRE_EVOLUTION_DATABASE[key];
+                if (data && data.brand === brand) {
+                    if (!firstKey) firstKey = key;
 
-        // 최초 렌더링
-        if (firstKey) {
-            this.renderGenerationTrends(firstKey, 'gen3');
+                    const btn = document.createElement('button');
+                    btn.className = 'tab-toggle-btn';
+                    btn.setAttribute('data-lineup', key);
+                    btn.style.borderLeftColor = themeColor;
+                    btn.style.borderLeftWidth = '4px';
+                    btn.textContent = data.lineupName || '알 수 없음';
+
+                    btn.addEventListener('click', () => {
+                        selector.querySelectorAll('.tab-toggle-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        this.selectedGenTrendsLineup = key;
+                        const gtGenSelect = document.getElementById('gt-generation-selector');
+                        const mode = gtGenSelect ? gtGenSelect.value : 'gen3';
+                        this.renderGenerationTrends(key, mode);
+                    });
+
+                    selector.appendChild(btn);
+                }
+            });
+
+            // 기본 첫 번째 라인업 활성화
+            if (firstKey) {
+                const firstBtn = selector.querySelector(`[data-lineup="${firstKey}"]`);
+                if (firstBtn) firstBtn.classList.add('active');
+                this.selectedGenTrendsLineup = firstKey;
+            }
+
+            // 제너레이션 선택기 드롭다운을 'gen3'로 리셋
+            const gtGenSelect = document.getElementById('gt-generation-selector');
+            if (gtGenSelect) {
+                gtGenSelect.value = 'gen3';
+            }
+
+            // 최초 렌더링
+            if (firstKey) {
+                this.renderGenerationTrends(firstKey, 'gen3');
+            }
+        } catch (error) {
+            console.error('renderGenerationTrendsLineupButtons 실행 오류:', error);
         }
     }
 
@@ -2910,30 +2988,31 @@ class TireDashboard {
      * 경쟁사 플래그십 상품군 세대별 혁신 트렌드 분석 포털 렌더링
      */
     renderGenerationTrends(lineupKey, chartMode = 'gen3') {
-        if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
-            console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
-            return;
-        }
+        try {
+            if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+                console.error('TIRE_EVOLUTION_DATABASE가 로드되지 않았습니다.');
+                return;
+            }
 
-        const data = window.TIRE_EVOLUTION_DATABASE[lineupKey];
-        if (!data) {
-            console.error(`${lineupKey} 라인업의 세대별 진화 데이터가 존재하지 않습니다.`);
-            return;
-        }
+            const data = window.TIRE_EVOLUTION_DATABASE[lineupKey];
+            if (!data) {
+                console.error(`${lineupKey} 라인업의 세대별 진화 데이터가 존재하지 않습니다.`);
+                return;
+            }
 
-        this.selectedGenTrendsLineup = lineupKey;
+            this.selectedGenTrendsLineup = lineupKey;
 
-        // 1. 헤더 타이틀 및 세그먼트 요약 패널 갱신
-        const headerTitle = document.getElementById('gt-header-title');
-        const headerSubtitle = document.getElementById('gt-header-subtitle');
-        if (headerTitle) {
-            headerTitle.textContent = `${data.brand} ${data.lineupName} 대표 상품 세대별 성능 변화 분석`;
-        }
-        if (headerSubtitle) {
-            headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU} | 북미 US — ${data.segmentUS} <span style="margin-left:12px; color:var(--color-hankook);">[대표 경쟁 라인: ${data.flagshipLine} ➔ 대응 한국 라인: ${data.hankookLine}]</span>`;
-        }
+            // 1. 헤더 타이틀 및 세그먼트 요약 패널 갱신
+            const headerTitle = document.getElementById('gt-header-title');
+            const headerSubtitle = document.getElementById('gt-header-subtitle');
+            if (headerTitle) {
+                headerTitle.textContent = `${data.brand || ''} ${data.lineupName || ''} 대표 상품 세대별 성능 분석`;
+            }
+            if (headerSubtitle) {
+                headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU || 'UHP'} | 북미 US — ${data.segmentUS || 'Passenger'}<br><span style="display: block; margin-top: 8px; color: var(--color-hankook); font-weight: 700;">[대표 경쟁 라인: ${data.flagshipLine || ''} ➔ 대응 한국 라인: ${data.hankookLine || ''}]</span>`;
+            }
 
-        // 2. 세대별 브로셔 카드 레이아웃 렌더링 (Left Column - Side by Side)
+        // 2. 세대별 브로셔 카드 레이아웃 렌더링
         const container = document.getElementById('gt-brochure-container');
         if (container) {
             container.innerHTML = '';
@@ -2958,11 +3037,11 @@ class TireDashboard {
                 rowHeader.style.marginBottom = '10px';
                 rowHeader.style.padding = '0 5px';
                 rowHeader.innerHTML = `
-                    <div style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
-                        <span style="background: ${idx === 2 ? 'var(--color-hankook)' : 'rgba(255,255,255,0.1)'}; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">GEN ${idx + 1}</span>
+                    <div style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--color-hankook); display: flex; align-items: center; gap: 8px;">
+                        <span style="background: ${idx === 2 ? 'var(--color-hankook)' : 'rgba(0,0,0,0.15)'}; color: ${idx === 2 ? '#fff' : '#000000'}; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">GEN ${idx + 1}</span>
                         GEN ${idx + 1} 세대별 비교
                     </div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700;">
                         ${idx === 2 ? '🔥 최신 플래그십 매칭' : idx === 1 ? '⚡ 2세대 볼륨 매칭' : '❄️ 1세대 히스토리 매칭'}
                     </div>
                 `;
@@ -2984,26 +3063,26 @@ class TireDashboard {
                 }
                 compCard.innerHTML = `
                     <div class="gt-brochure-header">
-                        <span class="gt-brochure-title" style="color: ${themeColor}; font-size: 0.95rem;">${g.compModel}</span>
-                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px;">COMPETITOR (${g.compYear || g.year}년 출시)</span>
+                        <span class="gt-brochure-title" style="color: ${themeColor}; font-size: 0.95rem;">${g.compModel || '알 수 없음'}</span>
+                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px;">COMPETITOR (${g.compYear || g.year || '미정'}년 출시)</span>
                     </div>
-                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.compSlogan}"</div>
+                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.compSlogan || '데이터 준비 중...'}"</div>
                     <div class="gt-brochure-details">
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">배합 소재</span>
-                            <span class="gt-brochure-detail-val" title="${g.compBrochure.compound}">${g.compBrochure.compound}</span>
+                            <span class="gt-brochure-detail-val" title="${g.compBrochure?.compound || '데이터 준비 중...'}">${g.compBrochure?.compound || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">핵심 기술</span>
-                            <span class="gt-brochure-detail-val" style="color: ${themeColor}" title="${g.compBrochure.tech}">${g.compBrochure.tech}</span>
+                            <span class="gt-brochure-detail-val" style="color: ${themeColor}" title="${g.compBrochure?.tech || '데이터 준비 중...'}">${g.compBrochure?.tech || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">트레드웨어</span>
-                            <span class="gt-brochure-detail-val">${g.compBrochure.treadwear}</span>
+                            <span class="gt-brochure-detail-val">${g.compBrochure?.treadwear || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">R&D 소구점</span>
-                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.compBrochure.focus}">${g.compBrochure.focus}</span>
+                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.compBrochure?.focus || '데이터 준비 중...'}">${g.compBrochure?.focus || '데이터 준비 중...'}</span>
                         </div>
                     </div>
                 `;
@@ -3018,26 +3097,26 @@ class TireDashboard {
                 }
                 hkCard.innerHTML = `
                     <div class="gt-brochure-header">
-                        <span class="gt-brochure-title" style="color: #ff6b00; font-size: 0.95rem;">${g.hkModel}</span>
-                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px; background: rgba(255, 107, 0, 0.1); border-color: rgba(255, 107, 0, 0.2); color: #ff6b00;">HANKOOK (${g.hkYear || g.year}년 출시)</span>
+                        <span class="gt-brochure-title" style="color: #ff6b00; font-size: 0.95rem;">${g.hkModel || '알 수 없음'}</span>
+                        <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px; background: rgba(255, 107, 0, 0.1); border-color: rgba(255, 107, 0, 0.2); color: #ff6b00;">HANKOOK (${g.hkYear || g.year || '미정'}년 출시)</span>
                     </div>
-                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.hkSlogan}"</div>
+                    <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.hkSlogan || '데이터 준비 중...'}"</div>
                     <div class="gt-brochure-details">
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">배합 소재</span>
-                            <span class="gt-brochure-detail-val" title="${g.hkBrochure.compound}">${g.hkBrochure.compound}</span>
+                            <span class="gt-brochure-detail-val" title="${g.hkBrochure?.compound || '데이터 준비 중...'}">${g.hkBrochure?.compound || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">핵심 기술</span>
-                            <span class="gt-brochure-detail-val" style="color: #ffaa66" title="${g.hkBrochure.tech}">${g.hkBrochure.tech}</span>
+                            <span class="gt-brochure-detail-val" style="color: #ffaa66" title="${g.hkBrochure?.tech || '데이터 준비 중...'}">${g.hkBrochure?.tech || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">트레드웨어</span>
-                            <span class="gt-brochure-detail-val">${g.hkBrochure.treadwear}</span>
+                            <span class="gt-brochure-detail-val">${g.hkBrochure?.treadwear || '데이터 준비 중...'}</span>
                         </div>
                         <div class="gt-brochure-detail-item">
                             <span class="gt-brochure-detail-label">R&D 소구점</span>
-                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.hkBrochure.focus}">${g.hkBrochure.focus}</span>
+                            <span class="gt-brochure-detail-val" style="color: var(--text-secondary); font-style: italic;" title="${g.hkBrochure?.focus || '데이터 준비 중...'}">${g.hkBrochure?.focus || '데이터 준비 중...'}</span>
                         </div>
                     </div>
                 `;
@@ -3049,28 +3128,28 @@ class TireDashboard {
             });
         }
 
-        // 3. 전략적 Insights 텍스트 박스 업데이트 (Right Column Bottom)
+        // 3. 전략적 Insights 텍스트 박스 업데이트
         const pastBox = document.getElementById('gt-insight-past');
         const presentBox = document.getElementById('gt-insight-present');
         const futureBox = document.getElementById('gt-insight-future');
 
-        if (pastBox) pastBox.innerHTML = `<strong>[과거 지향점]</strong><br>${data.insights.past}`;
-        if (presentBox) presentBox.innerHTML = `<strong>[현재 지향점]</strong><br>${data.insights.present}`;
-        if (futureBox) futureBox.innerHTML = `<strong>[중장기 R&D 예측]</strong><br>${data.insights.future}`;
+        if (pastBox) pastBox.innerHTML = `<strong>[과거 지향점]</strong><br>${data.insights?.past || '데이터 준비 중...'}`;
+        if (presentBox) presentBox.innerHTML = `<strong>[현재 지향점]</strong><br>${data.insights?.present || '데이터 준비 중...'}`;
+        if (futureBox) futureBox.innerHTML = `<strong>[중장기 R&D 예측]</strong><br>${data.insights?.future || '데이터 준비 중...'}`;
 
         // 4. 세대별 모델 체인지 R&D 개발 방향성 차이 분석 주입
         const g1g2Box = document.getElementById('gt-direction-g1-g2');
         const g2g3Box = document.getElementById('gt-direction-g2-g3');
         const summaryBox = document.getElementById('gt-direction-summary');
 
-        if (g1g2Box) g1g2Box.textContent = data.evolutionDirection.gen1_to_gen2 || '데이터 준비 중...';
-        if (g2g3Box) g2g3Box.textContent = data.evolutionDirection.gen2_to_gen3 || '데이터 준비 중...';
-        if (summaryBox) summaryBox.textContent = data.evolutionDirection.comparisonSummary || '데이터 준비 중...';
+        if (g1g2Box) g1g2Box.textContent = data.evolutionDirection?.gen1_to_gen2 || '데이터 준비 중...';
+        if (g2g3Box) g2g3Box.textContent = data.evolutionDirection?.gen2_to_gen3 || '데이터 준비 중...';
+        if (summaryBox) summaryBox.textContent = data.evolutionDirection?.comparisonSummary || '데이터 준비 중...';
 
         // 5. 한국타이어 R&D 대응 액션 제안 주입
         const proposalBox = document.getElementById('gt-rd-proposal');
         if (proposalBox) {
-            proposalBox.innerHTML = `<strong>${data.brand}의 대표 상품 세대별 성능 변화 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#e2e8f0; font-size:0.95rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal}</span>`;
+            proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:0.98rem; line-height:1.65; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
         }
 
         // 6. 세대별 세부 성능 항목 Radar Chart 시각화
@@ -3088,22 +3167,23 @@ class TireDashboard {
         }
 
         const labels = [
-            "마른 노면 접지 (Dry Grip)",
-            "습윤 노면 접지 (Wet Grip)",
-            "수막 저항성 (Hydro Resist)",
-            "정숙성/승차감 (Comfort)",
-            "마모 수명 (Tread Life)",
-            "연비/친환경 (Efficiency)"
+            "마른 노면 접지",
+            "습윤 노면 접지",
+            "수막 저항성",
+            "정숙성/승차감",
+            "마모 수명",
+            "연비/친환경"
         ];
 
         const getScoresArray = (scoresObj) => {
+            if (!scoresObj) return [0, 0, 0, 0, 0, 0];
             return [
-                scoresObj.dry_grip,
-                scoresObj.wet_grip,
-                scoresObj.hydro_resist,
-                scoresObj.comfort_noise,
-                scoresObj.tread_life,
-                scoresObj.efficiency
+                scoresObj.dry_grip || 0,
+                scoresObj.wet_grip || 0,
+                scoresObj.hydro_resist || 0,
+                scoresObj.comfort_noise || 0,
+                scoresObj.tread_life || 0,
+                scoresObj.efficiency || 0
             ];
         };
 
@@ -3120,173 +3200,183 @@ class TireDashboard {
             const genIndex = chartMode === 'gen3' ? 2 : chartMode === 'gen2' ? 1 : 0;
             const g = data.generations[genIndex];
 
-            // Competitor Dataset
-            datasets.push({
-                label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
-                data: getScoresArray(g.compScores),
-                borderColor: compColor,
-                backgroundColor: `${compColor}1a`,
-                borderWidth: 3,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: compColor,
-                pointHoverBackgroundColor: compColor,
-                pointHoverBorderColor: '#fff',
-                pointRadius: 5,
-                fill: true
-            });
-
-            // Hankook Dataset
-            datasets.push({
-                label: `${g.hkModel} (${g.hkYear || g.year}년 출시)`,
-                data: getScoresArray(g.hkScores),
-                borderColor: '#ff6b00',
-                backgroundColor: 'rgba(255, 107, 0, 0.15)',
-                borderWidth: 3,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#ff6b00',
-                pointHoverBackgroundColor: '#ff6b00',
-                pointHoverBorderColor: '#fff',
-                pointRadius: 5,
-                fill: true
-            });
-        } else if (chartMode === 'all-comp') {
-            data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(148, 163, 184, 0.7)';
-                    bgColor = 'rgba(148, 163, 184, 0.05)';
-                    borderW = 1.5;
-                    radius = 3;
-                } else if (idx === 1) {
-                    color = `${compColor}aa`;
-                    bgColor = `${compColor}15`;
-                    borderW = 2;
-                    radius = 4;
-                } else {
-                    color = compColor;
-                    bgColor = `${compColor}33`;
-                    borderW = 3;
-                    radius = 5;
-                }
-
+            if (g) {
+                // Competitor Dataset
                 datasets.push({
-                    label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
+                    label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
                     data: getScoresArray(g.compScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
+                    borderColor: compColor,
+                    backgroundColor: `${compColor}1a`,
+                    borderWidth: 3,
                     pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
+                    pointBorderColor: compColor,
+                    pointHoverBackgroundColor: compColor,
                     pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
+                    pointRadius: 5,
                     fill: true
                 });
+
+                // Hankook Dataset
+                datasets.push({
+                    label: `${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+                    data: getScoresArray(g.hkScores),
+                    borderColor: '#ff6b00',
+                    backgroundColor: 'rgba(255, 107, 0, 0.15)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#ff6b00',
+                    pointHoverBackgroundColor: '#ff6b00',
+                    pointHoverBorderColor: '#fff',
+                    pointRadius: 5,
+                    fill: true
+                });
+            }
+        } else if (chartMode === 'all-comp') {
+            data.generations.forEach((g, idx) => {
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(148, 163, 184, 0.7)';
+                        bgColor = 'rgba(148, 163, 184, 0.05)';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else if (idx === 1) {
+                        color = `${compColor}aa`;
+                        bgColor = `${compColor}15`;
+                        borderW = 2;
+                        radius = 4;
+                    } else {
+                        color = compColor;
+                        bgColor = `${compColor}33`;
+                        borderW = 3;
+                        radius = 5;
+                    }
+
+                    datasets.push({
+                        label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.compScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
         } else if (chartMode === 'all-hk') {
             data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(148, 163, 184, 0.7)';
-                    bgColor = 'rgba(148, 163, 184, 0.05)';
-                    borderW = 1.5;
-                    radius = 3;
-                } else if (idx === 1) {
-                    color = '#ff9f55';
-                    bgColor = 'rgba(255, 159, 85, 0.08)';
-                    borderW = 2;
-                    radius = 4;
-                } else {
-                    color = '#ff6b00';
-                    bgColor = 'rgba(255, 107, 0, 0.2)';
-                    borderW = 3;
-                    radius = 5;
-                }
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(148, 163, 184, 0.7)';
+                        bgColor = 'rgba(148, 163, 184, 0.05)';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else if (idx === 1) {
+                        color = '#ff9f55';
+                        bgColor = 'rgba(255, 159, 85, 0.08)';
+                        borderW = 2;
+                        radius = 4;
+                    } else {
+                        color = '#ff6b00';
+                        bgColor = 'rgba(255, 107, 0, 0.2)';
+                        borderW = 3;
+                        radius = 5;
+                    }
 
-                datasets.push({
-                    label: `${g.hkModel} (${g.hkYear || g.year}년 출시)`,
-                    data: getScoresArray(g.hkScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
-                    pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
-                    fill: true
-                });
+                    datasets.push({
+                        label: `${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.hkScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
         } else if (chartMode === 'all-six') {
             // Competitor Solid Lines
             data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(148, 163, 184, 0.5)';
-                    bgColor = 'rgba(148, 163, 184, 0.02)';
-                    borderW = 1;
-                    radius = 2;
-                } else if (idx === 1) {
-                    color = `${compColor}80`;
-                    bgColor = 'transparent';
-                    borderW = 1.5;
-                    radius = 3;
-                } else {
-                    color = compColor;
-                    bgColor = `${compColor}1a`;
-                    borderW = 3;
-                    radius = 5;
-                }
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(148, 163, 184, 0.5)';
+                        bgColor = 'rgba(148, 163, 184, 0.02)';
+                        borderW = 1;
+                        radius = 2;
+                    } else if (idx === 1) {
+                        color = `${compColor}80`;
+                        bgColor = 'transparent';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else {
+                        color = compColor;
+                        bgColor = `${compColor}1a`;
+                        borderW = 3;
+                        radius = 5;
+                    }
 
-                datasets.push({
-                    label: `${g.compModel} (${g.compYear || g.year}년 출시)`,
-                    data: getScoresArray(g.compScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
-                    pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
-                    fill: true
-                });
+                    datasets.push({
+                        label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.compScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
 
             // Hankook Dashed Lines
             data.generations.forEach((g, idx) => {
-                let color, bgColor, borderW, radius;
-                if (idx === 0) {
-                    color = 'rgba(255, 107, 0, 0.3)';
-                    bgColor = 'transparent';
-                    borderW = 1;
-                    radius = 2;
-                } else if (idx === 1) {
-                    color = 'rgba(255, 107, 0, 0.6)';
-                    bgColor = 'transparent';
-                    borderW = 1.5;
-                    radius = 3;
-                } else {
-                    color = '#ff6b00';
-                    bgColor = 'rgba(255, 107, 0, 0.08)';
-                    borderW = 3;
-                    radius = 5;
-                }
+                if (g) {
+                    let color, bgColor, borderW, radius;
+                    if (idx === 0) {
+                        color = 'rgba(255, 107, 0, 0.3)';
+                        bgColor = 'transparent';
+                        borderW = 1;
+                        radius = 2;
+                    } else if (idx === 1) {
+                        color = 'rgba(255, 107, 0, 0.6)';
+                        bgColor = 'transparent';
+                        borderW = 1.5;
+                        radius = 3;
+                    } else {
+                        color = '#ff6b00';
+                        bgColor = 'rgba(255, 107, 0, 0.08)';
+                        borderW = 3;
+                        radius = 5;
+                    }
 
-                datasets.push({
-                    label: `[HK] ${g.hkModel} (${g.hkYear || g.year}년 출시)`,
-                    data: getScoresArray(g.hkScores),
-                    borderColor: color,
-                    backgroundColor: bgColor,
-                    borderWidth: borderW,
-                    borderDash: [5, 5],
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: color,
-                    pointHoverBackgroundColor: color,
-                    pointHoverBorderColor: '#fff',
-                    pointRadius: radius,
-                    fill: true
-                });
+                    datasets.push({
+                        label: `[HK] ${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+                        data: getScoresArray(g.hkScores),
+                        borderColor: color,
+                        backgroundColor: bgColor,
+                        borderWidth: borderW,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: color,
+                        pointHoverBackgroundColor: color,
+                        pointHoverBorderColor: '#fff',
+                        pointRadius: radius,
+                        fill: true
+                    });
+                }
             });
         }
 
@@ -3304,8 +3394,8 @@ class TireDashboard {
                     legend: {
                         position: 'top',
                         labels: {
-                            font: { size: 10, weight: '700' },
-                            color: '#cbd5e1',
+                            font: { size: 12, weight: '700' },
+                            color: '#111827',
                             padding: 8
                         }
                     },
@@ -3330,27 +3420,30 @@ class TireDashboard {
                         max: 10,
                         ticks: {
                             stepSize: 1,
-                            font: { size: 9 },
-                            color: '#64748b',
+                            font: { size: 11, weight: '700' },
+                            color: '#111827',
                             backdropColor: 'transparent',
                             showLabelBackdrop: false
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)',
+                            color: 'rgba(0, 0, 0, 0.06)',
                             circular: circularGrid => true
                         },
                         angleLines: {
-                            color: 'rgba(255, 255, 255, 0.08)'
+                            color: 'rgba(0, 0, 0, 0.08)'
                         },
                         pointLabels: {
-                            font: { size: 10, weight: '700' },
-                            color: '#cbd5e1',
+                            font: { size: 12, weight: '700' },
+                            color: '#111827',
                             padding: 8
                         }
                     }
                 }
             }
         });
+        } catch (error) {
+            console.error('renderGenerationTrends 실행 오류:', error);
+        }
     }
 }
 

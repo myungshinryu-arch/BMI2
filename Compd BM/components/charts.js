@@ -38,10 +38,12 @@ window.TireCharts = (function() {
       polymerChart.destroy();
     }
 
-    const data = window.appState.filteredData;
-    // Take top 10 items for readability
-    const sampleSize = 10;
-    const samples = data.slice(0, sampleSize);
+    const data = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? window.appState.selectedTires
+      : window.appState.filteredData;
+    const samples = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? data
+      : data.slice(0, 10);
 
     const labels = [];
     const nrData = [];
@@ -121,9 +123,12 @@ window.TireCharts = (function() {
       fillersChart.destroy();
     }
 
-    const data = window.appState.filteredData;
-    const sampleSize = 10;
-    const samples = data.slice(0, sampleSize);
+    const data = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? window.appState.selectedTires
+      : window.appState.filteredData;
+    const samples = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? data
+      : data.slice(0, 10);
 
     const labels = [];
     const cbData = [];
@@ -194,7 +199,9 @@ window.TireCharts = (function() {
     const xField = document.getElementById('scatter-x').value;
     const yField = document.getElementById('scatter-y').value;
 
-    const data = window.appState.filteredData;
+    const data = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? window.appState.selectedTires
+      : window.appState.filteredData;
     const chartData = [];
 
     // Label dictionaries for axes and tooltip descriptions
@@ -597,9 +604,12 @@ window.TireCharts = (function() {
       styreneVinylChart.destroy();
     }
 
-    const data = window.appState.filteredData;
-    const sampleSize = 10;
-    const samples = data.slice(0, sampleSize);
+    const data = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? window.appState.selectedTires
+      : window.appState.filteredData;
+    const samples = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? data
+      : data.slice(0, 10);
 
     const labels = [];
     const styreneData = [];
@@ -668,9 +678,12 @@ window.TireCharts = (function() {
       znoSulfurChart.destroy();
     }
 
-    const data = window.appState.filteredData;
-    const sampleSize = 10;
-    const samples = data.slice(0, sampleSize);
+    const data = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? window.appState.selectedTires
+      : window.appState.filteredData;
+    const samples = (window.appState.selectedTires && window.appState.selectedTires.length > 0)
+      ? data
+      : data.slice(0, 10);
 
     const labels = [];
     const znoData = [];

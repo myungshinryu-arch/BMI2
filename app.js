@@ -16,10 +16,14 @@ const state = {
   },
   searchQuery: '',
   currentSheet: 'Summer', // Active PLC Timeline sheet
-  selectedCompoundPatterns: {} // 각 제조사별 실시간 드롭다운 선택 패턴 보관소
+  selectedCompoundPatterns: {}, // 각 제조사별 실시간 드롭다운 선택 패턴 보관소
+  timeline: {
+    filterSegments: ['Sport'],
+    filterMakers: []
+  }
 };
 
-// CORS/오프라인 방지용 완벽 정밀 모형 데이터 (Fallback)
+// CORS/오프라인 방지용 완벽 정밀 모형 데이터
 const FALLBACK_STATS = {
   tiresCount: 228,
   evCount: 52,
@@ -37,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTabs();
   setupCardInteractions();
   setupHistoryPopup(); // History.png 팝업 모달 추가
+  setupPlcTimelineFilters(); // PLC 타임라인 3대 대화식 필터 추가
 });
 
 // 2.5 History Popup Modal Controller
@@ -207,6 +212,7 @@ async function loadPortalData() {
     // C. UI 렌더링 가동
     if (loader) loader.style.display = 'none';
     renderPortalStats();
+    updatePlcFilterOptions();
     renderPortalTimeline();
     renderMakerComparison();
     initStrategyDashboard();
@@ -214,6 +220,7 @@ async function loadPortalData() {
   } catch (err) {
     console.error("Portal global pipeline error:", err);
     renderPortalStats();
+    updatePlcFilterOptions();
     renderPortalTimeline();
     renderMakerComparison();
     initStrategyDashboard();
@@ -233,7 +240,7 @@ function renderPortalStats() {
   if (caseEl) caseEl.textContent = state.compounds.case.length > 0 ? `${state.compounds.case.length}건` : `${FALLBACK_STATS.caseCount}건`;
 }
 
-// 6. PLC Timeline Matrix 2D Render Engine (Tire BM에서 위젯으로 통째 이식)
+// 6. PLC Timeline Matrix 2D Render Engine (Tire BM에서 위젯으로 통째 이식 - 엑셀 행번호 1:1 매핑 + rowspan 동적 병합 렌더러)
 function renderPortalTimeline() {
   const viewport = document.getElementById('plc-table-viewport');
   if (!viewport) return;
@@ -253,28 +260,100 @@ function renderPortalTimeline() {
     return;
   }
 
-  // 가로축 연도와 세로축 세그먼트 가공 정렬
+  // 2. 고유한 연도 오름차순 정렬 추출
   const years = [...new Set(sheetItems.map(item => item.year))].sort((a, b) => a - b);
-  const categories = [...new Set(sheetItems.map(item => item.category))].sort();
 
-  // 표 엘리먼트 생성
+  // 3. 고유한 excelRow 오름차순으로 행 목록 생성하여 순서 100% 보장
+  const excelRows = [...new Set(sheetItems.map(item => item.excelRow))].sort((a, b) => a - b);
+
+  // 각 excelRow에 매칭되는 그룹핑 생성
+  const matrixRows = excelRows.map(rowNum => {
+    const rowItems = sheetItems.filter(item => item.excelRow === rowNum);
+    const sample = rowItems[0];
+    
+    // 카테고리 명칭에서 괄호 및 개행 설명 정밀 사전 절삭 (예: "Super Sport (dry 성능 위주...)" -> "Super Sport")
+    let rawCategory = (sample.category || '').trim();
+    if (rawCategory.includes('(')) {
+      rawCategory = rawCategory.split('(')[0].trim();
+    }
+    
+    return {
+      excelRow: rowNum,
+      category: rawCategory,
+      division: (sample.division || '').trim(),
+      items: rowItems
+    };
+  });
+
+  let filteredRows = matrixRows;
+  if (state.timeline && state.timeline.filterSegments && state.timeline.filterSegments.length > 0) {
+    filteredRows = filteredRows.filter(row => state.timeline.filterSegments.includes(row.category));
+  }
+  if (state.timeline && state.timeline.filterMakers && state.timeline.filterMakers.length > 0) {
+    filteredRows = filteredRows.filter(row => state.timeline.filterMakers.includes(row.division));
+  }
+
+  if (filteredRows.length === 0) {
+    viewport.innerHTML = `<div class="plc-table-loading" style="padding: 40px; text-align: center; color: #64748b; font-weight: bold;"><i class="fa-solid fa-triangle-exclamation"></i> 필터 조건에 부합하는 데이터가 존재하지 않습니다.</div>`;
+    return;
+  }
+
+  // 4. 동적 rowspan 정밀 사전 계산 (필터링된 행 목록 기준)
+  // 4-1. Segment(category)의 rowspan 연속 횟수 계산
+  for (let i = 0; i < filteredRows.length; i++) {
+    if (i === 0 || filteredRows[i].category !== filteredRows[i - 1].category) {
+      let span = 1;
+      while (i + span < filteredRows.length && filteredRows[i + span].category === filteredRows[i].category) {
+        span++;
+      }
+      filteredRows[i].categorySpan = span;
+    } else {
+      filteredRows[i].categorySpan = 0; // 0이면 렌더링하지 않고 건너뜀
+    }
+  }
+
+  // 4-2. Maker(division)의 rowspan 연속 횟수 계산 (반드시 동일 카테고리 내에서만 병합되도록 가드배치)
+  for (let i = 0; i < filteredRows.length; i++) {
+    const currentCat = filteredRows[i].category;
+    const currentDiv = filteredRows[i].division;
+    
+    if (i === 0 || filteredRows[i - 1].category !== currentCat || filteredRows[i - 1].division !== currentDiv) {
+      let span = 1;
+      while (
+        i + span < filteredRows.length && 
+        filteredRows[i + span].category === currentCat && 
+        filteredRows[i + span].division === currentDiv
+      ) {
+        span++;
+      }
+      filteredRows[i].divisionSpan = span;
+    } else {
+      filteredRows[i].divisionSpan = 0; // 0이면 렌더링하지 않고 건너뜀
+    }
+  }
+
+  // 5. 테이블 생성
   const table = document.createElement('table');
   table.className = 'plc-matrix-table';
-  
-  // CSS 변수에 연도의 실제 개수 바인딩하여 5등분 기반 자동 수식 너비 연동
   table.style.setProperty('--year-count', years.length);
 
-  // 헤더 (thead) 빌드
+  // 6. 테이블 헤더 (이중 Sticky 열 세팅)
   const thead = document.createElement('thead');
   const headerTr = document.createElement('tr');
-  const cornerTh = document.createElement('th');
-  cornerTh.className = 'sticky-col';
-  cornerTh.textContent = '세그먼트 / 구분';
-  headerTr.appendChild(cornerTh);
+  
+  const segmentTh = document.createElement('th');
+  segmentTh.className = 'segment-col';
+  segmentTh.textContent = '세그먼트';
+  headerTr.appendChild(segmentTh);
+
+  const makerTh = document.createElement('th');
+  makerTh.className = 'maker-col';
+  makerTh.textContent = '제조사';
+  headerTr.appendChild(makerTh);
 
   years.forEach(year => {
     const th = document.createElement('th');
-    th.textContent = `${year}년`;
+    th.textContent = year;
     if (year === 2025 || year === 2026) {
       th.classList.add('active-year');
     }
@@ -283,37 +362,58 @@ function renderPortalTimeline() {
   thead.appendChild(headerTr);
   table.appendChild(thead);
 
-  // 본문 (tbody) 빌드
+  // 7. 테이블 바디 렌더링 및 동적 rowspan 적용
   const tbody = document.createElement('tbody');
   
-  categories.forEach(cat => {
+  filteredRows.forEach((row) => {
     const tr = document.createElement('tr');
     
-    // 좌측 고정 열 세그먼트 헤더
-    const stickTd = document.createElement('td');
-    stickTd.className = 'sticky-col';
+    // 자사 Hankook 행 판별하여 행 강조용 클래스 주입
+    const isHankookRow = (row.division.toUpperCase() === 'HK' || row.division === '자사' || row.division.toUpperCase() === 'HANKOOK');
+    if (isHankookRow) {
+      tr.classList.add('hankook-row');
+    }
     
-    const sampleItem = sheetItems.find(item => item.category === cat);
-    const divisionText = sampleItem ? sampleItem.division : '성능 구분';
+    // 7-1. Segment (Category) 셀 렌더링 (동적 rowspan 적용)
+    if (row.categorySpan > 0) {
+      const segmentTd = document.createElement('td');
+      segmentTd.className = 'segment-col group-first';
+      segmentTd.rowSpan = row.categorySpan;
+      segmentTd.innerHTML = `
+        <div class="plc-segment-label">
+          <span class="seg-name" title="${row.category}">${row.category}</span>
+        </div>
+      `;
+      tr.appendChild(segmentTd);
+    }
+    
+    // 7-2. Maker (Division) 셀 렌더링 (동적 rowspan 적용)
+    if (row.divisionSpan > 0) {
+      const makerTd = document.createElement('td');
+      makerTd.className = 'maker-col group-first';
+      makerTd.rowSpan = row.divisionSpan;
+      
+      const makerDisplayName = getMakerDisplayName(row.division, row.items);
+      const isHankookLabel = (makerDisplayName === 'Hankook');
+      
+      makerTd.innerHTML = `
+        <div class="plc-maker-label ${isHankookLabel ? 'hankook-label' : ''}">
+          <span class="maker-name">${makerDisplayName}</span>
+        </div>
+      `;
+      tr.appendChild(makerTd);
+    }
 
-    stickTd.innerHTML = `
-      <div class="plc-segment-label">
-        <span class="seg-name">${cat}</span>
-        <span class="seg-desc">${divisionText}</span>
-      </div>
-    `;
-    tr.appendChild(stickTd);
-
-    // 연도별 데이터 격자 셀 생성
+    // 7-3. 연도별 타임라인 셀 채우기
     years.forEach(year => {
       const td = document.createElement('td');
       td.className = 'plc-matrix-cell';
       
-      const cellItems = sheetItems.filter(item => item.category === cat && item.year === year);
+      const cellItems = row.items.filter(item => item.year === year);
       
       if (cellItems.length > 0) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'plc-cell-cards-wrapper';
+        const cardsWrapper = document.createElement('div');
+        cardsWrapper.className = 'plc-cell-cards-wrapper';
 
         cellItems.forEach(item => {
           const hasImg = findTireImage(item.sheet, item.excelRow, item.excelCol) !== null;
@@ -322,8 +422,9 @@ function renderPortalTimeline() {
 
           const card = document.createElement('div');
           card.className = `plc-tire-card ${hasImg ? 'has-image' : ''} ${hasRep ? 'has-report' : ''}`;
+          card.setAttribute('data-excel-row', item.excelRow);
+          card.setAttribute('data-excel-col', item.excelCol);
           
-          // 제조사 감지
           const makerText = detectMaker(item.productName);
 
           card.innerHTML = `
@@ -387,7 +488,7 @@ function renderPortalTimeline() {
               }
             }
 
-            // E. 시트 이름에서 비교 대상 기준 계절(Season) 판별
+            // E. 시트 이름에서 비교 대상 기준 계절 판별
             let targetSeason = "Summer";
             if (item.sheet === "Winter-Alpin") {
               targetSeason = "Winter";
@@ -408,12 +509,10 @@ function renderPortalTimeline() {
 
             makers.forEach(maker => {
               if (maker === clickedMaker) {
-                // 클릭한 브랜드는 찾아낸 매칭 패턴명 강제 고정
                 state.selectedCompoundFilters[maker] = {
                   pattern: matchedPattern || "N/A"
                 };
               } else {
-                // 나머지 제조사들은 동일 계절 + 가장 근접한 연도 매칭 최적 패턴 선별 자동 적용
                 const bestPat = findBestMatchingPattern(maker, targetSeason, targetYear, treadList);
                 state.selectedCompoundFilters[maker] = {
                   pattern: bestPat
@@ -432,18 +531,17 @@ function renderPortalTimeline() {
             }
           });
 
-          wrapper.appendChild(card);
+          cardsWrapper.appendChild(card);
         });
-        td.appendChild(wrapper);
+        td.appendChild(cardsWrapper);
       } else {
         td.innerHTML = `<span style="color: rgba(0,0,0,0.04); font-size: 0.75rem;">-</span>`;
       }
       tr.appendChild(td);
     });
-
     tbody.appendChild(tr);
   });
-
+  
   table.appendChild(tbody);
   viewport.innerHTML = '';
   viewport.appendChild(table);
@@ -458,6 +556,40 @@ function renderPortalTimeline() {
       });
     }, 150); // 렌더링 완료 및 레이아웃 안정화 후 150ms 시점에 부드럽게 스크롤
   }
+}
+
+// 엑셀 내 구분을 실제 표시용 메이커로 매핑해주는 스마트 헬퍼 함수
+function getMakerDisplayName(division, items) {
+  if (!division) return '-';
+  const cleanDiv = division.toUpperCase().trim();
+  
+  const mapping = {
+    'CT': 'Continental',
+    'MC': 'Michelin',
+    'PR': 'Pirelli',
+    'GY': 'Goodyear',
+    'BS': 'Bridgestone',
+    'HK': 'Hankook',
+    '자사': 'Hankook',
+    'HANKOOK': 'Hankook'
+  };
+  
+  if (mapping[cleanDiv]) {
+    return mapping[cleanDiv];
+  }
+  
+  // 만약 사전에 매핑되지 않은 경우, 행 내부 아이템의 브랜드명을 역추적하여 안전 장치 마련
+  if (items && items.length > 0) {
+    for (const item of items) {
+      const detected = detectMaker(item.productName);
+      if (detected && detected !== '기타') {
+        if (detected === 'Hankook') return 'Hankook';
+        return detected;
+      }
+    }
+  }
+  
+  return division;
 }
 
 // 제조사 감지 헬퍼
@@ -724,27 +856,27 @@ function renderMakerComparison() {
         </select>
       </div>
 
-      <!-- 배합 분석 결과 (Compound Ingredients Mix) -->
+      <!-- 배합 분석 결과 -->
       <div class="mc-ingredients-section">
         <div class="section-title">배합 분석 평균</div>
         
         <!-- 고무비 삼중 바 -->
         <div class="mini-ratio-bar-wrapper">
           <div class="ratio-info">
-            <span>고무비 (NR/SBR/BR)</span>
+            <span>고무비</span>
             <span class="ratio-val">${averages.avgNR}/${averages.avgSBR}/${averages.avgBR}</span>
           </div>
           <div class="triple-ratio-bar">
-            <div class="ratio-segment nr" style="width: ${nrPct}%;" title="NR (천연고무): ${averages.avgNR}%"></div>
-            <div class="ratio-segment sbr" style="width: ${sbrPct}%;" title="SBR (합성고무): ${averages.avgSBR}%"></div>
-            <div class="ratio-segment br" style="width: ${brPct}%;" title="BR (부타디엔고무): ${averages.avgBR}%"></div>
+            <div class="ratio-segment nr" style="width: ${nrPct}%;" title="NR: ${averages.avgNR}%"></div>
+            <div class="ratio-segment sbr" style="width: ${sbrPct}%;" title="SBR: ${averages.avgSBR}%"></div>
+            <div class="ratio-segment br" style="width: ${brPct}%;" title="BR: ${averages.avgBR}%"></div>
           </div>
         </div>
 
         <!-- CB / Silica 보강제 -->
         <div class="ingredient-item-row">
           <div class="ing-info">
-            <span>보강제 (Carbon Black / Silica)</span>
+            <span>보강제</span>
             <span class="ratio-val" style="font-weight: 700; color: var(--text-dark);">${averages.avgCB} / ${averages.avgSilica} phr</span>
           </div>
           <div class="reinf-ratio-bar">
@@ -754,14 +886,14 @@ function renderMakerComparison() {
         </div>
       </div>
 
-      <!-- 핵심 물성 분석 결과 (Rheology Properties) -->
+      <!-- 핵심 물성 분석 결과 -->
       <div class="mc-gauge-section">
         <div class="section-title">핵심 물성 분석 결과</div>
         
         <!-- Tg Gauge -->
         <div class="mc-gauge-wrapper">
           <div class="mc-gauge-info">
-            <span>유리전이온도 (Tg)</span>
+            <span>유리전이온도</span>
             <span class="val">${averages.avgTg} ℃</span>
           </div>
           <div class="mc-progress-bar">
@@ -914,7 +1046,7 @@ function calculatePatternAverages(records) {
 
 function getMockupTreadCompounds() {
   return [
-    // HANKOOK (한국타이어 대표 프리미엄 라인업)
+    // HANKOOK
     { "Maker": "HANKOOK", "Pattern": "Ventus S1 evo3", "NR / SBR / BR_NMR": "5 / 75 / 20", "Carbon Black / Silica (phr)": "5.0 / 85.0", "Aceton / ZnO / T.Sulfur (phr)": "48.0 / 0.4 / 3.4", "Tg_peak temp. (℃)": -20.5, "tanδ @ 60℃": 0.052, "G” @ 0℃ (E+06)": 1.15, "Season": "Summer", "분석년도": 2021 },
     { "Maker": "HANKOOK", "Pattern": "Ventus S1 evo3 EV", "NR / SBR / BR_NMR": "5 / 72 / 23", "Carbon Black / Silica (phr)": "4.0 / 88.0", "Aceton / ZnO / T.Sulfur (phr)": "49.0 / 0.38 / 3.5", "Tg_peak temp. (℃)": -19.2, "tanδ @ 60℃": 0.048, "G” @ 0℃ (E+06)": 1.22, "Season": "Summer", "분석년도": 2024 },
     { "Maker": "HANKOOK", "Pattern": "iON EVO", "NR / SBR / BR_NMR": "5 / 70 / 25", "Carbon Black / Silica (phr)": "3.5 / 85.0", "Aceton / ZnO / T.Sulfur (phr)": "48.0 / 0.4 / 3.4", "Tg_peak temp. (℃)": -20.5, "tanδ @ 60℃": 0.043, "G” @ 0℃ (E+06)": 1.12, "Season": "Summer", "분석년도": 2025 },
@@ -942,7 +1074,7 @@ function getMockupTreadCompounds() {
     { "Maker": "HANKOOK", "Pattern": "AH31", "NR / SBR / BR_NMR": "40 / 15 / 45", "Carbon Black / Silica (phr)": "42.0 / 30.0", "Aceton / ZnO / T.Sulfur (phr)": "31.0 / 2.9 / 2.9", "Tg_peak temp. (℃)": -46.5, "tanδ @ 60℃": 0.075, "G” @ 0℃ (E+06)": 0.98, "Season": "All Season", "분석년도": 2022 },
     { "Maker": "HANKOOK", "Pattern": "F200", "NR / SBR / BR_NMR": "0 / 90 / 10", "Carbon Black / Silica (phr)": "2.0 / 95.0", "Aceton / ZnO / T.Sulfur (phr)": "55.0 / 1.5 / 4.2", "Tg_peak temp. (℃)": -12.5, "tanδ @ 60℃": 0.092, "G” @ 0℃ (E+06)": 5.85, "Season": "Summer", "분석년도": 2023 },
 
-    // MICHELIN (미쉐린 대표 명품 제품군)
+    // MICHELIN
     { "Maker": "MICHELIN", "Pattern": "PILOT SPORT 4S", "NR / SBR / BR_NMR": "5 / 75 / 20", "Carbon Black / Silica (phr)": "5.0 / 85.0", "Aceton / ZnO / T.Sulfur (phr)": "48.0 / 0.4 / 3.5", "Tg_peak temp. (℃)": -20.8, "tanδ @ 60℃": 0.052, "G” @ 0℃ (E+06)": 1.15, "Season": "Summer", "분석년도": 2022 },
     { "Maker": "MICHELIN", "Pattern": "PILOT SPORT 4", "NR / SBR / BR_NMR": "5 / 72 / 23", "Carbon Black / Silica (phr)": "5.5 / 83.0", "Aceton / ZnO / T.Sulfur (phr)": "47.5 / 0.42 / 3.4", "Tg_peak temp. (℃)": -21.2, "tanδ @ 60℃": 0.054, "G” @ 0℃ (E+06)": 1.10, "Season": "Summer", "분석년도": 2022 },
     { "Maker": "MICHELIN", "Pattern": "PRIMACY 4", "NR / SBR / BR_NMR": "15 / 55 / 30", "Carbon Black / Silica (phr)": "10.0 / 70.0", "Aceton / ZnO / T.Sulfur (phr)": "42.0 / 0.5 / 3.0", "Tg_peak temp. (℃)": -29.5, "tanδ @ 60℃": 0.048, "G” @ 0℃ (E+06)": 0.85, "Season": "Summer", "분석년도": 2023 },
@@ -965,7 +1097,7 @@ function getMockupTreadCompounds() {
     { "Maker": "MICHELIN", "Pattern": "DEFENDER LTX M/S", "NR / SBR / BR_NMR": "28 / 32 / 40", "Carbon Black / Silica (phr)": "22.0 / 48.0", "Aceton / ZnO / T.Sulfur (phr)": "37.0 / 0.66 / 2.5", "Tg_peak temp. (℃)": -40.8, "tanδ @ 60℃": 0.054, "G” @ 0℃ (E+06)": 0.59, "Season": "All Season", "분석년도": 2022 },
     { "Maker": "MICHELIN", "Pattern": "ENERGY SAVER +", "NR / SBR / BR_NMR": "20 / 42 / 38", "Carbon Black / Silica (phr)": "7.5 / 67.0", "Aceton / ZnO / T.Sulfur (phr)": "40.0 / 0.60 / 2.8", "Tg_peak temp. (℃)": -36.2, "tanδ @ 60℃": 0.043, "G” @ 0℃ (E+06)": 0.66, "Season": "Summer", "분석년도": 2021 },
 
-    // CONTINENTAL (콘티넨탈 기술력 라인업)
+    // CONTINENTAL
     { "Maker": "CONTINENTAL", "Pattern": "ULTRA CONTACT", "NR / SBR / BR_NMR": "8 / 62 / 30", "Carbon Black / Silica (phr)": "6.0 / 80.0", "Aceton / ZnO / T.Sulfur (phr)": "44.0 / 0.48 / 3.1", "Tg_peak temp. (℃)": -24.2, "tanδ @ 60℃": 0.061, "G” @ 0℃ (E+06)": 0.95, "Season": "Summer", "분석년도": 2021 },
     { "Maker": "CONTINENTAL", "Pattern": "SPORT CONTACT 7", "NR / SBR / BR_NMR": "0 / 80 / 20", "Carbon Black / Silica (phr)": "3.0 / 90.0", "Aceton / ZnO / T.Sulfur (phr)": "50.0 / 0.38 / 3.6", "Tg_peak temp. (℃)": -18.5, "tanδ @ 60℃": 0.058, "G” @ 0℃ (E+06)": 1.28, "Season": "Summer", "분석년도": 2024 },
     { "Maker": "CONTINENTAL", "Pattern": "PREMIUM CONTACT 7", "NR / SBR / BR_NMR": "12 / 58 / 30", "Carbon Black / Silica (phr)": "8.5 / 75.0", "Aceton / ZnO / T.Sulfur (phr)": "42.0 / 0.52 / 2.9", "Tg_peak temp. (℃)": -28.2, "tanδ @ 60℃": 0.052, "G” @ 0℃ (E+06)": 0.81, "Season": "Summer", "분석년도": 2023 },
@@ -987,7 +1119,7 @@ function getMockupTreadCompounds() {
     { "Maker": "CONTINENTAL", "Pattern": "CrossContact LX Sport", "NR / SBR / BR_NMR": "12 / 58 / 30", "Carbon Black / Silica (phr)": "12.0 / 74.0", "Aceton / ZnO / T.Sulfur (phr)": "41.5 / 0.50 / 2.8", "Tg_peak temp. (℃)": -30.2, "tanδ @ 60℃": 0.051, "G” @ 0℃ (E+06)": 0.82, "Season": "All Season", "분석년도": 2022 },
     { "Maker": "CONTINENTAL", "Pattern": "ALL SEASON CONTACT", "NR / SBR / BR_NMR": "14 / 54 / 32", "Carbon Black / Silica (phr)": "9.5 / 72.0", "Aceton / ZnO / T.Sulfur (phr)": "43.0 / 0.54 / 2.8", "Tg_peak temp. (℃)": -30.1, "tanδ @ 60℃": 0.045, "G” @ 0℃ (E+06)": 0.81, "Season": "All Season", "분석년도": 2021 },
 
-    // GOODYEAR (굿이어 스포츠 및 사계절 명가)
+    // GOODYEAR
     { "Maker": "GOODYEAR", "Pattern": "EAGLE F1 ASYMMETRIC 5", "NR / SBR / BR_NMR": "5 / 70 / 25", "Carbon Black / Silica (phr)": "5.0 / 82.0", "Aceton / ZnO / T.Sulfur (phr)": "46.0 / 0.42 / 3.3", "Tg_peak temp. (℃)": -22.5, "tanδ @ 60℃": 0.054, "G” @ 0℃ (E+06)": 1.05, "Season": "Summer", "분석년도": 2021 },
     { "Maker": "GOODYEAR", "Pattern": "EAGLE F1 ASYMMETRIC 6", "NR / SBR / BR_NMR": "0 / 76 / 24", "Carbon Black / Silica (phr)": "4.0 / 88.0", "Aceton / ZnO / T.Sulfur (phr)": "49.0 / 0.38 / 3.5", "Tg_peak temp. (℃)": -19.5, "tanδ @ 60℃": 0.051, "G” @ 0℃ (E+06)": 1.20, "Season": "Summer", "분석년도": 2024 },
     { "Maker": "GOODYEAR", "Pattern": "VECTOR 4SEASONS GEN 3", "NR / SBR / BR_NMR": "12 / 58 / 30", "Carbon Black / Silica (phr)": "12.0 / 68.0", "Aceton / ZnO / T.Sulfur (phr)": "43.0 / 0.52 / 2.9", "Tg_peak temp. (℃)": -30.2, "tanδ @ 60℃": 0.045, "G” @ 0℃ (E+06)": 0.79, "Season": "All Season", "분석년도": 2023 },
@@ -1007,7 +1139,7 @@ function getMockupTreadCompounds() {
     { "Maker": "GOODYEAR", "Pattern": "CARGO VECTOR 2", "NR / SBR / BR_NMR": "30 / 20 / 50", "Carbon Black / Silica (phr)": "25.0 / 45.0", "Aceton / ZnO / T.Sulfur (phr)": "35.0 / 0.68 / 2.4", "Tg_peak temp. (℃)": -43.2, "tanδ @ 60℃": 0.058, "G” @ 0℃ (E+06)": 0.51, "Season": "All Season", "분석년도": 2021 },
     { "Maker": "GOODYEAR", "Pattern": "EAGLE F1 ASYMMETRIC 3", "NR / SBR / BR_NMR": "6 / 68 / 26", "Carbon Black / Silica (phr)": "6.0 / 80.0", "Aceton / ZnO / T.Sulfur (phr)": "45.0 / 0.44 / 3.2", "Tg_peak temp. (℃)": -23.5, "tanδ @ 60℃": 0.055, "G” @ 0℃ (E+06)": 0.99, "Season": "Summer", "분석년도": 2019 },
 
-    // BRIDGESTONE (브리지스톤 글로벌 탑 브랜드 성능 지표)
+    // BRIDGESTONE
     { "Maker": "BRIDGESTONE", "Pattern": "TURANZA T005", "NR / SBR / BR_NMR": "0 / 75 / 25", "Carbon Black / Silica (phr)": "4.0 / 88.0", "Aceton / ZnO / T.Sulfur (phr)": "49.0 / 0.35 / 3.4", "Tg_peak temp. (℃)": -19.8, "tanδ @ 60℃": 0.062, "G” @ 0℃ (E+06)": 1.20, "Season": "Summer", "분석년도": 2021 },
     { "Maker": "BRIDGESTONE", "Pattern": "ALENZA AS ULTRA", "NR / SBR / BR_NMR": "10 / 60 / 30", "Carbon Black / Silica (phr)": "8.0 / 76.0", "Aceton / ZnO / T.Sulfur (phr)": "44.0 / 0.48 / 3.0", "Tg_peak temp. (℃)": -26.5, "tanδ @ 60℃": 0.046, "G” @ 0℃ (E+06)": 0.82, "Season": "All Season", "분석년도": 2023 },
     { "Maker": "BRIDGESTONE", "Pattern": "POTENZA SPORT", "NR / SBR / BR_NMR": "0 / 85 / 15", "Carbon Black / Silica (phr)": "2.5 / 95.0", "Aceton / ZnO / T.Sulfur (phr)": "53.0 / 0.32 / 3.7", "Tg_peak temp. (℃)": -15.2, "tanδ @ 60℃": 0.066, "G” @ 0℃ (E+06)": 1.41, "Season": "Summer", "분석년도": 2024 },
@@ -1027,7 +1159,7 @@ function getMockupTreadCompounds() {
     { "Maker": "BRIDGESTONE", "Pattern": "DUELER H/T 684 II", "NR / SBR / BR_NMR": "20 / 45 / 35", "Carbon Black / Silica (phr)": "15.0 / 60.0", "Aceton / ZnO / T.Sulfur (phr)": "40.0 / 0.58 / 2.8", "Tg_peak temp. (℃)": -34.8, "tanδ @ 60℃": 0.052, "G” @ 0℃ (E+06)": 0.72, "Season": "All Season", "분석년도": 2022 },
     { "Maker": "BRIDGESTONE", "Pattern": "POTENZA RE71RS", "NR / SBR / BR_NMR": "0 / 92 / 8", "Carbon Black / Silica (phr)": "1.5 / 96.0", "Aceton / ZnO / T.Sulfur (phr)": "56.0 / 0.28 / 3.8", "Tg_peak temp. (℃)": -12.2, "tanδ @ 60℃": 0.072, "G” @ 0℃ (E+06)": 1.48, "Season": "Summer", "분석년도": 2024 },
 
-    // PIRELLI (피렐리 하이엔드 및 초고성능 타이어)
+    // PIRELLI
     { "Maker": "PIRELLI", "Pattern": "P ZERO", "NR / SBR / BR_NMR": "5 / 80 / 15", "Carbon Black / Silica (phr)": "4.0 / 92.0", "Aceton / ZnO / T.Sulfur (phr)": "51.0 / 0.3 / 3.6", "Tg_peak temp. (℃)": -17.5, "tanδ @ 60℃": 0.063, "G” @ 0℃ (E+06)": 1.32, "Season": "Summer", "분석년도": 2022 },
     { "Maker": "PIRELLI", "Pattern": "CINTURATO P7", "NR / SBR / BR_NMR": "10 / 60 / 30", "Carbon Black / Silica (phr)": "7.0 / 78.0", "Aceton / ZnO / T.Sulfur (phr)": "45.0 / 0.45 / 3.1", "Tg_peak temp. (℃)": -25.8, "tanδ @ 60℃": 0.049, "G” @ 0℃ (E+06)": 0.88, "Season": "Summer", "분석년도": 2023 },
     { "Maker": "PIRELLI", "Pattern": "P ZERO PZ4", "NR / SBR / BR_NMR": "4 / 81 / 15", "Carbon Black / Silica (phr)": "3.5 / 94.0", "Aceton / ZnO / T.Sulfur (phr)": "52.0 / 0.32 / 3.7", "Tg_peak temp. (℃)": -15.5, "tanδ @ 60℃": 0.056, "G” @ 0℃ (E+06)": 1.35, "Season": "Summer", "분석년도": 2024 },
@@ -1047,7 +1179,7 @@ function getMockupTreadCompounds() {
     { "Maker": "PIRELLI", "Pattern": "CARRIER WINTER", "NR / SBR / BR_NMR": "30 / 25 / 45", "Carbon Black / Silica (phr)": "22.0 / 52.0", "Aceton / ZnO / T.Sulfur (phr)": "35.0 / 0.68 / 2.3", "Tg_peak temp. (℃)": -41.5, "tanδ @ 60℃": 0.061, "G” @ 0℃ (E+06)": 0.52, "Season": "Winter", "분석년도": 2021 },
     { "Maker": "PIRELLI", "Pattern": "CINTURATO P7 AS N0", "NR / SBR / BR_NMR": "10 / 58 / 32", "Carbon Black / Silica (phr)": "7.5 / 77.0", "Aceton / ZnO / T.Sulfur (phr)": "43.0 / 0.50 / 3.0", "Tg_peak temp. (℃)": -28.9, "tanδ @ 60℃": 0.048, "G” @ 0℃ (E+06)": 0.85, "Season": "All Season", "분석년도": 2022 },
 
-    // TOYO (토요 하이퍼포먼스 웰메이드 일본 타이어)
+    // TOYO
     { "Maker": "TOYO", "Pattern": "PROXES Sport 2", "NR / SBR / BR_NMR": "8 / 67 / 25", "Carbon Black / Silica (phr)": "5.0 / 83.0", "Aceton / ZnO / T.Sulfur (phr)": "46.5 / 0.44 / 3.3", "Tg_peak temp. (℃)": -23.0, "tanδ @ 60℃": 0.057, "G” @ 0℃ (E+06)": 1.03, "Season": "Summer", "분석년도": 2023 },
     { "Maker": "TOYO", "Pattern": "TRANPATH mp7", "NR / SBR / BR_NMR": "15 / 55 / 30", "Carbon Black / Silica (phr)": "12.0 / 68.0", "Aceton / ZnO / T.Sulfur (phr)": "42.0 / 0.52 / 2.8", "Tg_peak temp. (℃)": -31.5, "tanδ @ 60℃": 0.048, "G” @ 0℃ (E+06)": 0.76, "Season": "Summer", "분석년도": 2021 },
     { "Maker": "TOYO", "Pattern": "NANOENERGY 3 PLUS", "NR / SBR / BR_NMR": "20 / 45 / 35", "Carbon Black / Silica (phr)": "8.0 / 62.0", "Aceton / ZnO / T.Sulfur (phr)": "40.0 / 0.60 / 2.7", "Tg_peak temp. (℃)": -36.5, "tanδ @ 60℃": 0.044, "G” @ 0℃ (E+06)": 0.64, "Season": "Summer", "분석년도": 2022 },
@@ -1065,7 +1197,7 @@ function getMockupTreadCompounds() {
     { "Maker": "TOYO", "Pattern": "OPEN COUNTRY M/T", "NR / SBR / BR_NMR": "45 / 5 / 50", "Carbon Black / Silica (phr)": "48.0 / 15.0", "Aceton / ZnO / T.Sulfur (phr)": "30.0 / 0.90 / 2.1", "Tg_peak temp. (℃)": -50.2, "tanδ @ 60℃": 0.071, "G” @ 0℃ (E+06)": 0.38, "Season": "All Season", "분석년도": 2023 },
     { "Maker": "TOYO", "Pattern": "CELSIUS AS2", "NR / SBR / BR_NMR": "12 / 56 / 32", "Carbon Black / Silica (phr)": "11.0 / 72.0", "Aceton / ZnO / T.Sulfur (phr)": "42.5 / 0.52 / 2.9", "Tg_peak temp. (℃)": -29.8, "tanδ @ 60℃": 0.045, "G” @ 0℃ (E+06)": 0.83, "Season": "All Season", "분석년도": 2024 },
 
-    // VREDESTEIN (브레데스타인 유럽의 유서 깊은 브랜드)
+    // VREDESTEIN
     { "Maker": "VREDESTEIN", "Pattern": "Ultrac Vorti+", "NR / SBR / BR_NMR": "6 / 69 / 25", "Carbon Black / Silica (phr)": "6.0 / 80.0", "Aceton / ZnO / T.Sulfur (phr)": "45.0 / 0.46 / 3.2", "Tg_peak temp. (℃)": -24.0, "tanδ @ 60℃": 0.055, "G” @ 0℃ (E+06)": 0.99, "Season": "Summer", "분석년도": 2022 },
     { "Maker": "VREDESTEIN", "Pattern": "Quatrac Pro", "NR / SBR / BR_NMR": "12 / 58 / 30", "Carbon Black / Silica (phr)": "10.0 / 72.0", "Aceton / ZnO / T.Sulfur (phr)": "43.0 / 0.5 / 2.9", "Tg_peak temp. (℃)": -28.9, "tanδ @ 60℃": 0.047, "G” @ 0℃ (E+06)": 0.84, "Season": "All Season", "분석년도": 2023 },
     { "Maker": "VREDESTEIN", "Pattern": "Ultrac Satin", "NR / SBR / BR_NMR": "10 / 62 / 28", "Carbon Black / Silica (phr)": "8.0 / 76.0", "Aceton / ZnO / T.Sulfur (phr)": "42.5 / 0.52 / 3.0", "Tg_peak temp. (℃)": -26.8, "tanδ @ 60℃": 0.049, "G” @ 0℃ (E+06)": 0.88, "Season": "Summer", "분석년도": 2021 },
@@ -1361,9 +1493,9 @@ function findAssociatedReport(productName) {
 // 12. PORTAL STRATEGY DASHBOARD (시장/상품전략 2x2 쿼드 관제 대시보드 구동 로직)
 // ==========================================================================
 let globalMarketChart = null;
-let trendPerformanceChart = null;
-let rdPriorityChart = null;
 let productCompChart = null;
+let generationEvolutionChart = null;
+let selectedGenTrendsLineup = 'Michelin_Sport';
 
 // 연도별 글로벌 전체 매출 및 판매량 데이터베이스 (세그먼트 세분화: All, UHP, Grand Touring, All-Season, Winter, SUV)
 const GLOBAL_MARKET_DATABASE = {
@@ -1419,7 +1551,7 @@ const GLOBAL_MARKET_DATABASE = {
 
 // 뉴스 데이터셋 (실제 보도 자료 상세 페이지로 연동하여 고품질 링크 구현)
 const STRATEGY_NEWS_DATA = [
-  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온(iON)' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "https://www.yna.co.kr/view/AKR20240315053000003" },
+  { mfg: "HANKOOK", title: "한국타이어, 글로벌 고성능 EV 타이어 '아이온' 유럽 누적 판매 150만 돌파", date: "2026-05-18", snippet: "세계 최초 풀 라인업 EV 전용 브랜드 iON이 기술력과 정숙성을 입증받으며 RE 시장 지배력을 한층 높였습니다.", url: "https://www.yna.co.kr/view/AKR20240315053000003" },
   { mfg: "HANKOOK", title: "HANKOOK, 포르쉐 타이칸 전용 초고성능 iON Evo 신형 OE 공급 체결", date: "2026-04-29", snippet: "포르쉐와 파트너십을 더욱 공고히 하며, 최고 사양 컴파운드 배합 기술력을 세계 시장에 증명했습니다.", url: "https://www.edaily.co.kr/news/read?newsId=02207446638823768" },
   { mfg: "MICHELIN", title: "미쉐린, 순환 원료 비중 45% 초과 달성 '친환경 컴파운드 배합' 발표", date: "2026-05-12", snippet: "100% 지속가능한 타이어 실현을 선언하며 친환경 실리카 및 재생 고무 배합 원천 기술 개발에 한발 앞섰습니다.", url: "https://www.autotribune.co.kr/news/articleView.html?idxno=7678" },
   { mfg: "MICHELIN", title: "MICHELIN, 지능형 센서 내장 '스마트 트레드' 자율주행 OE 최초 양산", date: "2026-03-15", snippet: "실시간 마모 및 제동 성능 모니터링 센서를 트레드 고무 내에 안착시켜 완성차 안전 지표와 직접 연동합니다.", url: "https://www.hkbs.co.kr/news/articleView.html?idxno=602324" },
@@ -1560,7 +1692,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "CONTINENTAL PremiumContact 7",
       marketPosition: "7위 / 7개 사",
-      priorityEnhancement: "수막현상 방지 (Hydroplaning)"
+      priorityEnhancement: "수막현상 방지"
     },
     "Europe": {
       chartData: {
@@ -1569,7 +1701,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "CONTINENTAL PremiumContact 7",
       marketPosition: "3위 / 7개 사",
-      priorityEnhancement: "수막현상 방지 (Hydroplaning)"
+      priorityEnhancement: "수막현상 방지"
     }
   },
   "All-Season Passenger": {
@@ -1580,7 +1712,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "MICHELIN CrossClimate 2",
       marketPosition: "3위 / 7개 사",
-      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+      priorityEnhancement: "젖은 노면 제동력"
     },
     "Europe": {
       chartData: {
@@ -1589,7 +1721,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "MICHELIN CrossClimate 2",
       marketPosition: "3위 / 7개 사",
-      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+      priorityEnhancement: "젖은 노면 제동력"
     }
   },
   "Winter / Snow": {
@@ -1600,7 +1732,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "CONTINENTAL VikingContact 7",
       marketPosition: "4위 / 7개 사",
-      priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
+      priorityEnhancement: "마른 노면 접지력"
     },
     "Europe": {
       chartData: {
@@ -1609,7 +1741,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "CONTINENTAL VikingContact 7",
       marketPosition: "3위 / 7개 사",
-      priorityEnhancement: "마른 노면 접지력 (Dry Grip)"
+      priorityEnhancement: "마른 노면 접지력"
     }
   },
   "All-Terrain (SUV/Truck)": {
@@ -1620,7 +1752,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "GOODYEAR Wrangler Duratrac",
       marketPosition: "3위 / 7개 사",
-      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+      priorityEnhancement: "젖은 노면 제동력"
     },
     "Europe": {
       chartData: {
@@ -1629,7 +1761,7 @@ const PRODUCT_COMPETITIVENESS_DATABASE = {
       },
       bestProduct: "GOODYEAR Wrangler Duratrac",
       marketPosition: "3위 / 7개 사",
-      priorityEnhancement: "젖은 노면 제동력 (Wet Braking)"
+      priorityEnhancement: "젖은 노면 제동력"
     }
   }
 };
@@ -1733,25 +1865,20 @@ function initProductCompChart(ctx) {
 
 function initStrategyDashboard() {
   const gCtx = document.getElementById('global-market-chart');
-  const tCtx = document.getElementById('trend-performance-chart');
-  const rCtx = document.getElementById('rd-priority-chart');
   const pCtx = document.getElementById('product-comp-chart');
   
-  if (!gCtx || !tCtx || !rCtx) return;
+  if (!gCtx) return;
 
   // 꼭지 1: 글로벌 마켓 차트 그리기
   initGlobalMarketChart(gCtx);
 
-  // 꼭지 2: 트렌드 퍼포먼스 차트 그리기
-  initTrendPerformanceChart(tCtx);
-
-  // 꼭지 3: R&D 가중치 차트 그리기 (우측 이동 및 R&D 테마 집중 비교 개명)
-  initRdPriorityChart(rCtx);
-
-  // 꼭지 4: 상품 기술 경쟁력 비교 차트 그리기 (신설)
+  // 꼭지 2: 상품 기술 경쟁력 비교 차트 그리기
   if (pCtx) {
     initProductCompChart(pCtx);
   }
+
+  // 꼭지 3: 대표 상품 세대별 성능 분석 초기 로드
+  renderGenerationTrendsLineupButtons('Michelin');
 
   // 이벤트 바인딩
   setupStrategyEventListeners();
@@ -1855,7 +1982,7 @@ function initTrendPerformanceChart(ctx) {
   trendPerformanceChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['2021년', '2022년', '2023년', '2024년', '2025년', '2026년(E)'],
+      labels: ['2021년', '2022년', '2023년', '2024년', '2025년', '2026년'],
       datasets: [
         {
           label: `${mfg} - 연도별 판매량 (백만 본)`,
@@ -1917,7 +2044,7 @@ function initTrendPerformanceChart(ctx) {
           grid: { display: false },
           min: 60,
           max: 100,
-          title: { display: true, text: '성능 점수 (Score)', font: { family: 'Pretendard', weight: '700', size: 10 } },
+          title: { display: true, text: '성능 점수', font: { family: 'Pretendard', weight: '700', size: 10 } },
           ticks: { font: { family: 'Pretendard', size: 10 }, color: '#475569' }
         }
       }
@@ -1970,7 +2097,7 @@ function initRdPriorityChart(ctx) {
   rdPriorityChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['친환경/ESG (Eco)', '초고성능 (Sport)', 'EV 전용 (EV Spec)', '디지털&AI (Smart)', '마모 수명 극대화 (Durability)'],
+      labels: ['친환경/ESG (Eco)', '초고성능', 'EV 전용', '디지털&AI (Smart)', '마모 수명 극대화'],
       datasets: datasets
     },
     options: {
@@ -2051,48 +2178,13 @@ function setupStrategyEventListeners() {
     segSelectMarket.addEventListener('change', updateMarketChart);
   }
 
-  // 연도별 필터링
-  const mfgSelect = document.getElementById('trend-mfg');
-  const segSelect = document.getElementById('trend-seg');
-  if (mfgSelect) mfgSelect.addEventListener('change', () => initTrendPerformanceChart(document.getElementById('trend-performance-chart')));
-  if (segSelect) segSelect.addEventListener('change', () => initTrendPerformanceChart(document.getElementById('trend-performance-chart')));
-
-  // 연도별 성능 지표 버튼 필터 (트렌드 전용)
-  const trendBtns = document.querySelectorAll('#trend-source-group .btn-source');
-  trendBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      trendBtns.forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      initTrendPerformanceChart(document.getElementById('trend-performance-chart'));
-    });
-  });
-
   // 상품 기술 경쟁력 비교 성능 지표 버튼 필터 (기술력 전용)
   const techBtns = document.querySelectorAll('#tech-source-group .btn-source');
   techBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       techBtns.forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
+      e.currentTarget.classList.add('active');
       initProductCompChart(document.getElementById('product-comp-chart'));
-    });
-  });
-
-  // R&D 탭 버튼 복수 클릭 (토글)
-  const tabBtns = document.querySelectorAll('.rd-tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const activeBtns = document.querySelectorAll('.rd-tab-btn.active');
-      // 최소 1개는 활성화되어 있어야 에러가 안 남
-      if (e.currentTarget.classList.contains('active') && activeBtns.length <= 1) {
-        if (window.showToast) {
-          window.showToast("⚠️ 최소한 1개의 제조사는 선택되어 있어야 합니다.");
-        } else {
-          alert("최소한 1개의 제조사는 선택되어 있어야 합니다.");
-        }
-        return;
-      }
-      e.currentTarget.classList.toggle('active');
-      initRdPriorityChart(document.getElementById('rd-priority-chart'));
     });
   });
 
@@ -2103,4 +2195,781 @@ function setupStrategyEventListeners() {
       initProductCompChart(document.getElementById('product-comp-chart'));
     });
   }
+
+  // 신설: 세대별 성능 분석 제조사 탭 버튼 바인딩
+  const brandSelector = document.getElementById('gt-brand-selector');
+  if (brandSelector) {
+    const brandBtns = brandSelector.querySelectorAll('.tab-toggle-btn');
+    brandBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        brandBtns.forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        const selectedBrand = e.currentTarget.getAttribute('data-brand');
+        renderGenerationTrendsLineupButtons(selectedBrand);
+      });
+    });
+  }
+
+  // 신설: 세대별 분석 제너레이션 선택기 드롭다운 바인딩
+  const gtGenSelect = document.getElementById('gt-generation-selector');
+  if (gtGenSelect) {
+    gtGenSelect.addEventListener('change', (e) => {
+      renderGenerationTrends(selectedGenTrendsLineup, e.target.value);
+    });
+  }
 }
+
+// 17. PLC Timeline Excel-style Live Filter Controllers (Premium Multi-Select Dropdowns)
+function setupPlcTimelineFilters() {
+  const segmentBtn = document.getElementById('btn-filter-segment');
+  const segmentDropdown = document.getElementById('dropdown-filter-segment');
+  const makerBtn = document.getElementById('btn-filter-maker');
+  const makerDropdown = document.getElementById('dropdown-filter-maker');
+  const resetBtn = document.getElementById('btn-reset-plc-filters');
+  const seasonSelect = document.getElementById('portal-filter-season');
+
+  if (!segmentBtn || !segmentDropdown || !makerBtn || !makerDropdown) return;
+
+  // 1. Season 드롭다운 변경 연동 (8개 전체 시즌 실시간 갱신)
+  if (seasonSelect) {
+    // 최초 구동 시 HTML에 설정된 기본값 동기화
+    state.currentSheet = seasonSelect.value;
+
+    seasonSelect.addEventListener('change', (e) => {
+      state.currentSheet = e.target.value;
+      // 새로운 시즌 데이터에 기반해 세그먼트와 제조사 옵션 재생성
+      updatePlcFilterOptions();
+      // 테이블 다시 그리기
+      renderPortalTimeline();
+    });
+  }
+
+  // 2. 드롭다운 토글 제어
+  segmentBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = segmentDropdown.style.display === 'block';
+    makerDropdown.style.display = 'none';
+    segmentDropdown.style.display = isOpen ? 'none' : 'block';
+  });
+
+  makerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = makerDropdown.style.display === 'block';
+    segmentDropdown.style.display = 'none';
+    makerDropdown.style.display = isOpen ? 'none' : 'block';
+  });
+
+  // 3. 바깥 영역 클릭 시 드롭다운 닫기
+  document.addEventListener('click', (e) => {
+    if (segmentDropdown.contains(e.target) || makerDropdown.contains(e.target)) {
+      return;
+    }
+    segmentDropdown.style.display = 'none';
+    makerDropdown.style.display = 'none';
+  });
+
+  // 4. 세그먼트 체크박스 이벤트 감지 (이벤트 위임)
+  segmentDropdown.addEventListener('change', (e) => {
+    if (e.target.classList.contains('plc-segment-checkbox')) {
+      const val = e.target.value;
+      if (e.target.checked) {
+        if (!state.timeline.filterSegments.includes(val)) {
+          state.timeline.filterSegments.push(val);
+        }
+      } else {
+        state.timeline.filterSegments = state.timeline.filterSegments.filter(item => item !== val);
+      }
+      
+      updateFilterButtonLabels();
+      renderPortalTimeline();
+    }
+  });
+
+  // 5. 제조사 체크박스 이벤트 감지 (이벤트 위임)
+  makerDropdown.addEventListener('change', (e) => {
+    if (e.target.classList.contains('plc-maker-checkbox')) {
+      const val = e.target.value;
+      if (e.target.checked) {
+        if (!state.timeline.filterMakers.includes(val)) {
+          state.timeline.filterMakers.push(val);
+        }
+      } else {
+        state.timeline.filterMakers = state.timeline.filterMakers.filter(item => item !== val);
+      }
+      
+      updateFilterButtonLabels();
+      renderPortalTimeline();
+    }
+  });
+
+  // 6. 필터 초기화 버튼 처리
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      state.timeline.filterSegments = [];
+      state.timeline.filterMakers = [];
+      
+      // 모든 체크박스 체크 해제
+      const segmentCbs = segmentDropdown.querySelectorAll('.plc-segment-checkbox');
+      const makerCbs = makerDropdown.querySelectorAll('.plc-maker-checkbox');
+      segmentCbs.forEach(cb => cb.checked = false);
+      makerCbs.forEach(cb => cb.checked = false);
+
+      updateFilterButtonLabels();
+      renderPortalTimeline();
+      
+      if (window.showToast) {
+        window.showToast('📊 필터 조건이 초기화되었습니다.');
+      }
+    });
+  }
+}
+
+function updatePlcFilterOptions() {
+  const segmentDropdown = document.getElementById('dropdown-filter-segment');
+  const makerDropdown = document.getElementById('dropdown-filter-maker');
+  if (!segmentDropdown || !makerDropdown) return;
+
+  // 데이터 안전성 확보
+  let timelineSource = state.tires;
+  if (timelineSource.length === 0) {
+    timelineSource = getMockupTimeline();
+  }
+
+  const activeSheetName = state.currentSheet;
+  const sheetItems = timelineSource.filter(item => item.sheet === activeSheetName);
+
+  // 고유 세그먼트 및 제조사 추출
+  const categoriesSet = new Set();
+  const makersSet = new Set();
+
+  const excelRows = [...new Set(sheetItems.map(item => item.excelRow))].sort((a, b) => a - b);
+  excelRows.forEach(rowNum => {
+    const rowItems = sheetItems.filter(item => item.excelRow === rowNum);
+    const sample = rowItems[0];
+    if (sample) {
+      let cat = (sample.category || '').trim();
+      if (cat.includes('(')) {
+        cat = cat.split('(')[0].trim();
+      }
+      if (cat) categoriesSet.add(cat);
+
+      let makerName = (sample.division || '').trim();
+      if (makerName && makerName !== '-') {
+        makersSet.add(makerName);
+      }
+    }
+  });
+
+  const sortedCategories = [...categoriesSet].sort();
+  const sortedMakers = [...makersSet].sort();
+
+  // 기존 다중 선택된 항목 중 현재 시트에 존재하지 않는 필터는 자동 제거
+  state.timeline.filterSegments = state.timeline.filterSegments.filter(cat => categoriesSet.has(cat));
+  state.timeline.filterMakers = state.timeline.filterMakers.filter(maker => makersSet.has(maker));
+
+  // Segment 드롭다운 체크박스 렌더링
+  let segmentHtml = '';
+  sortedCategories.forEach(cat => {
+    const checked = state.timeline.filterSegments.includes(cat) ? 'checked' : '';
+    segmentHtml += `
+      <label class="plc-multiselect-option" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px; cursor: pointer; transition: background 0.1s; font-size: 0.85rem; font-weight: 500; color: #334155;">
+        <input type="checkbox" class="plc-segment-checkbox" value="${cat}" ${checked} style="accent-color: var(--primary); width: 14px; height: 14px; cursor: pointer;">
+        <span>${cat}</span>
+      </label>
+    `;
+  });
+  if (segmentHtml === '') {
+    segmentHtml = '<div style="color: #64748b; font-size: 0.8rem; text-align: center; padding: 10px;">옵션이 없습니다.</div>';
+  }
+  segmentDropdown.innerHTML = segmentHtml;
+
+  // Maker 드롭다운 체크박스 렌더링
+  let makerHtml = '';
+  sortedMakers.forEach(maker => {
+    const checked = state.timeline.filterMakers.includes(maker) ? 'checked' : '';
+    makerHtml += `
+      <label class="plc-multiselect-option" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px; cursor: pointer; transition: background 0.1s; font-size: 0.85rem; font-weight: 500; color: #334155;">
+        <input type="checkbox" class="plc-maker-checkbox" value="${maker}" ${checked} style="accent-color: var(--primary); width: 14px; height: 14px; cursor: pointer;">
+        <span>${maker}</span>
+      </label>
+    `;
+  });
+  if (makerHtml === '') {
+    makerHtml = '<div style="color: #64748b; font-size: 0.8rem; text-align: center; padding: 10px;">옵션이 없습니다.</div>';
+  }
+  makerDropdown.innerHTML = makerHtml;
+
+  // 버튼 텍스트 상태 동기화
+  updateFilterButtonLabels();
+}
+
+function updateFilterButtonLabels() {
+  const segmentBtnText = document.querySelector('#btn-filter-segment .btn-text');
+  const makerBtnText = document.querySelector('#btn-filter-maker .btn-text');
+
+  if (segmentBtnText) {
+    const selected = state.timeline.filterSegments;
+    if (selected.length === 0) {
+      segmentBtnText.textContent = '전체 세그먼트';
+      segmentBtnText.style.color = '#64748b';
+    } else if (selected.length === 1) {
+      segmentBtnText.textContent = selected[0];
+      segmentBtnText.style.color = '#1e293b';
+    } else {
+      segmentBtnText.textContent = `${selected[0]} 외 ${selected.length - 1}`;
+      segmentBtnText.style.color = '#1e293b';
+    }
+  }
+
+  if (makerBtnText) {
+    const selected = state.timeline.filterMakers;
+    if (selected.length === 0) {
+      makerBtnText.textContent = '전체 제조사';
+      makerBtnText.style.color = '#64748b';
+    } else if (selected.length === 1) {
+      makerBtnText.textContent = selected[0];
+      makerBtnText.style.color = '#1e293b';
+    } else {
+      makerBtnText.textContent = `${selected[0]} 외 ${selected.length - 1}`;
+      makerBtnText.style.color = '#1e293b';
+    }
+  }
+}
+
+
+/**
+ * 신설: 대표 상품 세대별 성능 분석 제조사별 라인업 버튼들을 동적으로 생성하고 첫 번째 라인업을 선택함
+ */
+function renderGenerationTrendsLineupButtons(brand) {
+  try {
+    const selector = document.getElementById('gt-lineup-selector');
+    if (!selector) return;
+
+    // 기존 라인업 버튼 제거
+    selector.innerHTML = '';
+
+    if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+      console.error('대표 상품 세대별 TIRE_EVOLUTION_DATABASE 데이터베이스가 로드되지 않았습니다.');
+      return;
+    }
+
+    const brandColors = {
+      Michelin: '#5cb2ff',
+      Continental: '#ff9f24',
+      Pirelli: '#3b82f6'
+    };
+    const themeColor = brandColors[brand] || '#3b82f6';
+
+    let firstKey = null;
+    Object.keys(window.TIRE_EVOLUTION_DATABASE).forEach(key => {
+      const data = window.TIRE_EVOLUTION_DATABASE[key];
+      if (data && data.brand === brand) {
+        if (!firstKey) firstKey = key;
+
+        const btn = document.createElement('button');
+        btn.className = 'tab-toggle-btn';
+        btn.setAttribute('data-lineup', key);
+        btn.style.borderLeftColor = themeColor;
+        btn.style.borderLeftWidth = '4px';
+        btn.textContent = data.lineupName || '알 수 없음';
+
+        btn.addEventListener('click', () => {
+          selector.querySelectorAll('.tab-toggle-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          selectedGenTrendsLineup = key;
+          const gtGenSelect = document.getElementById('gt-generation-selector');
+          const mode = gtGenSelect ? gtGenSelect.value : 'gen3';
+          renderGenerationTrends(key, mode);
+        });
+
+        selector.appendChild(btn);
+      }
+    });
+
+    // 기본 첫 번째 라인업 활성화
+    if (firstKey) {
+      const firstBtn = selector.querySelector(`[data-lineup="${firstKey}"]`);
+      if (firstBtn) firstBtn.classList.add('active');
+      selectedGenTrendsLineup = firstKey;
+    }
+
+    // 제너레이션 선택기 드롭다운을 'gen3'로 리셋
+    const gtGenSelect = document.getElementById('gt-generation-selector');
+    if (gtGenSelect) {
+      gtGenSelect.value = 'gen3';
+    }
+
+    // 최초 렌더링
+    if (firstKey) {
+      renderGenerationTrends(firstKey, 'gen3');
+    }
+  } catch (error) {
+    console.error('renderGenerationTrendsLineupButtons 실행 오류:', error);
+  }
+}
+
+/**
+ * 신설: 대표 상품 세대별 성능 분석 데이터 및 차트 렌더링 함수
+ */
+function renderGenerationTrends(lineupKey, chartMode = 'gen3') {
+  try {
+    if (typeof window.TIRE_EVOLUTION_DATABASE === 'undefined') {
+      console.error('대표 상품 세대별 TIRE_EVOLUTION_DATABASE 데이터베이스가 로드되지 않았습니다.');
+      return;
+    }
+
+    const data = window.TIRE_EVOLUTION_DATABASE[lineupKey];
+    if (!data) {
+      console.error(`${lineupKey} 라인업의 세대별 진화 데이터가 존재하지 않습니다.`);
+      return;
+    }
+
+    selectedGenTrendsLineup = lineupKey;
+
+    // 1. 헤더 타이틀 및 세그먼트 요약 패널 갱신
+    const headerTitle = document.getElementById('gt-header-title');
+    const headerSubtitle = document.getElementById('gt-header-subtitle');
+    if (headerTitle) {
+      headerTitle.textContent = `${data.brand || ''} ${data.lineupName || ''} 대표 상품 세대별 성능 분석`;
+    }
+    if (headerSubtitle) {
+      headerSubtitle.innerHTML = `<strong>시장별 최다 판매 세그먼트:</strong> 유럽 EU — ${data.segmentEU || 'UHP'} | 북미 US — ${data.segmentUS || 'Passenger'}<br><span style="display: block; margin-top: 8px; color: #ff6b00; font-weight: 700;">[대표 경쟁 라인: ${data.flagshipLine || ''} ➔ 대응 한국 라인: ${data.hankookLine || ''}]</span>`;
+    }
+
+    // 2. 세대별 브로셔 카드 레이아웃 렌더링
+    const container = document.getElementById('gt-brochure-container');
+    if (container) {
+      container.innerHTML = '';
+      const brandColors = {
+        Michelin: '#5cb2ff',
+        Continental: '#ff9f24',
+        Pirelli: '#3b82f6'
+      };
+      const themeColor = brandColors[data.brand] || '#3b82f6';
+
+      data.generations.forEach((g, idx) => {
+        // 압축된 화면 구성을 위해 오직 3세대 최신 모델 브로셔만 렌더링함
+        if (idx !== 2) return;
+
+        // Generation Row Container
+        const row = document.createElement('div');
+        row.className = 'gt-generation-row';
+        row.style.marginBottom = '25px';
+
+        // Gen title header
+        const rowHeader = document.createElement('div');
+        rowHeader.style.display = 'flex';
+        rowHeader.style.justifyContent = 'space-between';
+        rowHeader.style.alignItems = 'center';
+        rowHeader.style.marginBottom = '10px';
+        rowHeader.style.padding = '0 5px';
+        rowHeader.innerHTML = `
+          <div style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: #ff6b00; display: flex; align-items: center; gap: 8px;">
+            <span style="background: #ff6b00; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">GEN ${idx + 1}</span>
+            GEN ${idx + 1} 세대별 비교
+          </div>
+          <div style="font-size: 0.85rem; color: #64748b; font-weight: 700;">
+            ${idx === 2 ? '🔥 최신 플래그십 매칭' : idx === 1 ? '⚡ 2세대 볼륨 매칭' : '❄️ 1세대 히스토리 매칭'}
+          </div>
+        `;
+        row.appendChild(rowHeader);
+
+        const cardsContainer = document.createElement('div');
+        cardsContainer.className = 'gt-cards-container';
+        cardsContainer.style.display = 'grid';
+        cardsContainer.style.gridTemplateColumns = '1fr 1fr';
+        cardsContainer.style.gap = '15px';
+
+        // Competitor Brochure Card
+        const compCard = document.createElement('div');
+        compCard.className = 'gt-brochure-card';
+        compCard.style.setProperty('--theme-color', themeColor);
+        if (idx === 2) {
+          compCard.style.borderColor = themeColor;
+          compCard.style.boxShadow = `0 8px 30px ${themeColor}15`;
+        }
+        compCard.innerHTML = `
+          <div class="gt-brochure-header">
+            <span class="gt-brochure-title" style="color: ${themeColor}; font-size: 0.95rem;">${g.compModel || '알 수 없음'}</span>
+            <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px;">COMPETITOR (${g.compYear || g.year || '미정'}년 출시)</span>
+          </div>
+          <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.compSlogan || '데이터 준비 중...'}"</div>
+          <div class="gt-brochure-details">
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">배합 소재</span>
+              <span class="gt-brochure-detail-val" title="${g.compBrochure?.compound || '데이터 준비 중...'}">${g.compBrochure?.compound || '데이터 준비 중...'}</span>
+            </div>
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">핵심 기술</span>
+              <span class="gt-brochure-detail-val" style="color: ${themeColor}" title="${g.compBrochure?.tech || '데이터 준비 중...'}">${g.compBrochure?.tech || '데이터 준비 중...'}</span>
+            </div>
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">트레드웨어</span>
+              <span class="gt-brochure-detail-val">${g.compBrochure?.treadwear || '데이터 준비 중...'}</span>
+            </div>
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">R&D 소구점</span>
+              <span class="gt-brochure-detail-val" style="color: #64748b; font-style: italic;" title="${g.compBrochure?.focus || '데이터 준비 중...'}">${g.compBrochure?.focus || '데이터 준비 중...'}</span>
+            </div>
+          </div>
+        `;
+
+        // Hankook Brochure Card
+        const hkCard = document.createElement('div');
+        hkCard.className = 'gt-brochure-card';
+        hkCard.style.setProperty('--theme-color', '#ff6b00');
+        if (idx === 2) {
+          hkCard.style.borderColor = '#ff6b00';
+          hkCard.style.boxShadow = '0 8px 30px rgba(255, 107, 0, 0.15)';
+        }
+        hkCard.innerHTML = `
+          <div class="gt-brochure-header">
+            <span class="gt-brochure-title" style="color: #ff6b00; font-size: 0.95rem;">${g.hkModel || '알 수 없음'}</span>
+            <span class="gt-brochure-year" style="font-size: 0.7rem; padding: 1px 6px; background: rgba(255, 107, 0, 0.1); border-color: rgba(255, 107, 0, 0.2); color: #ff6b00;">HANKOOK (${g.hkYear || g.year || '미정'}년 출시)</span>
+          </div>
+          <div class="gt-brochure-slogan" style="min-height: 42px;">"${g.hkSlogan || '데이터 준비 중...'}"</div>
+          <div class="gt-brochure-details">
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">배합 소재</span>
+              <span class="gt-brochure-detail-val" title="${g.hkBrochure?.compound || '데이터 준비 중...'}">${g.hkBrochure?.compound || '데이터 준비 중...'}</span>
+            </div>
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">핵심 기술</span>
+              <span class="gt-brochure-detail-val" style="color: #ffaa66" title="${g.hkBrochure?.tech || '데이터 준비 중...'}">${g.hkBrochure?.tech || '데이터 준비 중...'}</span>
+            </div>
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">트레드웨어</span>
+              <span class="gt-brochure-detail-val">${g.hkBrochure?.treadwear || '데이터 준비 중...'}</span>
+            </div>
+            <div class="gt-brochure-detail-item">
+              <span class="gt-brochure-detail-label">R&D 소구점</span>
+              <span class="gt-brochure-detail-val" style="color: #64748b; font-style: italic;" title="${g.hkBrochure?.focus || '데이터 준비 중...'}">${g.hkBrochure?.focus || '데이터 준비 중...'}</span>
+            </div>
+          </div>
+        `;
+
+        cardsContainer.appendChild(compCard);
+        cardsContainer.appendChild(hkCard);
+        row.appendChild(cardsContainer);
+        container.appendChild(row);
+      });
+    }
+
+    // 3. R&D 혁신 포커스 패널 주입
+    const pastBox = document.getElementById('gt-insight-past');
+    const presentBox = document.getElementById('gt-insight-present');
+    const futureBox = document.getElementById('gt-insight-future');
+
+    if (pastBox) pastBox.innerHTML = `<strong>[과거 지향점]</strong><br>${data.insights?.past || '데이터 준비 중...'}`;
+    if (presentBox) presentBox.innerHTML = `<strong>[현재 지향점]</strong><br>${data.insights?.present || '데이터 준비 중...'}`;
+    if (futureBox) futureBox.innerHTML = `<strong>[중장기 R&D 예측]</strong><br>${data.insights?.future || '데이터 준비 중...'}`;
+
+    // 4. 세대별 모델 체인지 R&D 개발 방향성 차이 분석 주입
+    const g1g2Box = document.getElementById('gt-direction-g1-g2');
+    const g2g3Box = document.getElementById('gt-direction-g2-g3');
+    const summaryBox = document.getElementById('gt-direction-summary');
+
+    if (g1g2Box) g1g2Box.textContent = data.evolutionDirection?.gen1_to_gen2 || '데이터 준비 중...';
+    if (g2g3Box) g2g3Box.textContent = data.evolutionDirection?.gen2_to_gen3 || '데이터 준비 중...';
+    if (summaryBox) summaryBox.textContent = data.evolutionDirection?.comparisonSummary || '데이터 준비 중...';
+
+    // 5. 한국타이어 대응 액션 R&D 제안 주입
+    const proposalBox = document.getElementById('gt-rd-proposal');
+    if (proposalBox) {
+      proposalBox.innerHTML = `<strong>${data.brand || ''}의 대표 상품 세대별 성능 트렌드 극복을 위한 당사 R&D 기술 전략 제안:</strong><br><span style="color:#111827; font-size:0.95rem; line-height:1.6; display:block; margin-top:6px;">${data.proposal || '데이터 준비 중...'}</span>`;
+    }
+
+    // 6. 세대별 세부 성능 Radar Chart 렌더링
+    if (typeof Chart === 'undefined') {
+      console.warn('Chart.js 라이브러리가 존재하지 않아 레이더 차트를 생성할 수 없습니다.');
+      return;
+    }
+
+    const canvas = document.getElementById('chart-generation-evolution');
+    if (!canvas) return;
+
+    if (generationEvolutionChart) {
+      generationEvolutionChart.destroy();
+    }
+
+    const labels = [
+      "마른 노면 접지",
+      "습윤 노면 접지",
+      "수막 저항성",
+      "정숙성/승차감",
+      "마모 수명",
+      "연비/친환경"
+    ];
+
+    const getScoresArray = (scoresObj) => {
+      if (!scoresObj) return [0, 0, 0, 0, 0, 0];
+      return [
+        scoresObj.dry_grip || 0,
+        scoresObj.wet_grip || 0,
+        scoresObj.hydro_resist || 0,
+        scoresObj.comfort_noise || 0,
+        scoresObj.tread_life || 0,
+        scoresObj.efficiency || 0
+      ];
+    };
+
+    const brandColors = {
+      Michelin: '#3b82f6',
+      Continental: '#ff9f24',
+      Pirelli: '#10b981'
+    };
+    const compColor = brandColors[data.brand] || '#3b82f6';
+
+    let datasets = [];
+
+    if (chartMode === 'gen3' || chartMode === 'gen2' || chartMode === 'gen1') {
+      const genIndex = chartMode === 'gen3' ? 2 : chartMode === 'gen2' ? 1 : 0;
+      const g = data.generations[genIndex];
+
+      if (g) {
+        // Competitor Dataset
+        datasets.push({
+          label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+          data: getScoresArray(g.compScores),
+          borderColor: compColor,
+          backgroundColor: `${compColor}1a`,
+          borderWidth: 2.5,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: compColor,
+          pointHoverBackgroundColor: compColor,
+          pointHoverBorderColor: '#fff',
+          pointRadius: 4.5,
+          fill: true
+        });
+
+        // Hankook Dataset
+        datasets.push({
+          label: `${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+          data: getScoresArray(g.hkScores),
+          borderColor: '#ff6b00',
+          backgroundColor: 'rgba(255, 107, 0, 0.12)',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#ff6b00',
+          pointHoverBackgroundColor: '#ff6b00',
+          pointHoverBorderColor: '#fff',
+          pointRadius: 4.5,
+          fill: true
+        });
+      }
+    } else if (chartMode === 'all-comp') {
+      data.generations.forEach((g, idx) => {
+        if (g) {
+          let color, bgColor, borderW, radius;
+          if (idx === 0) {
+            color = 'rgba(148, 163, 184, 0.7)';
+            bgColor = 'rgba(148, 163, 184, 0.05)';
+            borderW = 1.5;
+            radius = 3;
+          } else if (idx === 1) {
+            color = `${compColor}aa`;
+            bgColor = `${compColor}15`;
+            borderW = 2;
+            radius = 4;
+          } else {
+            color = compColor;
+            bgColor = `${compColor}33`;
+            borderW = 2.5;
+            radius = 4.5;
+          }
+
+          datasets.push({
+            label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+            data: getScoresArray(g.compScores),
+            borderColor: color,
+            backgroundColor: bgColor,
+            borderWidth: borderW,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: color,
+            pointHoverBackgroundColor: color,
+            pointHoverBorderColor: '#fff',
+            pointRadius: radius,
+            fill: true
+          });
+        }
+      });
+    } else if (chartMode === 'all-hk') {
+      data.generations.forEach((g, idx) => {
+        if (g) {
+          let color, bgColor, borderW, radius;
+          if (idx === 0) {
+            color = 'rgba(148, 163, 184, 0.7)';
+            bgColor = 'rgba(148, 163, 184, 0.05)';
+            borderW = 1.5;
+            radius = 3;
+          } else if (idx === 1) {
+            color = '#ff9f55';
+            bgColor = 'rgba(255, 159, 85, 0.08)';
+            borderW = 2;
+            radius = 4;
+          } else {
+            color = '#ff6b00';
+            bgColor = 'rgba(255, 107, 0, 0.15)';
+            borderW = 2.5;
+            radius = 4.5;
+          }
+
+          datasets.push({
+            label: `${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+            data: getScoresArray(g.hkScores),
+            borderColor: color,
+            backgroundColor: bgColor,
+            borderWidth: borderW,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: color,
+            pointHoverBackgroundColor: color,
+            pointHoverBorderColor: '#fff',
+            pointRadius: radius,
+            fill: true
+          });
+        }
+      });
+    } else if (chartMode === 'all-six') {
+      // Competitor Solid Lines
+      data.generations.forEach((g, idx) => {
+        if (g) {
+          let color, bgColor, borderW, radius;
+          if (idx === 0) {
+            color = 'rgba(148, 163, 184, 0.5)';
+            bgColor = 'rgba(148, 163, 184, 0.02)';
+            borderW = 1;
+            radius = 2;
+          } else if (idx === 1) {
+            color = `${compColor}80`;
+            bgColor = 'transparent';
+            borderW = 1.5;
+            radius = 3;
+          } else {
+            color = compColor;
+            bgColor = `${compColor}1a`;
+            borderW = 2.5;
+            radius = 4.5;
+          }
+
+          datasets.push({
+            label: `${g.compModel || ''} (${g.compYear || g.year || ''}년 출시)`,
+            data: getScoresArray(g.compScores),
+            borderColor: color,
+            backgroundColor: bgColor,
+            borderWidth: borderW,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: color,
+            pointHoverBackgroundColor: color,
+            pointHoverBorderColor: '#fff',
+            pointRadius: radius,
+            fill: true
+          });
+        }
+      });
+
+      // Hankook Dashed Lines
+      data.generations.forEach((g, idx) => {
+        if (g) {
+          let color, bgColor, borderW, radius;
+          if (idx === 0) {
+            color = 'rgba(255, 107, 0, 0.3)';
+            bgColor = 'transparent';
+            borderW = 1;
+            radius = 2;
+          } else if (idx === 1) {
+            color = 'rgba(255, 107, 0, 0.6)';
+            bgColor = 'transparent';
+            borderW = 1.5;
+            radius = 3;
+          } else {
+            color = '#ff6b00';
+            bgColor = 'rgba(255, 107, 0, 0.08)';
+            borderW = 2.5;
+            radius = 4.5;
+          }
+
+          datasets.push({
+            label: `[HK] ${g.hkModel || ''} (${g.hkYear || g.year || ''}년 출시)`,
+            data: getScoresArray(g.hkScores),
+            borderColor: color,
+            backgroundColor: bgColor,
+            borderWidth: borderW,
+            borderDash: [5, 5],
+            pointBackgroundColor: '#fff',
+            pointBorderColor: color,
+            pointHoverBackgroundColor: color,
+            pointHoverBorderColor: '#fff',
+            pointRadius: radius,
+            fill: true
+          });
+        }
+      });
+    }
+
+    const ctx = canvas.getContext('2d');
+    generationEvolutionChart = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: labels,
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              font: { family: 'Pretendard', size: 10.5, weight: '700' },
+              color: '#000000',
+              padding: 8
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(11, 15, 32, 0.95)',
+            titleColor: '#fff',
+            titleFont: { family: 'Pretendard', size: 12, weight: '700' },
+            bodyFont: { family: 'Pretendard', size: 11 },
+            borderColor: 'rgba(255, 255, 255, 0.15)',
+            borderWidth: 1,
+            padding: 12,
+            callbacks: {
+              label: function(context) {
+                return ` ${context.dataset.label}: ${context.parsed.r} / 10`;
+              }
+            }
+          }
+        },
+        scales: {
+          r: {
+            min: 5,
+            max: 10,
+            ticks: {
+              stepSize: 1,
+              font: { family: 'Pretendard', size: 10, weight: '700' },
+              color: '#000000',
+              backdropColor: 'transparent',
+              showLabelBackdrop: false
+            },
+            grid: {
+              color: 'rgba(0, 0, 0, 0.06)',
+              circular: circularGrid => true
+            },
+            angleLines: {
+              color: 'rgba(0, 0, 0, 0.08)'
+            },
+            pointLabels: {
+              font: { family: 'Pretendard', size: 11, weight: '700' },
+              color: '#000000',
+              padding: 8
+            }
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('renderGenerationTrends 실행 오류:', error);
+  }
+}
+

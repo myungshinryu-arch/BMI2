@@ -4,29 +4,31 @@
 
 /* Custom Design Token System with Hankook Corporate identity */
 :root {
-    --bg-deep: #060913;
-    --bg-sidebar: #0b0f20;
-    --bg-card: rgba(13, 18, 38, 0.8);
-    --bg-input: #151c35;
+    --bg-deep: #fffcf9;          /* Warm light cream canvas */
+    --bg-sidebar: rgba(255, 255, 255, 0.45); /* Highly translucent white sidebar base */
+    --bg-card: rgba(255, 255, 255, 0.6);       /* Base translucent white glass fill */
+    --bg-input: rgba(255, 255, 255, 0.98); /* Solid white high contrast input background */
     
-    --border-light: rgba(255, 255, 255, 0.06);
-    --border-focus: #ff6b00; /* Hankook Orange */
+    --border-light: rgba(249, 115, 22, 0.1);    /* Frosted warm orange border (Softened) */
+    --border-focus: #e0600a;             /* Toned down Cyber Orange */
 
-    /* Theme Accents */
-    --color-hankook: #ff6b00; /* Vivid Hankook Orange */
-    --color-hankook-glow: rgba(255, 107, 0, 0.4);
-    --color-blue: #3b82f6;
-    --color-emerald: #10b981;
-    --color-gold: #f59e0b;
-    --color-purple: #a855f7;
-    --color-red: #ef4444;
+    /* Theme Accents - Softened & Toned Down for Sophisticated Corporate Feel */
+    --color-hankook: #e0600a;             /* Refined toned-down orange */
+    --color-hankook-glow: rgba(224, 96, 10, 0.15);
+    --color-blue: #1e40af;               /* Deeper premium navy/blue */
+    --color-emerald: #065f46;            /* Deeper eco mint green */
+    --color-gold: #c2410c;               /* Deeper dark gold-orange */
+    --color-purple: #701a75;             /* Deeper elegant purple */
+    --color-red: #991b1b;                /* Deeper danger red */
     
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-primary: #1e293b;             /* Slate 800 */
+    --text-secondary: #475569;           /* Slate 600 */
+    --text-muted: #64748b;               /* Slate 500 */
     
-    --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
-    --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-premium: 0 8px 32px 0 rgba(249, 115, 22, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    --transition-fast: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --sidebar-width: 290px;
+    --font-sans: 'Inter', 'Roboto', 'Source Sans 3', 'Source Sans Pro', 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Global resets & scrollbar tweaks */
@@ -34,12 +36,14 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: var(--font-sans);
 }
 
 body {
     background-color: var(--bg-deep);
     color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-sans);
+    font-size: 16px; /* Increased base typography scale */
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -53,7 +57,7 @@ body {
     background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
-    background: #1b233a;
+    background: rgba(249, 115, 22, 0.12);
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -62,73 +66,96 @@ body {
 
 /* Dashboard Sidebar-Main Outer Grid */
 .dashboard-container {
-    display: grid;
-    grid-template-columns: 290px 1fr;
+    display: block;
     min-height: 100vh;
-    transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
-.dashboard-container.sidebar-collapsed {
-    grid-template-columns: 75px 1fr;
-}
-
-/* Sidebar Styling */
+/* Sidebar Styling - Matches Tire BM UI Premium Hover Style */
 .sidebar {
+    width: var(--sidebar-width);
     background-color: var(--bg-sidebar);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid var(--border-light);
-    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    height: 100vh;
-    position: sticky;
+    position: fixed;
     top: 0;
-    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    transform: translateX(-275px); /* 15px만 남기고 완전히 왼쪽으로 숨김 */
+    opacity: 0.15;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: none;
+    padding: 24px 0; /* padding 조정 */
 }
 
-.sidebar.collapsed {
-    padding: 24px 12px;
+.sidebar:hover,
+.sidebar.active {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: 0 10px 40px rgba(249, 115, 22, 0.18), var(--shadow-premium);
+}
+
+.sidebar-brand {
+    height: 70px;
+    padding: 0 24px;
+    display: flex;
     align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: 15px;
 }
 
-/* Sidebar Toggle Button Styling */
-.sidebar-toggle-btn {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--text-secondary);
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    cursor: pointer;
+.sidebar-brand .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-hankook), #ff9f55);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 800;
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.sidebar-brand .logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--color-hankook);
+}
+
+/* Sidebar Toggle Button in Header Styling */
+.sidebar-toggle-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-light);
+    color: var(--color-hankook);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     transition: all var(--transition-fast);
-    margin-left: auto;
-    outline: none;
-    padding: 0;
+    box-shadow: var(--shadow-premium);
 }
 
 .sidebar-toggle-btn:hover {
-    background: rgba(255, 107, 0, 0.15);
+    background: rgba(249, 115, 22, 0.1);
     border-color: var(--color-hankook);
-    color: var(--color-hankook);
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.2);
+    transform: scale(1.05);
 }
 
-.toggle-icon {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.sidebar-toggle-btn i {
+    font-size: 1.15rem;
 }
-
-.sidebar.collapsed .toggle-icon {
-    transform: rotate(180deg);
-}
-
-/* Collapsed Hidden Elements */
-.sidebar.collapsed .logo-text,
 .sidebar.collapsed .sidebar-section-title,
 .sidebar.collapsed .filters-group,
 .sidebar.collapsed .sidebar-footer {
@@ -168,7 +195,7 @@ body {
     font-weight: 800;
     font-size: 0.92rem;
     letter-spacing: 1.0px;
-    background: linear-gradient(to right, #ffffff, var(--color-hankook));
+    background: linear-gradient(to right, var(--text-primary), var(--color-hankook));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     white-space: nowrap;
@@ -216,7 +243,7 @@ body {
 
 .filter-select:focus {
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 .year-range-grid {
@@ -273,38 +300,58 @@ body {
 
 /* Main Canvas Panel Container */
 .dashboard-main {
-    padding: 30px;
+    margin-left: 0; /* 사이드바 기본 숨김으로 마진 제거 */
+    padding: 0; /* Sticky 헤더가 상단에 밀착되도록 기본 패딩 제거 */
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    max-width: 1600px;
+    gap: 0; /* 헤더와 본문 간의 여백 제어 */
+    max-width: 100%;
     width: 100%;
     margin: 0 auto;
     overflow-y: auto;
+    transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Header Section */
-.dashboard-header {
+/* Unified Top Sticky Header Bar (Tire BM & Compd BM Style) */
+.main-header {
+    height: 70px;
+    background: rgba(255, 249, 245, 0.75) !important; /* 바디 배경색과 어울리는 75% 반투명 크림 */
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 0 40px 0 45px; /* 양측 내부 여백 맞춤 */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 20px;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
 }
 
 .header-title {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 1.7rem;
-    letter-spacing: -0.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.header-subtitle {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-top: 4px;
-    letter-spacing: 1px;
+.header-app-title {
+    font-size: 1.45rem !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    font-family: 'Outfit', sans-serif !important;
+    line-height: 1.2;
+}
+
+#header-title-text {
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: var(--color-hankook) !important;
+    margin: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
 .header-status {
@@ -357,17 +404,18 @@ body {
 
 .kpi-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(249, 115, 22, 0.3);
+    box-shadow: 0 15px 35px rgba(249, 115, 22, 0.08);
 }
 
 .kpi-card.border-hankook-glow {
-    border: 1px solid rgba(255, 107, 0, 0.25);
-    background: linear-gradient(135deg, rgba(13, 18, 38, 0.9) 0%, rgba(30, 20, 10, 0.4) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.25);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(254, 215, 170, 0.2) 100%);
 }
 
 .kpi-card.border-hankook-glow:hover {
     border-color: var(--color-hankook);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.15), var(--shadow-premium);
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.15), var(--shadow-premium);
 }
 
 .kpi-card-header {
@@ -458,15 +506,15 @@ body {
 }
 
 .chart-card.border-hankook-glow-subtle {
-    border-color: rgba(255, 107, 0, 0.15);
+    border-color: rgba(249, 115, 22, 0.15);
 }
 
 .chart-card:hover {
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(249, 115, 22, 0.3);
 }
 
 .chart-card.border-hankook-glow-subtle:hover {
-    border-color: rgba(255, 107, 0, 0.3);
+    border-color: rgba(249, 115, 22, 0.35);
 }
 
 .chart-card.span-2 {
@@ -493,13 +541,13 @@ body {
  * Hankook Strategic SWOT & Gap Action Panel Styling
  * ------------------------------------------------------------- */
 .strategy-card {
-    background: linear-gradient(135deg, rgba(16, 21, 41, 0.85) 0%, rgba(9, 11, 23, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(249, 115, 22, 0.05) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 107, 0, 0.15); /* Orange-tinted border for Hankook brand */
+    border: 1px solid rgba(249, 115, 22, 0.15); /* Orange-tinted border for Hankook brand */
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 15px 35px rgba(255, 107, 0, 0.04), var(--shadow-premium);
+    box-shadow: 0 15px 35px rgba(249, 115, 22, 0.04), var(--shadow-premium);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -509,8 +557,8 @@ body {
 }
 
 .strategy-card:hover {
-    border-color: rgba(255, 107, 0, 0.35);
-    box-shadow: 0 15px 40px rgba(255, 107, 0, 0.08), var(--shadow-premium);
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: 0 15px 40px rgba(249, 115, 22, 0.08), var(--shadow-premium);
 }
 
 .strategy-card::before {
@@ -554,8 +602,8 @@ body {
 }
 
 .strategy-badge {
-    background: rgba(255, 107, 0, 0.08);
-    border: 1px solid rgba(255, 107, 0, 0.25);
+    background: rgba(249, 115, 22, 0.08);
+    border: 1px solid rgba(249, 115, 22, 0.25);
     color: var(--color-hankook);
     font-family: 'Outfit', sans-serif;
     font-size: 0.72rem;
@@ -563,7 +611,7 @@ body {
     padding: 6px 12px;
     border-radius: 6px;
     letter-spacing: 0.5px;
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.05);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.05);
 }
 
 .strategy-grid {
@@ -580,7 +628,7 @@ body {
 }
 
 .swot-box {
-    background: rgba(10, 14, 28, 0.55);
+    background: rgba(255, 255, 255, 0.85);
     border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 16px;
@@ -592,7 +640,7 @@ body {
 
 .swot-box:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(249, 115, 22, 0.25);
 }
 
 .swot-box.swot-strength { border-left: 3px solid var(--color-emerald); }
@@ -639,7 +687,7 @@ body {
 
 /* Gap Analysis Styling */
 .gap-analysis-container {
-    background: rgba(10, 14, 28, 0.4);
+    background: rgba(255, 255, 255, 0.85);
     border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 18px;
@@ -709,7 +757,7 @@ body {
 
 .gap-bar-container {
     height: 7px;
-    background-color: #12182c;
+    background-color: rgba(249, 115, 22, 0.1);
     border-radius: 4px;
     overflow: hidden;
     display: flex;
@@ -728,8 +776,8 @@ body {
     top: 0;
     width: 2px;
     height: 100%;
-    background-color: #ffffff;
-    box-shadow: 0 0 6px #ffffff;
+    background-color: var(--text-primary);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2;
 }
@@ -799,7 +847,7 @@ body {
 
 #model-search:focus {
     border-color: var(--color-hankook);
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 /* Structured Table Details */
@@ -821,7 +869,7 @@ body {
 }
 
 .analytics-table th {
-    background-color: rgba(11, 15, 32, 0.5);
+    background-color: rgba(249, 115, 22, 0.04);
     font-weight: 600;
     color: var(--text-secondary);
     font-size: 0.78rem;
@@ -856,16 +904,16 @@ body {
 }
 
 .analytics-table tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.015);
+    background-color: rgba(249, 115, 22, 0.03);
 }
 
 .analytics-table tbody tr.row-hankook {
-    background-color: rgba(255, 107, 0, 0.02);
-    border-left: 2px solid rgba(255, 107, 0, 0.3);
+    background-color: rgba(249, 115, 22, 0.03);
+    border-left: 2px solid rgba(249, 115, 22, 0.3);
 }
 
 .analytics-table tbody tr.row-hankook:hover {
-    background-color: rgba(255, 107, 0, 0.04);
+    background-color: rgba(249, 115, 22, 0.06);
 }
 
 .analytics-table td.numeric {
@@ -1036,6 +1084,11 @@ body {
     display: none;
     flex-direction: column;
     gap: 30px;
+    padding: 30px 40px 30px 45px; /* 상 30px, 우 40px, 하 30px, 좌 45px (사이드바 힌트 바 고려) */
+    max-width: 1800px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .view-panel.active {
@@ -1121,7 +1174,7 @@ body {
 
 /* Briefing Panel Details */
 .strategy-briefing-panel {
-    background: linear-gradient(135deg, rgba(13, 18, 38, 0.85) 0%, rgba(9, 11, 23, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(249, 115, 22, 0.03) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-light);
@@ -1135,7 +1188,7 @@ body {
 }
 
 .strategy-briefing-panel:hover {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(249, 115, 22, 0.25);
 }
 
 .briefing-header {
@@ -1376,7 +1429,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(3, 5, 11, 0.85);
+    background: rgba(253, 251, 247, 0.65);
     backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
@@ -1393,9 +1446,9 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 32, 0.98));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 252, 249, 0.98));
+    border: 1px solid var(--border-light);
+    box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.12), 0 0 40px rgba(249, 115, 22, 0.05);
     width: 90%;
     max-width: 750px;
     max-height: 85vh;
@@ -1415,8 +1468,8 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     color: var(--text-secondary);
     border-radius: 50%;
     width: 36px;
@@ -1515,8 +1568,8 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(249, 115, 22, 0.03);
+    border: 1px solid rgba(249, 115, 22, 0.1);
     color: var(--text-secondary);
     font-family: inherit;
     font-size: 0.82rem;
@@ -1529,8 +1582,8 @@ body {
 }
 
 .btn-header-sources:hover {
-    background: rgba(255, 107, 0, 0.1);
-    border-color: rgba(255, 107, 0, 0.3);
+    background: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.3);
     color: var(--color-hankook);
 }
 
@@ -1555,12 +1608,12 @@ body {
 }
 
 .calc-model-summary {
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.08) 0%, rgba(10, 14, 28, 0.6) 100%);
-    border: 1px solid rgba(255, 107, 0, 0.25);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.06) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.25);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.03);
 }
 
 .calc-summary-brand {
@@ -1578,7 +1631,6 @@ body {
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 8px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .calc-summary-details {
@@ -1600,8 +1652,8 @@ body {
 }
 
 .calc-step-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(249, 115, 22, 0.03);
+    border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 16px;
     display: flex;
@@ -1612,8 +1664,8 @@ body {
 
 .calc-step-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(249, 115, 22, 0.25);
+    background: rgba(249, 115, 22, 0.05);
 }
 
 .calc-step-header {
@@ -1650,14 +1702,14 @@ body {
     font-family: 'Outfit', sans-serif;
     font-size: 1.35rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .calc-step-math {
     font-size: 0.8rem;
     color: var(--text-muted);
     font-family: 'Inter', monospace;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(249, 115, 22, 0.05);
     padding: 4px 10px;
     border-radius: 4px;
     align-self: flex-start;
@@ -1692,14 +1744,14 @@ body {
 }
 
 .calc-step-card.highlight-card {
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(15, 23, 42, 0.9) 100%);
-    border: 1px solid rgba(255, 107, 0, 0.3);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.1);
 }
 
 .calc-source-card {
-    background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 16px;
     margin-top: 10px;
@@ -1780,20 +1832,20 @@ body {
 
 /* .card-premium Glassmorphism & Micro-animations */
 .card-premium {
-    background: linear-gradient(135deg, rgba(13, 18, 38, 0.6) 0%, rgba(21, 28, 53, 0.4) 100%);
+    background: var(--bg-card);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--border-light);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-premium);
     transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .card-premium:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 107, 0, 0.25);
-    box-shadow: 0 15px 45px -10px rgba(255, 107, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--shadow-premium);
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: 0 15px 45px -10px rgba(249, 115, 22, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.95), var(--shadow-premium);
 }
 
 /* Restructured SWOT Analysis Grid (2x2 Structure) */
@@ -1970,14 +2022,14 @@ body {
     flex-wrap: wrap;
     gap: 24px;
     align-items: center;
-    background: rgba(13, 18, 38, 0.45);
+    background: var(--bg-card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 12px 20px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-premium);
 }
 
 .filter-bar-group {
@@ -2078,72 +2130,76 @@ body {
     flex: 1; /* Pushes the footer to the bottom of the sidebar */
 }
 
-/* Custom styles for vertical view-tab buttons inside sidebar */
+/* Custom styles for vertical view-tab buttons inside sidebar - Larger typography & premium indicators */
 .sidebar .view-tab {
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-secondary);
-    padding: 12px 16px;
+    padding: 12px 20px;
     font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 1.05rem; /* Increased size to match other sub-UIs */
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     border-radius: 8px;
     transition: all var(--transition-fast);
-    width: 100%;
+    width: calc(100% - 32px);
+    margin: 0 16px;
     text-align: left;
     box-sizing: border-box;
     outline: none;
 }
 
 .sidebar .view-tab:hover {
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.05);
+    color: var(--color-hankook);
+    background: rgba(249, 115, 22, 0.05);
+    border-color: rgba(249, 115, 22, 0.15);
 }
 
 .sidebar .view-tab.active {
-    color: #ffffff !important;
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(255, 107, 0, 0.03));
-    border: 1px solid rgba(255, 107, 0, 0.3) !important;
-    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.1);
-    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+    color: var(--color-hankook) !important;
+    background: rgba(249, 115, 22, 0.08) !important;
+    border: 1px solid rgba(249, 115, 22, 0.25) !important;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.05);
 }
 
-.sidebar .view-tab .tab-icon {
-    width: 18px;
-    height: 18px;
+.sidebar .view-tab i {
+    font-size: 1.15rem;
+    width: 20px;
+    text-align: center;
     color: var(--text-secondary);
     transition: color var(--transition-fast);
 }
 
-.sidebar .view-tab:hover .tab-icon {
-    color: var(--text-primary);
-}
-
-.sidebar .view-tab.active .tab-icon {
+.sidebar .view-tab:hover i,
+.sidebar .view-tab.active i {
     color: var(--color-hankook) !important;
-    filter: drop-shadow(0 0 4px var(--color-hankook-glow));
 }
 
-/* Collapsed Sidebar Navigation */
-.sidebar.collapsed .sidebar-nav {
-    align-items: center;
+/* Compatible Collapsed States for Scripts */
+.sidebar.collapsed {
+    transform: translateX(-275px) !important;
+    opacity: 0.15 !important;
+}
+.sidebar.collapsed:hover,
+.sidebar.collapsed.active {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
 }
 
-.sidebar.collapsed .view-tab {
-    padding: 12px;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
+/* Global Cross-System Quick Navigation (NAVIGATE) Shortcuts styling */
+.global-nav-links .nav-shortcut-btn {
+    transition: all var(--transition-fast) !important;
 }
-
-.sidebar.collapsed .view-tab span {
-    display: none !important;
+.global-nav-links .nav-shortcut-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.15) !important;
+    border-color: var(--color-hankook) !important;
+}
+.global-nav-links .nav-shortcut-btn.active:hover {
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.3) !important;
 }
 
 /* Local Filter Bar Select Elements Styling */
@@ -2200,11 +2256,11 @@ body {
 }
 
 .gt-brochure-card {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.75) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 252, 249, 0.65) 100%);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.05);
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     position: relative;
     overflow: hidden;
@@ -2212,8 +2268,8 @@ body {
 
 .gt-brochure-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(249, 115, 22, 0.25);
+    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.08);
 }
 
 .gt-brochure-card::before {
@@ -2294,8 +2350,8 @@ body {
 }
 
 .gt-insight-box {
-    background: rgba(15, 23, 42, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(254, 215, 170, 0.25);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
     padding: 15px;
 }
@@ -2311,7 +2367,7 @@ body {
 .gt-insight-box-text {
     font-size: 0.85rem;
     line-height: 1.55;
-    color: #cbd5e1;
+    color: var(--text-secondary);
 }
 
 /* Responsive adjustments for side-by-side brochure cards */
@@ -2329,9 +2385,453 @@ body {
     margin-top: 25px;
 }
 
+/* ==========================================================================
+   Market & Sales Overview (#panel-market) Custom Styling
+   - Overall font size scale-up (about 10~15% larger)
+   - Extra large font size for the main chart title
+   - Custom Premium Soft-Orange styling for the Revenue/Volume toggle buttons
+   ========================================================================== */
+
+/* 1. Overall Font Size Scale-up within the panel */
+#panel-market {
+    font-size: 1.05rem !important; /* 기본보다 더 웅장하고 선명하게 */
+}
+
+/* 2. Specific elements size scale-up */
+#panel-market .brand-select-label {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+}
+
+#panel-market .brand-chip {
+    font-size: 0.95rem !important;
+    padding: 8px 18px !important;
+    font-weight: 600 !important;
+    border-radius: 25px !important;
+}
+
+#panel-market .brand-chip .chip-dot {
+    width: 10px !important;
+    height: 10px !important;
+}
+
+/* 3. Main Chart Card Title Override - EXTRA LARGE & Premium Highlight */
+#panel-market .full-width-chart .chart-card-title {
+    font-size: 1.35rem !important; /* 요청하신 대로 대폭 확대 */
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    border-left: 5px solid var(--color-hankook) !important; /* 한국타이어 오렌지 포인트 데코 */
+    padding-left: 12px !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 4. Revenue/Volume switch buttons - Premium Soft-Orange container & High Contrast Black text */
+#brand-metric-selector {
+    background-color: rgba(253, 186, 116, 0.35) !important; /* 그래프 배경색보다 약간 더 선명하고 짙은 연주황 컨테이너 */
+    border: 1px solid rgba(249, 115, 22, 0.4) !important;
+    padding: 4px !important;
+    border-radius: 25px !important;
+    display: inline-flex !important;
+    gap: 4px !important;
+}
+
+#brand-metric-selector .metric-btn {
+    font-size: 0.9rem !important; /* 시안성을 위해 버튼 폰트 추가 확대 */
+    padding: 6px 18px !important;
+    border-radius: 20px !important;
+    font-weight: 700 !important;
+    color: #374151 !important; /* 비활성 상태: 고대비 차콜 블랙으로 시안성 보장 */
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    transition: all var(--transition-fast) !important;
+}
+
+#brand-metric-selector .metric-btn:hover {
+    color: #000000 !important; /* 호버 시 선명한 검정색 */
+    background-color: rgba(249, 115, 22, 0.15) !important; /* 호버 시 약간 더 짙은 오렌지 하이라이트 */
+}
+
+/* Active State override - Vibrant Light-Orange with Black text for maximum visibility */
+#brand-metric-selector .metric-btn.active {
+    background: linear-gradient(135deg, #fed7aa, #fdb07c) !important; /* 화사하고 밝은 오렌지 계열 그라데이션 */
+    border: 1px solid rgba(249, 115, 22, 0.5) !important;
+    color: #000000 !important; /* 글씨색을 선명한 검정색으로 전격 변경 */
+    font-weight: 800 !important;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25) !important; /* 고급스러운 소프트 글로우 */
+    text-shadow: none !important; /* 검정색 폰트이므로 텍스트 섀도우 불필요하여 제거 */
+}
+
+/* ==========================================================================
+   Technical Competitiveness Overview (#panel-competitiveness) Custom Styling
+   - Overall font size scale-up (about 10~15% larger)
+   - Filter bar container, label & control elements high contrast style tuning
+   - Specific buttons/dropdown filters with orange background and black text
+   - Major table title scale-up & visual enhancement
+   ========================================================================== */
+
+/* 1. Overall Font Size Scale-up within Technical Competitiveness panel */
+#panel-competitiveness {
+    font-size: 1.05rem !important; /* 전체적으로 폰트 크기 증대 */
+}
+
+/* Specific elements size scale-up within panel-competitiveness */
+#panel-competitiveness .chart-card-title,
+#panel-competitiveness .table-card-title {
+    font-size: 1.35rem !important; /* 웅장하고 선명하게 */
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    border-left: 5px solid var(--color-hankook) !important; /* 한국타이어 주황색 포인트 바 데코 */
+    padding-left: 12px !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* KPI Summary Card Title scale-up (2026년 판매 매출 / 세그먼트 벤치마크 1위 / 한국타이어 포지션 / 최우선 R&D 등) */
+#panel-competitiveness .kpi-card .kpi-title {
+    font-size: 1.15rem !important; /* 0.72rem -> 1.15rem 대폭 스케일업 */
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+    color: var(--text-primary) !important;
+}
+
+#panel-competitiveness .kpi-card.border-hankook-glow .kpi-title {
+    color: var(--color-hankook) !important; /* 자사 전용 주황 하이라이트 색상 보존 */
+}
+
+#panel-competitiveness .analytics-table th {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+}
+
+#panel-competitiveness .analytics-table td {
+    font-size: 0.92rem !important;
+}
+
+/* 2. Filter Bar Container & Text styling */
+#panel-competitiveness .panel-filter-bar {
+    background-color: rgba(253, 186, 116, 0.25) !important; /* 연한 주황색 계열 (Cozy light orange cream과 살짝 다른) */
+    border: 1px solid rgba(249, 115, 22, 0.3) !important;
+    padding: 14px 22px !important;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.05) !important;
+}
+
+#panel-competitiveness .panel-filter-bar .filter-bar-title {
+    font-size: 0.85rem !important; /* 폰트 살짝 확대 */
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 3. Dropdown Filters (Select elements) - Orange background & Black text */
+#panel-competitiveness .panel-filter-bar .filter-select {
+    background-color: #fed7aa !important; /* 화사하고 부드러운 주황색 */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important; /* 검정색 화살표 */
+    border: 1px solid rgba(249, 115, 22, 0.45) !important;
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 700 !important;
+    font-size: 0.88rem !important; /* 폰트 살짝 확대 */
+    border-radius: 20px !important;
+    padding: 8px 30px 8px 14px !important;
+    height: 36px !important;
+}
+
+#panel-competitiveness .panel-filter-bar .filter-select option {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+#panel-competitiveness .panel-filter-bar .filter-select:focus {
+    border-color: #ea580c !important;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.3) !important;
+}
+
+/* 4. Tab Button Group in Filter Bar - Orange background & Black text */
+#panel-competitiveness .panel-filter-bar .tab-btn-group {
+    background-color: rgba(254, 215, 170, 0.45) !important; /* 연한 주황색 계열 */
+    border: 1px solid rgba(249, 115, 22, 0.35) !important;
+    padding: 4px !important;
+}
+
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn {
+    font-size: 0.85rem !important; /* 폰트 살짝 확대 */
+    font-weight: 700 !important;
+    color: #374151 !important; /* 비활성: 고대비 차콜 블랙 */
+    padding: 6px 16px !important;
+}
+
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn:hover {
+    color: #000000 !important;
+    background-color: rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Active State override - Stronger contrast & Orange background with Black text */
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn.active,
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn[data-market="na"].active,
+#panel-competitiveness .panel-filter-bar .tab-toggle-btn[data-market="eu"].active {
+    background: linear-gradient(135deg, #fed7aa, #fdb07c) !important; /* 화사하고 부드러운 오렌지 그라데이션 */
+    border: 1px solid rgba(249, 115, 22, 0.5) !important;
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 800 !important;
+    box-shadow: 0 3px 10px rgba(249, 115, 22, 0.25) !important;
+    text-shadow: none !important;
+}
+
+/* ==========================================================================
+   대표 상품 세대별 성능 변화 페이지 (#panel-generation-trends) Premium CSS Overrides
+   ========================================================================== */
+
+/* 1. 전체 폰트 스케일 미세 축소 및 조정 */
+#panel-generation-trends {
+    font-size: 1.05rem !important;
+}
+
+#panel-generation-trends .strategy-main-title {
+    font-size: 1.68rem !important; /* 1.85rem -> 1.68rem */
+    font-weight: 800 !important;
+}
+
+#panel-generation-trends .strategy-subtitle {
+    font-size: 0.98rem !important; /* 1.08rem -> 0.98rem */
+    font-weight: 600 !important;
+}
+
+#panel-generation-trends .gt-section-title {
+    font-size: 1.25rem !important; /* 1.4rem -> 1.25rem */
+    font-weight: 800 !important;
+    border-left: 5px solid var(--color-hankook) !important;
+    padding-left: 12px !important;
+}
+
+#panel-generation-trends .chart-card-title {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+}
+
+#panel-generation-trends .card-title-premium {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    border-left: 5px solid var(--color-hankook) !important;
+    padding-left: 12px !important;
+}
+
+#panel-generation-trends .gt-brochure-title {
+    font-size: 1.08rem !important;
+    font-weight: 800 !important;
+}
+
+#panel-generation-trends .gt-brochure-year {
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+}
+
+#panel-generation-trends .gt-brochure-slogan {
+    font-size: 0.92rem !important;
+    font-weight: 500 !important; /* 주요 내용 외 보통(normal/500)으로 완화 */
+}
+
+#panel-generation-trends .gt-brochure-details {
+    font-size: 0.9rem !important;
+}
+
+#panel-generation-trends .gt-brochure-detail-label {
+    font-size: 0.9rem !important;
+    font-weight: 500 !important; /* 주요 내용 외 보통(normal/500)으로 완화 */
+}
+
+#panel-generation-trends .gt-brochure-detail-val {
+    font-size: 0.9rem !important;
+    font-weight: 500 !important; /* 주요 내용 외 보통(normal/500)으로 완화 */
+}
+
+#panel-generation-trends .gt-insight-box-title {
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+}
+
+#panel-generation-trends .gt-insight-box-text {
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+}
+
+#panel-generation-trends .card-text-premium,
+#panel-generation-trends #gt-rd-proposal,
+#panel-generation-trends #gt-rd-proposal span,
+#panel-generation-trends #gt-direction-g1-g2,
+#panel-generation-trends #gt-direction-g2-g3,
+#panel-generation-trends #gt-direction-summary {
+    font-size: 0.98rem !important;
+    line-height: 1.65 !important;
+}
+
+#panel-generation-trends .filter-select {
+    font-size: 0.9rem !important;
+    height: 32px !important;
+    font-weight: 700 !important;
+}
 
 
+/* 2. 회색 계열 글씨 검정색으로 전격 전환 */
+#panel-generation-trends p,
+#panel-generation-trends span:not(.gt-brochure-year):not(.gt-brochure-title),
+#panel-generation-trends div:not(.gt-brochure-header):not(.strategy-badge),
+#panel-generation-trends .strategy-subtitle,
+#panel-generation-trends .gt-brochure-slogan,
+#panel-generation-trends .gt-brochure-detail-label,
+#panel-generation-trends .gt-brochure-detail-val,
+#panel-generation-trends .gt-insight-box-text,
+#panel-generation-trends #gt-rd-proposal,
+#panel-generation-trends #gt-rd-proposal span,
+#panel-generation-trends #gt-direction-g1-g2,
+#panel-generation-trends #gt-direction-g2-g3,
+#panel-generation-trends #gt-direction-summary {
+    color: #000000 !important; /* 선명하고 확실한 완전 검정색 */
+}
+
+#panel-generation-trends .gt-insight-box {
+    background: rgba(254, 215, 170, 0.35) !important; /* 연한 주황빛 배경 대비 향상 */
+    border: 1px solid rgba(249, 115, 22, 0.25) !important;
+}
 
 
+/* 3. 대표 상품 세대별 성능 변화(#panel-generation-trends) 및 대응 전략 & 로드맵(#panel-hankook-strategy) 필터창 
+   -> 기술 경쟁력 Overview (#panel-competitiveness)와 동일한 연주황 은은한 테마 통일 적용 */
+
+#panel-generation-trends .panel-filter-bar,
+#panel-hankook-strategy .panel-filter-bar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important; /* 화면 가로폭 대응을 위해 필요시 랩 허용 */
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 25px !important;
+    background-color: rgba(253, 186, 116, 0.25) !important; /* 은은한 투명 연주황 배경 */
+    border: 1px solid rgba(249, 115, 22, 0.3) !important;
+    padding: 14px 22px !important;
+    border-radius: 12px !important;
+    margin-bottom: 25px !important;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.05) !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-bar-group,
+#panel-hankook-strategy .panel-filter-bar .filter-bar-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-bar-title,
+#panel-hankook-strategy .panel-filter-bar .filter-bar-title {
+    font-size: 0.85rem !important; /* 폰트 크기 통일 */
+    color: #000000 !important; /* 글자색 검정색 변경 */
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
+}
+
+/* 드롭다운 필터 (Select) - 연주황 배경 & 검정 글씨 */
+#panel-generation-trends .panel-filter-bar .filter-select,
+#panel-hankook-strategy .panel-filter-bar .filter-select {
+    background-color: #fed7aa !important; /* 부드러운 주황색 */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important; /* 검정색 화살표 */
+    border: 1px solid rgba(249, 115, 22, 0.45) !important;
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 700 !important;
+    font-size: 0.88rem !important; /* 폰트 확대 */
+    border-radius: 20px !important;
+    padding: 6px 30px 6px 14px !important;
+    height: 34px !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-select option,
+#panel-hankook-strategy .panel-filter-bar .filter-select option {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-select:focus,
+#panel-hankook-strategy .panel-filter-bar .filter-select:focus {
+    border-color: #ea580c !important;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.3) !important;
+}
+
+/* 필터 내 탭 버튼 그룹 (Tab Button Group) - 연한 주황색 배경 */
+#panel-generation-trends .panel-filter-bar .tab-btn-group,
+#panel-hankook-strategy .panel-filter-bar .tab-btn-group {
+    background-color: rgba(254, 215, 170, 0.45) !important; /* 연주황 투명 배경 */
+    border: 1px solid rgba(249, 115, 22, 0.35) !important;
+    padding: 4px !important;
+    border-radius: 30px !important;
+    display: flex !important;
+    gap: 4px !important;
+}
+
+/* 탭 버튼 기본 (비활성) */
+#panel-generation-trends .panel-filter-bar .tab-toggle-btn,
+#panel-hankook-strategy .panel-filter-bar .tab-toggle-btn {
+    background-color: transparent !important;
+    color: #374151 !important; /* 비활성: 고대비 차콜 블랙 */
+    font-size: 0.85rem !important; /* 폰트 확대 일관성 */
+    font-weight: 700 !important;
+    border: 1px solid transparent !important;
+    border-radius: 20px !important;
+    padding: 6px 16px !important;
+    transition: all 0.2s ease !important;
+}
+
+#panel-generation-trends .panel-filter-bar .tab-toggle-btn:hover,
+#panel-hankook-strategy .panel-filter-bar .tab-toggle-btn:hover {
+    color: #000000 !important;
+    background-color: rgba(249, 115, 22, 0.15) !important;
+}
+
+/* 탭 버튼 Active: 연한 주황빛 고대비 그라데이션 */
+#panel-generation-trends .panel-filter-bar .tab-toggle-btn.active,
+#panel-hankook-strategy .panel-filter-bar .tab-toggle-btn.active {
+    background: linear-gradient(135deg, #fed7aa, #fdb07c) !important; /* 오렌지 그라데이션 */
+    border: 1px solid rgba(249, 115, 22, 0.5) !important;
+    color: #000000 !important; /* 글씨색 검정색 */
+    font-weight: 800 !important;
+    box-shadow: 0 3px 10px rgba(249, 115, 22, 0.25) !important;
+    text-shadow: none !important;
+}
 
 
+/* 4. 흰색 글씨로 강조했던 부분들은 주황 글씨로 다 변경해줘 */
+#panel-generation-trends .gt-brochure-title {
+    color: var(--color-hankook) !important; /* 브랜드 주황색 강조 */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+#panel-generation-trends .gt-insight-box-title {
+    color: var(--color-hankook) !important; /* 제목 강조 부분을 주황색으로 통일 */
+    border-bottom: 2px solid rgba(249, 115, 22, 0.2) !important;
+    padding-bottom: 4px !important;
+}
+
+#panel-generation-trends .gt-brochure-header {
+    border-bottom: 1px solid rgba(249, 115, 22, 0.15) !important; /* 주황색 옅은 보더 라인 */
+}
+
+#panel-generation-trends .gt-brochure-slogan {
+    border-left: 3px solid var(--color-hankook) !important; /* 슬로건의 보더 색상 주황색 변경 */
+}
+
+/* Unified Main Footer Style with proper layout margins */
+.main-footer {
+    padding: 30px 40px !important;
+    border-top: 1px solid var(--border-light) !important;
+    text-align: center !important;
+    font-size: 0.85rem !important;
+    color: var(--text-secondary) !important;
+    margin-top: 50px !important;
+    background: rgba(255, 247, 237, 0.4) !important;
+    border-radius: 12px !important;
+    margin-bottom: 20px !important;
+    margin-left: 45px !important; /* 사이드바 힌트 바 여백 고려 */
+    margin-right: 40px !important;
+    max-width: 1800px !important;
+    width: calc(100% - 85px) !important;
+    box-sizing: border-box !important;
+}

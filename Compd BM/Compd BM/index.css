@@ -168,6 +168,9 @@ h1, h2, h3, h4, .logo-text {
 /* Main Content Area */
 .main-content {
   flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   margin-left: var(--sidebar-width);
   min-height: 100vh;
   display: flex;
@@ -241,6 +244,11 @@ h1, h2, h3, h4, .logo-text {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .tab-content {
@@ -339,6 +347,8 @@ h1, h2, h3, h4, .logo-text {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -617,20 +627,47 @@ h1, h2, h3, h4, .logo-text {
 /* Original Excel-style Report Table Container */
 .report-sheet-outer {
   width: 100%;
+  max-width: 100%;
+  display: block;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 16px;
   border: 1px solid var(--card-border);
   background: var(--bg-grid);
   box-shadow: var(--shadow);
   padding: 4px;
+  box-sizing: border-box;
 }
 
 .report-excel-table {
   width: 100%;
   min-width: 1100px; /* 4개 품목 이상이어도 가로로 깨지지 않도록 최소 너비 강제 고정 */
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: 0.95rem; /* 가독성을 위한 폰트 확대 */
   color: #d1dce5;
+  table-layout: fixed; /* 고정 너비 레이아웃 보장 */
+}
+
+/* 첫 번째 물성명 열 고정 너비 및 Sticky 설정 */
+.report-excel-table th:first-child,
+.report-excel-table td:first-child {
+  min-width: 220px;
+  width: 220px;
+  max-width: 220px;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background-color: #0b0f19; /* 어우러지는 세련된 다크 배경색 */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3); /* 경계선 입체감 제공 */
+}
+
+/* 나머지 타이어 데이터 열 고정 너비 설정 */
+.report-excel-table th:not(:first-child),
+.report-excel-table td:not(:first-child) {
+  min-width: 180px;
+  width: 180px;
+  max-width: 180px;
+  text-align: center;
 }
 
 /* Header Cells resembling Excel */
@@ -652,7 +689,7 @@ h1, h2, h3, h4, .logo-text {
   background: linear-gradient(90deg, rgba(79, 172, 254, 0.2), rgba(15, 20, 35, 0.8)) !important;
   color: #fff !important;
   font-weight: 700 !important;
-  font-size: 0.95rem;
+  font-size: 1.05rem; /* 섹션 헤더 폰트 확대 */
   text-align: left !important;
   padding-left: 20px !important;
 }
@@ -1172,6 +1209,18 @@ h1, h2, h3, h4, .logo-text {
  /* 5. PRINT LAYOUT & WHITE THEME COMPELLING */
  /* ========================================== */
  @media print {
+  /* 인쇄 페이지 가로 방향 강제 설정 및 마진 여백 최적화 */
+  @page {
+    size: landscape;
+    margin: 8mm 10mm;
+  }
+
+  /* 색상 및 배경 그라데이션 강제 출력 보장 (Chrome, Safari 등 대응) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   /* 인쇄 전용 전반적인 화이트 테마 강제 전환 */
   body, .app-container, .main-content, .content-body, .card {
     background: #fff !important;
@@ -1208,23 +1257,59 @@ h1, h2, h3, h4, .logo-text {
     display: block !important;
   }
   
+  /* 테이블 가로 스크롤 영역 해제 및 화면 밀착형 맞춤 배치 */
+  .report-sheet-outer {
+    overflow-x: visible !important;
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .report-excel-table {
+    min-width: unset !important; /* 최소 너비 제약 해제하여 인쇄 폭에 조화롭게 배치 */
+    width: 100% !important;
+    table-layout: auto !important; /* 용지 너비에 맞춰 자동 분배 */
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  /* 첫 번째 고정 열 sticky 해제 (인쇄 시 겹치거나 가리는 현상 완전 차단) */
+  .report-excel-table th:first-child,
+  .report-excel-table td:first-child {
+    min-width: 150px !important;
+    width: 150px !important;
+    max-width: 150px !important;
+    position: static !important; /* 고정 해제 */
+    background-color: #f1f5f9 !important;
+    border-right: 1px solid #cbd5e1 !important;
+  }
+
+  .report-excel-table th:not(:first-child),
+  .report-excel-table td:not(:first-child) {
+    min-width: unset !important;
+    width: auto !important;
+    max-width: unset !important;
+  }
+
   /* 테이블 테두리를 어둡게 만들어 인쇄 품질 향상 */
   .report-excel-table, .report-excel-table th, .report-excel-table td {
-    border: 1px solid #aaa !important;
-    color: #000 !important;
-    background: #fff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
   }
   .excel-section-header {
-    background: #eee !important;
-    color: #000 !important;
+    background: linear-gradient(90deg, rgba(79, 172, 254, 0.2), rgba(15, 20, 35, 0.8)) !important;
+    color: #fff !important;
   }
   .cell-part-title {
-    background: #eef !important;
-    color: #000 !important;
+    background: rgba(0, 242, 254, 0.12) !important;
+    color: var(--primary) !important;
   }
   .cell-meta-key {
-    background: #fdfdfd !important;
-    color: #333 !important;
+    background: #f8fafc !important;
+    color: #334155 !important;
   }
   
   /* textarea는 숨기고, 미러링하는 div를 인쇄 */

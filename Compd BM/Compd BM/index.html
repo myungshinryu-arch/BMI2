@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compound BM Report</title>
   <!-- CSS Stylesheets -->
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="index.css?v=3.2.6">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Chart.js CDN -->
@@ -49,6 +49,50 @@
           <i class="fa-solid fa-code-compare"></i>
           <span>Maker 상품 비교</span>
         </li>
+        
+        <!-- 시스템 간 빠른 연동 파이프라인 (Divider & External Links) -->
+        <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
+        
+        <li class="menu-title" style="padding: 0 16px 4px 16px; font-size: 0.68rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+          글로벌 시스템 이동 (NAVIGATE)
+        </li>
+        
+        <li style="list-style: none; padding: 0 10px;">
+          <div class="global-nav-links" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px;">
+              <a href="../Market_Strategy/index.html" class="nav-shortcut-btn" title="시장/상품전략" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-globe" style="font-size: 15px; color: #f97316;"></i>
+                  <span style="color: var(--text-primary);">시장/전략</span>
+              </a>
+              <a href="../Tire_BM_UI_FINAL/index.html" class="nav-shortcut-btn" title="Tire BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-chart-line" style="font-size: 15px; color: #3b82f6;"></i>
+                  <span style="color: var(--text-primary);">Tire BM</span>
+              </a>
+              <a href="../Compd BM/index.html" class="nav-shortcut-btn active" title="Compound BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: #f97316; color: #fff; border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid #f97316;">
+                  <i class="fa-solid fa-flask-vial" style="font-size: 15px; color: #fff;"></i>
+                  <span>Comp'd BM</span>
+              </a>
+              <a href="../BI/index.html" class="nav-shortcut-btn" title="경쟁사 BI News" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-square-rss" style="font-size: 15px; color: #f97316;"></i>
+                  <span style="color: var(--text-primary);">BI News</span>
+              </a>
+          </div>
+        </li>
+
+        <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../AI_Simulator/index.html" style="display: flex; align-items: center; gap: 14px; padding: 10px 16px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; transition: var(--transition);">
+            <i class="fa-solid fa-robot" style="width: 20px; text-align: center; font-size: 1.05rem; color: #a855f7;"></i>
+            <span>AI Simulator</span>
+          </a>
+        </li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../index.html" style="display: flex; align-items: center; gap: 14px; padding: 10px 16px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; transition: var(--transition);">
+            <i class="fa-solid fa-house-laptop" style="width: 20px; text-align: center; font-size: 1.05rem;"></i>
+            <span>통합 포털 홈</span>
+          </a>
+        </li>
       </ul>
       
       <div class="sidebar-footer">
@@ -62,8 +106,14 @@
       
       <!-- Top Sticky Header -->
       <header class="main-header">
-        <div class="header-title">
-          <h2 id="header-title-text">종합 분석 대시보드</h2>
+        <div style="display: flex; align-items: center;">
+          <button class="sidebar-toggle-btn" id="btn-sidebar-toggle" title="메뉴 열기/닫기">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="header-title" style="display: flex; flex-direction: column; gap: 4px;">
+            <h1 class="header-app-title" style="font-size: 1.45rem; font-weight: 800; color: var(--text-dark); margin: 0; font-family: var(--font-display);">Compound BM Report</h1>
+            <h2 id="header-title-text" style="font-size: 1.05rem; font-weight: 600; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">종합 분석 대시보드</h2>
+          </div>
         </div>
         
         <div class="header-controls">
@@ -324,8 +374,11 @@
               <div class="card-title">
                 <h3><i class="fa-solid fa-list"></i> 컴파운드 원본 데이터셋</h3>
               </div>
-              <div style="font-size: 0.85rem; color: var(--primary);">
-                * BM Report 생성을 원하시면 비교할 타이어들의 좌측 체크박스를 선택해주세요.
+              <div id="explorer-to-report-container" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">* 타이어를 선택한 후 보고서를 즉시 생성해 이동할 수 있습니다.</span>
+                <button id="btn-go-to-report" class="btn btn-primary" style="padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; display: flex; align-items: center; gap: 6px; box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); transition: all 0.3s ease; border: none; cursor: pointer; font-weight: 600; background: var(--primary); color: #fff;">
+                  <i class="fa-solid fa-file-invoice"></i> BM Report 생성 및 이동
+                </button>
               </div>
             </div>
             <div class="card-body" style="padding: 0;">
@@ -366,7 +419,7 @@
         <!-- ========================================== -->
         <!-- 3. BM REPORT GENERATOR TAB -->
         <!-- ========================================== -->
-        <section id="tab-report" class="tab-content">
+        <section id="tab-report" class="tab-content" style="width: 100%; max-width: 100%;">
           
           <!-- Selected Items Count & Generate Trigger -->
           <div class="report-action-panel">
@@ -395,7 +448,7 @@
           </div>
 
           <!-- Active Report Presentation (Hidden by default) -->
-          <div id="report-active-state" style="display: none; flex-direction: column; gap: 24px;">
+          <div id="report-active-state" style="display: none; flex-direction: column; gap: 24px; width: 100%; max-width: 100%;">
             
             <!-- Excel-style Grid Table Sheet -->
             <div class="card">
@@ -422,18 +475,18 @@
             </div>
 
             <!-- 온도별 점탄성 특성 곡선 및 물성 밸런스 비교 대시보드 (ARES Sweep & Radar) -->
-            <div class="card" id="report-visco-chart-card">
-              <div class="card-header" style="background: rgba(255, 255, 255, 0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div class="card" id="report-visco-chart-card" style="background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;">
+              <div class="card-header" style="background: #f8fafc !important; border-bottom: 1px solid #cbd5e1 !important; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 20px;">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-chart-line"></i> 선택 컴파운드 다차원 물성 및 온도 스윕 분석 (ARES Sweep &amp; Radar)</h3>
+                  <h3 style="color: #0f172a !important; font-size: 1.20rem !important; font-weight: 700 !important; display: flex; align-items: center; gap: 8px; margin: 0;"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Comp'd Radar Chart &amp; ARES curve</h3>
                 </div>
                 <!-- 실시간 점탄성 지표 전환 탭 컨트롤러 신설 -->
                 <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">분석 지표:</span>
-                  <div class="visco-mode-tabs" style="display: flex; background: rgba(0,0,0,0.25); padding: 2px; border-radius: 8px; border: 1px solid var(--card-border);">
-                    <button class="visco-mode-btn active" data-mode="tand">tanδ</button>
-                    <button class="visco-mode-btn" data-mode="gp">G'</button>
-                    <button class="visco-mode-btn" data-mode="gpp">G"</button>
+                  <span style="font-size: 0.95rem !important; color: #0f172a !important; font-weight: 600 !important; margin-right: 4px;">분석 지표:</span>
+                  <div class="visco-mode-tabs" style="display: flex; background: #f1f5f9 !important; padding: 2px; border-radius: 8px; border: 1px solid #cbd5e1 !important;">
+                    <button class="visco-mode-btn active" data-mode="tand" style="color: #334155; font-weight: 600;">tanδ</button>
+                    <button class="visco-mode-btn" data-mode="gp" style="color: #334155; font-weight: 600;">G'</button>
+                    <button class="visco-mode-btn" data-mode="gpp" style="color: #334155; font-weight: 600;">G"</button>
                   </div>
                 </div>
               </div>
@@ -442,28 +495,28 @@
                   
                   <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 (Radar) -->
                   <div class="visco-left-radar-panel">
-                    <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <h4 style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
                       <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
-                      컴파운드 종합 물성 밸런스 (Radar)
+                      컴파운드 종합 물성 밸런스
                     </h4>
                     <div class="chart-container" style="height: 310px; position: relative;">
                       <canvas id="chart-report-radar"></canvas>
                     </div>
-                    <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px; line-height: 1.4;">
+                    <div style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
                       * 6대 핵심 지표(경도, Tg, 저온유연 G', 0℃ G", 0℃ tanδ, 60℃ tanδ) 상대 비교 점수(0~100)를 대조 시각화합니다.
                     </div>
                   </div>
                   
                   <!-- [오른쪽] ARES Sweep Line Chart -->
                   <div class="visco-right-line-panel">
-                    <h4 id="visco-line-title" style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <h4 id="visco-line-title" style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
                       <i class="fa-solid fa-chart-area" style="color: var(--primary);"></i>
-                      온도별 손실 탄젠트 거동 분석 (ARES Sweep - tanδ)
+                      온도별 손실 탄젠트 거동 분석 (tanδ)
                     </h4>
                     <div class="chart-container" style="height: 310px; position: relative;">
                       <canvas id="chart-visco-temperature"></canvas>
                     </div>
-                    <div id="visco-line-caption" style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px; line-height: 1.4;">
+                    <div id="visco-line-caption" style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
                       * -80℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 스윕 데이터 추이를 실시간 대조 선형 차트로 시각화합니다.
                     </div>
                   </div>
@@ -479,7 +532,7 @@
                   <h3><i class="fa-solid fa-robot"></i> [Engineering Insight] AI 물성 예측 및 코멘트</h3>
                 </div>
               </div>
-              <div class="card-body" id="report-ai-comments" style="padding: 24px; line-height: 1.6; font-size: 0.9rem;">
+              <div class="card-body" id="report-ai-comments" style="padding: 24px; line-height: 1.6; font-size: 0.98rem;">
                 <!-- Dynamic AI Insight text will be generated here -->
               </div>
             </div>
@@ -490,11 +543,11 @@
                 <div class="card-title">
                   <h3><i class="fa-solid fa-pen-to-square"></i> 엔지니어 종합 검토 소견 (수정 및 작성 가능)</h3>
                 </div>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">* 입력한 내용은 리포트 인쇄(PDF) 시 하단에 자동 포함됩니다.</span>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">* 입력한 내용은 리포트 인쇄(PDF) 시 하단에 자동 포함됩니다.</span>
               </div>
               <div class="card-body" style="padding: 20px;">
-                <textarea id="report-user-comments-input" class="filter-control" style="width: 100%; min-height: 120px; background: rgba(255,255,255,0.02); border-color: var(--card-border); color: #fff; padding: 14px; font-size: 0.9rem; border-radius: 8px; resize: vertical; line-height: 1.6;" placeholder="이곳에 이 리포트에 대한 엔지니어링 종합 검토 의견을 수동으로 입력해 주세요..."></textarea>
-                <div id="report-user-comments-print" class="print-only-text" style="display: none; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.6; color: #000; padding: 10px 0;"></div>
+                <textarea id="report-user-comments-input" class="filter-control" style="width: 100%; min-height: 120px; background: rgba(255,255,255,0.02); border-color: var(--card-border); color: #fff; padding: 14px; font-size: 0.98rem; border-radius: 8px; resize: vertical; line-height: 1.6;" placeholder="이곳에 이 리포트에 대한 엔지니어링 종합 검토 의견을 수동으로 입력해 주세요..."></textarea>
+                <div id="report-user-comments-print" class="print-only-text" style="display: none; white-space: pre-wrap; font-size: 0.98rem; line-height: 1.6; color: #000; padding: 10px 0;"></div>
               </div>
             </div>
 
@@ -561,7 +614,7 @@
                 <!-- Base Selection Board -->
                 <div class="card compare-base-card" style="padding: 16px 24px;">
                   <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <h4 style="font-size: 1rem; color: #fff; display: flex; align-items: center; gap: 8px; margin: 0;">
+                    <h4 style="font-size: 1rem; color: #1e293b; display: flex; align-items: center; gap: 8px; margin: 0;">
                       <i class="fa-solid fa-crosshairs" style="color: var(--primary);"></i>
                       기준 모델(Base Line) 지정
                     </h4>
@@ -578,28 +631,28 @@
                 <div class="card" style="padding: 16px;">
                   <div class="card-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px;">
                     <div class="card-title">
-                      <h3><i class="fa-solid fa-chart-simple"></i> 대표 상품 물성 및 배합 대조 대시보드 (3분할 분석)</h3>
+                      <h3><i class="fa-solid fa-chart-simple"></i> 대표 상품 물성 및 배합 대조 대시보드</h3>
                     </div>
                   </div>
                   <div class="card-body" style="padding: 0;">
                     <div class="compare-charts-split-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
                       <!-- 1분할: Radar chart -->
                       <div class="chart-card-nested" style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-circle-nodes" style="color: var(--primary); margin-right: 6px;"></i>물성 밸런스 비교 레이더 (Radar)</h4>
+                        <h4 style="font-size: 0.85rem; color: #1e293b; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-circle-nodes" style="color: var(--primary); margin-right: 6px;"></i>물성 밸런스 비교 레이더</h4>
                         <div class="chart-container" style="height: 250px; position: relative;">
                           <canvas id="chart-compare-radar"></canvas>
                         </div>
                       </div>
                       <!-- 2분할: 고무 Blend 차트 -->
                       <div class="chart-card-nested" style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-flask" style="color: var(--accent-orange); margin-right: 6px;"></i>고무 블렌딩 비율 분포 (NR/SBR/BR, %)</h4>
+                        <h4 style="font-size: 0.85rem; color: #1e293b; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-flask" style="color: var(--accent-orange); margin-right: 6px;"></i>고무 블렌딩 비율 분포</h4>
                         <div class="chart-container" style="height: 250px; position: relative;">
                           <canvas id="chart-compare-polymer"></canvas>
                         </div>
                       </div>
                       <!-- 3분할: 보강제 차트 -->
                       <div class="chart-card-nested" style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <h4 style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-dumbbell" style="color: var(--accent-green); margin-right: 6px;"></i>보강제 함량 비교 (CB vs Silica, phr)</h4>
+                        <h4 style="font-size: 0.85rem; color: #1e293b; font-weight: 600; margin-bottom: 12px; text-align: center;"><i class="fa-solid fa-dumbbell" style="color: var(--accent-green); margin-right: 6px;"></i>보강제 함량 비교</h4>
                         <div class="chart-container" style="height: 250px; position: relative;">
                           <canvas id="chart-compare-fillers"></canvas>
                         </div>
@@ -612,7 +665,7 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="card-title">
-                      <h3><i class="fa-solid fa-flask"></i> 1. 대표 배합제 평균 함량 대조 (Polymer / Reinforcement / Cure)</h3>
+                      <h3><i class="fa-solid fa-flask"></i> 1. 대표 배합제 평균 함량 대조</h3>
                     </div>
                   </div>
                   <div class="card-body" style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
@@ -628,7 +681,7 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="card-title">
-                      <h3><i class="fa-solid fa-wave-square"></i> 2. 가류 기계 물성 및 점탄성(ARES) 편차 대조 그리드</h3>
+                      <h3><i class="fa-solid fa-wave-square"></i> 2. 가류 기계 물성 및 점탄성 ARES 편차 대조 그리드</h3>
                     </div>
                   </div>
                   <div class="card-body" style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
@@ -644,7 +697,7 @@
                 <div class="card">
                   <div class="card-header" style="background: rgba(255, 255, 255, 0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div class="card-title">
-                      <h3 id="compare-ares-title"><i class="fa-solid fa-chart-line"></i> 3. 선택 컴파운드 ARES Full Curve (온도별 거동 분석 - tanδ)</h3>
+                      <h3 id="compare-ares-title"><i class="fa-solid fa-chart-line"></i> 3. 선택 컴파운드 ARES Full Curve - tanδ</h3>
                     </div>
                     <!-- 실시간 점탄성 지표 전환 탭 컨트롤러 신설 -->
                     <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
@@ -690,9 +743,9 @@
   </div>
 
   <!-- JS Components and App Logic -->
-  <script src="components/charts.js"></script>
-  <script src="components/reportGenerator.js"></script>
-  <script src="components/averageCompare.js"></script>
-  <script src="app.js"></script>
+  <script src="components/charts.js?v=3.2.8"></script>
+  <script src="components/reportGenerator.js?v=3.2.8"></script>
+  <script src="components/averageCompare.js?v=3.2.8"></script>
+  <script src="app.js?v=3.2.8"></script>
 </body>
 </html>

@@ -96,6 +96,32 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-prev-page').addEventListener('click', () => changePage(-1));
   document.getElementById('btn-next-page').addEventListener('click', () => changePage(1));
 
+  // BM Report 생성 및 이동 버튼 클릭 이벤트 리스너 탑재
+  const btnGoToReport = document.getElementById('btn-go-to-report');
+  if (btnGoToReport) {
+    btnGoToReport.addEventListener('click', () => {
+      // 1. 만약 선택된 타이어가 없다면 안내 문구 노출 및 경고
+      if (!window.appState.selectedTires || window.appState.selectedTires.length === 0) {
+        window.showToast("오류: 비교할 타이어가 선택되지 않았습니다. 테이블에서 타이어를 선택해 주세요.");
+        return;
+      }
+      
+      // 2. 'BM Report 생성기' 탭 클릭 및 전환
+      const reportTabEl = document.querySelector('.sidebar .menu-item[data-tab="tab-report"]');
+      if (reportTabEl) {
+        reportTabEl.click();
+      }
+      
+      // 3. 리포트 생성 트리거 실행
+      const triggerBtn = document.getElementById('btn-trigger-report');
+      if (triggerBtn) {
+        setTimeout(() => {
+          triggerBtn.click();
+        }, 150); // 탭 전환 완료 후 안정적으로 보고서를 자동 컴파일
+      }
+    });
+  }
+
   // Sidebar Toggle Listener
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.getElementById('btn-sidebar-toggle');
@@ -103,6 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       sidebar.classList.toggle('active');
+    });
+
+    // 마우스가 사이드바에서 사라질 때 자동으로 닫기 (이탈 시 즉시 숨김 보장)
+    sidebar.addEventListener('mouseleave', () => {
+      sidebar.classList.remove('active');
     });
     
     // 바깥 영역 클릭 시 사이드바 닫기 (오버레이 모드 편의성 증대)
@@ -455,7 +486,7 @@ function populateDropdownWithFacets(elemId, optionsList, counts, selectedValue) 
   
   const allOpt = document.createElement('option');
   allOpt.value = '';
-  allOpt.textContent = `전체 (All) (${totalCount.toLocaleString()})`;
+  allOpt.textContent = `전체 (${totalCount.toLocaleString()})`;
   if (selectedValue === '') {
     allOpt.selected = true;
   }
@@ -829,8 +860,8 @@ function handleRowSelection(checked, dataIndex, trElement) {
   if (window.ReportGenerator) {
     window.ReportGenerator.updateSelectedSummary();
   }
-  if (window.TireCharts && window.TireCharts.updateRadarChart) {
-    window.TireCharts.updateRadarChart();
+  if (window.TireCharts && window.TireCharts.updateAllCharts) {
+    window.TireCharts.updateAllCharts();
   }
 }
 

@@ -46,6 +46,10 @@ window.ReportGenerator = (function() {
       summaryText.innerHTML = `<span style="color: var(--danger); font-weight: 600;">선택된 타이어가 없습니다.</span> '컴파운드 탐색기' 탭에서 비교할 타이어들을 체크해 주세요.`;
       triggerBtn.disabled = true;
       triggerBtn.style.opacity = '0.5';
+    } else if (selected.length > 5) {
+      summaryText.innerHTML = `현재 <strong style="color: var(--primary); font-size: 1.05rem;">${selected.length}개</strong>의 타이어가 선택되었습니다. <span style="color: #f97316; font-weight: 600; margin-left: 8px;">(가장 상단의 5개 타이어만 비교 리포트에 노출됩니다.)</span>`;
+      triggerBtn.disabled = false;
+      triggerBtn.style.opacity = '1';
     } else {
       summaryText.innerHTML = `현재 <strong style="color: var(--primary); font-size: 1.05rem;">${selected.length}개</strong>의 타이어가 선택되었습니다.`;
       triggerBtn.disabled = false;
@@ -193,7 +197,7 @@ window.ReportGenerator = (function() {
       reportRadarChart.destroy();
     }
 
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) return;
 
     // Collect values to perform normalized scoring (0 ~ 100)
@@ -268,12 +272,12 @@ window.ReportGenerator = (function() {
       type: 'radar',
       data: {
         labels: [
-          'Hardness (경도)',
-          '내마모성 (Low Tg)',
-          '눈길 유연성 (Low -30℃ G\')',
-          '젖은 그립력 (High 0℃ G")',
-          '젖은 제동력 (High 0℃ tanδ)',
-          '연비성능 (Low 60℃ tanδ)'
+          'Hardness (Shore A)',
+          '내마모성 (Tg)',
+          '눈길 유연성 (-30℃ G\')',
+          '젖은 그립력 (0℃ G")',
+          '젖은 제동력 (0℃ tanδ)',
+          '연비성능 (60℃ tanδ)'
         ],
         datasets: datasets
       },
@@ -294,13 +298,13 @@ window.ReportGenerator = (function() {
         },
         scales: {
           r: {
-            angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
-            grid: { color: 'rgba(255, 255, 255, 0.08)' },
-            pointLabels: { color: '#8a99ad', font: { size: 9, weight: '500' } },
+            angleLines: { color: 'rgba(0, 0, 0, 0.2)' },
+            grid: { color: 'rgba(0, 0, 0, 0.15)' },
+            pointLabels: { color: '#0f172a', font: { size: 10.5, weight: '700' } },
             ticks: {
               display: false,
               maxTicksLimit: 5,
-              color: 'rgba(255, 255, 255, 0.2)',
+              color: 'rgba(0, 0, 0, 0.3)',
               backdropColor: 'transparent'
             },
             suggestedMin: 0,
@@ -320,7 +324,7 @@ window.ReportGenerator = (function() {
       viscoChart.destroy();
     }
 
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) return;
 
     // Define X-Axis temperatures from -60 to 60 with 5 degree steps
@@ -366,18 +370,18 @@ window.ReportGenerator = (function() {
     let yTitle = 'Loss Tangent (tanδ)';
     let valSuffix = '';
     let captionText = '* -60℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 스윕 데이터 추이를 실시간 대조 선형 차트로 시각화합니다.';
-    let titleText = '온도별 손실 탄젠트 거동 분석 (ARES Sweep - tanδ)';
+    let titleText = '온도별 손실 탄젠트 거동 분석 (tanδ)';
 
     if (activeChartMode === 'gp') {
       yTitle = 'Storage Modulus G\' (E+07 Pa)';
       valSuffix = ' E+07 Pa';
       captionText = '* 극저온에서의 유리 거동 한계점과 핵심 실측점들을 정교한 시그모이드 전이 보간 수식으로 물리적 모델링한 G\' 연속 추이 곡선입니다.';
-      titleText = '온도별 저장 탄성률 거동 분석 (ARES Sweep - G\')';
+      titleText = '온도별 저장 탄성률 거동 분석 (G\')';
     } else if (activeChartMode === 'gpp') {
       yTitle = 'Loss Modulus G" (E+06 Pa)';
       valSuffix = ' E+06 Pa';
       captionText = '* 복원된 저장탄성률(G\')과 손실탄젠트(tanδ) 간의 동적 물리 공식(G" = G\' * tanδ)을 적용하여 완성한 0.1M ~ 100M Pa 영역 스펙트럼 곡선입니다.';
-      titleText = '온도별 손실 탄성률 거동 분석 (ARES Sweep - G")';
+      titleText = '온도별 손실 탄성률 거동 분석 (G")';
     }
 
     // Update Text Labels in HTML
@@ -398,7 +402,7 @@ window.ReportGenerator = (function() {
         plugins: {
           legend: {
             position: 'bottom',
-            labels: { boxWidth: 10, color: '#8a99ad', padding: 12, font: { size: 10 } }
+            labels: { boxWidth: 10, color: '#0f172a', padding: 12, font: { size: 10.5, weight: '600' } }
           },
           tooltip: {
             callbacks: {
@@ -412,14 +416,14 @@ window.ReportGenerator = (function() {
         },
         scales: {
           x: {
-            title: { display: true, text: '온도 (Temperature)', color: '#8a99ad', font: { size: 10 } },
-            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-            ticks: { color: '#8a99ad', font: { size: 9 } }
+            title: { display: true, text: '온도', color: '#1e293b', font: { size: 11, weight: '600' } },
+            grid: { color: 'rgba(0, 0, 0, 0.06)' },
+            ticks: { color: '#334155', font: { size: 9.5, weight: '500' } }
           },
           y: {
-            title: { display: true, text: yTitle, color: '#8a99ad', font: { size: 10 } },
-            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-            ticks: { color: '#8a99ad', font: { size: 9 } }
+            title: { display: true, text: yTitle, color: '#1e293b', font: { size: 11, weight: '600' } },
+            grid: { color: 'rgba(0, 0, 0, 0.06)' },
+            ticks: { color: '#334155', font: { size: 9.5, weight: '500' } }
           }
         }
       }
@@ -428,7 +432,7 @@ window.ReportGenerator = (function() {
 
   // Main Report Render Logic (Translating to Excel-style horizontal replica)
   function generateReport() {
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) {
       window.showToast("오류: 리포트를 생성할 타이어가 선택되지 않았습니다.");
       return;
@@ -474,39 +478,39 @@ window.ReportGenerator = (function() {
     // Step 2: Define Row Keys to Render (Expanded to 12 viscoelastic properties)
     const metaSection = [
       { label: "타이어 기본 제원", isSectionHeader: true },
-      { label: "Pattern (패턴명)", keys: ["Pattern"] },
-      { label: "Size (규격)", keys: ["Size", "규격"] },
+      { label: "Pattern", keys: ["Pattern"] },
+      { label: "Size", keys: ["Size", "규격"] },
       { label: "Season / 부위", keys: ["Season", "부위"] },
       { label: "OE Spec / Market", keys: ["OE", "Market"] },
       { label: "Plant / 제조국", keys: ["Plant", "제조국"] },
       { label: "DOT / 분석년도", keys: ["DOT", "분석년도"] },
       { label: "의뢰 번호", keys: ["Cutting 의뢰번호", "물성 의뢰번호", "Request #"] },
       
-      { label: "고무 배합제 성분 분석 (Polymer & Filler)", isSectionHeader: true },
-      { label: "Polymer Blend (NR / SBR / BR)", keys: ["NR / SBR / BR_GC", "NR / SBR / BR_NMR"] },
+      { label: "고무 배합제 성분 분석", isSectionHeader: true },
+      { label: "Polymer Blend", keys: ["NR / SBR / BR_GC", "NR / SBR / BR_NMR"] },
       { label: "Styrene / Vinyl Ratio (%)", keys: ["Styrene / Vinyl_NMR (%, in SBR) ", "Styrene / Vinyl in SBR", "Styrene / Vinyl_NMR (%, in SBR)"] },
       { label: "Carbon Black / Silica (phr)", keys: ["Carbon Black / Silica (phr)", "Carbon Black / Silica"] },
       { label: "Acetone / ZnO / Sulfur (phr)", keys: ["Aceton / ZnO / T.Sulfur (phr) ", "Aceton / ZnO / T.Sulfur", "Aceton / ZnO / T.Sulfur (phr)"] },
       
-      { label: "기계적 인장 물성 (Tensile Properties)", isSectionHeader: true },
-      { label: "Hardness (경도, Shore A)", keys: ["Hardness ", "Hardness"], isHardness: true },
+      { label: "기계적 인장 물성", isSectionHeader: true },
+      { label: "Hardness (Shore A)", keys: ["Hardness ", "Hardness"], isHardness: true },
       { label: "Modulus 10% / 50% (MPa)", keys: ["M10% / M50%", "M10 / M50"] },
       { label: "Modulus 100% / 300% (MPa)", keys: ["M100% / M300%", "M100 / M300"] },
       { label: "Elongation / Tensile Strength", keys: ["Elong. / T.S. ", "Elong. / T.S."] },
       
-      { label: "동적 점탄성 특성 (Dynamic Viscoelasticity - 요약 12대 물성)", isSectionHeader: true },
-      { label: "Tg_peak temp. (유리전이온도, ℃)", keys: ["Tg_peak temp. (℃)", "Tg_peak temp. (C)", "Tg", "ARES Tg_peak temp. (℃)", "Dynamic Tg"], isTg: true },
+      { label: "동적 점탄성 특성", isSectionHeader: true },
+      { label: "Tg_peak temp. (℃)", keys: ["Tg_peak temp. (℃)", "Tg_peak temp. (C)", "Tg", "ARES Tg_peak temp. (℃)", "Dynamic Tg"], isTg: true },
       { label: "-40 / -30 / -20 / -10℃ G’ (E+07)", keys: ["-40 / -30 / -20 / -10℃ G’ (E+07)", "-40 / -30 / -20 / -10C G'", "ARES"] },
       { label: "G’ Avg. / G* @ -15℃ (E+07)", keys: ["G’ Avg. / G* @ -15℃ (E+07)", "G' Avg. / G* @ -15C"] },
-      { label: "-10℃ Loss Tangent (-10℃ tanδ)", keys: ["-10℃ tanδ", "-10C tanδ"] },
-      { label: "0℃ Loss Modulus (G” @ 0℃, E+06)", keys: ["G” @ 0℃ (E+06)", "G” @ 0C", "G” @ 0℃", "G'' @ 0℃", "Wet"] },
+      { label: "-10℃ tanδ", keys: ["-10℃ tanδ", "-10C tanδ"] },
+      { label: "0℃ Loss Modulus (E+06)", keys: ["G” @ 0℃ (E+06)", "G” @ 0C", "G” @ 0℃", "G'' @ 0℃", "Wet"] },
       { label: "Def. Index (G”÷G*0.8 @ 0℃)", keys: ["Def. Index (G”÷G*0.8 @ 0℃)", "Def. Index", "Def. Index (G\"÷G*0.8 @ 0℃)", "Def. Index (G”÷G*1 @ 0℃)"] },
-      { label: "tanδ @ 0℃ ÷ tanδ @ 20℃ (그립 밸런스비)", keys: ["tanδ @ 0℃ ÷ tanδ @ 20℃", "tanδ @ 0C ÷ tanδ @ 20C"] },
-      { label: "0℃ Loss Tangent (0℃ tanδ)", keys: ["tan δ @ 0℃", "0℃ tanδ", "0C tanδ", "tanδ @ 0℃"] },
+      { label: "tanδ @ 0℃ ÷ tanδ @ 20℃", keys: ["tanδ @ 0℃ ÷ tanδ @ 20℃", "tanδ @ 0C ÷ tanδ @ 20C"] },
+      { label: "0℃ tanδ", keys: ["tan δ @ 0℃", "0℃ tanδ", "0C tanδ", "tanδ @ 0℃"] },
       { label: "G” (E+06) / G* (E+07) @ 30℃", keys: ["G” (E+06) / G* (E+07) @ 30℃", "G” / G* @ 30C", "G\" (E+06) / G* (E+07) @ 30℃", "Dry"] },
-      { label: "0℃ Dynamic Stiffness (G* @ 0℃, E+07)", keys: ["G* (E+07) @ 0℃", "G* @ 0C", "G* @ 0℃"] },
-      { label: "tanδ @ 25℃ / 30℃ (상온 점탄성)", keys: ["tanδ @ 25℃ / 30℃", "tanδ @ 25C / 30C"] },
-      { label: "60℃ Loss Tangent (60℃ tanδ)", keys: ["tanδ @ 60℃", "tanδ @ 60C", "tan δ @ 60℃", "60", "RR"] }
+      { label: "0℃ Dynamic Stiffness (E+07)", keys: ["G* (E+07) @ 0℃", "G* @ 0C", "G* @ 0℃"] },
+      { label: "tanδ @ 25℃ / 30℃", keys: ["tanδ @ 25℃ / 30℃", "tanδ @ 25C / 30C"] },
+      { label: "60℃ tanδ", keys: ["tanδ @ 60℃", "tanδ @ 60C", "tan δ @ 60℃", "60", "RR"] }
     ];
 
     let tbodyHtml = "";
@@ -581,7 +585,7 @@ window.ReportGenerator = (function() {
 
   // UTF-8 BOM CSV Downloader (Excel compatible)
   function downloadRawCSV() {
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     if (selected.length === 0) {
       window.showToast("오류: 다운로드할 데이터가 없습니다. 먼저 리포트를 생성해주세요.");
       return;
@@ -629,7 +633,7 @@ window.ReportGenerator = (function() {
 
   // Engineering AI Comments Generator based on normalized metrics
   function generateAIComments() {
-    const selected = window.appState.selectedTires;
+    const selected = window.appState.selectedTires.slice(0, 5);
     const commentEl = document.getElementById('report-ai-comments');
     if (!commentEl || selected.length === 0) return;
 

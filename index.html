@@ -48,13 +48,26 @@
         <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
         <h1 class="logo-text">BM-Intelligence</h1>
       </div>
+      
+      <!-- Premium Link Action: AI에게 질문하기 & 통합 Report 작성 버튼 신설 -->
+      <div class="header-actions" style="display: flex; gap: 12px; align-items: center;">
+        <a href="Report/index.html" class="ai-ask-link-btn">
+          <i class="fa-solid fa-file-invoice pulse-icon"></i>
+          <span>통합 Report 작성</span>
+          <span class="ai-pulse-light"></span>
+        </a>
+        <a href="chat-bot/index.html" class="ai-ask-link-btn">
+          <i class="fa-solid fa-robot pulse-icon"></i>
+          <span>AI에게 질문하기</span>
+          <span class="ai-pulse-light"></span>
+        </a>
+      </div>
     </header>
 
-    <!-- HERO SEARCH AREA (네이버 메인 스타일 대형 검색 바) -->
+    <!-- HERO SEARCH AREA -->
     <section class="portal-hero">
       <div class="hero-content">
-        <h2 class="hero-title">INTEGRATED BM SEARCH</h2>
-        <p class="hero-subtitle">타이어 모델, 브랜드, 컴파운드 물성 및 인덱스 데이터를 한 번에 검색하세요.</p>
+        <h2 class="hero-title">INTEGRATED BENCHMARKING SEARCH</h2>
         
         <!-- Large Search Bar -->
         <div class="search-bar-wrapper">
@@ -72,6 +85,10 @@
               <div class="cat-header"><i class="fa-solid fa-flask"></i> 컴파운드 BM 데이터 (<span id="count-compounds">0</span>)</div>
               <ul class="results-list" id="res-compounds-list"></ul>
             </div>
+            <div class="results-category" id="res-strategy-cat" style="display: none;">
+              <div class="cat-header"><i class="fa-solid fa-globe"></i> 시장/상품전략 데이터 (<span id="count-strategy">0</span>)</div>
+              <ul class="results-list" id="res-strategy-list"></ul>
+            </div>
             <div class="no-results-msg" id="no-results-message" style="display: none;">
               <i class="fa-solid fa-magnifying-glass"></i> 일치하는 데이터가 없습니다.
             </div>
@@ -85,12 +102,23 @@
     <section class="portal-modules-band">
       
       <!-- Module Link 1: 시장/상품전략 -->
-      <a href="Market_Strategy/index.html" class="module-compact-card card-active">
+      <div class="module-compact-card card-active">
         <div class="m-card-header">
-          <span class="m-title"><i class="fa-solid fa-globe"></i> 시장/상품전략</span>
-          <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          <a href="Market_Strategy/index.html" class="m-title-link" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+            <span class="m-title"><i class="fa-solid fa-globe"></i> 시장/상품전략</span>
+            <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
         </div>
-      </a>
+        
+        <!-- 하부 중제목 다이렉트 바로가기 메뉴 리스트 -->
+        <div class="m-submenus">
+          <a href="Market_Strategy/index.html#tab-competitiveness" class="m-submenu-item"><i class="fa-solid fa-layer-group"></i> 기술 경쟁력 Overview</a>
+          <a href="Market_Strategy/index.html#tab-generation-trends" class="m-submenu-item"><i class="fa-solid fa-chart-line"></i> 대표 상품 세대별 성능</a>
+          <a href="Market_Strategy/index.html#tab-hankook-strategy" class="m-submenu-item"><i class="fa-solid fa-route"></i> 대응 전략 & 로드맵</a>
+          <a href="Market_Strategy/index.html#tab-market" class="m-submenu-item"><i class="fa-solid fa-chart-column"></i> Market & Sales Overview</a>
+          <a href="Market_Strategy/index.html#tab-tech-strategy" class="m-submenu-item"><i class="fa-solid fa-compass"></i> 경쟁사 R&D 전략</a>
+        </div>
+      </div>
 
       <!-- Module Link 2: Tire BM -->
       <div class="module-compact-card card-active">
@@ -104,7 +132,7 @@
         <!-- 하부 중제목 다이렉트 바로가기 메뉴 리스트 -->
         <div class="m-submenus">
           <a href="Tire_BM_UI_FINAL/index.html#tab-dashboard" class="m-submenu-item"><i class="fa-solid fa-circle-nodes"></i> 종합 분석 대시보드</a>
-          <a href="Tire_BM_UI_FINAL/index.html#tab-timeline" class="m-submenu-item"><i class="fa-solid fa-timeline"></i> PLC Timeline 매트릭스</a>
+          <a href="Tire_BM_UI_FINAL/index.html#tab-timeline" class="m-submenu-item"><i class="fa-solid fa-timeline"></i> PLC Timeline Map</a>
           <a href="Tire_BM_UI_FINAL/index.html#tab-ev" class="m-submenu-item"><i class="fa-solid fa-leaf"></i> EV 친환경 특화 보드</a>
           <a href="Tire_BM_UI_FINAL/index.html#tab-reports" class="m-submenu-item"><i class="fa-solid fa-book-bookmark"></i> 보고서 라이브러리</a>
         </div>
@@ -128,7 +156,24 @@
         </div>
       </div>
 
-      <!-- Module Link 4: AI Simulator -->
+      <!-- Module Link 4: 경쟁사 BI News (신규 모듈 연동) -->
+      <div class="module-compact-card card-active">
+        <div class="m-card-header">
+          <a href="BI/index.html" class="m-title-link" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+            <span class="m-title"><i class="fa-solid fa-square-rss" style="color: #f97316;"></i> 경쟁사 BI News</span>
+            <span class="m-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+        </div>
+        
+        <!-- 하부 중제목 다이렉트 바로가기 메뉴 리스트 -->
+        <div class="m-submenus">
+          <a href="BI/index.html?tab=all-news" class="m-submenu-item"><i class="fa-solid fa-newspaper"></i> 전체 뉴스 피드</a>
+          <a href="BI/index.html?tab=brand-analytics" class="m-submenu-item"><i class="fa-solid fa-chart-pie"></i> 제조사 트렌드 분석</a>
+          <a href="BI/index.html?tab=ai-digest" class="m-submenu-item"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 핵심 동향 요약</a>
+        </div>
+      </div>
+
+      <!-- Module Link 5: AI Simulator -->
       <a href="AI_Simulator/index.html" class="module-compact-card card-active">
         <div class="m-card-header">
           <span class="m-title"><i class="fa-solid fa-robot"></i> AI Simulator</span>
@@ -146,7 +191,7 @@
         <div class="widget-header-row">
           <div class="widget-header-title">
             <h2 class="widget-title"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Global Top4 비교</h2>
-            <p class="widget-subtitle">제조사별 글로벌 전체 매출/판매 비교 및 연도별/세그먼트별 종합 성능 추이, R&D 집중도, 최신 BI 리포트 통합 스크랩</p>
+            <p class="widget-subtitle">제조사별 글로벌 매출/판매량 비교, 세그먼트별 상품 기술 경쟁력 분석 및 대표 상품 세대별 성능 진화 트렌드 통합 관제</p>
           </div>
           <a href="Market_Strategy/index.html" class="strategy-shortcut-link">
             전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
@@ -155,7 +200,7 @@
 
         <div class="strategy-quad-grid">
           
-          <!-- 꼭지 1 (좌측 상단): 전체 매출 & 판매량 (글로벌 매출액 및 판매량 비교) -->
+          <!-- 꼭지 1: 전체 매출 & 판매량 (글로벌 매출액 및 판매량 비교) -->
           <div class="quad-panel panel-global-market">
             <div class="panel-header trend-header-filters">
               <h3 class="panel-title"><i class="fa-solid fa-earth-americas"></i> 전체 매출 & 판매량</h3>
@@ -170,18 +215,18 @@
                     <option value="2023">2023년</option>
                     <option value="2024">2024년</option>
                     <option value="2025">2025년</option>
-                    <option value="2026" selected>2026년(E)</option>
+                    <option value="2026" selected>2026년</option>
                   </select>
                 </div>
                 <div class="filter-group">
                   <label for="global-market-seg"><i class="fa-solid fa-layer-group"></i> 대상 세그먼트</label>
                   <select id="global-market-seg" class="filter-select">
-                    <option value="all" selected>전체 세그먼트 (All Segments)</option>
-                    <option value="Ultra High Performance (UHP)">초고성능 스포츠 (UHP)</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
-                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
-                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
-                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
+                    <option value="all" selected>전체 세그먼트</option>
+                    <option value="Ultra High Performance (UHP)">초고성능 스포츠</option>
+                    <option value="Grand Touring (All-Season)">투어링 사계절</option>
+                    <option value="All-Season Passenger">일반 승용 사계절</option>
+                    <option value="Winter / Snow">겨울용 스노우</option>
+                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV</option>
                   </select>
                 </div>
                 
@@ -193,49 +238,7 @@
             </div>
           </div>
 
-          <!-- 꼭지 2 (우측 상단): 연도별 타이어 판매량 및 종합 성능 점수 추이 -->
-          <div class="quad-panel panel-trend-performance">
-            <div class="panel-header trend-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-chart-line"></i> 연도별 판매량 & 종합 성능 점수 추이</h3>
-              
-              <!-- 상단 색인 필터 영역 -->
-              <div class="trend-filters">
-                <div class="filter-group">
-                  <label for="trend-mfg"><i class="fa-solid fa-industry"></i> 제조사</label>
-                  <select id="trend-mfg" class="filter-select">
-                    <option value="HANKOOK" selected>HANKOOK</option>
-                    <option value="MICHELIN">MICHELIN</option>
-                    <option value="CONTINENTAL">CONTINENTAL</option>
-                    <option value="BRIDGESTONE">BRIDGESTONE</option>
-                  </select>
-                </div>
-                <div class="filter-group">
-                  <label for="trend-seg"><i class="fa-solid fa-layer-group"></i> 대상 세그먼트</label>
-                  <select id="trend-seg" class="filter-select">
-                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠 (UHP)</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
-                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
-                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
-                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
-                  </select>
-                </div>
-                
-                <!-- 버튼식 성능 데이터 소스 -->
-                <div class="filter-group performance-source-group">
-                  <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
-                  <div class="btn-group-performance" role="group" id="trend-source-group">
-                    <button type="button" class="btn-source active" data-source="NorthAmerica">북미종합평점</button>
-                    <button type="button" class="btn-source" data-source="Europe">유럽종합평점</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="panel-content chart-container">
-              <canvas id="trend-performance-chart"></canvas>
-            </div>
-          </div>
-
-          <!-- 꼭지 3 (좌측 하단): 상품 기술 경쟁력 비교 (한국타이어 vs. 벤치마크 핵심성능 비교) -->
+          <!-- 꼭지 2: 상품 기술 경쟁력 비교 (한국타이어 vs. 벤치마크 핵심성능 비교) -->
           <div class="quad-panel panel-product-competitiveness">
             <div class="panel-header tech-header-filters">
               <h3 class="panel-title"><i class="fa-solid fa-gauge-high"></i> 상품 기술 경쟁력 비교</h3>
@@ -245,11 +248,11 @@
                 <div class="filter-group">
                   <label for="tech-seg"><i class="fa-solid fa-layer-group"></i> 분석 세그먼트</label>
                   <select id="tech-seg" class="filter-select">
-                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠 (UHP)</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절 (Grand Touring)</option>
-                    <option value="All-Season Passenger">일반 승용 사계절 (All-Season)</option>
-                    <option value="Winter / Snow">겨울용 스노우 (Winter/Snow)</option>
-                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV (All-Terrain)</option>
+                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠</option>
+                    <option value="Grand Touring (All-Season)">투어링 사계절</option>
+                    <option value="All-Season Passenger">일반 승용 사계절</option>
+                    <option value="Winter / Snow">겨울용 스노우</option>
+                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV</option>
                   </select>
                 </div>
 
@@ -283,7 +286,7 @@
                   <div class="t-card-icon"><i class="fa-solid fa-map-pin"></i></div>
                   <div class="t-card-body">
                     <div class="t-card-label">한국타이어 시장포지션</div>
-                    <div class="t-card-value" id="tech-market-position">글로벌 기술 추격형 (성능차 최소화)</div>
+                    <div class="t-card-value" id="tech-market-position">글로벌 기술 추격형</div>
                   </div>
                 </div>
                 <!-- 최우선 보강 성능 카드 -->
@@ -291,28 +294,69 @@
                   <div class="t-card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                   <div class="t-card-body">
                     <div class="t-card-label">최우선 보강 필요 성능</div>
-                    <div class="t-card-value" id="tech-priority-enhancement">젖은 노면 제동력 (Wet Braking)</div>
+                    <div class="t-card-value" id="tech-priority-enhancement">젖은 노면 제동력</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 꼭지 4 (우측 하단): R&D 테마 집중 비교 (기존 R&D 패널이 이 위치로 이동) -->
-          <div class="quad-panel panel-rd-priority">
-            <div class="panel-header rd-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-compass-drafting"></i> R&D 테마 집중 비교</h3>
-              
-              <!-- 글로벌 탑 4 탭 버튼 (복수 선택 가능, 디폴트 Hankook & Michelin 활성) -->
-              <div class="rd-mfg-tabs" id="rd-mfg-tabs">
-                <button class="rd-tab-btn active" data-mfg="HANKOOK">HANKOOK</button>
-                <button class="rd-tab-btn active" data-mfg="MICHELIN">MICHELIN</button>
-                <button class="rd-tab-btn" data-mfg="CONTINENTAL">CONTINENTAL</button>
-                <button class="rd-tab-btn" data-mfg="BRIDGESTONE">BRIDGESTONE</button>
+          <!-- 꼭지 3 (하단 풀-너비 10열): 대표 상품 세대별 성능 분석 -->
+          <div id="panel-generation-trends" class="quad-panel panel-generation-trends" style="grid-column: span 10;">
+            <div class="panel-header" style="border-bottom: none; padding-bottom: 0;">
+              <h3 class="panel-title"><i class="fa-solid fa-arrows-spin"></i> 대표 상품 세대별 성능 분석</h3>
+            </div>
+            
+            <!-- Filter and Selector Section -->
+            <div class="panel-filter-bar" style="margin-bottom: 20px; display: flex; flex-direction: row; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: flex-start; width: 100%;">
+              <div class="filter-bar-group">
+                <span class="filter-bar-title">분석 대상 제조사:</span>
+                <div class="tab-btn-group" id="gt-brand-selector">
+                  <button class="tab-toggle-btn active" data-brand="Michelin" style="border-left-color: #5cb2ff; border-left-width: 4px;">미쉐린</button>
+                  <button class="tab-toggle-btn" data-brand="Continental" style="border-left-color: #ff9f24; border-left-width: 4px;">콘티넨탈</button>
+                  <button class="tab-toggle-btn" data-brand="Pirelli" style="border-left-color: #3b82f6; border-left-width: 4px;">피렐리</button>
+                </div>
+              </div>
+              <div class="filter-bar-group" id="gt-lineup-container">
+                <span class="filter-bar-title">세그먼트 / 라인업:</span>
+                <div class="tab-btn-group" id="gt-lineup-selector">
+                  <!-- JS에 의해 동적으로 라인업 버튼 주입 -->
+                </div>
               </div>
             </div>
-            <div class="panel-content chart-container">
-              <canvas id="rd-priority-chart"></canvas>
+
+            <!-- Layout Grid: Left (Brochure Deck), Right (Evolution Chart & Insights) -->
+            <div class="gt-main-grid" style="width: 100%;">
+              <!-- 1. Left: Brochure Pamphlet Deck -->
+              <div class="gt-left-column">
+                <h4 class="gt-section-title" style="font-size: 1.1rem; font-weight: 800; color: #000000; border-left: 5px solid #ff6b00; padding-left: 12px; margin-top: 0; margin-bottom: 15px;">세대별 공식 리플렛/브로셔 핵심 분석</h4>
+                <div class="gt-brochure-deck" id="gt-brochure-container">
+                  <!-- JS에 의해 동적으로 카드 주입 -->
+                </div>
+              </div>
+
+              <!-- 2. Right: Chart and Strategic Insights -->
+              <div class="gt-right-column">
+                <!-- Evolutionary Radar/Line Chart -->
+                <div class="chart-card gt-chart-card border-hankook-glow-subtle" style="margin-bottom: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 12px; padding: 20px; border: 1px solid rgba(249, 115, 22, 0.1);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                    <h4 class="chart-card-title" id="gt-chart-title" style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #000000;">세대별 세부 성능 항목 진화 트렌드</h4>
+                    <div class="filter-bar-group" style="padding: 0; margin-bottom: 0;">
+                      <select id="gt-generation-selector" class="filter-select" style="font-size: 0.8rem; height: 30px; padding: 4px 24px 4px 10px !important;">
+                        <option value="gen3" selected>3세대 최신 모델 매칭 비교</option>
+                        <option value="gen2">2세대 중간 모델 매칭 비교</option>
+                        <option value="gen1">1세대 과거 모델 매칭 비교</option>
+                        <option value="all-comp">경쟁사 세대별 진화 추이</option>
+                        <option value="all-hk">한국타이어 세대별 진화 추이</option>
+                        <option value="all-six">전체 6개 라인업 동시 비교</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="chart-wrapper" style="height: 320px; position: relative;">
+                    <canvas id="chart-generation-evolution"></canvas>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -324,20 +368,64 @@
         <div class="widget-header-row">
           <div class="widget-header-title">
             <h2 class="widget-title"><i class="fa-solid fa-timeline"></i> Tire BM Matrix</h2>
-            <p class="widget-subtitle">자사 타이어 출시 연도 및 세그먼트 매트릭스 로드맵 (제품 클릭 시 해당 상세 대시보드로 이동)</p>
+            <p class="widget-subtitle">자사 타이어 출시 연도 및 세그먼트 매트릭스 로드맵</p>
           </div>
           
-          <!-- 우측 헤더 컨트롤 그룹 (탭 필터 + 전체 분석 시스템 이동 숏컷 연동) -->
-          <div class="widget-header-controls" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-            <!-- Sheet filter Tab Buttons -->
-            <div class="plc-sheet-tabs" id="plc-sheet-tabs-container">
-              <button class="sheet-tab active" data-sheet="Summer">Summer</button>
-              <button class="sheet-tab" data-sheet="SUV">SUV</button>
-              <button class="sheet-tab" data-sheet="Winter-Alpin">Winter-Alpin</button>
-              <button class="sheet-tab" data-sheet="All Weather">All Weather</button>
+          <!-- 우측 헤더 컨트롤 그룹 (탭 필터 -> 3대 대화식 멀티 필터 + 전체 분석 시스템 이동 숏컷 연동) -->
+          <div class="widget-header-controls" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-left: auto;">
+            
+            <!-- 엑셀 스타일 실시간 대화형 멀티셀렉트 필터 조작반 -->
+            <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 12px; background: rgba(249, 115, 22, 0.04); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(249, 115, 22, 0.15); position: relative; flex-wrap: wrap;">
+              
+              <!-- Season 단일 선택 필터 (Tire BM UI 연계 8개 확장) -->
+              <div class="plc-multiselect-container" style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: #1e293b;"><i class="fa-solid fa-cloud-sun" style="color: var(--primary);"></i> Season</span>
+                <select id="portal-filter-season" class="filter-control" style="min-width: 140px; background: #ffffff !important; border: 1.5px solid rgba(249, 115, 22, 0.25) !important; border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #1e293b !important; cursor: pointer; outline: none; transition: var(--transition);">
+                  <option value="Summer">Summer</option>
+                  <option value="Winter-Alpin">Winter-Alpin</option>
+                  <option value="Winter-Nordic">Winter-Nordic</option>
+                  <option value="All Weather">All Weather</option>
+                  <option value="NA All Season">NA All Season</option>
+                  <option value="Pick UP">Pick UP</option>
+                  <option value="SUV">SUV</option>
+                  <option value="Van">Van</option>
+                </select>
+              </div>
+
+              <!-- Segment 멀티 필터 -->
+              <div class="plc-multiselect-container" id="container-filter-segment" style="position: relative; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: #1e293b;"><i class="fa-solid fa-layer-group" style="color: var(--primary);"></i> Segment</span>
+                <div class="plc-multiselect-wrapper" style="position: relative;">
+                  <button type="button" id="btn-filter-segment" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.25); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #1e293b; outline: none; min-width: 140px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); transition: var(--transition);">
+                    <span class="btn-text">전체 세그먼트</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                  </button>
+                  <!-- 드롭다운 레이어 -->
+                  <div id="dropdown-filter-segment" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 8px; min-width: 200px; max-height: 240px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Maker 멀티 필터 -->
+              <div class="plc-multiselect-container" id="container-filter-maker" style="position: relative; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: #1e293b;"><i class="fa-solid fa-building" style="color: var(--primary);"></i> Maker</span>
+                <div class="plc-multiselect-wrapper" style="position: relative;">
+                  <button type="button" id="btn-filter-maker" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.25); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #1e293b; outline: none; min-width: 130px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); transition: var(--transition);">
+                    <span class="btn-text">전체 제조사</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                  </button>
+                  <!-- 드롭다운 레이어 -->
+                  <div id="dropdown-filter-maker" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 8px; min-width: 180px; max-height: 240px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                  </div>
+                </div>
+              </div>
+              
+              <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.95); border: 1.5px solid rgba(249, 115, 22, 0.2); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 800; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.01);">
+                <i class="fa-solid fa-rotate-left"></i> 필터 초기화
+              </button>
             </div>
             
-            <a href="Tire_BM_UI_FINAL/index.html" class="strategy-shortcut-link">
+            <a href="Tire_BM_UI_FINAL/index.html" class="strategy-shortcut-link" style="font-size: 0.85rem; font-weight: 800; height: 38px; display: inline-flex; align-items: center;">
               전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
             </a>
           </div>
@@ -383,6 +471,12 @@
         <p>© 2026 <strong>BM-Intelligence Hub</strong></p>
         <p class="system-meta">v3.1 HYBRID PORTAL • CONNECTIVITY OK</p>
       </div>
+      <div class="footer-help-wrapper">
+        <a href="Help/index.html" target="_blank" class="btn-portal-help">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>Portal 사용 설명서</span>
+        </a>
+      </div>
       <div class="status-indicator">
         <span class="pulse-dot"></span> Realtime Engine Active
       </div>
@@ -416,6 +510,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Market Strategy Data (Generation Trends Database) -->
+  <script src="Market_Strategy/data.js"></script>
 
   <!-- Core App JS -->
   <script src="app.js"></script>

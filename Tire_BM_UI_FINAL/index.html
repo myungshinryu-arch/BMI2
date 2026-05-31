@@ -14,7 +14,7 @@
   <!-- FontAwesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Core stylesheet -->
-  <link rel="stylesheet" href="index.css?v=1.2.0">
+  <link rel="stylesheet" href="index.css?v=2.2.0">
 </head>
 <body>
  
@@ -35,14 +35,25 @@
         <div class="logo-text">Tire BM Report</div>
       </div>
       
+      <!-- 통합 포털 홈 바로가기 (최상단 우선 배치) -->
+      <div style="padding: 0 16px; margin: 10px 0 15px 0;">
+        <a href="../index.html" class="portal-home-btn" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 10px; text-decoration: none; font-size: 0.95rem; font-weight: 700; transition: var(--transition); width: 100%; box-sizing: border-box;">
+          <i class="fa-solid fa-house-laptop" style="font-size: 1.1rem;"></i>
+          <span>통합 포털 홈</span>
+        </a>
+      </div>
+      
       <ul class="sidebar-menu">
+        <li class="menu-title" style="padding: 15px 16px 4px 16px; font-size: 0.95rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+          분석 뷰 네비게이션
+        </li>
         <li class="menu-item active" data-tab="tab-dashboard" id="menu-dashboard">
           <i class="fa-solid fa-chart-line"></i>
           <span>종합 분석 대시보드</span>
         </li>
         <li class="menu-item" data-tab="tab-timeline" id="menu-timeline">
           <i class="fa-solid fa-timeline"></i>
-          <span>PLC Timeline 매트릭스</span>
+          <span>PLC Timeline Map</span>
         </li>
         <li class="menu-item" data-tab="tab-ev" id="menu-ev">
           <i class="fa-solid fa-leaf"></i>
@@ -53,11 +64,11 @@
           <span>보고서 라이브러리</span>
         </li>
         
-        <!-- 시스템 간 빠른 연동 파이프라인 (Divider & External Links) -->
+        <!-- 시스템 간 빠른 연동 파이프라인 -->
         <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
         
-        <li class="menu-title" style="padding: 0 16px 4px 16px; font-size: 0.68rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
-          글로벌 시스템 이동 (NAVIGATE)
+        <li class="menu-title" style="padding: 0 16px 4px 16px; font-size: 0.95rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+          글로벌 시스템 이동
         </li>
         
         <li style="list-style: none; padding: 0 10px;">
@@ -74,9 +85,9 @@
                   <i class="fa-solid fa-flask-vial" style="font-size: 15px; color: #10b981;"></i>
                   <span style="color: var(--text-primary);">Comp'd BM</span>
               </a>
-              <a href="../AI_Simulator/index.html" class="nav-shortcut-btn" title="AI Simulator" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
-                  <i class="fa-solid fa-robot" style="font-size: 15px; color: #a855f7;"></i>
-                  <span style="color: var(--text-primary);">AI 시뮬</span>
+              <a href="../BI/index.html" class="nav-shortcut-btn" title="경쟁사 BI News" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-square-rss" style="font-size: 15px; color: #f97316;"></i>
+                  <span style="color: var(--text-primary);">BI News</span>
               </a>
           </div>
         </li>
@@ -84,9 +95,23 @@
         <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
 
         <li class="menu-item-link" style="list-style: none;">
-          <a href="../index.html" style="display: flex; align-items: center; gap: 14px; padding: 10px 16px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; transition: var(--transition);">
-            <i class="fa-solid fa-house-laptop" style="width: 20px; text-align: center; font-size: 1.05rem;"></i>
-            <span>통합 포털 홈</span>
+          <a href="../AI_Simulator/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: var(--transition);">
+            <i class="fa-solid fa-robot" style="width: 20px; text-align: center; font-size: 1.05rem; color: #a855f7;"></i>
+            <span>AI Simulator</span>
+          </a>
+        </li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../Report/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: var(--transition);">
+            <i class="fa-solid fa-file-invoice" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--primary);"></i>
+            <span>통합 Report 작성</span>
+          </a>
+        </li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../chat-bot/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: var(--transition);">
+            <i class="fa-solid fa-comments" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--primary);"></i>
+            <span>AI에게 질문하기</span>
           </a>
         </li>
       </ul>
@@ -183,7 +208,7 @@
                   Tire Benchmark System (Tire BM)
                 </h1>
                 <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; line-height: 1.6; max-width: 650px; margin-bottom: 20px;">
-                  본 시스템은 자사의 최신 완성 타이어 규격 및 수명 주기(PLC Map) 데이터를 정밀 분석하고, 수백 장의 실물 패턴 미디어 자산과 Arena VPR 기안 보고서를 실시간 크로싱하여 직관적인 2차원 매트릭스로 가시화합니다. 전기차(EV) 세그먼트 전용 제품군의 상태를 실시간 트래킹해 업무 시너지를 극대화합니다.
+                  본 시스템은 자사의 최신 완성 타이어 규격 및 수명 주기 데이터를 정밀 분석하고, 수백 장의 실물 패턴 미디어 자산과 Arena VPR 기안 보고서를 실시간 크로싱하여 직관적인 2차원 매트릭스로 가시화합니다. 전기차 세그먼트 전용 제품군의 상태를 실시간 트래킹해 업무 시너지를 극대화합니다.
                 </p>
                 <div class="welcome-guide-links">
                   <button class="btn-guide-primary" id="btn-quick-timeline">
@@ -267,28 +292,79 @@
         <section id="tab-timeline" class="tab-content">
           
           <!-- Matrix Sheet Navigation Sub-Tabs -->
-          <div class="plc-sub-tabs-container">
+          <div class="plc-sub-tabs-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-radius: 12px;">
             <button class="plc-sub-tab active" data-plc-sheet="Summer" id="subtab-summer">
-              <i class="fa-solid fa-sun"></i> Summer (썸머)
+              <i class="fa-solid fa-sun" style="color: #ff9100; margin-right: 6px;"></i> Summer
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Winter-Alpin" id="subtab-winter-alpin">
+              <i class="fa-solid fa-snowflake" style="color: #38bdf8; margin-right: 6px;"></i> Winter-Alpin
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Winter-Nordic" id="subtab-winter-nordic">
+              <i class="fa-solid fa-icicles" style="color: #0ea5e9; margin-right: 6px;"></i> Winter-Nordic
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="All Weather" id="subtab-all-weather">
+              <i class="fa-solid fa-cloud-sun" style="color: #10b981; margin-right: 6px;"></i> All Weather
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="NA All season" id="subtab-na-all-season">
+              <i class="fa-solid fa-globe" style="color: #6366f1; margin-right: 6px;"></i> NA All Season
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Pick Up" id="subtab-pick-up">
+              <i class="fa-solid fa-truck-pickup" style="color: #f97316; margin-right: 6px;"></i> Pick Up
             </button>
             <button class="plc-sub-tab" data-plc-sheet="SUV" id="subtab-suv">
-              <i class="fa-solid fa-mountain-sun"></i> SUV (레저용)
+              <i class="fa-solid fa-mountain-sun" style="color: #84cc16; margin-right: 6px;"></i> SUV
             </button>
-            <button class="plc-sub-tab" data-plc-sheet="Winter-Alpin" id="subtab-winter">
-              <i class="fa-solid fa-snowflake"></i> Winter-Alpin (겨울용)
-            </button>
-            <button class="plc-sub-tab" data-plc-sheet="All Weather" id="subtab-allweather">
-              <i class="fa-solid fa-cloud-sun"></i> All Weather (사계절용)
+            <button class="plc-sub-tab" data-plc-sheet="VAN" id="subtab-van">
+              <i class="fa-solid fa-shuttle-space" style="color: #a855f7; margin-right: 6px;"></i> Van
             </button>
           </div>
  
           <!-- Timeline Matrix Table Card -->
           <div class="card col-12 plc-map-card" style="margin-top: 16px;">
-            <div class="card-header" style="background: rgba(255,255,255,0.01);">
+            <div class="card-header" style="background: rgba(255,255,255,0.01); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px;">
               <div class="card-title">
-                <h3 id="plc-map-board-title"><i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황 (Summer Map)</h3>
+                <h3 id="plc-map-board-title" style="font-size: 1.25rem;"><i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황</h3>
               </div>
-              <div id="plc-map-legend" class="plc-legend">
+              
+              <!-- 엑셀 스타일 실시간 대화형 멀티셀렉트 필터 조작반 -->
+              <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 16px; background: rgba(249, 115, 22, 0.05); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(249, 115, 22, 0.2); position: relative; flex-wrap: wrap;">
+                
+                <!-- 세그먼트 멀티 필터 -->
+                <div class="plc-multiselect-container" id="container-filter-segment" style="position: relative; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.9rem; font-weight: 800; color: #1e293b;">세그먼트</span>
+                  <div class="plc-multiselect-wrapper" style="position: relative;">
+                    <button type="button" id="btn-filter-segment" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.3); border-radius: 8px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; outline: none; min-width: 180px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition);">
+                      <span class="btn-text">전체 세그먼트</span>
+                      <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                    </button>
+                    <!-- 드롭다운 레이어 -->
+                    <div id="dropdown-filter-segment" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 10px; min-width: 240px; max-height: 280px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                      <!-- 체크박스 옵션들이 js에 의해 동적으로 여기에 삽입됨 -->
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 제조사 멀티 필터 -->
+                <div class="plc-multiselect-container" id="container-filter-maker" style="position: relative; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.9rem; font-weight: 800; color: #1e293b;">제조사</span>
+                  <div class="plc-multiselect-wrapper" style="position: relative;">
+                    <button type="button" id="btn-filter-maker" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.3); border-radius: 8px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; outline: none; min-width: 170px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition);">
+                      <span class="btn-text">전체 제조사</span>
+                      <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                    </button>
+                    <!-- 드롭다운 레이어 -->
+                    <div id="dropdown-filter-maker" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 10px; min-width: 220px; max-height: 280px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                      <!-- 체크박스 옵션들이 js에 의해 동적으로 여기에 삽입됨 -->
+                    </div>
+                  </div>
+                </div>
+                
+                <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.9); border: 1.5px solid rgba(249, 115, 22, 0.25); padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 800; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                  <i class="fa-solid fa-rotate-left"></i> 필터 초기화
+                </button>
+              </div>
+
+              <div id="plc-map-legend" class="plc-legend" style="margin-left: 0;">
                 <span class="legend-item"><span class="legend-dot dot-img"><i class="fa-solid fa-image"></i></span> 실물 이미지 연동</span>
                 <span class="legend-item"><span class="legend-dot dot-rep"><i class="fa-solid fa-file-lines"></i></span> 보고서 연계</span>
               </div>
@@ -313,9 +389,9 @@
                 <i class="fa-solid fa-car-battery" style="font-size: 2rem; color: var(--accent-green); filter: drop-shadow(0 0 10px rgba(0,230,118,0.5));"></i>
               </div>
               <div>
-                <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 6px;">친환경 전기자동차(EV) 타이어 벤치마킹 현황 보드</h3>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 6px;">친환경 전기자동차 타이어 벤치마킹 현황 보드</h3>
                 <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
-                  각 제조사별 EV 전용(Exclusive) 및 고호환성(Compatible) 타이어 제품군들의 분석 진척률 및 출시 상황을 칸반 보드 형식으로 신속 조율합니다. 개별 카드를 클릭하면 실물 트레드 설계도와 특이 비고 사항 및 연계 보고서를 열 수 있습니다.
+                  각 제조사별 EV 전용 및 고호환성 타이어 제품군들의 분석 진척률 및 출시 상황을 칸반 보드 형식으로 신속 조율합니다. 개별 카드를 클릭하면 실물 트레드 설계도와 특이 비고 사항 및 연계 보고서를 열 수 있습니다.
                 </p>
               </div>
             </div>
@@ -414,7 +490,7 @@
   <div class="drawer-overlay" id="plc-drawer-overlay"></div>
   
   <div class="detail-drawer" id="plc-detail-drawer">
-    <div class="drawer-close" id="plc-drawer-close" title="닫기 (Esc)">
+    <div class="drawer-close" id="plc-drawer-close" title="닫기">
       <i class="fa-solid fa-xmark"></i>
     </div>
     
@@ -442,27 +518,27 @@
         </div>
         <div class="specs-grid">
           <div class="spec-item">
-            <span class="spec-label">소속 시트 (Category)</span>
+            <span class="spec-label">소속 시트</span>
             <span class="spec-val" id="plc-spec-sheet">-</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label">제품 세그먼트 (Segment)</span>
+            <span class="spec-label">제품 세그먼트</span>
             <span class="spec-val" id="plc-spec-category">-</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label">제조사 구분 (Division)</span>
+            <span class="spec-label">제조사 구분</span>
             <span class="spec-val" id="plc-spec-division">-</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label">제품 출시 연도 (Year)</span>
+            <span class="spec-label">제품 출시 연도</span>
             <span class="spec-val" id="plc-spec-year">-</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label">구분 (Type)</span>
+            <span class="spec-label">구분</span>
             <span class="spec-val" id="plc-spec-type">-</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label">분석 여부 (Status)</span>
+            <span class="spec-label">분석 여부</span>
             <span class="spec-val" id="plc-spec-status">-</span>
           </div>
         </div>
@@ -472,7 +548,7 @@
       <div class="drawer-section">
         <div class="section-title">
           <i class="fa-solid fa-comment-medical"></i>
-          <span>기술 분석 비고 (Comments)</span>
+          <span>기술 분석 비고</span>
         </div>
         <div class="comment-box" id="plc-drawer-comment">
           기재된 특이 기술 비고 사항이 없습니다.

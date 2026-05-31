@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import os
+import json
 
 # Define material classification rule
 def classify_material(code):
@@ -45,6 +47,41 @@ def classify_material(code):
         'W': 'COMPOUND_WET_MASTERBATCH'
     }
     return mapping.get(char_3, 'OTHER')
+
+
+def normalize_recipe_polymer(pivot_df: pd.DataFrame, oil_content_dict: dict) -> pd.DataFrame:
+    # Do not mutate the original pivot_df
+    df = pivot_df.copy()
+    
+    # Identify polymer columns
+    polymer_cols = [col for col in df.columns if classify_material(col).startswith('POLYMER_')]
+    
+    if not polymer_cols:
+        return df
+        
+    # Get Net Polymer Weight factor for each polymer column
+    # Net Polymer factor = 100 / (100 + oil_content)
+    weight_factors = {}
+    for col in polymer_cols:
+        oil_pct = oil_content_dict.get(col, 0.0)
+        weight_factors[col] = 100.0 / (100.0 + oil_pct)
+        
+    # Calculate sum of net polymer for each row
+    net_poly_sum = pd.Series(0.0, index=df.index)
+    for col in polymer_cols:
+        net_poly_sum += df[col] * weight_factors[col]
+        
+    # Apply normalization factor: scale = 100.0 / net_poly_sum
+    # Avoid division by zero
+    scale = 100.0 / net_poly_sum
+    scale = scale.replace([np.inf, -np.inf], np.nan).fillna(1.0)
+    scale[net_poly_sum == 0.0] = 1.0
+    
+    # Scale all polymer columns
+    for col in polymer_cols:
+        df[col] = df[col] * scale
+        
+    return df
 
 
 def build_recipe_derived_features(recipe_df: pd.DataFrame) -> pd.DataFrame:
