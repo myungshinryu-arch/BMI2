@@ -1,7 +1,7 @@
 [
   {
     "CODE": "AAD342A",
-    "name": "195MP",
+    "name": "US 7000 Gr",
     "type": "FILLER_SILICA",
     "frequency": 8152,
     "max_phr": 172.34,
@@ -28,7 +28,7 @@
   },
   {
     "CODE": "AAE325A",
-    "name": "S-SBR (St. : Vi. = 25 : 19.5 (%) in SBR)",
+    "name": "HPR621",
     "type": "POLYMER_SBR",
     "frequency": 2391,
     "max_phr": 125.00000000000001,
@@ -82,7 +82,7 @@
   },
   {
     "CODE": "AAD113A",
-    "name": "Si69",
+    "name": "Si 69",
     "type": "COUPLING_SILANE",
     "frequency": 7632,
     "max_phr": 23.4,
@@ -100,7 +100,7 @@
   },
   {
     "CODE": "AAP501A",
-    "name": "RBD Soybean Oil",
+    "name": "Soybean Oil",
     "type": "ADDITIVE_OIL",
     "frequency": 5378,
     "max_phr": 35.89,
@@ -118,7 +118,7 @@
   },
   {
     "CODE": "AAC141A",
-    "name": "SAF/HS",
+    "name": "HP1107",
     "type": "FILLER_CARBON_BLACK",
     "frequency": 3780,
     "max_phr": 83.0,
@@ -127,7 +127,7 @@
   },
   {
     "CODE": "AAC332A",
-    "name": "HAF  N330",
+    "name": "N330",
     "type": "FILLER_CARBON_BLACK",
     "frequency": 5642,
     "max_phr": 75.0,
@@ -145,7 +145,7 @@
   },
   {
     "CODE": "AAK304A",
-    "name": "Lubricant(Blend of Fatty acid derivatives)",
+    "name": "EF44",
     "type": "ADDITIVE_PROCESS_AID",
     "frequency": 8969,
     "max_phr": 10.0,
@@ -154,7 +154,7 @@
   },
   {
     "CODE": "AAE403A",
-    "name": "S-SBR (ASAPRENE\u2122XB120)",
+    "name": "S-SBR (ASAPRENE™XB120)",
     "type": "POLYMER_SBR",
     "frequency": 420,
     "max_phr": 100.0,
@@ -172,7 +172,7 @@
   },
   {
     "CODE": "AAE413A",
-    "name": "TUFDENE HS263",
+    "name": "HS263",
     "type": "POLYMER_SBR",
     "frequency": 693,
     "max_phr": 100.0,
@@ -190,7 +190,7 @@
   },
   {
     "CODE": "AAE412A",
-    "name": "TUFDENE S215",
+    "name": "S215",
     "type": "POLYMER_SBR",
     "frequency": 571,
     "max_phr": 100.0,
@@ -217,7 +217,7 @@
   },
   {
     "CODE": "AAX901A",
-    "name": "D(DPG) - Granule type",
+    "name": "DPG",
     "type": "CURING_ACCELERATOR",
     "frequency": 9459,
     "max_phr": 5.0,
@@ -235,7 +235,7 @@
   },
   {
     "CODE": "AAY106A",
-    "name": "\uc544\uc5f0\ud654 (Granule, FRENCH)",
+    "name": "아연화 (Granule, FRENCH)",
     "type": "ADDITIVE_ACTIVATOR",
     "frequency": 20971,
     "max_phr": 130.0,
@@ -244,7 +244,7 @@
   },
   {
     "CODE": "AAY307A",
-    "name": "Stearic Acid (Hardening type S/A, P60)",
+    "name": "St.Acid",
     "type": "ADDITIVE_ACTIVATOR",
     "frequency": 23561,
     "max_phr": 4.0,
@@ -262,7 +262,7 @@
   },
   {
     "CODE": "AAA207A",
-    "name": "Low iso Wax",
+    "name": "Ozoace",
     "type": "ADDITIVE_ANTI_DEGRADANT",
     "frequency": 18995,
     "max_phr": 3.17,
