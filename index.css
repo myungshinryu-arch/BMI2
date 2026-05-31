@@ -1337,10 +1337,10 @@ body {
 /* ==========================================================================
    RESPONSIVE DESIGN (모바일 및 태블릿 대응)
    ========================================================================== */
-@media (max-width: 950px) { /* 기존 1100px 한계를 950px로 조정하여 PC/노트북 환경에서 5열 한줄 유지 */
+@media (max-width: 768px) { /* 브레이크포인트를 950px에서 768px로 과감히 축소하여 태블릿/PC 환경에서 5열 가로 한줄 유지 강화 */
   .portal-modules-band {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   .sidebar-section-title {
     grid-column: span 2;
@@ -1354,14 +1354,23 @@ body {
   }
 }
 
-@media (max-width: 1200px) and (min-width: 951px) {
-  /* 951px ~ 1200px 구간 중간 랩톱 해상도 대응 카드 초슬림 압축 */
+@media (max-width: 1200px) and (min-width: 769px) {
+  /* 769px ~ 1200px 구간 중간 랩톱 및 태블릿 가로 해상도 대응 카드 초슬림 초컴팩트 압축 */
+  .portal-modules-band {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 8px !important;
+  }
   .module-compact-card {
-    padding: 10px 10px;
+    padding: 8px 8px !important;
+    border-radius: 12px !important;
   }
   .m-title {
-    font-size: 0.92rem;
-    gap: 4px;
+    font-size: 0.82rem !important;
+    gap: 4px !important;
+  }
+  .m-submenu-item {
+    font-size: 0.72rem !important;
+    padding: 5px 6px !important;
   }
 }
 
