@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filteredNews.length === 0) {
             newsCardsContainer.innerHTML = `
                 <div class="card-premium" style="grid-column: 1 / -1; padding: 48px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
-                    <i class="fa-solid fa-folder-open" style="font-size: 3.5rem; color: rgba(59, 130, 246, 0.25);"></i>
+                    <i class="fa-solid fa-folder-open" style="font-size: 3.5rem; color: rgba(224, 96, 10, 0.25);"></i>
                     <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">검색된 비즈니스 뉴스가 존재하지 않습니다</h3>
                     <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 420px; line-height: 1.6;">다른 키워드를 입력하시거나, 상단의 브랜드 필터 및 카테고리 칩 선택 상태를 재조정 해주시기 바랍니다.</p>
                 </div>
@@ -312,8 +312,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <!-- AI Deep Brain 분석 피드백 블록 -->
             <div class="modal-ai-analysis">
-                <h4><i class="fa-solid fa-brain" style="filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.45));"></i> AI 심층 비즈니스 위협/대응 정합성 분석</h4>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; background: rgba(255, 255, 255, 0.5); padding: 12px; border-radius: 8px; border: 1px dashed rgba(59, 130, 246, 0.15);">
+                <h4><i class="fa-solid fa-brain" style="filter: drop-shadow(0 0 4px rgba(224, 96, 10, 0.45));"></i> AI 심층 비즈니스 위협/대응 정합성 분석</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; background: rgba(255, 255, 255, 0.5); padding: 12px; border-radius: 8px; border: 1px dashed rgba(224, 96, 10, 0.15);">
                     <strong>[핵심 요약]</strong> ${newsItem.aiAnalysis.summary}
                 </p>
                 
@@ -457,8 +457,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                             label: '발행 뉴스 수 (건)',
                             data: catCounts,
-                            backgroundColor: 'rgba(59, 130, 246, 0.45)', // Premium Primary Blue Tint
-                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(224, 96, 10, 0.45)', // Premium Primary Orange Tint
+                            borderColor: '#e0600a',
                             borderWidth: 2,
                             borderRadius: 6,
                             yAxisID: 'y'
