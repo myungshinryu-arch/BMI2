@@ -380,15 +380,41 @@
 
     // Call API and predict
     async function triggerSimulation() {
+        let response;
         try {
-            const response = await fetch(API_PREDICT, {
+            response = await fetch(API_PREDICT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recipe: currentRecipe })
             });
-            
             if (!response.ok) throw new Error("Prediction API failed");
-            
+        } catch (e) {
+            // If local connection fails, fallback to production Render backend dynamically
+            if (API_BASE !== FALLBACK_API_BASE) {
+                console.warn(`Local Prediction API call failed. Retrying with fallback production server...`);
+                API_BASE = FALLBACK_API_BASE;
+                API_SPEC = `${API_BASE}/api/data-spec`;
+                API_PREDICT = `${API_BASE}/api/predict`;
+                API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+
+                try {
+                    response = await fetch(API_PREDICT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ recipe: currentRecipe })
+                    });
+                    if (!response.ok) throw new Error("Prediction API failed on fallback production server");
+                } catch (retryErr) {
+                    console.error("Simulation error on fallback production server:", retryErr);
+                    return;
+                }
+            } else {
+                console.error("Simulation error:", e);
+                return;
+            }
+        }
+
+        try {
             const res = await response.json();
             simulatedCurve = res.curve;
             simulatedTg = res.tg;
@@ -398,9 +424,8 @@
             
             // Update lower insights (compares with chosen reference)
             updateInsights(getActiveBaseCurve(), simulatedCurve, getActiveBaseTg(), simulatedTg);
-            
-        } catch (e) {
-            console.error("Simulation error:", e);
+        } catch (parseErr) {
+            console.error("Failed to parse prediction response:", parseErr);
         }
     }
 
@@ -1483,29 +1508,58 @@
             btnRun.disabled = true;
 
             try {
-                const response = await fetch(API_ADVISOR, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        recipe: currentRecipe,
-                        simulated_scores: {
-                            wear: currentWearSim,
-                            wet: currentWetSim,
-                            rr: currentRRSim
-                        },
-                        reference_scores: {
-                            wear: currentWearRef,
-                            wet: currentWetRef,
-                            rr: currentRRRef
-                        },
-                        simulated_tg: simulatedTg,
-                        reference_tg: getActiveBaseTg(),
-                        reference_name: `${selectedReferenceData.pattern} (${selectedReferenceData.maker})`,
-                        distribution_bounds: distributionBounds
-                    })
-                });
+                let response;
+                const payload = {
+                    recipe: currentRecipe,
+                    simulated_scores: {
+                        wear: currentWearSim,
+                        wet: currentWetSim,
+                        rr: currentRRSim
+                    },
+                    reference_scores: {
+                        wear: currentWearRef,
+                        wet: currentWetRef,
+                        rr: currentRRRef
+                    },
+                    simulated_tg: simulatedTg,
+                    reference_tg: getActiveBaseTg(),
+                    reference_name: `${selectedReferenceData.pattern} (${selectedReferenceData.maker})`,
+                    distribution_bounds: distributionBounds
+                };
 
-                if (!response.ok) throw new Error("AI Advisor request failed");
+                try {
+                    response = await fetch(API_ADVISOR, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error("AI Advisor request failed");
+                } catch (advisorError) {
+                    // If local connection fails, fallback to production Render backend dynamically
+                    if (API_BASE !== FALLBACK_API_BASE) {
+                        console.warn(`Local AI Advisor API call failed. Retrying with fallback production server...`);
+                        API_BASE = FALLBACK_API_BASE;
+                        API_SPEC = `${API_BASE}/api/data-spec`;
+                        API_PREDICT = `${API_BASE}/api/predict`;
+                        API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+
+                        response = await fetch(API_ADVISOR, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) throw new Error("AI Advisor request failed on fallback production server");
+
+                        setTimeout(() => {
+                            if (window.showToast) {
+                                window.showToast("로컬 백엔드 응답 장애로 실서버(Render) 최적화 엔진으로 우회 연결되었습니다.");
+                            }
+                        }, 1000);
+                    } else {
+                        throw advisorError;
+                    }
+                }
+
                 const res = await response.json();
                 
                 contentEl.className = 'ai-advisor-content';
