@@ -594,12 +594,6 @@ class TireDashboard {
         const sidebarToggleBtn = document.getElementById('sidebar-toggle');
         const sidebar = document.querySelector('.sidebar');
         
-        // localStorage에서 이전 활성 상태 불러오기
-        const isActive = localStorage.getItem('sidebar-active') === 'true';
-        if (isActive && sidebar) {
-            sidebar.classList.add('active');
-        }
-        
         if (sidebarToggleBtn && sidebar) {
             sidebarToggleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -611,6 +605,12 @@ class TireDashboard {
                 setTimeout(() => {
                     this.resizeAllCharts();
                 }, 300);
+            });
+
+            // 마우스가 사이드바에서 사라질 때 닫히도록 마우스 리브 이벤트 탑재
+            sidebar.addEventListener('mouseleave', () => {
+                sidebar.classList.remove('active');
+                localStorage.setItem('sidebar-active', 'false');
             });
         }
 

@@ -77,6 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       sidebar.classList.toggle('active');
     });
+
+    // 마우스가 사이드바에서 사라질 때 자동으로 닫기 (이탈 시 즉시 숨김 보장)
+    sidebar.addEventListener('mouseleave', () => {
+      sidebar.classList.remove('active');
+    });
     
     // 바깥 영역 클릭 시 사이드바 닫기 (오버레이 모드 편의성 증대)
     document.addEventListener('click', (e) => {
