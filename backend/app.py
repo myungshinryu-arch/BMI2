@@ -286,9 +286,22 @@ async def run_ai_advisor(req: AdvisorRequest):
             calculate_tg_fn=calculate_tg,
             distribution_bounds=req.distribution_bounds
         )
-        return {"report": report_markdown, "optimized_recipe": optimized_recipe}
+        return {
+            "success": True,
+            "report": report_markdown,
+            "optimized_recipe": optimized_recipe
+        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI Advisor processing error: {str(e)}")
+        import traceback
+        tb = traceback.format_exc()
+        # Return both the requested debug error structure and a rich markdown report for display
+        return {
+            "success": False,
+            "error": str(e),
+            "traceback": tb,
+            "report": f"### ❌ AI Advisor Error (Debug Mode)\n\n**Error Message:** `{str(e)}`\n\n**Traceback:**\n```python\n{tb}\n```",
+            "optimized_recipe": {}
+        }
 
 
 # Serve frontend static assets if available (checks directory existence to avoid startup crash)
