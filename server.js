@@ -75,6 +75,38 @@ app.post('/api/chat', async (req, res) => {
     });
   }
 
+  // BI_NEWS_DATA 실시간 파싱 및 지식 컨텍스트 병합 (Node.js Dynamic RAG)
+  let latestNewsData = [];
+  try {
+    const fs = require('fs');
+    const newsFilePath = path.join(__dirname, 'BI', 'news_data.js');
+    if (fs.existsSync(newsFilePath)) {
+      const rawContent = fs.readFileSync(newsFilePath, 'utf8');
+      const dataMatch = rawContent.match(/const\s+BI_NEWS_DATA\s*=\s*([\s\S]*?);/);
+      if (dataMatch && dataMatch[1]) {
+        const rawJson = dataMatch[1].trim();
+        const getNewsData = new Function(`return ${rawJson};`);
+        latestNewsData = getNewsData();
+      }
+    }
+  } catch (e) {
+    console.error("Failed to dynamically load BI_NEWS_DATA in /api/chat:", e);
+  }
+
+  // 최신 실시간 뉴스 피드 중 상위 15건 정도로 압축하여 LLM 프롬프트 토큰 최적화 주입
+  const newsForLlm = latestNewsData.slice(0, 15).map(n => ({
+    brand: n.brandName,
+    category: n.category,
+    title: n.title,
+    date: n.date,
+    sentiment: n.sentiment,
+    summary: n.aiAnalysis.summary,
+    impact: n.aiAnalysis.impact,
+    recommendation: n.aiAnalysis.recommendation
+  }));
+
+  COMPANY_KNOWLEDGE_CONTEXT.COMPETITOR_BI_NEWS_LATEST_15 = newsForLlm;
+
   // RAG 가이드를 포함한 강력한 System Prompt 설계
   const systemInstruction = `
 역할: 사내 R&D 전문가이자 BM-Intelligence 통합 포털을 총괄하는 "AI Insight Agent" 수석 컨설턴트입니다.
@@ -89,7 +121,8 @@ ${JSON.stringify(COMPANY_KNOWLEDGE_CONTEXT, null, 2)}
 3. 사용자가 "아레나 보고서"나 "기안문" 등을 지칭할 경우, 반드시 해당 보고서 코드(예: VPR-2025-11)를 언급하며 이와 연결되는 "Arena 기안 이동" 링크를 HTML <a> 태그나 마크다운 형태로 우아하게 디자인해 주십시오.
    - 아레나 리포트 링크 형식은 무조건 다음과 같아야 합니다: '../Tire_BM_UI_FINAL/index.html#tab-reports'
 4. 사용자가 특정 세그먼트("초고성능 스포츠(uhp)", "전기차(ev)", "사계절(allseason)", "겨울용(winter)")를 이야기하면, Compd BM 검출 결과 건수(예: UHP 342건, EV 185건 등)와 각 제조사별 대표 타이어 대조 및 R&D 성격을 전문적으로 비교해주십시오.
-5. 단순한 답변 대신, R&D 재료 공학적 분석과 시장/상품 전략 관점의 전문적인 제언을 2~3줄 추가하여 지극히 가치 있는 프리미엄 보고서 느낌을 완성하십시오.
+5. 사용자가 최근 경쟁사 BI 뉴스, 구글 크롤링 피드, 최신 기사 동향 등에 대해 질문할 경우, [사내 지식 정보]의 COMPETITOR_BI_NEWS_LATEST_15 데이터를 토대로 각 제조사의 기술 및 전략 동향을 상세히 분석하여 답변하십시오. 위협 영향(impact) 및 자사 대응 방향(recommendation)도 포함해 전문적으로 분석해 주십시오.
+6. 단순한 답변 대신, R&D 재료 공학적 분석과 시장/상품 전략 관점의 전문적인 제언을 2~3줄 추가하여 지극히 가치 있는 프리미엄 보고서 느낌을 완성하십시오.
 `;
 
   try {
