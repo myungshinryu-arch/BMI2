@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BM-Intelligence AI Simulator</title>
-  <meta name="description" content="AI 기반 트레드 컴파운드 가상 처방 설계 및 실시간 점탄성 거동 예측 시뮬레이터">
+  <meta name="description" content="AI 기반 트레드 컴파운드 가상 배합 설계 및 실시간 점탄성 거동 예측 시뮬레이터">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,7 +114,7 @@
             <p class="panel-sub-desc">원료 함량을 조절해 가상 컴파운드 배합을 실시간으로 설계합니다.</p>
           </div>
           <button class="btn-reset" id="btn-reset-recipe" title="초기 기본 배합으로 원복">
-            <i class="fa-solid fa-rotate-left"></i> 기본 레시피 복원
+            <i class="fa-solid fa-rotate-left"></i> 초기화
           </button>
         </div>
 
@@ -151,11 +151,11 @@
               <p class="panel-sub-desc">온도별 tanδ 곡선을 통해 Wet Grip과 RR 성능 밸런스를 비교합니다.</p>
             </div>
             <div class="legend-container">
+              <span class="legend-item legend-sim">
+                <span class="legend-dot bg-sim"></span><span>HK Virtual 배합</span>
+              </span>
               <span class="legend-item legend-ref" id="chart-legend-ref" style="display: none;">
                 <span class="legend-dot bg-ref"></span><span id="chart-legend-ref-name">BENCHMARK</span>
-              </span>
-              <span class="legend-item legend-sim">
-                <span class="legend-dot bg-sim"></span><span>VIRTUAL (AI 예측)</span>
               </span>
             </div>
           </div>
@@ -171,7 +171,7 @@
           <div class="panel-title-row" style="border-bottom: 1px dashed rgba(249,115,22,0.12); padding-bottom: 14px; margin-bottom: 14px;">
             <div class="title-text-group">
               <h2 class="panel-sec-title" style="color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> 성능 비교 분석 보드</h2>
-              <p class="panel-sub-desc">가상 컴파운드와 벤치마크 타사 제품의 3대 타이어 물성 가치 상대 평가 비교</p>
+              <p class="panel-sub-desc">HK Virtual 배합과 벤치마크 제품의 핵심 성능 비교</p>
             </div>
           </div>
 
@@ -179,8 +179,48 @@
             
             <!-- Left Column: Spider Radar Chart -->
             <div class="radar-chart-section">
+              <div class="legend-container radar-legend-container">
+                <span class="legend-item legend-sim" style="display: flex; align-items: center; gap: 6px;">
+                  <span class="legend-dot bg-sim" style="flex-shrink: 0; width: 10px; height: 10px;"></span><span>HK Virtual 배합</span>
+                </span>
+                <span class="legend-item legend-ref" id="radar-legend-ref" style="display: none; align-items: center; gap: 6px;">
+                  <span class="legend-dot bg-ref" style="flex-shrink: 0; width: 10px; height: 10px;"></span>
+                  <span id="radar-legend-ref-name" style="max-width: 280px; display: inline-block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; vertical-align: middle; cursor: help;" title="">BENCHMARK</span>
+                </span>
+              </div>
               <div class="radar-chart-wrapper">
                 <canvas id="vcdRadarChart"></canvas>
+                
+                <!-- HTML Overlay Mini Score Cards for Radar Chart Axes -->
+                <div class="radar-overlay-card" id="overlay-label-wear" title="내마모성 지수 (높을수록 우수)">
+                  <div class="overlay-card-title">내마모</div>
+                  <div class="overlay-card-values">
+                    <span class="overlay-val-sim" id="overlay-wear-sim">--</span>
+                    <span class="overlay-val-vs">vs</span>
+                    <span class="overlay-val-ref" id="overlay-wear-ref">--</span>
+                    <span class="radar-overlay-diff" id="overlay-wear-diff" style="display: none;">--</span>
+                  </div>
+                </div>
+
+                <div class="radar-overlay-card" id="overlay-label-wet" title="Wet 제동 성능 지수 (높을수록 우수)">
+                  <div class="overlay-card-title">Wet 제동</div>
+                  <div class="overlay-card-values">
+                    <span class="overlay-val-sim" id="overlay-wet-sim">--</span>
+                    <span class="overlay-val-vs">vs</span>
+                    <span class="overlay-val-ref" id="overlay-wet-ref">--</span>
+                    <span class="radar-overlay-diff" id="overlay-wet-diff" style="display: none;">--</span>
+                  </div>
+                </div>
+
+                <div class="radar-overlay-card" id="overlay-label-rr" title="회전저항(연비) 지수 (높을수록 우수)">
+                  <div class="overlay-card-title">연비</div>
+                  <div class="overlay-card-values">
+                    <span class="overlay-val-sim" id="overlay-rr-sim">--</span>
+                    <span class="overlay-val-vs">vs</span>
+                    <span class="overlay-val-ref" id="overlay-rr-ref">--</span>
+                    <span class="radar-overlay-diff" id="overlay-rr-diff" style="display: none;">--</span>
+                  </div>
+                </div>
               </div>
               <p class="chart-caption"><i class="fa-solid fa-circle-info"></i> 모든 점수는 높을수록 우수한 방향으로 정규화</p>
             </div>
@@ -188,11 +228,12 @@
             <!-- Right Column: Gauge Cards -->
             <div class="comparison-cards-section">
               <div class="comparison-legend">
-                <span class="legend-badge ref-badge" id="ref-legend-badge" style="display: none;">
-                  <span class="legend-dot bg-ref"></span><span id="ref-legend-name">COMPETITOR</span>
-                </span>
                 <span class="legend-badge sim-badge">
-                  <span class="legend-dot bg-sim"></span><span>VIRTUAL (HK)</span>
+                  <span class="legend-dot bg-sim"></span><span>HK Virtual 배합</span>
+                </span>
+                <span class="legend-badge ref-badge" id="ref-legend-badge" style="display: none; align-items: center; gap: 6px;">
+                  <span class="legend-dot bg-ref" style="width: 8px; height: 8px; border-radius: 50%;"></span>
+                  <span id="ref-legend-name" style="max-width: 280px; display: inline-block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; vertical-align: middle; cursor: help;" title="">COMPETITOR</span>
                 </span>
               </div>
 
@@ -203,18 +244,18 @@
                 <div class="comparison-card" id="card-wet">
                   <div class="card-header-row">
                     <span class="card-icon"><i class="fa-solid fa-cloud-showers-heavy"></i></span>
-                    <span class="card-label">젖은 노면 제동</span>
+                    <span class="card-label">Wet 제동</span>
                     <span class="card-status" id="status-wet">대기중</span>
                   </div>
                   <div class="card-values-row">
                     <div class="value-item sim-val">
                       <span class="value-num" id="comp-wet-sim">--</span>
-                      <span class="value-label">VIRTUAL</span>
+                      <span class="value-label">HK Virtual 배합</span>
                     </div>
-                    <div class="value-divider">/</div>
+                    <div class="value-divider">vs</div>
                     <div class="value-item ref-val">
                       <span class="value-num" id="comp-wet-ref">--</span>
-                      <span class="value-label" id="comp-wet-ref-label">BENCHMARK</span>
+                      <span class="value-label" id="comp-wet-ref-label" title="Benchmark" style="cursor: help;">Benchmark</span>
                     </div>
                     <div class="value-diff" id="diff-wet">--</div>
                   </div>
@@ -224,18 +265,18 @@
                 <div class="comparison-card" id="card-handling">
                   <div class="card-header-row">
                     <span class="card-icon"><i class="fa-solid fa-gas-pump"></i></span>
-                    <span class="card-label">회전저항 (연비)</span>
+                    <span class="card-label">연비</span>
                     <span class="card-status" id="status-handling">대기중</span>
                   </div>
                   <div class="card-values-row">
                     <div class="value-item sim-val">
                       <span class="value-num" id="comp-handling-sim">--</span>
-                      <span class="value-label">VIRTUAL</span>
+                      <span class="value-label">HK Virtual 배합</span>
                     </div>
-                    <div class="value-divider">/</div>
+                    <div class="value-divider">vs</div>
                     <div class="value-item ref-val">
                       <span class="value-num" id="comp-handling-ref">--</span>
-                      <span class="value-label" id="comp-handling-ref-label">BENCHMARK</span>
+                      <span class="value-label" id="comp-handling-ref-label" title="Benchmark" style="cursor: help;">Benchmark</span>
                     </div>
                     <div class="value-diff" id="diff-handling">--</div>
                   </div>
@@ -245,18 +286,18 @@
                 <div class="comparison-card" id="card-wear">
                   <div class="card-header-row">
                     <span class="card-icon"><i class="fa-solid fa-road"></i></span>
-                    <span class="card-label">내마모 수명</span>
+                    <span class="card-label">내마모</span>
                     <span class="card-status" id="status-wear">대기중</span>
                   </div>
                   <div class="card-values-row">
                     <div class="value-item sim-val">
                       <span class="value-num" id="comp-wear-sim">--</span>
-                      <span class="value-label">VIRTUAL</span>
+                      <span class="value-label">HK Virtual 배합</span>
                     </div>
-                    <div class="value-divider">/</div>
+                    <div class="value-divider">vs</div>
                     <div class="value-item ref-val">
                       <span class="value-num" id="comp-wear-ref">--</span>
-                      <span class="value-label" id="comp-wear-ref-label">BENCHMARK</span>
+                      <span class="value-label" id="comp-wear-ref-label" title="Benchmark" style="cursor: help;">Benchmark</span>
                     </div>
                     <div class="value-diff" id="diff-wear">--</div>
                   </div>
@@ -281,8 +322,8 @@
             <div class="ai-title-row">
               <span class="ai-glow-icon"><i class="fa-solid fa-brain"></i></span>
               <div class="ai-title-text-group">
-                <h2 class="ai-main-title">AI 레시피 최적화 처방 가이드</h2>
-                <p class="ai-sub-desc">현재의 가상 배합 처방과 벤치마크 타겟 간의 격차를 극복하기 위한 최적 처방 가이드와 배합 설계 솔루션을 제공합니다.</p>
+                <h2 class="ai-main-title">AI 레시피 개선 가이드</h2>
+                <p class="ai-sub-desc">벤치마크 대비 부족한 성능을 분석하고, 원료 조정 방향과 개선 후보 레시피를 제안합니다.</p>
               </div>
             </div>
             <div class="ai-btn-group">
@@ -290,7 +331,7 @@
                 <i class="fa-solid fa-wand-magic-sparkles"></i> AI 레시피 분석 실행
               </button>
               <button id="btn-apply-ai-recipe" class="premium-ai-btn apply-btn" style="display: none;">
-                <i class="fa-solid fa-circle-check"></i> AI 최적 배합 즉시 적용
+                <i class="fa-solid fa-circle-check"></i> 추천 배합 적용
               </button>
             </div>
           </div>
@@ -298,7 +339,7 @@
           <div id="ai-advisor-content" class="ai-advisor-content empty">
             <div class="ai-placeholder-view">
               <i class="fa-solid fa-microchip placeholder-icon"></i>
-              <p class="placeholder-text">비교 대상 벤치마크 타이어를 선택하신 후 <strong>[AI 레시피 분석 실행]</strong> 버튼을 누르시면 지능형 처방 솔루션이 활성화됩니다.</p>
+              <p class="placeholder-text">비교 대상 벤치마크 타이어를 선택하신 후 <strong>[AI 레시피 분석 실행]</strong> 버튼을 누르시면 AI 추천 배합안 분석 결과가 활성화됩니다.</p>
             </div>
           </div>
         </section>
@@ -337,8 +378,8 @@
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
           <div>
-            <h3 class="modal-main-title">AI 멀티 레시피 후보 추천</h3>
-            <p class="modal-sub-title">성능 지표 및 목적에 최적화된 3가지 최적 배합 가상 포트폴리오를 제공합니다.</p>
+            <h3 class="modal-main-title">AI 추천 레시피 후보 3안</h3>
+            <p class="modal-sub-title">현재 성능 차이를 기준으로 리스크와 개선 방향이 다른 3가지 배합 후보를 비교합니다.</p>
           </div>
         </div>
         <button id="btn-close-ai-modal" class="modal-close-btn" title="닫기"><i class="fa-solid fa-xmark"></i></button>
@@ -353,14 +394,11 @@
 
       <!-- Modal Footer -->
       <div class="ai-modal-footer">
-        <span class="footer-notice">* 각 시나리오 적용 시 가상 배합 슬라이더 및 예측 물성 결과 차트가 즉시 동기화됩니다.</span>
+        <span class="footer-notice">* 각 배합 후보 적용 시 가상 배합 슬라이더 및 예측 물성 결과 차트가 즉시 동기화됩니다.</span>
         <button id="btn-cancel-ai-modal" class="modal-cancel-btn">닫기</button>
       </div>
     </div>
   </div>
-
-  <!-- Inline Stable CORS-safe Data Assets from Compound BM System -->
-  <script src="../Compd BM/data/tread_data.js"></script>
 
   <!-- Core App JS -->
   <script src="app.js"></script>

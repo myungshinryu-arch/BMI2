@@ -34,7 +34,7 @@ def format_score_delta(score_before: int, score_after: int, metric_name: str) ->
         if "wear" in metric_name.lower() or "마모" in metric_name:
             desc = "마모 저하 리스크 우려"
         elif "rr" in metric_name.lower() or "연비" in metric_name:
-            desc = "회전저항 상승(연비 저하) 우려"
+            desc = "연비 저하 우려"
         else:
             desc = "성능 저하 가능성"
             
@@ -82,28 +82,49 @@ def get_ai_advisor_report(
     # Clean up reference name
     ref_clean = ref_name.strip()
     
+    # Dynamic summary sentence generation based on performance gaps
+    positives = []
+    negatives = []
+    if wear_gap >= 0: positives.append("내마모")
+    else: negatives.append("내마모")
+    
+    if wet_gap >= 0: positives.append("Wet 제동")
+    else: negatives.append("Wet 제동")
+    
+    if rr_gap >= 0: positives.append("연비")
+    else: negatives.append("연비")
+    
+    if len(positives) == 3:
+        short_summary_sentence = "현재 Virtual 배합은 모든 핵심 지표(내마모, Wet 제동, 연비)에서 벤치마크 대비 동등 이상으로 우수합니다."
+    elif len(negatives) == 3:
+        short_summary_sentence = "현재 Virtual 배합은 3대 핵심 지표(내마모, Wet 제동, 연비) 모두 벤치마크 대비 열세 상태로 개선이 시급합니다."
+    else:
+        pos_str = " 및 ".join(positives)
+        neg_str = " 및 ".join(negatives)
+        short_summary_sentence = f"현재 Virtual 배합은 {pos_str} 성능은 우세하나, {neg_str} 성능이 벤치마크 대비 열세입니다."
+
     # General status diagnosis
     diagnostics = []
     if wear_gap < 0:
-        diagnostics.append(f"내마모성(Wear)이 벤치마크 대비 {wear_gap}점 부족합니다. 고무상 Tg({sim_tg:.1f}℃)가 상대적으로 높아 저온 거동 및 표면 마찰 복원력이 부족합니다.")
+        diagnostics.append(f"내마모 성능이 벤치마크 대비 {wear_gap}점 부족합니다. 고무상 Tg({sim_tg:.1f}℃)가 상대적으로 높아 저온 거동 및 표면 마찰 복원력이 부족합니다.")
     else:
-        diagnostics.append(f"내마모성(Wear)은 벤치마크 대비 +{wear_gap}점 수준으로 우수하거나 동등 수준입니다.")
+        diagnostics.append(f"내마모 성능은 벤치마크 대비 +{wear_gap}점 수준으로 우수하거나 동등 수준입니다.")
         
     if wet_gap < 0:
-        diagnostics.append(f"Wet Grip이 벤치마크 대비 {wet_gap}점 부족합니다. 0℃ 영역의 점탄성 에너지가 부족하므로 실리카 함량이나 고Tg SBR 비율 확대가 필요합니다.")
+        diagnostics.append(f"Wet 제동 성능이 벤치마크 대비 {wet_gap}점 부족합니다. 0℃ 영역의 점탄성 에너지가 부족하므로 실리카 함량이나 고Tg SBR 비율 확대가 필요합니다.")
     else:
-        diagnostics.append(f"Wet Grip은 벤치마크 대비 +{wet_gap}점 수준으로 양호한 밀착 마찰력을 보입니다.")
+        diagnostics.append(f"Wet 제동 성능은 벤치마크 대비 +{wet_gap}점 수준으로 양호한 밀착 마찰력을 보입니다.")
         
     if rr_gap < 0:
-        diagnostics.append(f"회전저항(RR) 성능이 {rr_gap}점 부족하여 연비 효율 개선이 요구됩니다. 60℃ tanδ 발열 제어를 위한 실란 결합 반응 보완 및 CB/Silica 분산 최적화가 필요합니다.")
+        diagnostics.append(f"연비 성능이 {rr_gap}점 부족하여 개선이 요구됩니다. 60℃ tanδ 발열 제어를 위한 실란 결합 반응 보완 및 CB/Silica 분산 최적화가 필요합니다.")
     else:
-        diagnostics.append(f"회전저항(RR, 연비)은 벤치마크 대비 +{rr_gap}점 수준으로 발열 통제가 우수한 편입니다.")
+        diagnostics.append(f"연비 성능은 벤치마크 대비 +{rr_gap}점 수준으로 발열 통제가 우수한 편입니다.")
         
-    diagnostic_summary_text = " ".join(diagnostics)
+    diagnostic_bullets_str = "\n".join([f"- {d}" for d in diagnostics])
 
     # Compile 3 candidates
     cand_sections = []
-    for key, opt_name in [("A", "후보 1: Low-Risk 개선안"), ("B", "후보 2: Balance 개선안"), ("C", "후보 3: Aggressive / Advanced 개선안")]:
+    for key, opt_name in [("A", "후보 1: Low-Risk 개선안"), ("B", "후보 2: Balance 개선안"), ("C", "후보 3: High-Risk 개선안")]:
         opt_data = opts[key]
         expected_s = opt_data["expected_scores"]
         
@@ -114,29 +135,29 @@ def get_ai_advisor_report(
             diff = new_phr - old_phr
             if abs(diff) > 0.05:
                 mat_name = code_to_name.get(code, code)
-                phr_changes.append(f"- {mat_name} ({code}): 기존 {old_phr:.1f} phr -&gt; 변경 {new_phr:.1f} phr ({diff:+.1f} phr)")
+                phr_changes.append(f"- {mat_name} ({code}): {old_phr:.1f} ➔ {new_phr:.1f} phr ({diff:+.1f})")
                 
         phr_guide_str = "\n".join(phr_changes) if phr_changes else "- 원료 배합 변동 없음 (동등 유지)"
         
         # Heuristic description fields based on compounding concepts
         if key == "A":
-            purpose = "현재 설계안의 기조를 유지하면서 공정 작업성 및 가압 손실을 최소화하고, 취약 물성을 안전한 변량 범위 내에서 정밀 보정하는 보수적 개선안입니다."
-            direction = "BR 및 Silica 분산계를 미량 튜닝하고 고가교 배합 비율을 안전 마진 하에서 보정합니다."
+            purpose = "현재 배합의 큰 틀은 유지하면서 변화 폭을 제한해 리스크를 낮춘 안정적인 배합안입니다."
+            direction = "현재 배합의 큰 틀은 유지하면서 변화 폭을 제한해 리스크를 낮추고 약점 성능 중심의 미세 조율을 제안합니다."
             materials = "POLYMER_BR, COUPLING_SILANE, FILLER_SILICA"
-            tradeoffs = "원료량 변동이 매우 적어 신규 공정 라인 도입 부담이 없으며 리스크가 극히 제한되나, 예상 개선 마진 역시 제한적인 수준입니다."
-            priority = "**High** (즉시 실험실 가황 검증 및 시험 배치 생산 가능)"
+            tradeoffs = "원료량 변동이 매우 적어 공정 부담이 없으며 리스크를 낮출 수 있으나, 예상되는 개선 폭 역시 비교적 작습니다."
+            priority = "**High** (즉시 실험실 검증 및 시험 배치 적용 가능)"
         elif key == "B":
-            purpose = "마법의 삼각형(Magic Triangle) 물성 밸런스를 고려하여 벤치마크 대비 열세 항목을 대대적으로 극복하고 연비/그립 밸런스를 극대화한 표준 처방안입니다."
-            direction = "BR 폴리머 블렌드비 조정을 통한 저온 Tg 다운사이징, 실리카 충진 시스템 고도화 및 실란 반응성 강화 처방을 동시 적용합니다."
+            purpose = "타이어 핵심 성능 간의 균형을 맞추는 방향의 표준 배합안입니다. 벤치마크 대비 부족한 약점 지표를 보완하고 전체 성능 밸런스를 고르게 조정합니다."
+            direction = "SBR/BR 폴리머 블렌딩 비율 조정과 실리카-실란 시스템 보완을 통해 연비와 제동의 균형 잡힌 배합 조정안을 적용합니다."
             materials = "POLYMER_SBR, POLYMER_BR, FILLER_SILICA, COUPLING_SILANE"
-            tradeoffs = "SBR/BR 고무 블렌드와 실리카-실란 가교 밀도가 크게 변경되어 공정 혼련(Mixing) 조건(덤프 온도, 스크류 속도 등)의 정밀 제어가 수반되어야 합니다."
-            priority = "**Medium** (물성 조율 시험 완료 후 파일럿 생산 적합)"
+            tradeoffs = "SBR/BR 고무 블렌드와 실리카-실란 시스템의 조정 폭이 넓어, 공정 상의 일부 조정(예: 혼련 온도 등)을 고려할 수 있습니다."
+            priority = "**Medium** (시험실 물성 조율 완료 후 파일럿 생산 적합)"
         else:
-            purpose = "기존 물성 경계를 극복하기 위해 다량의 고기능 수지 증량 또는 실리카/SBR 고비율 변량을 가하는 과감한 도전 처방안입니다."
-            direction = "폴리머 고유 합성 Tg를 대폭 튜닝하고, 카본블랙 응집체를 제거하여 연비를 한계 수준까지 끌어올리는 동시에 그립 효율을 극대화합니다."
+            purpose = "개선 폭을 크게 키우는 대신 공정 리스크를 어느 정도 감수하는 과감하고 적극적인 배합안입니다. 약점 지표의 확실한 극복을 목표로 합니다."
+            direction = "원료 투입량과 고무 블렌드 구조의 변화 폭을 크게 가져가, 취약했던 성능 지표를 우선적으로 대폭 보정합니다."
             materials = "POLYMER_SBR, POLYMER_BR, FILLER_SILICA, FILLER_CARBON_BLACK, COUPLING_SILANE"
-            tradeoffs = "고부타디엔 러버 분율 증량에 따라 Wet Grip 마찰 성능이 일부 저하될 수 있으며, 실리카 과충진으로 인한 가공성(Mooney viscosity 상승) 저하 및 스코치 세이프티(scorch safety) 저하 리스크가 존재합니다."
-            priority = "**Low** (실험실 수준 가황 특성 사전 스크리닝 및 고성능 특수 타이어 설계 시 적합)"
+            tradeoffs = "물성 개선 폭을 키우는 장점이 있으나, 원료 배합 변동에 따라 가공성(무니 점도 등) 저하 및 안정성 리스크에 대한 면밀한 검토가 필요합니다."
+            priority = "**Low** (실험실 수준 특성 검증 및 특수 고성능 설계에 한해 검토 권장)"
             
         wear_desc = format_score_delta(sim_scores.get("wear", 0), expected_s.get("wear", 0), "wear")
         wet_desc = format_score_delta(sim_scores.get("wet", 0), expected_s.get("wet", 0), "wet")
@@ -149,9 +170,9 @@ def get_ai_advisor_report(
 * **phr 조정 가이드**:
 {phr_guide_str}
 * **기대 효과**:
-  - 내마모 (Wear): {wear_desc}
-  - Wet 제동 (Wet Grip): {wet_desc}
-  - 연비 (Rolling Resistance): {rr_desc}
+  - 내마모: {wear_desc}
+  - Wet 제동: {wet_desc}
+  - 연비: {rr_desc}
 * **Trade-off/리스크**: {tradeoffs}
 * **실험 우선순위**: {priority}"""
         cand_sections.append(cand_html)
@@ -159,21 +180,32 @@ def get_ai_advisor_report(
     candidates_formatted_text = "\n\n".join(cand_sections)
 
     # 4. Final compilation of the report (No '---' horizontal rules as per strict rules)
-    report_md = f"""# 🧠 AI 가상 레시피 최적화 분석 리포트
-*수석 컴파운딩 엔지니어 연구원 (Tyre Compounding Copilot)*
+    report_md = f"""# 🧠 AI 레시피 분석 리포트
+AI Compounding Copilot
 
-## 📊 1. 종합 진단 및 핵심 의사결정 요약 (Executive Summary)
+## 📊 1. 종합 진단 및 핵심 의사결정 요약
 현재 사용자가 수립한 배합 설계(Recipe) 및 시뮬레이션 데이터와, 지정 벤치마크 대상인 **{ref_clean}**의 성능 스코어를 정밀 대비 분석하였습니다.
-{diagnostic_summary_text}
-수립된 기계학습 tanδ 예측 모델에 기반해 고무 배합 재료공학적 한계를 분석한 결과, 아래와 같이 3대 실험 가능 개선 대안 레시피를 처방합니다.
 
-## 🔬 2. 추천 레시피 변경안 후보 3선 (Candidate Formulations)
+**[핵심 요약]**
+- {short_summary_sentence}
+
+**[벤치마크 대비 성능 차이]**
+- **내마모**: {wear_gap:+} 점
+- **Wet 제동**: {wet_gap:+} 점
+- **연비**: {rr_gap:+} 점
+
+**[상세 진단 피드백]**
+{diagnostic_bullets_str}
+
+수립된 기계학습 tanδ 예측 모델에 기반해 고무 배합 재료공학적 한계를 분석한 결과, 아래와 같이 3대 실험 가능 개선 대안 레시피를 제안합니다.
+
+## 🔬 2. AI 추천 레시피 후보 3안
 
 {candidates_formatted_text}
 
-## 🧪 3. 고무 컴파운딩 전문 엔지니어링 설계 가이드 (Technical Advice)
+## 🧪 3. 고무 컴파운딩 전문 엔지니어링 설계 가이드
 * **실리카-실란 가교 안정화**: Silica 및 Silane 투입 비율 조정 시, 고온 혼련 과정에서의 반응도(Silanization) 극대화가 핵심입니다. 기혼련 가압 스크류 온도 140~150℃ 대역에서 가교가 충분히 활성화될 수 있도록 배치 공정을 상시 모니터링하십시오.
-* **폴리머 유리전이온도(Tg) 제어**: SBR과 BR의 블렌드 배합은 타이어 마모 지수와 Wet 그립을 동시에 타겟팅하는 최고의 팩터입니다. BR 증량 시 Wear는 눈에 띄게 우세해지나, 극성 흡착력이 결여되어 Wet 제동거리가 늘어날 수 있으므로 후보 2(Balance)를 최우선으로 검증할 것을 권장합니다.
+* **폴리머 유리전이온도(Tg) 제어**: SBR과 BR의 블렌드 배합은 타이어 마모 지수와 Wet 제동을 동시에 타겟팅하는 최고의 팩터입니다. BR 증량 시 내마모는 눈에 띄게 우세해지나, 극성 흡착력이 결여되어 Wet 제동거리가 늘어날 수 있으므로 후보 2(Balance)를 최우선으로 검증할 것을 권장합니다.
 
 *본 분석은 가상 컴파운드 원료 물리 상태 및 tanδ 예측 기계학습 모델의 예측치를 바탕으로 타이어 재료공학 규칙에 의거해 AI 시스템이 자동 도출한 설계 제안서입니다.*"""
 
@@ -464,12 +496,12 @@ def calculate_optimized_recipe(
             "candidateRecipe": opt_a,
             "recipeChanges": changes_a,
             "performanceRows": perf_rows_a,
-            "purpose": "현재 설계안의 기조를 유지하면서 공정 작업성 및 가압 손실을 최소화하고, 취약 물성을 안전한 변량 범위 내에서 정밀 보정하는 보수적 개선안입니다.",
-            "objective": "현재 설계안의 기조를 유지하면서 공정 작업성 및 가압 손실을 최소화하고, 취약 물성을 안전한 변량 범위 내에서 정밀 보정하는 보수적 개선안입니다.",
-            "direction": "BR 및 Silica 분산계를 미량 튜닝하고 고가교 배합 비율을 안전 마진 하에서 보정합니다.",
+            "purpose": "현재 배합의 큰 틀은 유지하면서 변화 폭을 제한해 리스크를 낮춘 안정적인 배합안입니다.",
+            "objective": "현재 배합의 큰 틀은 유지하면서 변화 폭을 제한해 리스크를 낮춘 안정적인 배합안입니다.",
+            "direction": "현재 배합의 큰 틀은 유지하면서 변화 폭을 제한해 리스크를 낮추고 약점 성능 중심의 미세 조율을 제안합니다.",
             "materials": "POLYMER_BR, COUPLING_SILANE, FILLER_SILICA",
             "involvedMaterialGroups": "POLYMER_BR, COUPLING_SILANE, FILLER_SILICA",
-            "priority": "High (즉시 실험실 가황 검증 및 시험 배치 생산 가능)",
+            "priority": "High (즉시 실험실 검증 및 시험 배치 적용 가능)",
             "prediction": {
                 "wearScore": expected_scores_a["wear"],
                 "wetScore": expected_scores_a["wet"],
@@ -486,15 +518,15 @@ def calculate_optimized_recipe(
                 "tanDelta0": tand0_a - sim_scores.get("tanDelta0", 0.0),
                 "tanDelta60": tand60_a - sim_scores.get("tanDelta60", 0.0)
             },
-            "rationale": "현재 설계안의 기조를 유지하면서 공정 작업성 및 가압 손실을 최소화하고, 취약 물성을 안전한 변량 범위 내에서 정밀 보정하는 보수적 개선안입니다. BR 및 Silica 분산계를 미량 튜닝하고 고가교 배합 비율을 안전 마진 하에서 보정합니다.",
+            "rationale": "현재 배합의 큰 틀은 유지하면서 변화 폭을 제한해 리스크를 최소화합니다. 약점 지표를 우선 보정하여 성능 저하를 최소화하는 방향으로 설계되었습니다.",
             "risks": [
-                "원료량 변동이 매우 적어 신규 공정 라인 도입 부담이 없고 가황 거동 변화 리스크가 극히 제한적입니다.",
-                "예상 개선 한계와 성능 도출 마진 역시 타 개선안 대비 제한적입니다."
+                "원료량의 변화 폭을 대폭 제한하여 신규 공정 변동이나 리스크가 매우 낮습니다.",
+                "리스크를 낮추기 위해 변화 폭을 제한한 만큼, 약점 성능의 개선 폭 역시 소폭에 그칠 수 있습니다."
             ],
             "timestamp": timestamp_str,
             # Backward compatibility keys
             "recipe": opt_a,
-            "description": "원료 배합량 변동을 극소화하여 공정 및 가압 안정성을 완전 유지하면서, 안전 영역 내에서 성능 한계를 균형있게 수선하는 저리스크 가이드라인입니다.",
+            "description": "현재 배합의 큰 틀을 유지하면서 변화 폭을 최대한 억제하여 공정 리스크를 낮춘 안정적인 배합 조정안입니다.",
             "expected_metrics": {
                 "tg": tg_a,
                 "tand0": tand0_a,
@@ -509,12 +541,12 @@ def calculate_optimized_recipe(
             "candidateRecipe": opt_b,
             "recipeChanges": changes_b,
             "performanceRows": perf_rows_b,
-            "purpose": "마법의 삼각형(Magic Triangle) 물성 밸런스를 고려하여 벤치마크 대비 열세 항목을 대대적으로 극복하고 연비/그립 밸런스를 극대화한 표준 처방안입니다.",
-            "objective": "마법의 삼각형(Magic Triangle) 물성 밸런스를 고려하여 벤치마크 대비 열세 항목을 대대적으로 극복하고 연비/그립 밸런스를 극대화한 표준 처방안입니다.",
-            "direction": "BR 폴리머 블렌드비 조정을 통한 저온 Tg 다운사이징, 실리카 충진 시스템 고도화 및 실란 반응성 강화 처방을 동시 적용합니다.",
+            "purpose": "타이어 핵심 성능 간의 균형을 맞추는 방향의 표준 배합안입니다. 벤치마크 대비 부족한 약점 지표를 보완하고 전체 성능 밸런스를 고르게 조정합니다.",
+            "objective": "타이어 핵심 성능 간의 균형을 맞추는 방향의 표준 배합안입니다. 벤치마크 대비 부족한 약점 지표를 보완하고 전체 성능 밸런스를 고르게 조정합니다.",
+            "direction": "SBR/BR 폴리머 블렌딩 비율 조정과 실리카-실란 시스템 보완을 통해 연비와 제동의 균형 잡힌 배합 조정안을 적용합니다.",
             "materials": "POLYMER_SBR, POLYMER_BR, FILLER_SILICA, COUPLING_SILANE",
             "involvedMaterialGroups": "POLYMER_SBR, POLYMER_BR, FILLER_SILICA, COUPLING_SILANE",
-            "priority": "Medium (물성 조율 시험 완료 후 파일럿 생산 적합)",
+            "priority": "Medium (시험실 물성 조율 완료 후 파일럿 생산 적합)",
             "prediction": {
                 "wearScore": expected_scores_b["wear"],
                 "wetScore": expected_scores_b["wet"],
@@ -531,14 +563,14 @@ def calculate_optimized_recipe(
                 "tanDelta0": tand0_b - sim_scores.get("tanDelta0", 0.0),
                 "tanDelta60": tand60_b - sim_scores.get("tanDelta60", 0.0)
             },
-            "rationale": "SBR/BR 고무 블렌드 비율 조정 및 실리카-실란 가교 밀도의 체계적 튜닝을 통해 마법의 삼각형 균형을 도모하는 범용 표준 설계안입니다.",
+            "rationale": "SBR/BR 고무 블렌드 비율과 실리카 분산 조율을 통해 핵심 성능 간의 균형을 고르게 맞춘 배합안입니다.",
             "risks": [
-                "SBR/BR 블렌드 구조 및 가교 활성 반응의 변경폭이 커 혼련 공정(Dump 온도 등) 제어 조건 수정을 수반합니다."
+                "고무 블렌딩 및 실리카 배합량이 변경되므로, 혼련 공정 등 전반적인 공정 조건의 일부 조정이 필요할 수 있습니다."
             ],
             "timestamp": timestamp_str,
             # Backward compatibility keys
             "recipe": opt_b,
-            "description": "물성 격차를 극복하기 위해 SBR/BR 분비 조절 및 실리카 충진 강화를 정밀 조합하여 마법의 삼각형 균형을 세련되게 확보하는 범용 최적 설계안입니다.",
+            "description": "약점 성능을 보정하는 것과 동시에 전반적인 성능 균형을 맞추는 방향으로 SBR/BR 배합 비율 및 충전제 함량을 조율한 배합안입니다.",
             "expected_metrics": {
                 "tg": tg_b,
                 "tand0": tand0_b,
@@ -548,17 +580,17 @@ def calculate_optimized_recipe(
         },
         "C": {
             "id": "C",
-            "title": "후보 3: Aggressive / Advanced 개선안",
-            "strategy": "Aggressive / Advanced 개선안",
+            "title": "후보 3: High-Risk 개선안",
+            "strategy": "High-Risk 개선안",
             "candidateRecipe": opt_c,
             "recipeChanges": changes_c,
             "performanceRows": perf_rows_c,
-            "purpose": "기존 물성 경계를 극복하기 위해 다량의 고기능 수지 증량 또는 실리카/SBR 고비율 변량을 가하는 과감한 도전 처방안입니다.",
-            "objective": "기존 물성 경계를 극복하기 위해 다량의 고기능 수지 증량 또는 실리카/SBR 고비율 변량을 가하는 과감한 도전 처방안입니다.",
-            "direction": "폴리머 고유 합성 Tg를 대폭 튜닝하고, 카본블랙 응집체를 제거하여 연비를 한계 수준까지 끌어올리는 동시에 그립 효율을 극대화합니다.",
+            "purpose": "개선 폭을 크게 키우는 대신 공정 리스크를 어느 정도 감수하는 과감하고 적극적인 배합안입니다. 약점 지표의 확실한 극복을 목표로 합니다.",
+            "objective": "개선 폭을 크게 키우는 대신 공정 리스크를 어느 정도 감수하는 과감하고 적극적인 배합안입니다. 약점 지표의 확실한 극복을 목표로 합니다.",
+            "direction": "원료 투입량과 고무 블렌드 구조의 변화 폭을 크게 가져가, 취약했던 성능 지표를 우선적으로 대폭 보정합니다.",
             "materials": "POLYMER_SBR, POLYMER_BR, FILLER_SILICA, FILLER_CARBON_BLACK, COUPLING_SILANE",
             "involvedMaterialGroups": "POLYMER_SBR, POLYMER_BR, FILLER_SILICA, FILLER_CARBON_BLACK, COUPLING_SILANE",
-            "priority": "Low (실험실 수준 가황 특성 사전 스크리닝 및 고성능 특수 타이어 설계 시 적합)",
+            "priority": "Low (실험실 수준 특성 검증 및 특수 고성능 설계에 한해 검토 권장)",
             "prediction": {
                 "wearScore": expected_scores_c["wear"],
                 "wetScore": expected_scores_c["wet"],
@@ -575,14 +607,14 @@ def calculate_optimized_recipe(
                 "tanDelta0": tand0_c - sim_scores.get("tanDelta0", 0.0),
                 "tanDelta60": tand60_c - sim_scores.get("tanDelta60", 0.0)
             },
-            "rationale": "고부타디엔 고무 블렌딩 확대와 카본블랙 응집체를 제거하는 과감한 실리카 고분산 및 고변량 처방을 가해 내마모와 연비를 최고 한계 물성까지 유도하는 실험 설계안입니다.",
+            "rationale": "원료 투입 변화를 과감하게 시도하여 성능 개선 폭을 극대화하고, 약점 성능 중심의 확실한 개선 효과를 유도합니다.",
             "risks": [
-                "실리카 과충진으로 인한 Mooney viscosity 상승과 가공성 저하 우려가 있고, Scorch safety 확보 마진이 저하될 리스크가 존재합니다."
+                "배합량 변화가 커 가공성(무니 점도 등) 및 안정성 제어에 관한 공정 리스크가 존재하며 사전 가황 검증이 수반되어야 합니다."
             ],
             "timestamp": timestamp_str,
             # Backward compatibility keys
             "recipe": opt_c,
-            "description": "고부타디엔 배합 비율 확대 및 카본블랙 응집체의 고밀도 대체를 시도하여 최고 수치 수준의 내마모 및 회전저항 특성을 달성하는 한계 돌파형 설계안입니다.",
+            "description": "개선 폭을 키우는 대신 리스크가 큰 배합안으로, 특정 약점 지표를 우선 극복하고 성능 향상 폭을 키우는 조정안입니다.",
             "expected_metrics": {
                 "tg": tg_c,
                 "tand0": tand0_c,
