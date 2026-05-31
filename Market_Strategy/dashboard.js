@@ -1771,10 +1771,7 @@ class TireDashboard {
                 scales: {
                     y: {
                         type: 'linear',
-                        min: 0,
-                        max: 10,
                         ticks: {
-                            stepSize: 1,
                             font: { size: 12, weight: '700' },
                             color: '#111827'
                         },
