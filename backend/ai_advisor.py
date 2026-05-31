@@ -181,17 +181,18 @@ def get_ai_advisor_report(
 
 def safe_normalize_recipe_polymer_dict(recipe_dict: dict, material_stats: list) -> dict:
     """Polymers scale adjustment to meet exact 100 PHR (excluding extended oil) constraint safely without timing import issues."""
-    import os
+    from pathlib import Path
     import json
     
     normalized = recipe_dict.copy()
     
     # Load oil content directly to bypass import timing problems
     oil_content = {}
-    oil_path = os.path.join('data', 'raw', 'oil_content.json')
-    if os.path.exists(oil_path):
+    base_dir = Path(__file__).resolve().parent
+    oil_path = base_dir / "data" / "supplementary" / "oil_content.json"
+    if oil_path.exists():
         try:
-            with open(oil_path, 'r') as f:
+            with open(oil_path, 'r', encoding='utf-8') as f:
                 oil_content = json.load(f)
         except Exception:
             pass
