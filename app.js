@@ -2694,12 +2694,12 @@ function renderGenerationTrends(lineupKey, chartMode = 'gen3') {
     }
 
     const labels = [
-      "마른 노면 접지 (Dry Grip)",
-      "습윤 노면 접지 (Wet Grip)",
-      "수막 저항성 (Hydro Resist)",
-      "정숙성/승차감 (Comfort)",
-      "마모 수명 (Tread Life)",
-      "연비/친환경 (Efficiency)"
+      "마른 노면 접지",
+      "습윤 노면 접지",
+      "수막 저항성",
+      "정숙성/승차감",
+      "마모 수명",
+      "연비/친환경"
     ];
 
     const getScoresArray = (scoresObj) => {
