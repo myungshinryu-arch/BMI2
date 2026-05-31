@@ -80,9 +80,9 @@ def refine_to_korean(title, brand_ko, brand_en):
         # 중복 제거
         refined_keywords = list(dict.fromkeys(refined_keywords))
         kw_string = ' 및 '.join(refined_keywords[:2])
-        headline = f"{brand_ko}, {kw_string} 부각 글로벌 비즈니스 행보 ({title_clean[:55]}...)"
+        headline = f"{brand_ko}, {kw_string} 부각 글로벌 비즈니스 행보"
     else:
-        headline = f"{brand_ko}, 글로벌 파트너십 강화 및 시장 공략 가속화 ({title_clean[:55]}...)"
+        headline = f"{brand_ko}, 글로벌 파트너십 강화 및 시장 공략 가속화"
         
     return headline
 
