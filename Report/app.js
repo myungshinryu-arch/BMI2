@@ -846,7 +846,7 @@ function buildIntegratedReport(brandKey, modelKey) {
   
   let advisoryText = "";
   if (parseFloat(silicaDelta) > 0) {
-    advisoryText += `경쟁사 ${modelKey}는 실리카 배합비(${compSpec.silicaRate})가 자사 대비 약 ${Math.abs(silicaDelta)} phr 높게 설계되어 젖은 노면 마찰 성능(Wet Grip)에서 상대적 우위를 확보했을 가능성이 높습니다. `;
+    advisoryText += `경쟁사 ${modelKey}는 실리카 배합비(${compSpec.silicaRate})가 자사 대비 약 ${Math.abs(silicaDelta)} phr 높게 설계되어 젖은 노면 마찰 성능에서 상대적 우위를 확보했을 가능성이 높습니다. `;
   } else {
     advisoryText += `자사 ${rivalKey}는 경쟁사 대비 실리카 고배합 비율(격차 약 ${Math.abs(silicaDelta)} phr)을 확보하여 젖은 노면 제동 등급에서 호등성 설계를 성공적으로 완수했습니다. `;
   }
@@ -854,7 +854,7 @@ function buildIntegratedReport(brandKey, modelKey) {
   if (parseFloat(hardnessDelta) > 0) {
     advisoryText += `경쟁사의 트레드 경도(${compSpec.hardness})가 더 단단하게 튜닝되어 초기 핸들링 응답성은 다소 유리할 수 있으나, 자사 ${rivalKey}는 연질 고무 가공(${hankookSpec.hardness})을 바탕으로 겨울철 및 젖은 노면에서의 밀착 접지 면적을 한층 넓혔습니다.`;
   } else {
-    advisoryText += `자사 ${rivalKey}는 상대적으로 고경도(${hankookSpec.hardness}) 구조 of 고탄성 컴파운드 블록을 채택하여 고속 주행안정성 극대화 및 고하중 코너링 시 블록 뜯김(Chip-cut) 현상을 철저히 억제하고 있습니다.`;
+    advisoryText += `자사 ${rivalKey}는 상대적으로 고경도(${hankookSpec.hardness}) 구조 of 고탄성 컴파운드 블록을 채택하여 고속 주행안정성 극대화 및 고하중 코너링 시 블록 뜯김 현상을 철저히 억제하고 있습니다.`;
   }
 
   // AI Prediction Scores derived from physical ARES parameters
@@ -886,9 +886,9 @@ function buildIntegratedReport(brandKey, modelKey) {
   }
 
   if (hankookRRAI > compRRAI) {
-    aiDiagnosticSummary += `[연비효율 우위] 고온 60℃ tanδ 제어를 통해 회전저항(RR) 부문에서 자사 제품이 더 스마트한 에너지를 절약할 것으로 예측됩니다. `;
+    aiDiagnosticSummary += `[연비효율 우위] 고온 60℃ tanδ 제어를 통해 회전저항 부문에서 자사 제품이 더 스마트한 에너지를 절약할 것으로 예측됩니다. `;
   } else {
-    aiDiagnosticSummary += `[회전저항 개선 요망] 연비 및 회전 저항(RR) 부문에서 경쟁사가 실리카 저분산 손실을 억제하여 다소 유리한 주행 에너지 보존력을 가질 것으로 추론됩니다. `;
+    aiDiagnosticSummary += `[회전저항 개선 요망] 연비 및 회전 저항 부문에서 경쟁사가 실리카 저분산 손실을 억제하여 다소 유리한 주행 에너지 보존력을 가질 것으로 추론됩니다. `;
   }
 
   // 4. Generate dynamic document markup (Approval box completely removed, stats diversified)
@@ -913,7 +913,7 @@ function buildIntegratedReport(brandKey, modelKey) {
       <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; display: flex; gap: 15px;">
         <span><i class="fa-regular fa-calendar-check" style="color: var(--primary); margin-right: 3px;"></i> 발행일자: <strong style="color: var(--text-dark);">${dateString}</strong></span>
         <span><i class="fa-regular fa-building" style="color: var(--primary); margin-right: 3px;"></i> 담당부서: <strong style="color: var(--text-dark);">R&D 통합 정보분석 연구소</strong></span>
-        <span><i class="fa-solid fa-shield-halved" style="color: var(--primary); margin-right: 3px;"></i> 보안등급: <strong style="color: var(--accent-orange);">사내 극비 (LEVEL 3)</strong></span>
+        <span><i class="fa-solid fa-shield-halved" style="color: var(--primary); margin-right: 3px;"></i> 보안등급: <strong style="color: var(--accent-orange);">사내 극비</strong></span>
       </div>
     </div>
 
@@ -1059,7 +1059,7 @@ function buildIntegratedReport(brandKey, modelKey) {
 
       <!-- report-visco-layout -->
       <div class="report-visco-layout" style="margin-bottom: 25px;">
-        <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 (Radar) -->
+        <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 -->
         <div class="visco-left-radar-panel">
           <h4 style="font-size: 0.82rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 10px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
             <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>

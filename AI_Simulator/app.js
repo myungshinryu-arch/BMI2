@@ -105,7 +105,7 @@
                 // Show a helpful toast notifying that the system is running using fallback backend
                 setTimeout(() => {
                     if (window.showToast) {
-                        window.showToast("로컬 백엔드가 감지되지 않아 실서버(Render)로 자동 연동되었습니다.");
+                        window.showToast("로컬 백엔드가 감지되지 않아 실서버로 자동 연동되었습니다.");
                     }
                 }, 1000);
             } else {
@@ -232,12 +232,12 @@
     };
 
     const CATEGORY_NAMES = {
-        'POLYMER': 'Polymers (고무 고분자)',
-        'FILLER': 'Fillers (보강제/충전제)',
-        'COUPLING': 'Couplings (커플링제)',
-        'ADDITIVE': 'Additives (가공 조제 및 첨가제)',
-        'CURING': 'Curings (가류제 및 촉진제)',
-        'OTHER': 'Others (기타 성분)'
+        'POLYMER': 'Polymers',
+        'FILLER': 'Fillers',
+        'COUPLING': 'Couplings',
+        'ADDITIVE': 'Additives',
+        'CURING': 'Curings',
+        'OTHER': 'Others'
     };
 
     // Render dynamic sliders with hierarchy groupings
@@ -1501,7 +1501,7 @@
                     <i class="fa-solid fa-brain fa-spin" style="font-size: 2rem;"></i>
                     <div style="display: flex; flex-direction: column; gap: 4px; align-items: center; margin-top: 10px;">
                         <strong style="color: var(--text-dark); font-size: 1rem;">AI formulation Advisor 분석 진행 중...</strong>
-                        <span style="color: var(--text-muted); font-size: 0.8rem;">현재 설계된 가상 처방 배합량(PHR)과 벤치마크 대상 간의 점탄성 격차 및 화학 최적화 솔루션을 탐색하고 있습니다.</span>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">현재 설계된 가상 처방 배합량과 벤치마크 대상 간의 점탄성 격차 및 화학 최적화 솔루션을 탐색하고 있습니다.</span>
                     </div>
                 </div>
             `;
@@ -1552,7 +1552,7 @@
 
                         setTimeout(() => {
                             if (window.showToast) {
-                                window.showToast("로컬 백엔드 응답 장애로 실서버(Render) 최적화 엔진으로 우회 연결되었습니다.");
+                                window.showToast("로컬 백엔드 응답 장애로 실서버 최적화 엔진으로 우회 연결되었습니다.");
                             }
                         }, 1000);
                     } else {
@@ -1577,7 +1577,7 @@
                 contentEl.innerHTML = `
                     <div class="ai-placeholder-view" style="color: var(--danger);">
                         <i class="fa-solid fa-circle-exclamation placeholder-icon" style="color: var(--danger);"></i>
-                        <p class="placeholder-text">AI 가이드 엔진 진단에 실패했습니다. 파이썬 FastAPI 백엔드 포트(8000) 통신 상태를 점검해 주십시오.</p>
+                        <p class="placeholder-text">AI 가이드 엔진 진단에 실패했습니다. 파이썬 FastAPI 백엔드 포트 통신 상태를 점검해 주십시오.</p>
                     </div>
                 `;
                 window.showToast("AI 최적화 처방 도출 중 서버 통신 에러가 발생했습니다.");

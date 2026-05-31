@@ -82,7 +82,7 @@
       <div class="panel-header-row">
         <div class="panel-title-group">
           <h2 class="panel-main-title"><i class="fa-solid fa-crosshairs"></i> 비교 대상 벤치마크 컴파운드 선택</h2>
-          <p class="panel-sub-desc">목록에서 타사 타이어를 선택하면, 가상(Virtual) 컴파운드 설계안과 성능 밸런스 및 AI 최적화 시뮬레이션이 즉시 연동됩니다.</p>
+          <p class="panel-sub-desc">목록에서 타사 타이어를 선택하면, 가상 컴파운드 설계안과 성능 밸런스 및 AI 최적화 시뮬레이션이 즉시 연동됩니다.</p>
         </div>
         <div class="vcd-search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -103,7 +103,7 @@
         <div class="panel-title-row">
           <div class="title-text-group">
             <h2 class="panel-sec-title"><i class="fa-solid fa-sliders"></i> Virtual 레시피 화학 배합 설계</h2>
-            <p class="panel-sub-desc">원료별 중량(PHR) 슬라이더를 세밀히 조절하여 실시간으로 가상 컴파운드 구조 처방을 설계합니다.</p>
+            <p class="panel-sub-desc">원료별 중량 슬라이더를 세밀히 조절하여 실시간으로 가상 컴파운드 구조 처방을 설계합니다.</p>
           </div>
           <button class="btn-reset" id="btn-reset-recipe" title="초기 기본 배합으로 원복">
             <i class="fa-solid fa-rotate-left"></i> 기본 레시피 복원
@@ -113,7 +113,7 @@
         <!-- Polymers Constraints Notice Banner -->
         <div id="polymer-constraint-notice" class="constraint-banner normal-state">
           <i class="fa-solid fa-circle-info"></i>
-          <span>Polymers 합산 PHR 규격 점검: <strong id="polymer-sum-val">100.00</strong> PHR (자동 충족 보정 적용됨)</span>
+          <span>Polymers 합산 PHR 규격 점검: <strong id="polymer-sum-val">100.00</strong> PHR</span>
         </div>
 
         <!-- Category Filter Tabs -->
@@ -139,7 +139,7 @@
         <section class="chart-panel glass-panel">
           <div class="panel-title-row">
             <div class="title-text-group">
-              <h2 class="panel-sec-title"><i class="fa-solid fa-chart-line"></i> ARES 온도 소거 스위프 (ARES Sweep)</h2>
+              <h2 class="panel-sec-title"><i class="fa-solid fa-chart-line"></i> ARES 온도 소거 스위프</h2>
               <p class="panel-sub-desc">온도에 따른 손실 탄젠트(tanδ) 거동 그래프 - 저온 제동 및 회전 저항(연비) 대조 분석</p>
             </div>
             <div class="legend-container">
@@ -162,8 +162,8 @@
         <section class="analysis-panel glass-panel">
           <div class="panel-title-row" style="border-bottom: 1px dashed rgba(249,115,22,0.12); padding-bottom: 14px; margin-bottom: 14px;">
             <div class="title-text-group">
-              <h2 class="panel-sec-title" style="color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> 성능 비교 분석 보드 (Performance Dashboard)</h2>
-              <p class="panel-sub-desc">가상(Virtual) 컴파운드와 벤치마크 타사 제품의 3대 타이어 물성 가치 상대 평가 비교</p>
+              <h2 class="panel-sec-title" style="color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> 성능 비교 분석 보드</h2>
+              <p class="panel-sub-desc">가상 컴파운드와 벤치마크 타사 제품의 3대 타이어 물성 가치 상대 평가 비교</p>
             </div>
           </div>
 
@@ -174,7 +174,7 @@
               <div class="radar-chart-wrapper">
                 <canvas id="vcdRadarChart"></canvas>
               </div>
-              <p class="chart-caption"><i class="fa-solid fa-circle-info"></i> 모든 점수는 높을수록 우수한 방향으로 정규화(0-100)</p>
+              <p class="chart-caption"><i class="fa-solid fa-circle-info"></i> 모든 점수는 높을수록 우수한 방향으로 정규화</p>
             </div>
 
             <!-- Right Column: Gauge Cards -->
@@ -212,7 +212,7 @@
                   </div>
                 </div>
 
-                <!-- Card 2: 연비 (RR) -->
+                <!-- Card 2: 연비 -->
                 <div class="comparison-card" id="card-handling">
                   <div class="card-header-row">
                     <span class="card-icon"><i class="fa-solid fa-gas-pump"></i></span>
@@ -233,7 +233,7 @@
                   </div>
                 </div>
 
-                <!-- Card 3: 내마모 (Tg) -->
+                <!-- Card 3: 내마모 -->
                 <div class="comparison-card" id="card-wear">
                   <div class="card-header-row">
                     <span class="card-icon"><i class="fa-solid fa-road"></i></span>
@@ -273,7 +273,7 @@
             <div class="ai-title-row">
               <span class="ai-glow-icon"><i class="fa-solid fa-brain"></i></span>
               <div class="ai-title-text-group">
-                <h2 class="ai-main-title">AI 레시피 최적화 처방 가이드 (AI Formulation Advisor)</h2>
+                <h2 class="ai-main-title">AI 레시피 최적화 처방 가이드</h2>
                 <p class="ai-sub-desc">현재의 가상 배합 처방과 벤치마크 타겟 간의 격차를 극복하기 위한 최적 처방 가이드와 배합 설계 솔루션을 제공합니다.</p>
               </div>
             </div>
@@ -329,7 +329,7 @@
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
           <div>
-            <h3 class="modal-main-title">AI 멀티 레시피 후보 추천 (Optimization Scenarios)</h3>
+            <h3 class="modal-main-title">AI 멀티 레시피 후보 추천</h3>
             <p class="modal-sub-title">성능 지표 및 목적에 최적화된 3가지 최적 배합 가상 포트폴리오를 제공합니다.</p>
           </div>
         </div>

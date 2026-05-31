@@ -481,7 +481,7 @@ function populateDropdownWithFacets(elemId, optionsList, counts, selectedValue) 
   
   const allOpt = document.createElement('option');
   allOpt.value = '';
-  allOpt.textContent = `전체 (All) (${totalCount.toLocaleString()})`;
+  allOpt.textContent = `전체 (${totalCount.toLocaleString()})`;
   if (selectedValue === '') {
     allOpt.selected = true;
   }

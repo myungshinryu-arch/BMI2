@@ -3,7 +3,7 @@
  * 관장 영역: 종합 분석 대시보드, PLC Timeline 매트릭스, EV 친환경 특화 보드, 보고서 라이브러리
  */
 
-// 0. Global Error Diagnostics Logger (자가 진단 디버깅 안전망)
+// 0. Global Error Diagnostics Logger
 window.addEventListener('error', (e) => {
   console.error("Global Diagnostics Exception:", e.error);
   const toast = document.getElementById('toast');
@@ -37,8 +37,8 @@ const state = {
   },
   reportsLibrary: {
     searchQuery: '',
-    filterDept: '',   // Department (기안부서) - UI ID: report-filter-maker
-    filterDrafter: '', // Drafter (기안자) - UI ID: report-filter-type
+    filterDept: '',   // Department - UI ID: report-filter-maker
+    filterDrafter: '', // Drafter - UI ID: report-filter-type
     currentPage: 1,
     pageSize: 20
   },
@@ -49,7 +49,7 @@ const state = {
 const CONFIG = {
   mediaPath: 'plc_media_unzipped/xl/media/',
   subtitles: {
-    'tab-dashboard': '자사 제품 수명 주기(PLC) 및 벤치마킹 보고서 종합 추적 현황',
+    'tab-dashboard': '자사 제품 수명 주기 및 벤치마킹 보고서 종합 추적 현황',
     'tab-timeline': '연도별 세그먼트 제품 출시 및 사양 변천 추적',
     'tab-ev': '글로벌 완성차 제조사 대응 친환경/전기차 전용 타이어 개발 진척 현황',
     'tab-reports': '전체 81개 Arena VPR 심층 분석 보고서 통합 검색 및 아카이브'
@@ -667,7 +667,7 @@ function renderTimeline() {
   // 2. 고유한 연도 오름차순 정렬 추출
   const years = [...new Set(sheetItems.map(item => item.year))].sort((a, b) => a - b);
 
-  // 3. 고유한 excelRow(엑셀 행 번호) 오름차순으로 행 목록 생성하여 순서 100% 보장
+  // 3. 고유한 excelRow 오름차순으로 행 목록 생성하여 순서 100% 보장
   const excelRows = [...new Set(sheetItems.map(item => item.excelRow))].sort((a, b) => a - b);
 
   // 각 excelRow에 매칭되는 그룹핑 생성
@@ -709,7 +709,7 @@ function renderTimeline() {
     return true;
   });
 
-  // 4. 동적 rowspan (행 병합 횟수) 정밀 사전 계산 (필터링된 행 목록 기준)
+  // 4. 동적 rowspan 정밀 사전 계산 (필터링된 행 목록 기준)
   // 4-1. Segment(category)의 rowspan 연속 횟수 계산
   for (let i = 0; i < filteredRows.length; i++) {
     if (i === 0 || filteredRows[i].category !== filteredRows[i - 1].category) {
@@ -753,12 +753,12 @@ function renderTimeline() {
   
   const segmentTh = document.createElement('th');
   segmentTh.className = 'segment-col';
-  segmentTh.textContent = '세그먼트 (Segment)';
+  segmentTh.textContent = '세그먼트';
   headerTr.appendChild(segmentTh);
 
   const makerTh = document.createElement('th');
   makerTh.className = 'maker-col';
-  makerTh.textContent = '구분 (Maker)';
+  makerTh.textContent = '구분';
   headerTr.appendChild(makerTh);
 
   years.forEach(year => {
@@ -791,7 +791,7 @@ function renderTimeline() {
     filteredRows.forEach((row) => {
       const tr = document.createElement('tr');
       
-      // 자사 Hankook 행 판별하여 행(tr) 강조용 클래스 주입
+      // 자사 Hankook 행 판별하여 행 강조용 클래스 주입
       const isHankookRow = (row.division.toUpperCase() === 'HK' || row.division === '자사' || row.division.toUpperCase() === 'HANKOOK');
       if (isHankookRow) {
         tr.classList.add('hankook-row');
@@ -890,7 +890,7 @@ function renderTimeline() {
   }, 100);
 }
 
-// 엑셀 내 구분(Division)을 실제 표시용 메이커로 매핑해주는 스마트 헬퍼 함수
+// 엑셀 내 구분을 실제 표시용 메이커로 매핑해주는 스마트 헬퍼 함수
 function getMakerDisplayName(division, items) {
   if (!division) return '-';
   const cleanDiv = division.toUpperCase().trim();
@@ -930,7 +930,7 @@ function renderEVBoard() {
   if (!viewport) return;
 
   if (state.evData.length === 0) {
-    viewport.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 50px 0;">전기차(EV) 벤치마킹 타겟 데이터가 존재하지 않습니다.</div>`;
+    viewport.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 50px 0;">전기차 벤치마킹 타겟 데이터가 존재하지 않습니다.</div>`;
     return;
   }
 
@@ -1526,7 +1526,7 @@ function updatePlcFilterOptions() {
   const activeSheetName = state.timeline.activeSheet;
   const sheetItems = state.plcTimeline.filter(item => item.sheet === activeSheetName);
 
-  // 고유 세그먼트(Category) 및 제조사(Division) 추출
+  // 고유 세그먼트 및 제조사 추출
   const categoriesSet = new Set();
   const makersSet = new Set();
 

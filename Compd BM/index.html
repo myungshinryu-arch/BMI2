@@ -50,11 +50,11 @@
           <span>Maker 상품 비교</span>
         </li>
         
-        <!-- 시스템 간 빠른 연동 파이프라인 (Divider & External Links) -->
+        <!-- 시스템 간 빠른 연동 파이프라인 -->
         <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
         
         <li class="menu-title" style="padding: 0 16px 4px 16px; font-size: 0.68rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
-          글로벌 시스템 이동 (NAVIGATE)
+          글로벌 시스템 이동
         </li>
         
         <li style="list-style: none; padding: 0 10px;">
@@ -163,7 +163,7 @@
             
             <div class="stat-card">
               <div class="stat-info">
-                <h3>평균 유리전이온도 (Tg)</h3>
+                <h3>평균 유리전이온도</h3>
                 <div class="stat-value" id="stat-avg-tg">0</div>
               </div>
               <div class="stat-icon">
@@ -189,7 +189,7 @@
             <div class="card col-4">
               <div class="card-header">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-spider"></i> 대표 타이어 다차원 물성 비교 (Radar)</h3>
+                  <h3><i class="fa-solid fa-spider"></i> 대표 타이어 다차원 물성 비교</h3>
                 </div>
               </div>
               <div class="card-body">
@@ -202,23 +202,23 @@
               </div>
             </div>
 
-            <!-- Dynamic Correlation Scatter Plot (고급 분석) -->
+            <!-- Dynamic Correlation Scatter Plot -->
             <div class="card col-8">
               <div class="card-header">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-chart-line"></i> 물성 상관관계 분석 시뮬레이터 (Scatter)</h3>
+                  <h3><i class="fa-solid fa-chart-line"></i> 물성 상관관계 분석 시뮬레이터</h3>
                 </div>
                 <div class="chart-controls">
                   <select id="scatter-x" class="chart-select">
-                    <option value="Silica" selected>Silica 함량 (phr)</option>
-                    <option value="Carbon Black">Carbon Black 함량 (phr)</option>
-                    <option value="Polymer_NR">NR (천연고무) 비율 (%)</option>
-                    <option value="Polymer_SBR">SBR (합성고무) 비율 (%)</option>
-                    <option value="Polymer_BR">BR (부타디엔) 비율 (%)</option>
+                    <option value="Silica" selected>Silica 함량</option>
+                    <option value="Carbon Black">Carbon Black 함량</option>
+                    <option value="Polymer_NR">NR 비율 (%)</option>
+                    <option value="Polymer_SBR">SBR 비율 (%)</option>
+                    <option value="Polymer_BR">BR 비율 (%)</option>
                     <option value="Styrene">SBR 내 Styrene 비율 (%)</option>
                     <option value="Vinyl">SBR 내 Vinyl 비율 (%)</option>
-                    <option value="ZnO">ZnO (산화아연) 함량 (phr)</option>
-                    <option value="Sulfur">Sulfur (황) 함량 (phr)</option>
+                    <option value="ZnO">ZnO 함량</option>
+                    <option value="Sulfur">Sulfur 함량</option>
                   </select>
                   <span style="color: var(--text-muted); font-size: 0.8rem; align-self: center;">vs</span>
                   <select id="scatter-y" class="chart-select">
@@ -237,7 +237,7 @@
               <div class="card-body">
                 <div class="chart-container">
                   <div id="scatter-correlation-badge" class="correlation-badge">
-                    <i class="fa-solid fa-calculator" style="color: var(--primary); margin-right: 6px;"></i>상관계수 (r): <span id="correlation-value">N/A</span>
+                    <i class="fa-solid fa-calculator" style="color: var(--primary); margin-right: 6px;"></i>상관계수: <span id="correlation-value">N/A</span>
                   </div>
                   <canvas id="chart-scatter"></canvas>
                 </div>
@@ -248,7 +248,7 @@
             <div class="card col-6">
               <div class="card-header">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-flask"></i> Polymer Blend 비율 분포 (NR / SBR / BR)</h3>
+                  <h3><i class="fa-solid fa-flask"></i> Polymer Blend 비율 분포</h3>
                 </div>
               </div>
               <div class="card-body">
@@ -258,11 +258,11 @@
               </div>
             </div>
 
-            <!-- Styrene / Vinyl Ratio Chart (신규 차트) -->
+            <!-- Styrene / Vinyl Ratio Chart -->
             <div class="card col-6">
               <div class="card-header">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-vials"></i> Styrene / Vinyl 비율 분석 (NMR, in SBR)</h3>
+                  <h3><i class="fa-solid fa-vials"></i> Styrene / Vinyl 비율 분석</h3>
                 </div>
               </div>
               <div class="card-body">
@@ -276,7 +276,7 @@
             <div class="card col-6">
               <div class="card-header">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-dumbbell"></i> 보강제 배합 분석 (Carbon Black vs Silica)</h3>
+                  <h3><i class="fa-solid fa-dumbbell"></i> 보강제 배합 분석</h3>
                 </div>
               </div>
               <div class="card-body">
@@ -286,11 +286,11 @@
               </div>
             </div>
 
-            <!-- ZnO / Sulfur Chart (신규 차트) -->
+            <!-- ZnO / Sulfur Chart -->
             <div class="card col-6">
               <div class="card-header">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-circle-radiation"></i> 가류제 및 촉진제 배합 분석 (ZnO vs Sulfur)</h3>
+                  <h3><i class="fa-solid fa-circle-radiation"></i> 가류제 및 촉진제 배합 분석</h3>
                 </div>
               </div>
               <div class="card-body">
@@ -318,39 +318,39 @@
             <div class="card-body">
               <div class="filter-grid">
                 <div class="filter-group">
-                  <label for="filter-maker">제조사 (Maker)</label>
+                  <label for="filter-maker">제조사</label>
                   <select id="filter-maker" class="filter-control">
-                    <option value="">전체 (All)</option>
+                    <option value="">전체</option>
                   </select>
                 </div>
                 <div class="filter-group">
-                  <label for="filter-pattern">패턴 (Pattern)</label>
+                  <label for="filter-pattern">패턴</label>
                   <select id="filter-pattern" class="filter-control">
-                    <option value="">전체 (All)</option>
+                    <option value="">전체</option>
                   </select>
                 </div>
                 <div class="filter-group">
-                  <label for="filter-size">규격 (Size)</label>
+                  <label for="filter-size">규격</label>
                   <select id="filter-size" class="filter-control">
-                    <option value="">전체 (All)</option>
+                    <option value="">전체</option>
                   </select>
                 </div>
                 <div class="filter-group">
-                  <label for="filter-season">시즌 (Season)</label>
+                  <label for="filter-season">시즌</label>
                   <select id="filter-season" class="filter-control">
-                    <option value="">전체 (All)</option>
+                    <option value="">전체</option>
                   </select>
                 </div>
                 <div class="filter-group">
                   <label for="filter-year">분석년도</label>
                   <select id="filter-year" class="filter-control">
-                    <option value="">전체 (All)</option>
+                    <option value="">전체</option>
                   </select>
                 </div>
                 <div class="filter-group" id="filter-group-part" style="display: none;">
-                  <label for="filter-part">부위 (Part)</label>
+                  <label for="filter-part">부위</label>
                   <select id="filter-part" class="filter-control">
-                    <option value="">전체 (All)</option>
+                    <option value="">전체</option>
                   </select>
                 </div>
                 <button id="btn-filter-reset" class="btn-reset">
@@ -451,7 +451,7 @@
                 </div>
                 <div style="display: flex; gap: 10px;">
                   <button id="btn-download-raw-csv" class="filter-control" style="font-size: 0.8rem; padding: 6px 12px; display: flex; align-items: center; gap: 6px; background: rgba(0, 230, 118, 0.1); border-color: rgba(0, 230, 118, 0.2); color: var(--accent-green);">
-                    <i class="fa-solid fa-file-csv"></i> Raw Data 다운로드 (CSV)
+                    <i class="fa-solid fa-file-csv"></i> Raw Data 다운로드
                   </button>
                   <button class="filter-control" onclick="window.print()" style="font-size: 0.8rem; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
                     <i class="fa-solid fa-print"></i> PDF 인쇄 / 저장
@@ -467,7 +467,7 @@
               </div>
             </div>
 
-            <!-- 온도별 점탄성 특성 곡선 및 물성 밸런스 비교 대시보드 (ARES Sweep & Radar) -->
+            <!-- 온도별 점탄성 특성 곡선 및 물성 밸런스 비교 대시보드 -->
             <div class="card" id="report-visco-chart-card" style="background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;">
               <div class="card-header" style="background: #f8fafc !important; border-bottom: 1px solid #cbd5e1 !important; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 20px;">
                 <div class="card-title">
@@ -486,7 +486,7 @@
               <div class="card-body" style="padding: 20px;">
                 <div class="report-visco-layout">
                   
-                  <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 (Radar) -->
+                  <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 -->
                   <div class="visco-left-radar-panel">
                     <h4 style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
                       <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
@@ -496,7 +496,7 @@
                       <canvas id="chart-report-radar"></canvas>
                     </div>
                     <div style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
-                      * 6대 핵심 지표(경도, Tg, 저온유연 G', 0℃ G", 0℃ tanδ, 60℃ tanδ) 상대 비교 점수(0~100)를 대조 시각화합니다.
+                      * 6대 핵심 지표(경도, Tg, 저온유연 G', 0℃ G", 0℃ tanδ, 60℃ tanδ) 상대 비교 점수를 대조 시각화합니다.
                     </div>
                   </div>
                   
@@ -536,7 +536,7 @@
                 <div class="card-title">
                   <h3><i class="fa-solid fa-pen-to-square"></i> 엔지니어 종합 검토 소견 (수정 및 작성 가능)</h3>
                 </div>
-                <span style="font-size: 0.85rem; color: var(--text-muted);">* 입력한 내용은 리포트 인쇄(PDF) 시 하단에 자동 포함됩니다.</span>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">* 입력한 내용은 리포트 인쇄 시 하단에 자동 포함됩니다.</span>
               </div>
               <div class="card-body" style="padding: 20px;">
                 <textarea id="report-user-comments-input" class="filter-control" style="width: 100%; min-height: 120px; background: rgba(255,255,255,0.02); border-color: var(--card-border); color: #fff; padding: 14px; font-size: 0.98rem; border-radius: 8px; resize: vertical; line-height: 1.6;" placeholder="이곳에 이 리포트에 대한 엔지니어링 종합 검토 의견을 수동으로 입력해 주세요..."></textarea>
@@ -565,9 +565,9 @@
                   
                   <!-- 제조사 전용 드롭다운 필터 신설 -->
                   <div class="filter-group" style="margin-bottom: 2px;">
-                    <label for="compare-maker-select" style="font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-bottom: 6px; display: block;">제조사 선택 (Maker Filter)</label>
+                    <label for="compare-maker-select" style="font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-bottom: 6px; display: block;">제조사 선택</label>
                     <select id="compare-maker-select" class="filter-control" style="width: 100%; padding: 8px 12px; font-weight: 500;">
-                      <option value="">전체 제조사 (All Makers)</option>
+                      <option value="">전체 제조사</option>
                     </select>
                   </div>
 
@@ -609,10 +609,10 @@
                   <div style="display: flex; flex-direction: column; gap: 8px;">
                     <h4 style="font-size: 1rem; color: #1e293b; display: flex; align-items: center; gap: 8px; margin: 0;">
                       <i class="fa-solid fa-crosshairs" style="color: var(--primary);"></i>
-                      기준 모델(Base Line) 지정
+                      기준 모델 지정
                     </h4>
                     <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">
-                      비교군 중 하나의 패턴을 기준으로 설정하면 다른 패턴들의 배합 중량 증감(phr) 및 물성 편차(%)가 실시간으로 재계산됩니다.
+                      비교군 중 하나의 패턴을 기준으로 설정하면 다른 패턴들의 배합 중량 증감 및 물성 편차(%)가 실시간으로 재계산됩니다.
                     </p>
                     <div id="compare-base-options" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px;">
                       <!-- Dynamic Radio Options -->
@@ -686,7 +686,7 @@
                   </div>
                 </div>
 
-                <!-- Part 3: ARES Full Curve (온도별 거동 분석) 신설 -->
+                <!-- Part 3: ARES Full Curve 신설 -->
                 <div class="card">
                   <div class="card-header" style="background: rgba(255, 255, 255, 0.02); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div class="card-title">
@@ -712,7 +712,7 @@
                   </div>
                 </div>
                 
-                <!-- Smart Diagnosis AI Insight Board (맨 하단 이동) -->
+                <!-- Smart Diagnosis AI Insight Board -->
                 <div class="card diagnosis-card" id="compare-smart-diagnosis" style="border-left: 4px solid var(--primary);">
                   <!-- Dynamic Engineering Insights -->
                 </div>
