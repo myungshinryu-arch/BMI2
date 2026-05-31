@@ -16,17 +16,11 @@ from train_model import build_recipe_derived_features, classify_material
 
 app = FastAPI(title="Tire Compound ARES Curve Prediction API")
 
-# Enable CORS for frontend integration
+# Enable CORS for frontend integration (Stateless prediction API, open to all origins to prevent blocking)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://myungshinryu-arch.github.io",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

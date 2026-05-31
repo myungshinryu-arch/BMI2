@@ -31,13 +31,15 @@
     let tabButtons = null;
 
     // API Base URLs - Automatically route ports if running from local environment to fastapi port 8000, else to Render
-    const API_BASE =
+    let API_BASE =
         window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1")
             ? "http://localhost:8000"
             : "https://bmi2-api.onrender.com"; // Render 배포 후 이 URL을 실제 Render 배포 URL로 변경해 주세요 (예: https://bmi2-api.onrender.com)
-    const API_SPEC = `${API_BASE}/api/data-spec`;
-    const API_PREDICT = `${API_BASE}/api/predict`;
-    const API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+    let API_SPEC = `${API_BASE}/api/data-spec`;
+    let API_PREDICT = `${API_BASE}/api/predict`;
+    let API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+
+    const FALLBACK_API_BASE = "https://bmi2-api.onrender.com";
 
     // Global toast notifier helper
     window.showToast = function(message) {
@@ -84,8 +86,32 @@
 
     // Fetch Init Spec and Setup
     async function initDashboard() {
-        const response = await fetch(API_SPEC);
-        if (!response.ok) throw new Error("Could not fetch data spec");
+        let response;
+        try {
+            response = await fetch(API_SPEC);
+            if (!response.ok) throw new Error("Could not fetch data spec");
+        } catch (localError) {
+            // If local connection fails, fallback to production Render backend dynamically
+            if (API_BASE !== FALLBACK_API_BASE) {
+                console.warn(`Local FastAPI backend (${API_BASE}) is not running. Automatically falling back to production Render backend (${FALLBACK_API_BASE})...`);
+                API_BASE = FALLBACK_API_BASE;
+                API_SPEC = `${API_BASE}/api/data-spec`;
+                API_PREDICT = `${API_BASE}/api/predict`;
+                API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+                
+                response = await fetch(API_SPEC);
+                if (!response.ok) throw new Error("Could not fetch data spec from production fallback server");
+                
+                // Show a helpful toast notifying that the system is running using fallback backend
+                setTimeout(() => {
+                    if (window.showToast) {
+                        window.showToast("로컬 백엔드가 감지되지 않아 실서버(Render)로 자동 연동되었습니다.");
+                    }
+                }, 1000);
+            } else {
+                throw localError;
+            }
+        }
         
         const spec = await response.json();
         materials = spec.materials;
