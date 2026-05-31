@@ -221,49 +221,7 @@
             </div>
           </div>
 
-          <!-- 꼭지 2 (우측 상단): 연도별 타이어 판매량 및 종합 성능 점수 추이 -->
-          <div class="quad-panel panel-trend-performance">
-            <div class="panel-header trend-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-chart-line"></i> 연도별 판매량 & 종합 성능 점수 추이</h3>
-              
-              <!-- 상단 색인 필터 영역 -->
-              <div class="trend-filters">
-                <div class="filter-group">
-                  <label for="trend-mfg"><i class="fa-solid fa-industry"></i> 제조사</label>
-                  <select id="trend-mfg" class="filter-select">
-                    <option value="HANKOOK" selected>HANKOOK</option>
-                    <option value="MICHELIN">MICHELIN</option>
-                    <option value="CONTINENTAL">CONTINENTAL</option>
-                    <option value="BRIDGESTONE">BRIDGESTONE</option>
-                  </select>
-                </div>
-                <div class="filter-group">
-                  <label for="trend-seg"><i class="fa-solid fa-layer-group"></i> 대상 세그먼트</label>
-                  <select id="trend-seg" class="filter-select">
-                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절</option>
-                    <option value="All-Season Passenger">일반 승용 사계절</option>
-                    <option value="Winter / Snow">겨울용 스노우</option>
-                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV</option>
-                  </select>
-                </div>
-                
-                <!-- 버튼식 성능 데이터 소스 -->
-                <div class="filter-group performance-source-group">
-                  <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
-                  <div class="btn-group-performance" role="group" id="trend-source-group">
-                    <button type="button" class="btn-source active" data-source="NorthAmerica">북미종합평점</button>
-                    <button type="button" class="btn-source" data-source="Europe">유럽종합평점</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="panel-content chart-container">
-              <canvas id="trend-performance-chart"></canvas>
-            </div>
-          </div>
-
-          <!-- 꼭지 3 (좌측 하단): 상품 기술 경쟁력 비교 (한국타이어 vs. 벤치마크 핵심성능 비교) -->
+          <!-- 꼭지 2 (우측 상단): 상품 기술 경쟁력 비교 (한국타이어 vs. 벤치마크 핵심성능 비교) -->
           <div class="quad-panel panel-product-competitiveness">
             <div class="panel-header tech-header-filters">
               <h3 class="panel-title"><i class="fa-solid fa-gauge-high"></i> 상품 기술 경쟁력 비교</h3>
@@ -326,21 +284,125 @@
             </div>
           </div>
 
-          <!-- 꼭지 4 (우측 하단): R&D 테마 집중 비교 (기존 R&D 패널이 이 위치로 이동) -->
-          <div class="quad-panel panel-rd-priority">
-            <div class="panel-header rd-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-compass-drafting"></i> R&D 테마 집중 비교</h3>
-              
-              <!-- 글로벌 탑 4 탭 버튼 (복수 선택 가능, 디폴트 Hankook & Michelin 활성) -->
-              <div class="rd-mfg-tabs" id="rd-mfg-tabs">
-                <button class="rd-tab-btn active" data-mfg="HANKOOK">HANKOOK</button>
-                <button class="rd-tab-btn active" data-mfg="MICHELIN">MICHELIN</button>
-                <button class="rd-tab-btn" data-mfg="CONTINENTAL">CONTINENTAL</button>
-                <button class="rd-tab-btn" data-mfg="BRIDGESTONE">BRIDGESTONE</button>
+          <!-- 꼭지 3 (하단 풀-너비 10열): 대표 상품 세대별 성능 분석 -->
+          <div id="panel-generation-trends" class="quad-panel panel-generation-trends" style="grid-column: span 10;">
+            <div class="panel-header" style="border-bottom: none; padding-bottom: 0;">
+              <h3 class="panel-title"><i class="fa-solid fa-arrows-spin"></i> 대표 상품 세대별 성능 분석</h3>
+            </div>
+            
+            <!-- Filter and Selector Section -->
+            <div class="panel-filter-bar" style="margin-bottom: 20px; display: flex; flex-direction: row; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: flex-start; width: 100%;">
+              <div class="filter-bar-group">
+                <span class="filter-bar-title">분석 대상 제조사 (BRAND):</span>
+                <div class="tab-btn-group" id="gt-brand-selector">
+                  <button class="tab-toggle-btn active" data-brand="Michelin" style="border-left-color: #5cb2ff; border-left-width: 4px;">미쉐린 (Michelin)</button>
+                  <button class="tab-toggle-btn" data-brand="Continental" style="border-left-color: #ff9f24; border-left-width: 4px;">콘티넨탈 (Continental)</button>
+                  <button class="tab-toggle-btn" data-brand="Pirelli" style="border-left-color: #3b82f6; border-left-width: 4px;">피렐리 (Pirelli)</button>
+                </div>
+              </div>
+              <div class="filter-bar-group" id="gt-lineup-container">
+                <span class="filter-bar-title">세그먼트 / 라인업 (LINEUP):</span>
+                <div class="tab-btn-group" id="gt-lineup-selector">
+                  <!-- JS에 의해 동적으로 라인업 버튼 주입 -->
+                </div>
               </div>
             </div>
-            <div class="panel-content chart-container">
-              <canvas id="rd-priority-chart"></canvas>
+
+            <!-- Main Header Card -->
+            <div class="strategy-header card-premium" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; padding: 20px; border-radius: 12px; border: 1px solid rgba(249, 115, 22, 0.1); background: rgba(255, 252, 249, 0.8); width: 100%; box-sizing: border-box;">
+              <div class="strategy-title-group">
+                <h4 class="strategy-main-title" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--text-primary); margin: 0;" id="gt-header-title">미쉐린 플래그십 상품군 세대별 진화 분석</h4>
+                <p class="strategy-subtitle" id="gt-header-subtitle" style="color: var(--text-secondary); margin: 6px 0 0 0; font-size: 0.9rem; line-height: 1.5;">Top Market Segment: EU - Ultra High Performance (UHP) | US - Grand Touring</p>
+              </div>
+              <div class="strategy-badge" style="background: rgba(255, 107, 0, 0.15); color: #ff6b00; border: 1px solid var(--color-hankook, #ff6b00); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; white-space: nowrap;">COMPETITOR GEN ANALYSIS</div>
+            </div>
+
+            <!-- Layout Grid: Left (Brochure Deck), Right (Evolution Chart & Insights) -->
+            <div class="gt-main-grid" style="width: 100%;">
+              <!-- 1. Left: Brochure Pamphlet Deck -->
+              <div class="gt-left-column">
+                <h4 class="gt-section-title" style="font-size: 1.1rem; font-weight: 800; color: #000000; border-left: 5px solid #ff6b00; padding-left: 12px; margin-top: 0; margin-bottom: 15px;">세대별 공식 리플렛/브로셔 핵심 분석 (Brochure Leaflet Deck)</h4>
+                <div class="gt-brochure-deck" id="gt-brochure-container">
+                  <!-- JS에 의해 동적으로 카드 주입 -->
+                </div>
+              </div>
+
+              <!-- 2. Right: Chart and Strategic Insights -->
+              <div class="gt-right-column">
+                <!-- Evolutionary Radar/Line Chart -->
+                <div class="chart-card gt-chart-card border-hankook-glow-subtle" style="margin-bottom: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 12px; padding: 20px; border: 1px solid rgba(249, 115, 22, 0.1);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                    <h4 class="chart-card-title" id="gt-chart-title" style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #000000;">세대별 세부 성능 항목 진화 트렌드 (0-10 Scale)</h4>
+                    <div class="filter-bar-group" style="padding: 0; margin-bottom: 0;">
+                      <select id="gt-generation-selector" class="filter-select" style="font-size: 0.8rem; height: 30px; padding: 4px 24px 4px 10px !important;">
+                        <option value="gen3" selected>3세대 최신 모델 매칭 비교</option>
+                        <option value="gen2">2세대 중간 모델 매칭 비교</option>
+                        <option value="gen1">1세대 과거 모델 매칭 비교</option>
+                        <option value="all-comp">경쟁사 세대별 진화 추이 (Competitor)</option>
+                        <option value="all-hk">한국타이어 세대별 진화 추이 (Hankook)</option>
+                        <option value="all-six">전체 6개 라인업 동시 비교 (Complex)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="chart-wrapper" style="height: 320px; position: relative;">
+                    <canvas id="chart-generation-evolution"></canvas>
+                  </div>
+                </div>
+
+                <!-- Strategic Insights Panel -->
+                <div class="card-premium gt-insights-card" style="margin-bottom: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 12px; padding: 20px; border: 1px solid rgba(249, 115, 22, 0.1);">
+                  <h4 class="card-title-premium" style="color: #2563eb; border-left: 5px solid #2563eb; margin: 0 0 15px 0; font-size: 1.1rem; font-weight: 800; padding-left: 12px;">과거 vs 현재 vs 미래 R&D 혁신 포커스</h4>
+                  <div class="gt-insights-grid" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="gt-insight-box" style="padding: 12px; border-radius: 8px; background: rgba(254, 215, 170, 0.25); border: 1px solid rgba(249, 115, 22, 0.15);">
+                      <div class="gt-insight-box-title" style="color: #64748b; font-size: 0.85rem; font-weight: 800; margin-bottom: 4px;">PAST GEN FOCUS</div>
+                      <p class="gt-insight-box-text" id="gt-insight-past" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: #000000;">과거 데이터 로딩 중...</p>
+                    </div>
+                    <div class="gt-insight-box" style="padding: 12px; border-radius: 8px; background: rgba(254, 215, 170, 0.25); border: 1px solid rgba(249, 115, 22, 0.15);">
+                      <div class="gt-insight-box-title" style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 4px;">CURRENT GEN FOCUS</div>
+                      <p class="gt-insight-box-text" id="gt-insight-present" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: #000000;">현재 데이터 로딩 중...</p>
+                    </div>
+                    <div class="gt-insight-box" style="padding: 12px; border-radius: 8px; background: rgba(254, 215, 170, 0.25); border: 1px solid rgba(249, 115, 22, 0.15);">
+                      <div class="gt-insight-box-title" style="color: #ff6b00; font-size: 0.85rem; font-weight: 800; margin-bottom: 4px;">FUTURE R&D PREDICTION</div>
+                      <p class="gt-insight-box-text" id="gt-insight-future" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: #000000;">미래 예측 로딩 중...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Model Change Direction Analysis Card -->
+            <div class="card-premium border-hankook-glow-subtle" style="margin-top: 10px; padding: 20px; border-radius: 12px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(249, 115, 22, 0.1); width: 100%; box-sizing: border-box;" id="gt-direction-card">
+              <h4 class="card-title-premium" style="color: #ea580c; border-left: 5px solid #f97316; margin: 0 0 15px 0; font-size: 1.1rem; font-weight: 800; padding-left: 12px;">세대별 모델 체인지 R&D 개발 방향성 차이 분석 (Generational R&D Philosophy)</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="gt-insight-box" style="border-left: 3px solid #ff9f24; padding: 12px; border-radius: 8px; background: rgba(254, 215, 170, 0.25); border: 1px solid rgba(249, 115, 22, 0.15);">
+                  <div class="gt-insight-box-title" style="color: #ea580c; font-size: 0.85rem; font-weight: 800; margin-bottom: 6px;">1세대 ➔ 2세대 체인지 방향성 차이</div>
+                  <p class="gt-insight-box-text" id="gt-direction-g1-g2" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: #000000;">로딩 중...</p>
+                </div>
+                <div class="gt-insight-box" style="border-left: 3px solid #ff6b00; padding: 12px; border-radius: 8px; background: rgba(254, 215, 170, 0.25); border: 1px solid rgba(249, 115, 22, 0.15);">
+                  <div class="gt-insight-box-title" style="color: #ff6b00; font-size: 0.85rem; font-weight: 800; margin-bottom: 6px;">2세대 ➔ 3세대 체인지 방향성 차이</div>
+                  <p class="gt-insight-box-text" id="gt-direction-g2-g3" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: #000000;">로딩 중...</p>
+                </div>
+              </div>
+              <div class="gt-insight-box" style="margin-top: 15px; background: rgba(254, 215, 170, 0.25); border: 1px solid rgba(249, 115, 22, 0.15); border-left: 3px solid #2563eb; padding: 12px; border-radius: 8px;">
+                <div class="gt-insight-box-title" style="color: #2563eb; font-size: 0.85rem; font-weight: 800; margin-bottom: 4px;">제조사별 R&D 철학 및 세그먼트 엔지니어링 격차 요약</div>
+                <p class="gt-insight-box-text" id="gt-direction-summary" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: #000000;">로딩 중...</p>
+              </div>
+            </div>
+
+            <!-- Actionable R&D Proposal for Hankook -->
+            <div class="card-premium border-hankook-glow" style="margin-top: 15px; padding: 20px; border-radius: 12px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(249, 115, 22, 0.15); width: 100%; box-sizing: border-box;">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div class="kpi-icon-wrapper bg-orange-trans" style="margin-right: 12px; width: 32px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255, 107, 0, 0.1); border-radius: 8px; padding: 6px 10px;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="color-orange" style="width: 18px; height: 18px; color: #ff6b00;">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                    <polyline points="2 17 12 22 22 17"/>
+                  </svg>
+                </div>
+                <h4 class="card-title-premium" style="color: #ff6b00; margin: 0; font-size: 1.15rem; font-weight: 800; padding-left: 0;">대응 개발을 위한 한국타이어 R&D 기술 제안 (R&D Action Proposal)</h4>
+              </div>
+              <p class="card-text-premium" id="gt-rd-proposal" style="font-size: 0.9rem; line-height: 1.6; color: #000000; margin: 0;">
+                R&D 제안 데이터 로딩 중...
+              </p>
             </div>
           </div>
 
@@ -494,6 +556,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Market Strategy Data (Generation Trends Database) -->
+  <script src="Market_Strategy/data.js"></script>
 
   <!-- Core App JS -->
   <script src="app.js"></script>
