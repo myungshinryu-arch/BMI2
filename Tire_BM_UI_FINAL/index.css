@@ -23,7 +23,7 @@
   --text-dark: #0f172a;           /* Slate 900 */
   
   /* Layout Dimensions */
-  --sidebar-width: 260px;
+  --sidebar-width: 290px;
   --header-height: 80px;
   
   /* Effects - Soft Orange light frosted shadow and glow */
@@ -81,8 +81,8 @@ body {
 .sidebar {
   width: var(--sidebar-width);
   background-color: var(--bg-secondary);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid var(--card-border);
   display: flex;
   flex-direction: column;
@@ -91,45 +91,47 @@ body {
   bottom: 0;
   left: 0;
   z-index: 1000;
-  transform: translateX(-245px); /* 15px만 남기고 숨김 */
+  transform: translateX(-275px); /* 15px만 남기고 완전히 왼쪽으로 숨김 */
   opacity: 0.15;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+  padding: 24px 0;
 }
 
 .sidebar:hover,
 .sidebar.active {
   transform: translateX(0);
   opacity: 1;
-  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.15), var(--shadow);
+  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.18), var(--shadow);
 }
  
 .sidebar-brand {
-  height: var(--header-height);
+  height: 70px;
   padding: 0 24px;
   display: flex;
   align-items: center;
   gap: 12px;
   border-bottom: 1px solid var(--card-border);
+  margin-bottom: 15px;
 }
  
 .logo-icon {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-dark);
-  font-size: 1.15rem;
+  color: #fff;
+  font-size: 0.95rem;
   font-weight: 800;
   box-shadow: var(--glow-cyan);
 }
  
 .logo-text {
-  font-family: var(--font-display);
+  font-family: 'Outfit', sans-serif;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--primary);
 }
@@ -148,7 +150,7 @@ body {
  
 .sidebar-menu {
   list-style: none;
-  padding: 24px 16px;
+  padding: 0 16px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -159,13 +161,16 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 16px;
+  padding: 12px 20px;
   color: var(--text-muted);
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
   transition: var(--transition);
+  width: 100%;
+  box-sizing: border-box;
 }
  
 .menu-item:hover {
@@ -174,7 +179,7 @@ body {
 }
  
 .menu-item i {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   width: 20px;
   text-align: center;
   transition: var(--transition);
