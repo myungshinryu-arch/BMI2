@@ -37,6 +37,8 @@ material_stats = []
 base_recipe = {}
 base_curve = []
 oil_content = {}
+benchmark_summary = []
+benchmark_details = {}
 
 
 def normalize_recipe_polymer_dict(recipe_dict: Dict[str, float], oil_content_dict: dict) -> Dict[str, float]:
@@ -104,15 +106,15 @@ def load_assets():
     if hasattr(model, 'n_jobs'):
         model.n_jobs = 1
         
-    with open(cols_path, 'r') as f:
+    with open(cols_path, 'r', encoding='utf-8') as f:
         feature_cols = json.load(f)
         
-    with open(stats_path, 'r') as f:
+    with open(stats_path, 'r', encoding='utf-8') as f:
         material_stats = json.load(f)
         
     # Load oil content constraint database
     if oil_path.exists():
-        with open(oil_path, 'r') as f:
+        with open(oil_path, 'r', encoding='utf-8') as f:
             oil_content = json.load(f)
     else:
         oil_content = {}
@@ -120,7 +122,7 @@ def load_assets():
     # Build default base recipe (Try custom base_recipe.json first, fallback to mean PHR)
     base_recipe_path = MODEL_DIR / 'base_recipe.json'
     if base_recipe_path.exists():
-        with open(base_recipe_path, 'r') as f:
+        with open(base_recipe_path, 'r', encoding='utf-8') as f:
             base_recipe = json.load(f)
         # Ensure all materials in material_stats have a value in base_recipe, default to 0.0 if missing
         for m in material_stats:
@@ -180,6 +182,174 @@ def run_inference(recipe_dict: Dict[str, float]):
     return curve
 
 
+def load_benchmarks():
+    global benchmark_summary, benchmark_details
+    import time
+    start_time = time.time()
+    
+    summary_path = DATA_DIR / "benchmark_summary.json"
+    details_path = DATA_DIR / "benchmark_details.json"
+    
+    if summary_path.exists() and details_path.exists():
+        try:
+            with open(summary_path, "r", encoding="utf-8") as f:
+                benchmark_summary = json.load(f)
+            with open(details_path, "r", encoding="utf-8") as f:
+                benchmark_details = json.load(f)
+            elapsed = time.time() - start_time
+            print(f"Loaded {len(benchmark_summary)} precomputed benchmarks from cache files in {elapsed:.3f} seconds.")
+            return
+        except Exception as e:
+            print(f"Warning: Failed to load benchmark cache: {e}. Recomputing...")
+            
+    # Recompute
+    tread_data_path = BASE_DIR.parent / "Compd BM" / "data" / "tread_data.json"
+    if not tread_data_path.exists():
+        tread_data_path = BASE_DIR.parent / "Compd_BM" / "data" / "tread_data.json"
+        
+    if not tread_data_path.exists():
+        print("Warning: tread_data.json not found. Benchmark endpoints will return empty data.")
+        benchmark_summary = []
+        benchmark_details = {}
+        return
+        
+    try:
+        with open(tread_data_path, "r", encoding="utf-8") as f:
+            source_data = json.load(f)
+            
+        temperatures = [-60, -55, -50, -45, -40, -35, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+        priority_makers = [
+            'HANKOOK', 'MICHELIN', 'CONTINENTAL', 'BRIDGESTONE', 
+            'GOODYEAR', 'PIRELLI', 'KUMHO', 'NEXEN'
+        ]
+        
+        def get_prop_value(item, keys):
+            for key in keys:
+                if key in item and item[key] is not None:
+                    return item[key]
+            return None
+
+        computed_summary = []
+        computed_details = {}
+        
+        for index, item in enumerate(source_data):
+            maker_val = get_prop_value(item, ['Maker', 'MakerPatternRaw'])
+            maker = str(maker_val).strip() if maker_val is not None else ""
+            
+            pattern_val = get_prop_value(item, ['Pattern'])
+            pattern = str(pattern_val).strip() if pattern_val is not None else ""
+            
+            if not maker or not pattern or maker == 'N/A' or pattern == 'N/A':
+                continue
+                
+            temps_avg = {}
+            has_ares_data = False
+            
+            for temp in temperatures:
+                val = None
+                if temp == 0:
+                    val_raw = get_prop_value(item, ['tan δ @ 0℃', '0℃ tanδ', '0C tanδ', 'tanδ @ 0℃'])
+                elif temp == 60:
+                    val_raw = get_prop_value(item, ['tanδ @ 60℃', 'tanδ @ 60C', 'tan δ @ 60℃', 'tan @ 60', 'DMTS @ 60℃', 'tanδ @ 60℃ (@ 0.5%)', '60'])
+                else:
+                    val_raw = item.get(str(temp))
+                    if val_raw is None and temp > 0:
+                        val_raw = item.get('+' + str(temp))
+                
+                if val_raw is not None:
+                    try:
+                        val = float(val_raw)
+                    except ValueError:
+                        val = None
+                        
+                if val is not None:
+                    temps_avg[str(temp)] = val
+                    has_ares_data = True
+                else:
+                    temps_avg[str(temp)] = None
+                    
+            if not has_ares_data:
+                continue
+                
+            tg_raw = get_prop_value(item, ["Tg_peak temp. (℃)", "Tg_peak temp. (C)", "Tg"])
+            tg = None
+            if tg_raw is not None:
+                try:
+                    tg = float(tg_raw)
+                except ValueError:
+                    tg = None
+                    
+            wet = temps_avg.get('0')
+            rr = temps_avg.get('60')
+            
+            size_raw = get_prop_value(item, ['Size', '규격'])
+            size = str(size_raw).strip() if size_raw is not None else ""
+            
+            season_raw = get_prop_value(item, ['Season'])
+            season = str(season_raw).strip() if season_raw is not None else ""
+            
+            part_raw = get_prop_value(item, ['부위'])
+            part = str(part_raw).strip() if part_raw is not None else ""
+            
+            year_raw = get_prop_value(item, ['분석년도', '분석년도 '])
+            year = str(year_raw).strip() if year_raw is not None else ""
+            
+            id_str = f"{maker}||{pattern}||{size}||{season}||{part}||{year}||{index}"
+            
+            computed_summary.append({
+                "id": id_str,
+                "maker": maker,
+                "pattern": pattern,
+                "size": size,
+                "season": season,
+                "part": part,
+                "year": year,
+                "avgData": {
+                    "tg": tg,
+                    "tand0": wet,
+                    "tand60": rr
+                }
+            })
+            
+            computed_details[id_str] = temps_avg
+
+        # Sorting
+        def sort_key(item):
+            maker_upper = item["maker"].upper()
+            try:
+                p_idx = priority_makers.index(maker_upper)
+            except ValueError:
+                p_idx = 999999
+            try:
+                year_val = int(item["year"])
+            except ValueError:
+                year_val = 0
+            pattern_val = item["pattern"].lower()
+            return (p_idx, maker_upper, -year_val, pattern_val)
+            
+        computed_summary.sort(key=sort_key)
+        
+        benchmark_summary = computed_summary
+        benchmark_details = computed_details
+        
+        # Save cache
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        try:
+            with open(summary_path, "w", encoding="utf-8") as f:
+                json.dump(benchmark_summary, f, ensure_ascii=False, indent=2)
+            with open(details_path, "w", encoding="utf-8") as f:
+                json.dump(benchmark_details, f, ensure_ascii=False)
+            elapsed = time.time() - start_time
+            print(f"Precomputed and saved {len(benchmark_summary)} benchmarks successfully in {elapsed:.3f} seconds.")
+        except Exception as write_err:
+            print(f"Warning: Failed to write benchmark cache: {write_err}")
+            
+    except Exception as parse_err:
+        print(f"Error precomputing benchmarks: {parse_err}")
+        benchmark_summary = []
+        benchmark_details = {}
+
+
 class RecipeRequest(BaseModel):
     recipe: Dict[str, float]
 
@@ -193,6 +363,33 @@ async def startup_event():
         print("Model assets loaded successfully on startup.")
     except Exception as e:
         print(f"Warning: Startup asset load skipped: {e}")
+        
+    try:
+        load_benchmarks()
+    except Exception as e:
+        print(f"Warning: Startup benchmarks load skipped: {e}")
+
+
+@app.get("/api/benchmark/summary")
+async def get_benchmark_summary():
+    import time
+    start_time = time.time()
+    res = benchmark_summary
+    elapsed = time.time() - start_time
+    print(f"[/api/benchmark/summary] response prepared in {elapsed*1000:.2f} ms")
+    return res
+
+
+@app.get("/api/benchmark/detail")
+async def get_benchmark_detail(id: str):
+    import time
+    start_time = time.time()
+    detail = benchmark_details.get(id)
+    if detail is None:
+        raise HTTPException(status_code=404, detail="Benchmark ID not found")
+    elapsed = time.time() - start_time
+    print(f"[/api/benchmark/detail] detail fetched in {elapsed*1000:.2f} ms for ID: {id}")
+    return detail
 
 
 @app.get("/api/data-spec")

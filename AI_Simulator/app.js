@@ -16,6 +16,7 @@
     let selectedReferenceData = null;
     let selectedMaker = null;
     let selectedPattern = null;
+    let cachedBenchmarkSummaryList = null;
 
     // Computed Performance Scores State for AI Advisor
     let currentWearSim = 0;
@@ -38,6 +39,8 @@
     let API_SPEC = `${API_BASE}/api/data-spec`;
     let API_PREDICT = `${API_BASE}/api/predict`;
     let API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+    let API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
+    let API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
 
     const FALLBACK_API_BASE = "https://bmi2-api.onrender.com";
 
@@ -98,6 +101,8 @@
                 API_SPEC = `${API_BASE}/api/data-spec`;
                 API_PREDICT = `${API_BASE}/api/predict`;
                 API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+                API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
+                API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
                 
                 response = await fetch(API_SPEC);
                 if (!response.ok) throw new Error("Could not fetch data spec from production fallback server");
@@ -122,6 +127,22 @@
         simulatedCurve = [...spec.base_curve];
         baseTg = spec.base_tg;
         simulatedTg = spec.base_tg;
+        
+        // Fetch precomputed benchmark summary with timing log
+        console.time('API_Benchmark_Summary_Load');
+        try {
+            const summaryResponse = await fetch(API_BENCHMARK_SUMMARY);
+            if (summaryResponse.ok) {
+                cachedBenchmarkSummaryList = await summaryResponse.json();
+                console.log(`[Performance] Loaded ${cachedBenchmarkSummaryList.length} benchmark summary items via API`);
+            } else {
+                throw new Error("Benchmark summary response not ok");
+            }
+        } catch (err) {
+            console.warn("Failed to load benchmark summary from API, falling back to local extraction from window.TREAD_DATA:", err);
+            cachedBenchmarkSummaryList = null; // Will trigger local extraction on demand
+        }
+        console.timeEnd('API_Benchmark_Summary_Load');
         
         // 1. Setup Slider Filters (Tab Clicking)
         setupTabFilters();
@@ -396,6 +417,8 @@
                 API_SPEC = `${API_BASE}/api/data-spec`;
                 API_PREDICT = `${API_BASE}/api/predict`;
                 API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+                API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
+                API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
 
                 try {
                     response = await fetch(API_PREDICT, {
@@ -529,30 +552,106 @@
         const scoreRRRef = getScore(baseRR, distributionBounds.rr, true);
         const scoreRRSim = getScore(simRR, distributionBounds.rr, true);
 
-        // 4. Update Triangle Radar Chart
+        // 4. Update Triangle Radar Chart with Adaptive Scale
         if (radarChart) {
             radarChart.data.datasets[0].data = [scoreWearRef, scoreWetRef, scoreRRRef];
             radarChart.data.datasets[1].data = [scoreWearSim, scoreWetSim, scoreRRSim];
             
+            // Calculate adaptive minimum and step size based on plotted scores
+            const allScores = [];
+            if (selectedReferenceId) {
+                allScores.push(scoreWearRef, scoreWetRef, scoreRRRef);
+            }
+            allScores.push(scoreWearSim, scoreWetSim, scoreRRSim);
+            const minScore = Math.min(...allScores);
+            
+            let adaptiveMin = 0;
+            let stepSize = 20;
+            
+            if (minScore >= 75) {
+                adaptiveMin = 60;
+                stepSize = 10;
+            } else if (minScore >= 65) {
+                adaptiveMin = 50;
+                stepSize = 10;
+            } else if (minScore >= 55) {
+                adaptiveMin = 40;
+                stepSize = 15;
+            } else if (minScore >= 45) {
+                adaptiveMin = 30;
+                stepSize = 15;
+            } else if (minScore >= 35) {
+                adaptiveMin = 20;
+                stepSize = 20;
+            } else {
+                adaptiveMin = 0;
+                stepSize = 20;
+            }
+            
+            radarChart.options.scales.r.min = adaptiveMin;
+            radarChart.options.scales.r.ticks.stepSize = stepSize;
+            
+            // Update HTML Overlay Mini Cards
+            const overlayWearSim = document.getElementById('overlay-wear-sim');
+            const overlayWearRef = document.getElementById('overlay-wear-ref');
+            const overlayWetSim = document.getElementById('overlay-wet-sim');
+            const overlayWetRef = document.getElementById('overlay-wet-ref');
+            const overlayRRSim = document.getElementById('overlay-rr-sim');
+            const overlayRefRR = document.getElementById('overlay-rr-ref');
+
+            if (overlayWearSim) overlayWearSim.textContent = scoreWearSim;
+            if (overlayWearRef) overlayWearRef.textContent = scoreWearRef;
+            if (overlayWetSim) overlayWetSim.textContent = scoreWetSim;
+            if (overlayWetRef) overlayWetRef.textContent = scoreWetRef;
+            if (overlayRRSim) overlayRRSim.textContent = scoreRRSim;
+            if (overlayRefRR) overlayRefRR.textContent = scoreRRRef;
+
+            const overlayWearDiff = document.getElementById('overlay-wear-diff');
+            const overlayWetDiff = document.getElementById('overlay-wet-diff');
+            const overlayRRDiff = document.getElementById('overlay-rr-diff');
+
+            const updateOverlayDiff = (el, simVal, refVal) => {
+                if (!el) return;
+                if (selectedReferenceId) {
+                    const diff = simVal - refVal;
+                    if (diff > 0) {
+                        el.textContent = `+${diff}`;
+                        el.className = 'radar-overlay-diff diff-pos';
+                    } else if (diff < 0) {
+                        el.textContent = `${diff}`;
+                        el.className = 'radar-overlay-diff diff-neg';
+                    } else {
+                        el.textContent = '0';
+                        el.className = 'radar-overlay-diff diff-zero';
+                    }
+                    el.style.display = 'inline-block';
+                } else {
+                    el.style.display = 'none';
+                }
+            };
+
+            updateOverlayDiff(overlayWearDiff, scoreWearSim, scoreWearRef);
+            updateOverlayDiff(overlayWetDiff, scoreWetSim, scoreWetRef);
+            updateOverlayDiff(overlayRRDiff, scoreRRSim, scoreRRRef);
+
+            const vsEls = document.querySelectorAll('.overlay-val-vs');
+            const refEls = document.querySelectorAll('.overlay-val-ref');
+
             if (selectedReferenceId) {
                 radarChart.data.datasets[0].hidden = false;
                 if (selectedReferenceData) {
                     radarChart.data.datasets[0].label = `${selectedReferenceData.pattern} (${selectedReferenceData.maker})`;
                 }
-                radarChart.data.labels = [
-                    ['내마모', `Sim: ${scoreWearSim} / Ref: ${scoreWearRef}`],
-                    ['Wet 제동', `Sim: ${scoreWetSim} / Ref: ${scoreWetRef}`],
-                    ['연비', `Sim: ${scoreRRSim} / Ref: ${scoreRRRef}`]
-                ];
+                vsEls.forEach(el => el.style.display = 'inline');
+                refEls.forEach(el => el.style.display = 'inline');
             } else {
                 radarChart.data.datasets[0].hidden = true;
                 radarChart.data.datasets[0].label = 'Base Compound';
-                radarChart.data.labels = [
-                    ['내마모', `${scoreWearSim}점`],
-                    ['Wet 제동', `${scoreWetSim}점`],
-                    ['연비', `${scoreRRSim}점`]
-                ];
+                vsEls.forEach(el => el.style.display = 'none');
+                refEls.forEach(el => el.style.display = 'none');
             }
+            
+            radarChart.data.labels = ['내마모', 'Wet 제동', '연비'];
             radarChart.update();
         }
 
@@ -576,6 +675,7 @@
         const statusWearEl = document.getElementById('status-wear');
 
         const refLegendNameEl = document.getElementById('ref-legend-name');
+        const refLegendBadgeEl = document.getElementById('ref-legend-badge');
         const comparisonLegendEl = document.querySelector('.comparison-legend');
         const insightTextEl = document.getElementById('comparison-insight-text');
 
@@ -588,43 +688,86 @@
             refPattern = selectedReferenceData.pattern || 'DEFENDER 2';
             activeRef = true;
             if (refLegendNameEl) {
-                refLegendNameEl.textContent = `${refPattern} (${refMaker})`;
+                const fullName = `${refPattern} (${refMaker})`;
+                refLegendNameEl.textContent = fullName;
+                refLegendNameEl.title = fullName;
+            }
+            if (refLegendBadgeEl) {
+                refLegendBadgeEl.style.display = 'inline-flex';
             }
             if (comparisonLegendEl) {
                 comparisonLegendEl.style.display = 'flex';
+            }
+            
+            // Dynamic Radar Legend Update
+            const radarLegendRef = document.getElementById('radar-legend-ref');
+            const radarLegendRefName = document.getElementById('radar-legend-ref-name');
+            if (radarLegendRef && radarLegendRefName) {
+                const fullName = `${refPattern} (${refMaker})`;
+                radarLegendRefName.textContent = fullName;
+                radarLegendRefName.title = fullName;
+                radarLegendRef.style.display = 'inline-flex';
             }
         } else {
             refMaker = 'BASE';
             refPattern = 'Base Compound';
             if (refLegendNameEl) {
                 refLegendNameEl.textContent = 'Base Compound';
+                refLegendNameEl.title = 'Base Compound';
+            }
+            if (refLegendBadgeEl) {
+                refLegendBadgeEl.style.display = 'none';
             }
             if (comparisonLegendEl) {
                 comparisonLegendEl.style.display = 'none';
             }
+            
+            // Dynamic Radar Legend Update
+            const radarLegendRef = document.getElementById('radar-legend-ref');
+            if (radarLegendRef) {
+                radarLegendRef.style.display = 'none';
+            }
         }
+
+        const refLabel = activeRef ? `${refPattern} (${refMaker})` : 'Benchmark';
+        const cardWetEl = document.getElementById('card-wet');
+        const cardHandlingEl = document.getElementById('card-handling');
+        const cardWearEl = document.getElementById('card-wear');
 
         // Wet Card update
         const wetRefVal = activeRef ? scoreWetRef : scoreWetRef;
         if (compWetSimEl) compWetSimEl.textContent = scoreWetSim;
         if (compWetRefEl) compWetRefEl.textContent = wetRefVal;
-        if (compWetRefLabelEl) compWetRefLabelEl.textContent = refMaker;
+        if (compWetRefLabelEl) {
+            compWetRefLabelEl.textContent = 'Benchmark';
+            compWetRefLabelEl.title = refLabel;
+        }
+        if (cardWetEl) {
+            cardWetEl.title = activeRef ? `비교 대상: ${refLabel}` : '비교 대상이 지정되지 않았습니다.';
+        }
         
         const wetDiff = scoreWetSim - wetRefVal;
         if (diffWetEl) {
-            const sign = wetDiff >= 0 ? '+' : '';
-            diffWetEl.textContent = `${sign}${wetDiff}`;
-            diffWetEl.className = `value-diff ${wetDiff >= 0 ? 'diff-pos' : 'diff-neg'}`;
+            if (wetDiff > 0) {
+                diffWetEl.textContent = `+${wetDiff}`;
+                diffWetEl.className = 'value-diff diff-pos';
+            } else if (wetDiff < 0) {
+                diffWetEl.textContent = `${wetDiff}`;
+                diffWetEl.className = 'value-diff diff-neg';
+            } else {
+                diffWetEl.textContent = '0';
+                diffWetEl.className = 'value-diff diff-zero';
+            }
         }
         if (statusWetEl) {
             if (wetDiff > 10) {
-                statusWetEl.textContent = 'HK 우세';
+                statusWetEl.textContent = 'HK Virtual 우세';
                 statusWetEl.className = 'card-status status-win';
             } else if (wetDiff >= 0) {
-                statusWetEl.textContent = 'HK 근소 우세';
+                statusWetEl.textContent = 'HK Virtual 근소 우세';
                 statusWetEl.className = 'card-status status-narrow-win';
             } else {
-                statusWetEl.textContent = 'HK 열세';
+                statusWetEl.textContent = 'HK Virtual 열세';
                 statusWetEl.className = 'card-status status-lose';
             }
         }
@@ -633,23 +776,36 @@
         const handlingRefVal = activeRef ? scoreRRRef : scoreRRRef;
         if (compHandlingSimEl) compHandlingSimEl.textContent = scoreRRSim;
         if (compHandlingRefEl) compHandlingRefEl.textContent = handlingRefVal;
-        if (compHandlingRefLabelEl) compHandlingRefLabelEl.textContent = refMaker;
+        if (compHandlingRefLabelEl) {
+            compHandlingRefLabelEl.textContent = 'Benchmark';
+            compHandlingRefLabelEl.title = refLabel;
+        }
+        if (cardHandlingEl) {
+            cardHandlingEl.title = activeRef ? `비교 대상: ${refLabel}` : '비교 대상이 지정되지 않았습니다.';
+        }
         
         const handlingDiff = scoreRRSim - handlingRefVal;
         if (diffHandlingEl) {
-            const sign = handlingDiff >= 0 ? '+' : '';
-            diffHandlingEl.textContent = `${sign}${handlingDiff}`;
-            diffHandlingEl.className = `value-diff ${handlingDiff >= 0 ? 'diff-pos' : 'diff-neg'}`;
+            if (handlingDiff > 0) {
+                diffHandlingEl.textContent = `+${handlingDiff}`;
+                diffHandlingEl.className = 'value-diff diff-pos';
+            } else if (handlingDiff < 0) {
+                diffHandlingEl.textContent = `${handlingDiff}`;
+                diffHandlingEl.className = 'value-diff diff-neg';
+            } else {
+                diffHandlingEl.textContent = '0';
+                diffHandlingEl.className = 'value-diff diff-zero';
+            }
         }
         if (statusHandlingEl) {
             if (handlingDiff > 10) {
-                statusHandlingEl.textContent = 'HK 우세';
+                statusHandlingEl.textContent = 'HK Virtual 우세';
                 statusHandlingEl.className = 'card-status status-win';
             } else if (handlingDiff >= 0) {
-                statusHandlingEl.textContent = 'HK 근소 우세';
+                statusHandlingEl.textContent = 'HK Virtual 근소 우세';
                 statusHandlingEl.className = 'card-status status-narrow-win';
             } else {
-                statusHandlingEl.textContent = 'HK 열세';
+                statusHandlingEl.textContent = 'HK Virtual 열세';
                 statusHandlingEl.className = 'card-status status-lose';
             }
         }
@@ -658,23 +814,36 @@
         const wearRefVal = activeRef ? scoreWearRef : scoreWearRef;
         if (compWearSimEl) compWearSimEl.textContent = scoreWearSim;
         if (compWearRefEl) compWearRefEl.textContent = wearRefVal;
-        if (compWearRefLabelEl) compWearRefLabelEl.textContent = refMaker;
+        if (compWearRefLabelEl) {
+            compWearRefLabelEl.textContent = 'Benchmark';
+            compWearRefLabelEl.title = refLabel;
+        }
+        if (cardWearEl) {
+            cardWearEl.title = activeRef ? `비교 대상: ${refLabel}` : '비교 대상이 지정되지 않았습니다.';
+        }
         
         const wearDiff = scoreWearSim - wearRefVal;
         if (diffWearEl) {
-            const sign = wearDiff >= 0 ? '+' : '';
-            diffWearEl.textContent = `${sign}${wearDiff}`;
-            diffWearEl.className = `value-diff ${wearDiff >= 0 ? 'diff-pos' : 'diff-neg'}`;
+            if (wearDiff > 0) {
+                diffWearEl.textContent = `+${wearDiff}`;
+                diffWearEl.className = 'value-diff diff-pos';
+            } else if (wearDiff < 0) {
+                diffWearEl.textContent = `${wearDiff}`;
+                diffWearEl.className = 'value-diff diff-neg';
+            } else {
+                diffWearEl.textContent = '0';
+                diffWearEl.className = 'value-diff diff-zero';
+            }
         }
         if (statusWearEl) {
             if (wearDiff > 10) {
-                statusWearEl.textContent = 'HK 우세';
+                statusWearEl.textContent = 'HK Virtual 우세';
                 statusWearEl.className = 'card-status status-win';
             } else if (wearDiff >= 0) {
-                statusWearEl.textContent = 'HK 근소 우세';
+                statusWearEl.textContent = 'HK Virtual 근소 우세';
                 statusWearEl.className = 'card-status status-narrow-win';
             } else {
-                statusWearEl.textContent = 'HK 열세';
+                statusWearEl.textContent = 'HK Virtual 열세';
                 statusWearEl.className = 'card-status status-lose';
             }
         }
@@ -696,19 +865,19 @@
                 if (insightTextEl) {
                     const betterCount = [wetDiff >= 0, handlingDiff >= 0, wearDiff >= 0].filter(Boolean).length;
                     if (betterCount === 3) {
-                        insightTextEl.textContent = `설계안이 선택된 벤치마크 타이어 대비 3대 주요 물성(마모, 제동, 연비) 모두 우세한 압도적 성능 밸런스를 발휘합니다.`;
+                        insightTextEl.textContent = `설계안이 선택된 벤치마크 제품 대비 3대 핵심 성능(내마모, Wet 제동, 연비) 모두 우수한 뛰어난 성능 밸런스를 보여줍니다.`;
                     } else if (betterCount === 0) {
-                        insightTextEl.textContent = `설계안이 선택된 벤치마크 대비 3대 성능 지표 모두 열세에 있습니다. 하단의 AI formulation Advisor 기능을 통해 AI 배합 최적화 처방을 진단해 보십시오.`;
+                        insightTextEl.textContent = `설계안이 선택된 벤치마크 제품 대비 3대 핵심 성능이 모두 열세에 있습니다. 하단의 AI 추천 배합 분석 기능을 통해 최적의 조정안을 검토해보십시오.`;
                     } else {
                         const winList = [];
                         if (wetDiff >= 0) winList.push('Wet 제동');
-                        if (handlingDiff >= 0) winList.push('회전저항(연비)');
-                        if (wearDiff >= 0) winList.push('내마모 수명');
+                        if (handlingDiff >= 0) winList.push('연비');
+                        if (wearDiff >= 0) winList.push('내마모');
                         const loseList = [];
                         if (wetDiff < 0) loseList.push('Wet 제동');
-                        if (handlingDiff < 0) loseList.push('회전저항(연비)');
-                        if (wearDiff < 0) loseList.push('내마모 수명');
-                        insightTextEl.textContent = `설계안이 ${winList.join(', ')} 측면에서 비교 타겟 대비 우수하나, ${loseList.join(', ')} 성능의 보완 조율이 필요합니다.`;
+                        if (handlingDiff < 0) loseList.push('연비');
+                        if (wearDiff < 0) loseList.push('내마모');
+                        insightTextEl.textContent = `설계안이 ${winList.join(', ')} 측면에서 비교 대상 대비 우수하지만, ${loseList.join(', ')} 성능의 배합 조정이 필요합니다.`;
                     }
                 }
             }
@@ -761,7 +930,7 @@
                         order: 2
                     },
                     {
-                        label: 'VIRTUAL (HK)',
+                        label: 'HK Virtual 배합',
                         data: simVals,
                         borderColor: '#f97316', // Vibrant Cyber Orange
                         borderWidth: 3,
@@ -837,24 +1006,24 @@
                         data: [0, 0, 0],
                         borderColor: '#64748b',
                         backgroundColor: 'rgba(100, 116, 139, 0.12)',
-                        borderWidth: 2,
-                        pointRadius: 3,
+                        borderWidth: 3,
+                        pointRadius: 4.5,
                         pointBackgroundColor: '#64748b',
                         pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1,
+                        pointBorderWidth: 1.5,
                         fill: true,
                         hidden: true
                     },
                     {
-                        label: 'VIRTUAL (HK)',
+                        label: 'HK Virtual 배합',
                         data: [0, 0, 0],
                         borderColor: '#f97316', // Glowing Orange
                         backgroundColor: 'rgba(249, 115, 22, 0.12)',
-                        borderWidth: 3.5,
-                        pointRadius: 4.5,
+                        borderWidth: 4,
+                        pointRadius: 6,
                         pointBackgroundColor: '#f97316',
                         pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1.5,
+                        pointBorderWidth: 2,
                         fill: true
                     }
                 ]
@@ -863,7 +1032,12 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 layout: {
-                    padding: 15
+                    padding: {
+                        top: 35,
+                        bottom: 35,
+                        left: 40,
+                        right: 40
+                    }
                 },
                 plugins: {
                     legend: {
@@ -890,18 +1064,14 @@
                             stepSize: 20
                         },
                         grid: {
-                            color: 'rgba(249, 115, 22, 0.04)'
+                            color: 'rgba(249, 115, 22, 0.12)',
+                            lineWidth: 1.2
                         },
                         angleLines: {
-                            color: 'rgba(249, 115, 22, 0.04)'
+                            color: 'rgba(249, 115, 22, 0.12)'
                         },
                         pointLabels: {
-                            color: '#1e293b',
-                            font: {
-                                family: 'Outfit',
-                                weight: '800',
-                                size: 12
-                            }
+                            display: false // We use beautiful, highly styled HTML Overlay Mini Cards instead!
                         }
                     }
                 }
@@ -1089,6 +1259,9 @@
 
     // Fetch and aggregate individual references that have ARES Sweep data dynamically
     function getReferences() {
+        if (cachedBenchmarkSummaryList) {
+            return cachedBenchmarkSummaryList;
+        }
         // BM_FINAL 에서 tread_data.js가 포함되면 window.TREAD_DATA 로 데이터를 가져옵니다.
         const sourceData = window.TREAD_DATA || [];
         const temperatures = [-60, -55, -50, -45, -40, -35, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
@@ -1389,12 +1562,31 @@
         }
 
         // Selection Handler
-        function handleSelection(ref) {
+        async function handleSelection(ref) {
             if (selectedReferenceId === ref.id) {
                 selectedReferenceId = null;
                 selectedReferenceData = null;
                 window.showToast("비교 기준 컴파운드 지정이 해제되었습니다.");
             } else {
+                console.time(`Lazy_Load_Detail_${ref.id}`);
+                // Lazy load detail temps if missing
+                if (!ref.avgData.temps) {
+                    try {
+                        const detailUrl = `${API_BENCHMARK_DETAIL}?id=${encodeURIComponent(ref.id)}`;
+                        const detailRes = await fetch(detailUrl);
+                        if (detailRes.ok) {
+                            ref.avgData.temps = await detailRes.json();
+                            console.log(`[Performance] Lazy-loaded detail temps for ID: ${ref.id}`);
+                        } else {
+                            throw new Error("Detail fetch response not ok");
+                        }
+                    } catch (detailErr) {
+                        console.error("Failed to lazy load detail for benchmark:", ref.id, detailErr);
+                        ref.avgData.temps = {}; // empty fallback
+                    }
+                }
+                console.timeEnd(`Lazy_Load_Detail_${ref.id}`);
+
                 selectedReferenceId = ref.id;
                 selectedReferenceData = ref;
                 window.showToast(`기준 컴파운드로 지정되었습니다: ${ref.maker} ${ref.pattern}`);
@@ -1477,6 +1669,7 @@
     }
 
     // Setup AI Advisor Panel Click Handler
+    // Setup AI Advisor Panel Click Handler
     function setupAIAdvisor() {
         const btnRun = document.getElementById('btn-run-ai-advisor');
         const btnApply = document.getElementById('btn-apply-ai-recipe');
@@ -1484,6 +1677,647 @@
         if (!btnRun || !contentEl) return;
 
         let pendingOptimizedRecipe = null;
+
+        const ensureDashboardStyles = () => {
+            if (!document.getElementById('ai-dashboard-custom-styles')) {
+                const style = document.createElement('style');
+                style.id = 'ai-dashboard-custom-styles';
+                style.textContent = `
+                    .ai-dashboard-container {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px;
+                        width: 100%;
+                        font-family: var(--font-sans);
+                        font-size: 14px;
+                        line-height: 1.65;
+                    }
+                    .ai-dashboard-container,
+                    .ai-dashboard-container * {
+                        word-break: keep-all;
+                    }
+                    .ai-section-title {
+                        font-family: var(--font-display);
+                        font-size: 22px;
+                        font-weight: 800;
+                        color: var(--text-dark);
+                        margin: 8px 0 16px 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        border-bottom: 1px solid rgba(249, 115, 22, 0.12);
+                        padding-bottom: 10px;
+                    }
+                    .ai-card {
+                        background: var(--card-bg, #ffffff);
+                        border: 1px solid rgba(249, 115, 22, 0.08);
+                        border-radius: 12px;
+                        padding: 24px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.015);
+                    }
+                    .ai-gap-card {
+                        flex: 1;
+                        background: rgba(0, 0, 0, 0.015);
+                        border: 1px solid rgba(0, 0, 0, 0.03);
+                        border-radius: 8px;
+                        padding: 14px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 4px;
+                        transition: transform 0.2s;
+                    }
+                    .ai-gap-card:hover {
+                        transform: translateY(-2px);
+                        background: rgba(249, 115, 22, 0.01);
+                        border-color: rgba(249, 115, 22, 0.1);
+                    }
+                    .ai-gap-val {
+                        font-family: 'Outfit', sans-serif;
+                        font-size: 1.4rem;
+                        font-weight: 800;
+                    }
+                    .ai-gap-val.positive {
+                        color: #10b981;
+                    }
+                    .ai-gap-val.negative {
+                        color: #ef4444;
+                    }
+                    .ai-comparison-table-wrapper {
+                        overflow-x: auto;
+                        border: 1px solid rgba(0,0,0,0.05);
+                        border-radius: 8px;
+                    }
+                    .ai-comparison-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 14px;
+                        text-align: left;
+                        background: #ffffff;
+                    }
+                    .ai-comparison-table th {
+                        background: rgba(0,0,0,0.02);
+                        color: var(--text-muted);
+                        font-weight: 600;
+                        padding: 12px 14px;
+                        border-bottom: 1px solid rgba(0,0,0,0.05);
+                        font-size: 13.5px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+                    .ai-comparison-table td {
+                        padding: 12px 14px;
+                        border-bottom: 1px solid rgba(0,0,0,0.04);
+                        color: var(--text-primary);
+                        vertical-align: middle;
+                    }
+                    .ai-comparison-table tr:last-child td {
+                        border-bottom: none;
+                    }
+                    .ai-recipe-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 13.5px;
+                        background: #ffffff;
+                    }
+                    .ai-recipe-table th {
+                        font-size: 13.5px;
+                        color: var(--text-muted);
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1.5px solid rgba(0,0,0,0.04);
+                        padding: 12px 14px;
+                    }
+                    .ai-recipe-table td {
+                        padding: 12px 14px;
+                        font-size: 13.5px;
+                    }
+                    .delta-badge {
+                        display: inline-block;
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        font-weight: 800;
+                        font-family: 'Outfit', sans-serif;
+                        font-size: 12.5px;
+                        text-align: center;
+                        min-width: 60px;
+                        white-space: nowrap;
+                    }
+                    .delta-badge.plus {
+                        background: rgba(16, 185, 129, 0.12);
+                        color: #10b981;
+                        border: 1px solid rgba(16, 185, 129, 0.2);
+                    }
+                    .delta-badge.minus {
+                        background: rgba(239, 68, 68, 0.12);
+                        color: #ef4444;
+                        border: 1px solid rgba(239, 68, 68, 0.2);
+                    }
+                    .delta-badge:not(.plus):not(.minus) {
+                        background: rgba(100, 116, 139, 0.06);
+                        color: #64748b;
+                    }
+                    .risk-badge {
+                        display: inline-block;
+                        padding: 4px 10px;
+                        border-radius: 12px;
+                        font-weight: 800;
+                        font-size: 12px;
+                        text-align: center;
+                        white-space: nowrap;
+                    }
+                    .risk-badge.low {
+                        background: rgba(16, 185, 129, 0.1);
+                        color: #10b981;
+                        border: 1px solid rgba(16, 185, 129, 0.2);
+                    }
+                    .risk-badge.medium {
+                        background: rgba(59, 130, 246, 0.1);
+                        color: #3b82f6;
+                        border: 1px solid rgba(59, 130, 246, 0.2);
+                    }
+                    .risk-badge.high {
+                        background: rgba(239, 68, 68, 0.1);
+                        color: #ef4444;
+                        border: 1px solid rgba(239, 68, 68, 0.2);
+                    }
+                    .accordion-apply-btn {
+                        white-space: nowrap;
+                    }
+                    .accordion-apply-btn:hover {
+                        transform: translateY(-1px);
+                        filter: brightness(1.08);
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                    }
+                    .accordion-apply-btn:active {
+                        transform: translateY(1px);
+                        filter: brightness(0.95);
+                    }
+                    .ai-accordion-header:hover {
+                        background: rgba(249, 115, 22, 0.03) !important;
+                    }
+                    .ai-recommendation-card {
+                        background: linear-gradient(135deg, rgba(249, 115, 22, 0.06) 0%, rgba(249, 115, 22, 0.01) 100%);
+                        border: 1.5px solid rgba(249, 115, 22, 0.2);
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 4px 15px rgba(249, 115, 22, 0.03);
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .ai-recommendation-card::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 4px;
+                        height: 100%;
+                        background: var(--primary, #f97316);
+                    }
+                    .positive-text {
+                        color: #10b981 !important;
+                    }
+                    .negative-text {
+                        color: #ef4444 !important;
+                    }
+                    .line-clamp-2 {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    button,
+                    .badge,
+                    .candidate-title {
+                        white-space: nowrap;
+                    }
+                    .description,
+                    .report-body,
+                    .feedback-text {
+                        word-break: keep-all;
+                        overflow-wrap: normal;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        };
+
+        const renderAccordionItem = (opt, key, isOpenDefault) => {
+            const wearScoreVal = opt.expected_scores ? opt.expected_scores.wear : (opt.prediction ? opt.prediction.wearScore : 50);
+            const wetScoreVal = opt.expected_scores ? opt.expected_scores.wet : (opt.prediction ? opt.prediction.wetScore : 50);
+            const rrScoreVal = opt.expected_scores ? opt.expected_scores.rr : (opt.prediction ? opt.prediction.rrScore : 50);
+
+            const wearDiff = wearScoreVal - currentWearSim;
+            const wetDiff = wetScoreVal - currentWetSim;
+            const rrDiff = rrScoreVal - currentRRSim;
+
+            let badgeLabel = "Low-Risk 안정";
+            let colorAccent = "#a855f7"; // purple
+            if (key === 'B') {
+                badgeLabel = "Balanced 밸런스 (추천)";
+                colorAccent = "var(--primary)"; // orange
+            } else if (key === 'C') {
+                badgeLabel = "High-Risk 도전";
+                colorAccent = "#ef4444"; // red/rose
+            }
+
+            let candidateNum = 1;
+            if (key === 'B') candidateNum = 2;
+            else if (key === 'C') candidateNum = 3;
+
+            // Build the Raw Material Adjustments Table
+            let tableRowsHtml = '';
+            const changesList = opt.recipeChanges || [];
+            if (changesList.length > 0) {
+                changesList.forEach(c => {
+                    const deltaVal = c.deltaPhr;
+                    let deltaClass = '';
+                    let deltaSymbol = '';
+                    if (deltaVal > 0.01) {
+                        deltaClass = 'plus';
+                        deltaSymbol = `+${deltaVal.toFixed(2)}`;
+                    } else if (deltaVal < -0.01) {
+                        deltaClass = 'minus';
+                        deltaSymbol = `${deltaVal.toFixed(2)}`;
+                    } else {
+                        deltaSymbol = '0.00';
+                    }
+                    
+                    tableRowsHtml += `
+                        <tr>
+                            <td style="font-weight: 700; color: var(--text-dark);">${c.materialName}</td>
+                            <td style="font-family: monospace; color: var(--text-muted); font-size: 12px;">${c.materialCode}</td>
+                            <td style="font-family: 'Outfit', monospace; color: var(--text-primary); text-align: right;">${c.baselinePhr.toFixed(2)}</td>
+                            <td style="font-family: 'Outfit', monospace; color: var(--text-primary); font-weight: 700; text-align: right;">${c.candidatePhr.toFixed(2)}</td>
+                            <td style="text-align: right;"><span class="delta-badge ${deltaClass}">${deltaSymbol}</span></td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tableRowsHtml = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px; font-size: 14px;">원료 배합 변동 없음 (동등 유지)</td>
+                    </tr>
+                `;
+            }
+
+            const risksHtml = (opt.risks || []).map(r => `
+                <li style="margin-bottom: 6px; display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-primary); line-height: 1.5;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: ${colorAccent}; margin-top: 4px; flex-shrink: 0; font-size: 11px;"></i>
+                    <span>${r}</span>
+                </li>
+            `).join('') || `
+                <li style="margin-bottom: 6px; display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-primary); line-height: 1.5;">
+                    <i class="fa-solid fa-circle-check" style="color: #10b981; margin-top: 4px; flex-shrink: 0; font-size: 11px;"></i>
+                    <span>특이 리스크가 식별되지 않은 안정 영역 배합안입니다.</span>
+                </li>
+            `;
+
+            return `
+                <div class="ai-accordion-item ${isOpenDefault ? 'active' : ''}" style="margin-bottom: 16px; border: 1px solid rgba(0,0,0,0.06); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.01);">
+                    <div class="ai-accordion-header" style="background: rgba(0,0,0,0.015); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <strong style="color: var(--text-dark); font-size: 15px; font-weight: 700;">${opt.title}</strong>
+                            <span style="font-size: 11px; font-weight: 800; background: ${colorAccent}15; color: ${colorAccent}; padding: 3px 8px; border-radius: 12px; border: 1px solid ${colorAccent}25;">${badgeLabel}</span>
+                        </div>
+                        <span class="accordion-chevron" style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid ${isOpenDefault ? 'fa-chevron-up' : 'fa-chevron-down'}"></i></span>
+                    </div>
+                    
+                    <div class="ai-accordion-body" style="display: ${isOpenDefault ? 'block' : 'none'}; padding: 20px; background: #ffffff; border-top: 1px solid rgba(0,0,0,0.05);">
+                        
+                        <!-- Strategy & Direction -->
+                        <div style="background: rgba(0,0,0,0.015); border-left: 4px solid ${colorAccent}; padding: 12px 16px; border-radius: 0 6px 6px 0; margin-bottom: 18px;">
+                            <div style="font-size: 11px; font-weight: 800; color: ${colorAccent}; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">원료 조정 방향</div>
+                            <p style="font-size: 14px; color: var(--text-primary); line-height: 1.6; margin: 0;">${opt.direction}</p>
+                        </div>
+
+                        <!-- Recipe Adjustments Table -->
+                        <div style="margin-bottom: 18px;">
+                            <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">상세 원료 조정표</div>
+                            <div style="overflow-x: auto; border: 1px solid rgba(0,0,0,0.05); border-radius: 6px;">
+                                <table class="ai-recipe-table" style="width: 100%; border-collapse: collapse; margin: 0;">
+                                    <thead>
+                                        <tr style="background: rgba(0,0,0,0.015);">
+                                            <th style="text-align: left; padding: 12px 14px; width: 35%;">원료명</th>
+                                            <th style="text-align: left; padding: 12px 14px; width: 15%;">CODE</th>
+                                            <th style="text-align: right; padding: 12px 14px; width: 16%;">기준 PHR</th>
+                                            <th style="text-align: right; padding: 12px 14px; width: 16%;">변경 PHR</th>
+                                            <th style="text-align: right; padding: 12px 14px; width: 18%;">증감 PHR</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${tableRowsHtml}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Metrics & Consideration Split Grid -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+                            
+                            <!-- Predicted Metrics -->
+                            <div style="background: rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.03); border-radius: 8px; padding: 14px;">
+                                <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.04); padding-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">예상 물성 피드백</div>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 13.5px; align-items: center;">
+                                        <span style="color: var(--text-primary);">내마모:</span>
+                                        <div style="display: flex; gap: 6px; align-items: center;">
+                                            <strong style="font-family: 'Outfit'; font-size: 14px;">${wearScoreVal}</strong>
+                                            <span style="font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: ${wearDiff >= 0 ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)'}; color: ${wearDiff >= 0 ? '#10b981' : '#ef4444'}; min-width: 32px; text-align: center;">
+                                                ${wearDiff >= 0 ? '+' : ''}${wearDiff}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 13.5px; align-items: center;">
+                                        <span style="color: var(--text-primary);">Wet 제동:</span>
+                                        <div style="display: flex; gap: 6px; align-items: center;">
+                                            <strong style="font-family: 'Outfit'; font-size: 14px;">${wetScoreVal}</strong>
+                                            <span style="font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: ${wetDiff >= 0 ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)'}; color: ${wetDiff >= 0 ? '#10b981' : '#ef4444'}; min-width: 32px; text-align: center;">
+                                                ${wetDiff >= 0 ? '+' : ''}${wetDiff}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 13.5px; align-items: center;">
+                                        <span style="color: var(--text-primary);">연비:</span>
+                                        <div style="display: flex; gap: 6px; align-items: center;">
+                                            <strong style="font-family: 'Outfit'; font-size: 14px;">${rrScoreVal}</strong>
+                                            <span style="font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: ${rrDiff >= 0 ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)'}; color: ${rrDiff >= 0 ? '#10b981' : '#ef4444'}; min-width: 32px; text-align: center;">
+                                                ${rrDiff >= 0 ? '+' : ''}${rrDiff}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Trade-off / Considerations -->
+                            <div style="background: rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.03); border-radius: 8px; padding: 14px;">
+                                <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.04); padding-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">검토 고려사항 (Trade-off)</div>
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    ${risksHtml}
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <button class="accordion-apply-btn" data-candidate="${key}" style="width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: ${colorAccent}; color: #ffffff; transition: all 0.2s; box-shadow: 0 2px 6px ${colorAccent}25; white-space: nowrap;">
+                            <i class="fa-solid fa-circle-check"></i> 후보 ${candidateNum} 적용
+                        </button>
+
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderAIDashboardHTML = (res) => {
+            const opt = res.optimized_recipe;
+            if (!opt || !opt.A || !opt.B || !opt.C) {
+                return `<div class="ai-report-render" style="line-height: 1.65; color: var(--text-primary); font-size: 14px;">${parseMarkdownToHTML(res.report)}</div>`;
+            }
+
+            ensureDashboardStyles();
+
+            const optA = opt.A;
+            const optB = opt.B;
+            const optC = opt.C;
+
+            const wear_gap = currentWearSim - currentWearRef;
+            const wet_gap = currentWetSim - currentWetRef;
+            const rr_gap = currentRRSim - currentRRRef;
+
+            const positives = [];
+            const negatives = [];
+            if (wear_gap >= 0) positives.push("내마모");
+            else negatives.push("내마모");
+            
+            if (wet_gap >= 0) positives.push("Wet 제동");
+            else negatives.push("Wet 제동");
+            
+            if (rr_gap >= 0) positives.push("연비");
+            else negatives.push("연비");
+            
+            let summarySentence = "";
+            if (positives.length === 3) {
+                summarySentence = "현재 HK Virtual 배합은 모든 핵심 지표(내마모, Wet 제동, 연비)에서 벤치마크 대비 동등 이상으로 우수합니다.";
+            } else if (negatives.length === 3) {
+                summarySentence = "현재 HK Virtual 배합은 3대 핵심 지표(내마모, Wet 제동, 연비) 모두 벤치마크 대비 낮아 개선이 필요합니다.";
+            } else {
+                const formatSubject = (list) => {
+                    if (list.length === 1) {
+                        const item = list[0];
+                        if (item === 'Wet 제동') return 'Wet 제동은';
+                        if (item === '내마모') return '내마모는';
+                        if (item === '연비') return '연비는';
+                    } else if (list.length === 2) {
+                        if (list.includes('내마모') && list.includes('연비')) return '내마모와 연비는';
+                        if (list.includes('내마모') && list.includes('Wet 제동')) return '내마모와 Wet 제동은';
+                        if (list.includes('Wet 제동') && list.includes('연비')) return 'Wet 제동과 연비는';
+                    }
+                    return list.join(', ') + '는';
+                };
+                
+                const posText = formatSubject(positives);
+                const negText = formatSubject(negatives).replace('는', '').replace('은', '');
+                summarySentence = `${posText} 우세하지만, ${negText}는 벤치마크 대비 낮습니다.`;
+            }
+
+            const wearBullet = wear_gap < 0 
+                ? `내마모는 벤치마크 대비 ${wear_gap}점 낮습니다. 고무상 Tg가 상대적으로 높아 저온 영역의 유연성과 마찰 복원력이 부족한 것으로 해석됩니다.` 
+                : `내마모는 벤치마크 대비 +${wear_gap}점 높아 현재 배합의 강점으로 판단됩니다.`;
+            const wetBullet = wet_gap < 0 
+                ? `Wet 제동은 벤치마크 대비 ${wet_gap}점 낮습니다. 0℃ 영역의 점탄성 에너지가 부족하므로 Silica 함량이나 고Tg SBR 비율을 확대할 필요가 있습니다.` 
+                : `Wet 제동은 벤치마크 대비 +${wet_gap}점 높아 현재 배합의 강점으로 판단됩니다.`;
+            const rrBullet = rr_gap < 0 
+                ? `연비는 벤치마크 대비 ${rr_gap}점 낮습니다. 60℃ tanδ를 낮추기 위해 Silane 반응성과 CB/Silica 분산 상태를 함께 개선할 필요가 있습니다.` 
+                : `연비는 벤치마크 대비 +${rr_gap}점 높아 발열 제어가 우수한 수준입니다.`;
+
+            const getDeltaText = (cand, key) => {
+                const dVal = cand.delta ? cand.delta[key] : 0;
+                return `${dVal >= 0 ? '+' : ''}${dVal}`;
+            };
+            const getDeltaClass = (cand, key) => {
+                const dVal = cand.delta ? cand.delta[key] : 0;
+                return dVal >= 0 ? 'positive' : 'negative';
+            };
+
+            return `
+                <div class="ai-dashboard-container">
+                    
+                    <!-- Section 1: 종합 진단 및 핵심 의사결정 요약 -->
+                    <div class="ai-card">
+                        <h2 class="ai-section-title"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> 종합 진단 및 핵심 의사결정 요약</h2>
+                        <p style="font-size: 14px; color: var(--text-primary); line-height: 1.65; margin: 0 0 16px 0;">
+                            현재 HK Virtual 배합과 선택한 벤치마크 제품(<strong>${(selectedReferenceData ? selectedReferenceData.pattern : 'Benchmark')}</strong>)의 성능 차이를 비교 분석했습니다.
+                        </p>
+                        
+                        <!-- Core Summary & Gaps -->
+                        <div style="background: rgba(249, 115, 22, 0.03); border: 1px solid rgba(249, 115, 22, 0.08); border-radius: 8px; padding: 18px; margin-bottom: 18px;">
+                            <div style="font-weight: 800; color: var(--primary); font-size: 14px; margin-bottom: 6px;"><i class="fa-solid fa-circle-info"></i> 핵심 진단 요약</div>
+                            <p style="font-size: 15px; font-weight: 800; color: var(--text-dark); margin: 0 0 14px 0; line-height: 1.5;">${summarySentence}</p>
+                            
+                            <!-- Gap Cards Grid -->
+                            <div style="display: flex; gap: 14px;">
+                                <div class="ai-gap-card">
+                                    <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">내마모 성능 차이</span>
+                                    <span class="ai-gap-val ${wear_gap >= 0 ? 'positive' : 'negative'}">${wear_gap >= 0 ? '+' : ''}${wear_gap}</span>
+                                </div>
+                                <div class="ai-gap-card">
+                                    <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">Wet 제동 성능 차이</span>
+                                    <span class="ai-gap-val ${wet_gap >= 0 ? 'positive' : 'negative'}">${wet_gap >= 0 ? '+' : ''}${wet_gap}</span>
+                                </div>
+                                <div class="ai-gap-card">
+                                    <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">연비 성능 차이</span>
+                                    <span class="ai-gap-val ${rr_gap >= 0 ? 'positive' : 'negative'}">${rr_gap >= 0 ? '+' : ''}${rr_gap}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Diagnostic Bullets -->
+                        <div style="font-size: 13px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">상세 진단 피드백</div>
+                        <ul style="margin: 0; padding-left: 18px; list-style-type: square; font-size: 14px; color: var(--text-primary); line-height: 1.65; display: flex; flex-direction: column; gap: 6px;">
+                            <li>${wearBullet}</li>
+                            <li>${wetBullet}</li>
+                            <li>${rrBullet}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 2: AI 추천 레시피 후보 3안 -->
+                    <div class="ai-card">
+                        <h2 class="ai-section-title"><i class="fa-solid fa-microchip" style="color: var(--primary);"></i> AI 추천 레시피 후보 3안</h2>
+                        <p style="font-size: 14px; color: var(--text-primary); line-height: 1.65; margin: 0 0 16px 0;">
+                            예측 모델 분석 결과를 바탕으로, 성능 개선 가능성이 있는 레시피 후보 3안을 제안합니다.
+                        </p>
+
+                        <!-- AI Recommendation Highlight Card -->
+                        <div class="ai-recommendation-card">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <span style="color: var(--primary); font-size: 1.2rem;"><i class="fa-solid fa-crown"></i></span>
+                                <strong style="color: var(--text-dark); font-size: 16px; font-weight: 700;">추천안: 후보 2 Balance 개선안</strong>
+                            </div>
+                            <p style="font-size: 14px; color: var(--text-primary); line-height: 1.6; margin: 0; padding-left: 28px;">
+                                SBR/BR 비율과 Silica-Silane 반응 조건을 함께 조정해, Wet 제동 손실을 최소화하면서 내마모와 연비 개선을 동시에 노리는 균형안입니다. 타이어 3대 성능 밸런스(Wear - Wet - RR 성능 밸런스) 균형을 최우선으로 제안합니다.
+                            </p>
+                        </div>
+
+                        <!-- Scenarios Comparison Table -->
+                        <div style="font-size: 13px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">후보 3안 핵심 비교표</div>
+                        <div class="ai-comparison-table-wrapper" style="margin-bottom: 24px;">
+                            <table class="ai-comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%; padding: 12px 14px;">후보명</th>
+                                        <th style="width: 42%; padding: 12px 14px;">목적</th>
+                                        <th style="width: 15%; padding: 12px 14px; text-align: center;">기대효과 (편차)</th>
+                                        <th style="width: 10%; padding: 12px 14px; text-align: center;">실험 리스크</th>
+                                        <th style="width: 8%; padding: 12px 14px; text-align: center;">우선순위</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 800; color: var(--text-dark); font-size: 14px; padding: 14px 16px;">후보 1: Low-Risk 개선안</td>
+                                        <td style="font-size: 13.5px; line-height: 1.5; color: var(--text-primary); padding: 14px 16px;"><div class="line-clamp-2">${optA.purpose}</div></td>
+                                        <td style="padding: 14px 16px;">
+                                            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px;">
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">내마모:</span>
+                                                    <strong class="${getDeltaClass(optA, 'wearScore')}-text" style="font-family: 'Outfit'; font-size: 13.5px;">${getDeltaText(optA, 'wearScore')}</strong>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">Wet 제동:</span>
+                                                    <strong class="${getDeltaClass(optA, 'wetScore')}-text" style="font-family: 'Outfit'; font-size: 13.5px;">${getDeltaText(optA, 'wetScore')}</strong>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">연비:</span>
+                                                    <strong class="${getDeltaClass(optA, 'rrScore')}-text" style="font-family: 'Outfit'; font-size: 13.5px;">${getDeltaText(optA, 'rrScore')}</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="text-align: center; padding: 14px 16px;">
+                                            <span class="risk-badge low">Low</span>
+                                        </td>
+                                        <td style="text-align: center; font-weight: 800; color: var(--text-dark); padding: 14px 16px; font-size: 14px;">2순위</td>
+                                    </tr>
+                                    <tr style="background: rgba(249, 115, 22, 0.025);">
+                                        <td style="font-weight: 800; color: var(--text-dark); font-size: 14.5px; padding: 14px 16px; border-left: 3px solid var(--primary);"><i class="fa-solid fa-crown" style="color: var(--primary); font-size: 12px; margin-right: 4px;"></i> 후보 2: Balance 개선안</td>
+                                        <td style="font-size: 13.5px; line-height: 1.5; color: var(--text-primary); padding: 14px 16px; font-weight: 500;"><div class="line-clamp-2">${optB.purpose}</div></td>
+                                        <td style="padding: 14px 16px;">
+                                            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px;">
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">내마모:</span>
+                                                    <strong class="${getDeltaClass(optB, 'wearScore')}-text" style="font-family: 'Outfit'; font-size: 14px; font-weight: 800;">${getDeltaText(optB, 'wearScore')}</strong>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">Wet 제동:</span>
+                                                    <strong class="${getDeltaClass(optB, 'wetScore')}-text" style="font-family: 'Outfit'; font-size: 14px; font-weight: 800;">${getDeltaText(optB, 'wetScore')}</strong>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">연비:</span>
+                                                    <strong class="${getDeltaClass(optB, 'rrScore')}-text" style="font-family: 'Outfit'; font-size: 14px; font-weight: 800;">${getDeltaText(optB, 'rrScore')}</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="text-align: center; padding: 14px 16px;">
+                                            <span class="risk-badge medium">Medium</span>
+                                        </td>
+                                        <td style="text-align: center; font-weight: 800; color: var(--primary); padding: 14px 16px; font-size: 15px;">1순위</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 800; color: var(--text-dark); font-size: 14px; padding: 14px 16px;">후보 3: High-Risk 개선안</td>
+                                        <td style="font-size: 13.5px; line-height: 1.5; color: var(--text-primary); padding: 14px 16px;"><div class="line-clamp-2">${optC.purpose} <span style="color: var(--danger); font-weight: 700;">(※ 공격적인 실험안)</span></div></td>
+                                        <td style="padding: 14px 16px;">
+                                            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px;">
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">내마모:</span>
+                                                    <strong class="${getDeltaClass(optC, 'wearScore')}-text" style="font-family: 'Outfit'; font-size: 13.5px;">${getDeltaText(optC, 'wearScore')}</strong>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">Wet 제동:</span>
+                                                    <strong class="${getDeltaClass(optC, 'wetScore')}-text" style="font-family: 'Outfit'; font-size: 13.5px;">${getDeltaText(optC, 'wetScore')}</strong>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; gap: 8px;">
+                                                    <span style="color: var(--text-muted);">연비:</span>
+                                                    <strong class="${getDeltaClass(optC, 'rrScore')}-text" style="font-family: 'Outfit'; font-size: 13.5px;">${getDeltaText(optC, 'rrScore')}</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="text-align: center; padding: 14px 16px;">
+                                            <span class="risk-badge high">High</span>
+                                        </td>
+                                        <td style="text-align: center; font-weight: 800; color: var(--text-muted); padding: 14px 16px; font-size: 14px;">3순위</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Detailed Adjustment Accordions -->
+                        <div style="font-size: 13px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">후보별 상세 레시피 조정표</div>
+                        <div class="ai-accordions-group">
+                            ${renderAccordionItem(optA, 'A', false)}
+                            ${renderAccordionItem(optB, 'B', true)}
+                            ${renderAccordionItem(optC, 'C', false)}
+                        </div>
+                    </div>
+
+                    <!-- Section 3: 엔지니어링 설계 가이드 -->
+                    <div class="ai-card">
+                        <h2 class="ai-section-title"><i class="fa-solid fa-vial" style="color: var(--primary);"></i> 컴파운딩 설계 체크포인트</h2>
+                        <ul style="margin: 0; padding-left: 18px; font-size: 14px; color: var(--text-primary); line-height: 1.65; display: flex; flex-direction: column; gap: 12px;">
+                            <li>
+                                <strong style="font-weight: 700; color: var(--text-dark);">Silica-Silane 반응 관리:</strong> Silica와 Silane 비율을 조정할 때는 고온 혼련 구간에서 Silanization 반응이 충분히 진행되는지 확인해야 합니다. 기혼련 가압 스크류 온도 140~150℃ 대역에서 가교가 충분히 활성화될 수 있도록 배치 공정을 상시 모니터링하십시오.
+                            </li>
+                            <li>
+                                <strong style="font-weight: 700; color: var(--text-dark);">Polymer Tg 제어:</strong> SBR/BR 비율은 내마모와 Wet 제동에 동시에 영향을 주는 핵심 조정 변수입니다. BR 증량 시 내마모는 눈에 띄게 우세해지나, 극성 흡착력이 결여되어 Wet 제동거리가 늘어날 수 있으므로 후보 2(Balance 개선안)를 최우선으로 검증할 것을 권장합니다.
+                            </li>
+                        </ul>
+                        <div style="font-size: 13px; color: var(--text-muted); margin-top: 16px; border-top: 1px dashed rgba(0,0,0,0.06); padding-top: 12px; text-align: center; font-style: italic;">
+                            *본 분석은 가상 컴파운드 원료 물리 상태 및 tanδ 예측 기계학습 모델의 예측치를 바탕으로 타이어 재료공학 규칙에 의거해 AI 시스템이 자동 도출한 설계 제안서입니다.*
+                        </div>
+                    </div>
+
+                </div>
+            `;
+        };
 
         btnRun.addEventListener('click', async () => {
             if (!selectedReferenceId || !selectedReferenceData) {
@@ -1497,11 +2331,11 @@
 
             contentEl.className = 'ai-advisor-content';
             contentEl.innerHTML = `
-                <div class="loading-spinner">
-                    <i class="fa-solid fa-brain fa-spin" style="font-size: 2rem;"></i>
-                    <div style="display: flex; flex-direction: column; gap: 4px; align-items: center; margin-top: 10px;">
-                        <strong style="color: var(--text-dark); font-size: 1rem;">AI formulation Advisor 분석 진행 중...</strong>
-                        <span style="color: var(--text-muted); font-size: 0.8rem;">현재 설계된 가상 처방 배합량과 벤치마크 대상 간의 점탄성 격차 및 화학 최적화 솔루션을 탐색하고 있습니다.</span>
+                <div class="loading-spinner" style="padding: 40px 20px; text-align: center;">
+                    <i class="fa-solid fa-brain fa-spin" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 16px;"></i>
+                    <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                        <strong style="color: var(--text-dark); font-size: 18px; font-weight: 800;">AI 레시피 분석 중...</strong>
+                        <span style="color: var(--text-muted); font-size: 14px; line-height: 1.65; max-width: 500px; word-break: keep-all;">현재 HK Virtual 배합과 벤치마크의 성능 차이를 분석하고, 개선 가능한 원료 조정 방향을 찾고 있습니다.</span>
                     </div>
                 </div>
             `;
@@ -1542,6 +2376,8 @@
                         API_SPEC = `${API_BASE}/api/data-spec`;
                         API_PREDICT = `${API_BASE}/api/predict`;
                         API_ADVISOR = `${API_BASE}/api/ai-advisor`;
+                        API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
+                        API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
 
                         response = await fetch(API_ADVISOR, {
                             method: 'POST',
@@ -1563,12 +2399,83 @@
                 const res = await response.json();
                 
                 contentEl.className = 'ai-advisor-content';
-                contentEl.innerHTML = `<div class="ai-report-render" style="line-height: 1.6; color: var(--text-primary); font-size: 0.85rem;">${parseMarkdownToHTML(res.report)}</div>`;
+                contentEl.innerHTML = renderAIDashboardHTML(res);
                 
                 pendingOptimizedRecipe = res.optimized_recipe;
                 if (btnApply && pendingOptimizedRecipe && Object.keys(pendingOptimizedRecipe).length > 0) {
                     btnApply.style.display = 'flex';
                 }
+
+                // Bind accordion expand/collapse listeners
+                const accordionHeaders = contentEl.querySelectorAll('.ai-accordion-header');
+                accordionHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const item = header.closest('.ai-accordion-item');
+                        const body = item.querySelector('.ai-accordion-body');
+                        const chevronIcon = header.querySelector('.accordion-chevron i');
+                        const isCurrentlyOpen = body.style.display === 'block';
+
+                        if (isCurrentlyOpen) {
+                            body.style.display = 'none';
+                            item.classList.remove('active');
+                            if (chevronIcon) {
+                                chevronIcon.classList.remove('fa-chevron-up');
+                                chevronIcon.classList.add('fa-chevron-down');
+                            }
+                        } else {
+                            body.style.display = 'block';
+                            item.classList.add('active');
+                            if (chevronIcon) {
+                                chevronIcon.classList.remove('fa-chevron-down');
+                                chevronIcon.classList.add('fa-chevron-up');
+                            }
+                        }
+                    });
+                });
+
+                // Bind apply buttons inside accordions
+                const applyButtons = contentEl.querySelectorAll('.accordion-apply-btn');
+                applyButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const chosenKey = btn.getAttribute('data-candidate');
+                        const chosenCandidate = pendingOptimizedRecipe[chosenKey];
+                        const chosenRecipe = chosenCandidate.recipe;
+
+                        currentRecipe = { ...chosenRecipe };
+
+                        materials.forEach(m => {
+                            const input = document.getElementById(`slider-${m.CODE}`);
+                            const valBox = document.getElementById(`val-${m.CODE}`);
+                            const group = document.getElementById(`group-${m.CODE}`);
+                            const targetVal = currentRecipe[m.CODE] !== undefined ? currentRecipe[m.CODE] : m.mean_phr;
+                            
+                            if (input) {
+                                input.value = parseFloat(targetVal);
+                            }
+                            if (valBox) {
+                                valBox.textContent = parseFloat(targetVal).toFixed(2);
+                            }
+                            
+                            const baseVal = baseRecipe[m.CODE] !== undefined ? baseRecipe[m.CODE] : m.mean_phr;
+                            if (Math.abs(parseFloat(targetVal) - baseVal) > 0.01) {
+                                if (group) group.classList.add('changed');
+                            } else {
+                                if (group) group.classList.remove('changed');
+                            }
+                        });
+
+                        updatePolymerConstraintStatus();
+                        triggerSimulation();
+
+                        window.showToast(`${chosenCandidate.title} 배합안이 가상 배합 시뮬레이터에 정상 적용되었습니다.`);
+                        
+                        const recipePanel = document.querySelector('.recipe-panel');
+                        if (recipePanel) {
+                            recipePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
 
                 window.showToast("AI 최적화 분석 설계 리포트가 도출되었습니다.");
             } catch (error) {
@@ -1580,7 +2487,7 @@
                         <p class="placeholder-text">AI 가이드 엔진 진단에 실패했습니다. 파이썬 FastAPI 백엔드 포트 통신 상태를 점검해 주십시오.</p>
                     </div>
                 `;
-                window.showToast("AI 최적화 처방 도출 중 서버 통신 에러가 발생했습니다.");
+                window.showToast("AI 최적화 배합안 도출 중 서버 통신 에러가 발생했습니다.");
             } finally {
                 btnRun.disabled = false;
             }
@@ -1662,13 +2569,13 @@
                         let badgeLabel = "Low-Risk 안정";
                         
                         if (optionKey === 'B') {
-                            colorAccent = "#3b82f6"; // blue
-                            colorGlow = "rgba(59, 130, 246, 0.12)";
+                            colorAccent = "#f97316"; // orange (var(--primary))
+                            colorGlow = "rgba(249, 115, 22, 0.12)";
                             badgeLabel = "Balanced 밸런스";
                         } else if (optionKey === 'C') {
-                            colorAccent = "#10b981"; // green
-                            colorGlow = "rgba(16, 185, 129, 0.12)";
-                            badgeLabel = "Aggressive 고성능";
+                            colorAccent = "#ef4444"; // red
+                            colorGlow = "rgba(239, 68, 68, 0.12)";
+                            badgeLabel = "High-Risk 도전";
                         }
 
                         const getTrendLabel = (diff) => {
@@ -1694,31 +2601,27 @@
 
                         const recipeChangesList = cand.recipeChanges || [];
                         const rawMaterialsInvolved = recipeChangesList.map(c => {
-                            const type = c.materialType || '';
-                            if (type.includes('SBR')) return 'SBR';
-                            if (type.includes('BR')) return 'BR';
-                            if (type.includes('NR')) return 'NR';
-                            if (type.includes('SILICA')) return 'Silica';
-                            if (type.includes('CARBON_BLACK') || type.includes('FILLER_RECYCLED')) return 'Carbon Black';
-                            if (type.includes('SILANE')) return 'Silane';
+                            const type = (c.materialType || c.group || '').toUpperCase();
+                            if (type.includes('SBR') || type.includes('BR') || type.includes('NR') || type.includes('POLYMER')) return 'Polymer';
+                            if (type.includes('SILICA') || type.includes('CARBON_BLACK') || type.includes('FILLER_RECYCLED') || type.includes('FILLER')) return 'Filler';
+                            if (type.includes('SILANE') || type.includes('COUPLING')) return 'Silane';
                             if (type.includes('OIL')) return 'Oil';
-                            if (type.includes('RESIN')) return 'Resin';
-                            if (type.includes('SULFUR')) return 'Sulfur';
-                            if (type.includes('ACCELERATOR')) return 'Accelerator';
-                            return '기타';
-                        });
-                        const uniqueMaterialsInvolved = Array.from(new Set(rawMaterialsInvolved)).filter(x => x).join(', ') || '없음';
+                            return null;
+                        }).filter(x => x !== null);
+                        
+                        const uniqueMaterialsInvolved = Array.from(new Set(rawMaterialsInvolved)).filter(x => x).join(', ');
+                        const showMaterialsBlock = uniqueMaterialsInvolved && uniqueMaterialsInvolved !== '';
 
                         const riskItems = cand.risks || [];
                         const risksHtml = riskItems.map(r => `
-                            <li style="margin-bottom: 4px; display: flex; align-items: flex-start; gap: 4px; font-size: 11px; line-height: 1.4; color: #475569;">
-                                <i class="fa-solid fa-triangle-exclamation" style="color: var(--primary); margin-top: 3px; flex-shrink: 0;"></i>
-                                <span>${r}</span>
+                            <li style="margin-bottom: 5px; display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.6; color: #475569;">
+                                <i class="fa-solid fa-triangle-exclamation" style="color: var(--primary); margin-top: 4px; flex-shrink: 0; font-size: 11px;"></i>
+                                <span style="word-break: keep-all;">${r}</span>
                             </li>
                         `).join('') || `
-                            <li style="margin-bottom: 4px; display: flex; align-items: flex-start; gap: 4px; font-size: 11px; line-height: 1.4; color: #475569;">
-                                <i class="fa-solid fa-circle-check" style="color: var(--accent-green); margin-top: 3px; flex-shrink: 0;"></i>
-                                <span>특이 리스크가 식별되지 않은 안정 영역 처방입니다.</span>
+                            <li style="margin-bottom: 5px; display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.6; color: #475569;">
+                                <i class="fa-solid fa-circle-check" style="color: var(--accent-green); margin-top: 4px; flex-shrink: 0; font-size: 11px;"></i>
+                                <span style="word-break: keep-all;">특이 리스크가 식별되지 않은 안정 영역 배합안입니다.</span>
                             </li>
                         `;
 
@@ -1728,99 +2631,106 @@
                                 const sign = c.deltaPhr >= 0 ? '+' : '';
                                 const color = c.deltaPhr >= 0 ? '#10b981' : '#ef4444';
                                 return `
-                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); border-radius: 4px; margin-bottom: 4px; font-size: 0.75rem;">
-                                        <span style="color: #1e293b; font-weight: 500;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); border-radius: 4px; margin-bottom: 4px; font-size: 13px;">
+                                        <span style="color: #1e293b; font-weight: 500; word-break: keep-all;">
                                             ${c.materialName} 
                                         </span>
-                                        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; color: ${color};">
+                                        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; color: ${color}; white-space: nowrap;">
                                             ${sign}${c.deltaPhr.toFixed(2)} phr
                                         </span>
                                     </div>
                                 `;
                             }).join('');
                         } else {
-                            tuningGuideHtml = '<div style="text-align: center; color: var(--text-muted); font-size: 11px; padding: 6px;">변경 배합 없음</div>';
+                            tuningGuideHtml = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 8px;">변경 배합 없음</div>';
+                        }
+
+                        let materialsBlockHtml = '';
+                        if (showMaterialsBlock) {
+                            materialsBlockHtml = `
+                                <div style="background: rgba(0,0,0,0.01); border-radius: 6px; padding: 10px; border: 1px solid rgba(0,0,0,0.03);">
+                                    <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase;">핵심 원료계</div>
+                                    <div style="font-size: 13.5px; color: var(--text-dark); font-weight: 600; font-family: 'Outfit', sans-serif;">${uniqueMaterialsInvolved}</div>
+                                </div>
+                            `;
                         }
 
                         const card = document.createElement('div');
                         card.className = 'ai-candidate-card';
-                        card.style = `background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.08); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; --cand-color: ${colorAccent}; --cand-glow: ${colorGlow}; box-shadow: 0 4px 15px rgba(0,0,0,0.02);`;
+                        card.style = `background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.08); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; --cand-color: ${colorAccent}; --cand-glow: ${colorGlow}; box-shadow: 0 4px 15px rgba(0,0,0,0.02);`;
                         
                         card.innerHTML = `
                             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: ${colorAccent};"></div>
-                            <div style="display: flex; flex-direction: column; gap: 12px; justify-content: space-between; height: 100%;">
+                            <div style="display: flex; flex-direction: column; gap: 14px; justify-content: space-between; height: 100%;">
                                 <div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                        <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: ${colorAccent}; background: ${colorGlow}; padding: 2px 6px; border-radius: 12px;">${badgeLabel}</span>
-                                        <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">시나리오 ${optionKey}</span>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: ${colorAccent}; background: ${colorGlow}; padding: 3px 8px; border-radius: 12px;">${badgeLabel}</span>
+                                        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">시나리오 ${optionKey}</span>
                                     </div>
-                                    <h4 style="font-size: 1rem; font-weight: 800; color: var(--text-dark); margin: 0 0 4px 0; font-family: 'Outfit', sans-serif; line-height: 1.3;">${cand.title}</h4>
-                                    <p style="font-size: 11px; color: var(--text-muted); line-height: 1.45; margin: 0;">${cand.description}</p>
+                                    <h4 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0 0 8px 0; font-family: 'Outfit', sans-serif; line-height: 1.4; word-break: keep-all; overflow-wrap: break-word;">${cand.title}</h4>
+                                    <p style="font-size: 14.5px; color: var(--text-muted); line-height: 1.75; margin: 0; word-break: keep-all;">${cand.description}</p>
                                 </div>
 
-                                <div style="background: rgba(0, 0, 0, 0.02); border-left: 3px solid ${colorAccent}; padding: 6px 10px; border-radius: 0 4px 4px 0;">
-                                    <div style="font-size: 10px; font-weight: 700; color: ${colorAccent}; text-transform: uppercase; margin-bottom: 2px;">배합 조율 방향</div>
-                                    <div style="font-size: 11.5px; color: #334155; line-height: 1.4;">${cand.rationale || '성능 지표 보정을 설계합니다.'}</div>
+                                <div style="background: rgba(0, 0, 0, 0.02); border-left: 3px solid ${colorAccent}; padding: 8px 12px; border-radius: 0 4px 4px 0;">
+                                    <div style="font-size: 11px; font-weight: 700; color: ${colorAccent}; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">배합 조율 방향</div>
+                                    <div style="font-size: 13.5px; color: #334155; line-height: 1.6; word-break: keep-all;">${cand.rationale || '성능 지표 보정을 설계합니다.'}</div>
                                 </div>
 
-                                <div style="background: rgba(0,0,0,0.01); border-radius: 6px; padding: 8px; border: 1px solid rgba(0,0,0,0.03);">
-                                    <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">핵심 원료계</div>
-                                    <div style="font-size: 11px; color: var(--text-dark); font-weight: 600;">${uniqueMaterialsInvolved}</div>
-                                </div>
+                                ${materialsBlockHtml}
 
-                                <div style="background: rgba(0,0,0,0.01); border-radius: 6px; padding: 8px; border: 1px solid rgba(0,0,0,0.03);">
-                                    <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">상세 PHR 가이드</div>
-                                    <div style="max-height: 80px; overflow-y: auto;">
+                                <div style="background: rgba(0,0,0,0.01); border-radius: 6px; padding: 10px; border: 1px solid rgba(0,0,0,0.03);">
+                                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">상세 PHR 가이드</div>
+                                    <div style="max-height: 95px; overflow-y: auto;">
                                         ${tuningGuideHtml}
                                     </div>
                                 </div>
 
-                                <div style="background: rgba(0,0,0,0.02); border-radius: 8px; padding: 10px; border: 1px solid rgba(0,0,0,0.03);">
-                                    <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 2px;">예상 물성 피드백</div>
+                                <div style="background: rgba(0,0,0,0.02); border-radius: 8px; padding: 12px; border: 1px solid rgba(0,0,0,0.03);">
+                                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">예상 물성 피드백</div>
                                     
                                     <!-- Wear -->
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11.5px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13.5px;">
                                         <span style="color: var(--text-dark); font-weight: 500;">내마모</span>
                                         <div style="display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: 700; font-family: 'Outfit';">${wearScoreVal}</span>
-                                            <span style="font-size: 9.5px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: ${getTrendBg(wearDiff)}; color: ${getTrendColor(wearDiff)};">
+                                            <span style="font-weight: 700; font-family: 'Outfit'; font-size: 14px;">${wearScoreVal}</span>
+                                            <span style="font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: ${getTrendBg(wearDiff)}; color: ${getTrendColor(wearDiff)};">
                                                 ${wearDiff >= 0 ? '+' : ''}${wearDiff}
                                             </span>
                                         </div>
                                     </div>
                                     
                                     <!-- Wet -->
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11.5px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13.5px;">
                                         <span style="color: var(--text-dark); font-weight: 500;">Wet 제동</span>
                                         <div style="display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: 700; font-family: 'Outfit';">${wetScoreVal}</span>
-                                            <span style="font-size: 9.5px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: ${getTrendBg(wetDiff)}; color: ${getTrendColor(wetDiff)};">
+                                            <span style="font-weight: 700; font-family: 'Outfit'; font-size: 14px;">${wetScoreVal}</span>
+                                            <span style="font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: ${getTrendBg(wetDiff)}; color: ${getTrendColor(wetDiff)};">
                                                 ${wetDiff >= 0 ? '+' : ''}${wetDiff}
                                             </span>
                                         </div>
                                     </div>
                                     
                                     <!-- RR -->
-                                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px;">
-                                        <span style="color: var(--text-dark); font-weight: 500;">회전저항 (연비)</span>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13.5px;">
+                                        <span style="color: var(--text-dark); font-weight: 500;">연비</span>
                                         <div style="display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: 700; font-family: 'Outfit';">${rrScoreVal}</span>
-                                            <span style="font-size: 9.5px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: ${getTrendBg(rrDiff)}; color: ${getTrendColor(rrDiff)};">
+                                            <span style="font-weight: 700; font-family: 'Outfit'; font-size: 14px;">${rrScoreVal}</span>
+                                            <span style="font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: ${getTrendBg(rrDiff)}; color: ${getTrendColor(rrDiff)};">
                                                 ${rrDiff >= 0 ? '+' : ''}${rrDiff}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div style="background: rgba(249,115,22,0.03); border: 1px solid rgba(249,115,22,0.08); border-radius: 6px; padding: 8px;">
-                                    <div style="font-size: 10px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">검토 고려사항</div>
+                                <div style="background: rgba(249,115,22,0.03); border: 1px solid rgba(249,115,22,0.08); border-radius: 6px; padding: 10px;">
+                                    <div style="font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">검토 고려사항</div>
                                     <ul style="margin: 0; padding: 0; list-style: none;">
                                         ${risksHtml}
                                     </ul>
                                 </div>
 
-                                <button class="candidate-select-btn" data-candidate="${optionKey}" style="width: 100%; border: none; padding: 8px; border-radius: 6px; font-weight: 800; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; background: ${colorAccent}; color: #ffffff; transition: all 0.2s;">
-                                    <i class="fa-solid fa-circle-check"></i> 이 최적 배합 처방 적용
+                                <button class="candidate-select-btn" data-candidate="${optionKey}" style="width: 100%; border: none; padding: 12px; border-radius: 6px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; background: ${colorAccent}; color: #ffffff; transition: all 0.2s; white-space: nowrap;">
+                                    <i class="fa-solid fa-circle-check"></i> 이 배합안 적용
                                 </button>
                             </div>
                         `;
@@ -1859,7 +2769,7 @@
                             updatePolymerConstraintStatus();
                             triggerSimulation();
 
-                            window.showToast(`${chosenCandidate.title} 처방안이 가상 배합 시뮬레이터에 정상 연동되었습니다.`);
+                            window.showToast(`${chosenCandidate.title} 배합안이 가상 배합 시뮬레이터에 정상 적용되었습니다.`);
                             closeModal();
 
                             const recipePanel = document.querySelector('.recipe-panel');
