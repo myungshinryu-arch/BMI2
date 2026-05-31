@@ -2216,7 +2216,7 @@ class TireDashboard {
             document.getElementById('panel-hankook-strategy').style.display = 'none';
             return;
         }
-        document.getElementById('panel-hankook-strategy').style.display = 'flex';
+        document.getElementById('panel-hankook-strategy').style.display = '';
 
         const segmentNamesKo = {
             'all': '전체 제품군 종합 라인업',
