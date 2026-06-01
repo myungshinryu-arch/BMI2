@@ -518,6 +518,41 @@
 
     if (!reportViewport || !matchedData) return;
 
+    // Dynamic Intranet Report Link Resolver
+    const resolveReportLink = (report) => {
+      if (report.link && report.link !== '#') {
+        return { url: report.link, type: 'direct' }; // Already has actual link
+      }
+
+      // Check if global database has it
+      if (window.PLC_DATA && window.PLC_DATA.reports) {
+        // A. Match by docNo first
+        if (report.docNo) {
+          const match = window.PLC_DATA.reports.find(r => r.docNo && r.docNo.trim().toLowerCase() === report.docNo.trim().toLowerCase());
+          if (match && match.linkAddress && match.linkAddress !== '#') {
+            return { url: match.linkAddress, type: 'direct' };
+          }
+        }
+
+        // B. Match by title keyword
+        if (report.title) {
+          const cleanReportTitle = report.title.replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase();
+          const match = window.PLC_DATA.reports.find(r => {
+            if (!r.title) return false;
+            const cleanDbTitle = r.title.replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase();
+            return cleanDbTitle.includes(cleanReportTitle) || cleanReportTitle.includes(cleanDbTitle);
+          });
+          if (match && match.linkAddress && match.linkAddress !== '#') {
+            return { url: match.linkAddress, type: 'direct' };
+          }
+        }
+      }
+
+      // Fallback: Construct Arena portal search url
+      const searchUrl = `https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/search/totalSearch.nsf/totalSearch?OpenForm&query=${encodeURIComponent(report.title)}`;
+      return { url: searchUrl, type: 'search' };
+    };
+
     // 1. KPI Cards (두괄식 Summary)
     const kpiContainer = document.getElementById('kpi-cards-container');
     if (kpiContainer) {
@@ -584,18 +619,31 @@
           </div>
         `;
       } else {
-        reportsHtml += reports.slice(0, 5).map(report => `
-          <div class="report-item-row" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.02), rgba(255, 255, 255, 0.85)); border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 10px rgba(249, 115, 22, 0.08)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.02)'">
-            <div class="ref-info" style="flex: 1; text-align: left;">
-              <h5 style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin: 0 0 4px 0; line-height: 1.35;">${report.title}</h5>
-              <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">문서번호: ${report.docNo} • 기안자: ${report.drafter} • 기안일: ${report.date}</p>
+        reportsHtml += reports.slice(0, 5).map(report => {
+          const resolved = resolveReportLink(report);
+          const isDirect = resolved.type === 'direct';
+          const btnTitle = isDirect 
+            ? '인트라넷 아레나 전자결재 새창으로 열기' 
+            : '아직 기안 진행 중이거나 차세대 예측 분석 리포트입니다. 아레나 통합검색에서 검색어 자동 조회';
+          const btnText = isDirect ? '열기' : '검색';
+          const btnIcon = isDirect ? 'fa-arrow-up-right-from-square' : 'fa-magnifying-glass';
+          const btnStyle = isDirect 
+            ? 'border: 1px solid rgba(249, 115, 22, 0.3); color: var(--primary);' 
+            : 'border: 1px solid rgba(148, 163, 184, 0.4); color: var(--text-muted);';
+
+          return `
+            <div class="report-item-row" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.02), rgba(255, 255, 255, 0.85)); border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 10px rgba(249, 115, 22, 0.08)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.02)'">
+              <div class="ref-info" style="flex: 1; text-align: left;">
+                <h5 style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin: 0 0 4px 0; line-height: 1.35;">${report.title}</h5>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">문서번호: ${report.docNo} • 기안자: ${report.drafter} • 기안일: ${report.date}</p>
+              </div>
+              <a href="${resolved.url}" target="_blank" class="ref-link-btn" style="flex-shrink: 0; background: #ffffff; ${btnStyle} padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='#fff';this.style.borderColor='var(--primary)'" onmouseout="this.style.background='#fff';this.style.color='${isDirect ? 'var(--primary)' : 'var(--text-muted)'}';this.style.borderColor='${isDirect ? 'rgba(249, 115, 22, 0.3)' : 'rgba(148, 163, 184, 0.4)'}'" title="${btnTitle}">
+                <span>${btnText}</span>
+                <i class="fa-solid ${btnIcon}" style="font-size: 0.7rem;"></i>
+              </a>
             </div>
-            <a href="${report.link}" target="_blank" class="ref-link-btn" style="flex-shrink: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.3); color: var(--primary); padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='var(--primary)'" title="인트라넷 아레나 전자결재 새창으로 열기">
-              <span>열기</span>
-              <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7rem;"></i>
-            </a>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
 
       refCard.innerHTML = reportsHtml;
