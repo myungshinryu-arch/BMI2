@@ -41,9 +41,9 @@
       ],
       refReports: [
         { id: 18, title: 'Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과', docNo: '57049336-B0-HQ25-00037', drafter: '김상현', date: '2025.09.12', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1' },
-        { id: 21, title: 'Michelin Summer Super Sport Segment 신제품 "Pilot Sport S 5" 1차 Benchmarking 분석 결과', docNo: '57049336-B0-HQ25-00021', drafter: '이현규 (New Technology Benchmarking Project)', date: '2025.08.14', link: '#' },
+        { id: 35, title: 'Michelin Summer Super Sport Segment 상품 "Pilot Sport S 5" 1차 Benchmarking 결과 보고', docNo: '57049336-B0-HQ24-00040', drafter: '박진욱', date: '2024.10.22', link: '#' },
         { id: 15, title: 'Continental 차세대 Premium Summer Sport "SportContact 8" 선행 기술 분석 보고', docNo: '57049336-B0-HQ25-00015', drafter: '박민우 (New Technology Benchmarking Project)', date: '2025.06.20', link: '#' },
-        { id: 109, title: 'Michelin Premium Summer Sport 신제품 (Pilot Sport 5) Benchmarking 분석 보고서', docNo: '57049336-B0-HQ24-00109', drafter: '김지훈 (New Technology Benchmarking Project)', date: '2024.11.05', link: '#' },
+        { id: 58, title: 'Michelin Premium Summer Sport 신상품 (Pilot Sport 5) Benchmarking 결과 보고', docNo: '57049336-B0-HQ23-00045', drafter: '박진욱', date: '2023.06.07', link: '#' },
         { id: 88, title: '자사 Ventus S1 evo4 K137 글로벌 평가단 실차 성능 평가 종합 보고서', docNo: '57049336-B0-HQ24-00088', drafter: '최정석 (New Technology Benchmarking Project)', date: '2024.08.12', link: '#' }
       ],
       chartData: {
@@ -146,10 +146,10 @@
       ],
       refReports: [
         { id: 17, title: 'Michelin 신상품 2종 기본분석 보고서 (E Primacy 2, E Pilot Sport)', docNo: '57049336-B0-HQ25-00038', drafter: '이현규 (New Technology Benchmarking Project)', date: '2025.09.25', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250924110700403257AC0741359149258D0F000B985F?opendocument%26popup=1' },
-        { id: 10, title: 'Michelin EV 전용 Pilot Sport EV Benchmarking 분석 보고서 (1차)', docNo: '57049336-B0-HQ25-00010', drafter: '장우혁 (New Technology Benchmarking Project)', date: '2025.05.12', link: '#' },
-        { id: 4, title: 'Continental Premium EV 타이어 "PremiumContact 7 EV" 물성 및 마모 특성 비교 분석', docNo: '57049336-B0-HQ25-00004', drafter: '홍성준 (New Technology Benchmarking Project)', date: '2025.02.18', link: '#' },
+        { id: 89, title: 'Michelin EV 전용상품 Pilot Sport EV Benchmarking 분석 보고 (1차)', docNo: '57049336-B0-HQ21-00003', drafter: '양승혁', date: '2021.09.01', link: '#' },
+        { id: 41, title: 'Continental EU Summer Segment PREMIUM CONTACT 7 Benchmarking 결과 보고', docNo: '57049336-B0-HQ24-00031', drafter: '박진욱', date: '2024.06.17', link: '#' },
         { id: 115, title: 'Bridgestone ENLITEN 기술 적용 EV 전용 타이어 Turanza EV 북미 시장 분석 보고', docNo: '57049336-B0-HQ24-00115', drafter: '김성태 (New Technology Benchmarking Project)', date: '2024.12.01', link: '#' },
-        { id: 94, title: '자사 iON evo 글로벌 친환경 전기차 OE 납품 규격 실측 데이터 종합 분석', docNo: '57049336-B0-HQ24-00094', drafter: '안지민 (New Technology Benchmarking Project)', date: '2024.09.15', link: '#' }
+        { id: 64, title: 'HMC eM Platform Competition 상품 Benchmarking 보고', docNo: '57049336-B0-HQ23-00007', drafter: '김상현', date: '2023.02.23', link: '#' }
       ],
       chartData: {
         labels: ['Rolling Resistance', 'Wear Durability', 'Wet Grip', 'Dry Handling', 'Noise Control', 'Torque Durability'],
@@ -251,9 +251,9 @@
       ],
       refReports: [
         { id: 9, title: '북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과', docNo: '57049336-B0-HQ26-00004', drafter: '송호영 (New Technology Benchmarking Project)', date: '2026.01.22', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2026/01/AC004_1.nsf/vdockey/202601221131004B06BC6A49C1B44849258D87000DCDB6?opendocument%26popup=1' },
-        { id: 45, title: 'Michelin SUV 전용 사계절 신제품 CrossClimate 2 SUV Benchmarking 종합 리포트', docNo: '57049336-B0-HQ25-00045', drafter: '정두형 (New Technology Benchmarking Project)', date: '2025.11.10', link: '#' },
-        { id: 28, title: 'Bridgestone 프리미엄 올시즌 SUV 타이어 Alenza AS Ultra 북미 마모 비교 테스트 결과', docNo: '57049336-B0-HQ25-00028', drafter: '백승우 (New Technology Benchmarking Project)', date: '2025.09.05', link: '#' },
-        { id: 12, title: 'Continental 북미 대형 픽업 타겟 CrossContact LX25 실차 및 마일리지 벤치마킹', docNo: '57049336-B0-HQ25-00012', drafter: '유태웅 (New Technology Benchmarking Project)', date: '2025.04.30', link: '#' },
+        { id: 76, title: 'Michelin All Weather 상품 CrossClimate2 Benchmarking 분석 보고 (2차)', docNo: '57049336-B0-HQ22-00021', drafter: '양승혁', date: '2022.07.19', link: '#' },
+        { id: 47, title: '북미 SUV 신상품(UTQG Treadwear 800) Benchmarking 결과 보고', docNo: '57049336-B0-HQ24-00014', drafter: '송호영', date: '2024.03.18', link: '#' },
+        { id: 83, title: '북미용 Performance Touring SUV 상품 개발을 위한 Benchmarking 분석 보고 (1차)', docNo: '57049336-B0-HQ21-00032', drafter: '송호영', date: '2021.11.25', link: '#' },
         { id: 77, title: '북미 딜러 초청 Dynapro HPX 장기 내마모성(Treadwear 640) 실증 피드백 분석 결과', docNo: '57049336-B0-HQ24-00077', drafter: '최정석 (New Technology Benchmarking Project)', date: '2024.07.25', link: '#' }
       ],
       chartData: {
@@ -518,7 +518,7 @@
 
     if (!reportViewport || !matchedData) return;
 
-    // Dynamic Intranet Report Link Resolver
+    // Dynamic Intranet Report Link Resolver (Resilient Fuzzy Overlap & Related Product Matcher)
     const resolveReportLink = (report) => {
       if (report.link && report.link !== '#') {
         return { url: report.link, type: 'direct' }; // Already has actual link
@@ -526,15 +526,16 @@
 
       // Check if global database has it
       if (window.PLC_DATA && window.PLC_DATA.reports) {
-        // A. Match by docNo first
+        // A. Match by docNo first (exact match)
         if (report.docNo) {
-          const match = window.PLC_DATA.reports.find(r => r.docNo && r.docNo.trim().toLowerCase() === report.docNo.trim().toLowerCase());
+          const cleanDocNo = report.docNo.trim().toLowerCase();
+          const match = window.PLC_DATA.reports.find(r => r.docNo && r.docNo.trim().toLowerCase() === cleanDocNo);
           if (match && match.linkAddress && match.linkAddress !== '#') {
             return { url: match.linkAddress, type: 'direct' };
           }
         }
 
-        // B. Match by title keyword
+        // B. Match by title keyword (strict matching contains or is contained in)
         if (report.title) {
           const cleanReportTitle = report.title.replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase();
           const match = window.PLC_DATA.reports.find(r => {
@@ -544,6 +545,70 @@
           });
           if (match && match.linkAddress && match.linkAddress !== '#') {
             return { url: match.linkAddress, type: 'direct' };
+          }
+        }
+
+        // C. Resilient Fuzzy Keyword Overlap & Related Product Matching (Fuzzy Matching Engine)
+        if (report.title) {
+          const targetTitle = report.title.toLowerCase();
+          
+          // Alphanumeric tokens of length >= 2
+          const targetTokens = targetTitle.split(/[^a-z0-9가-힣]/).filter(t => t.length >= 2);
+          
+          // Core brand & model keywords that carry heavy semantic weight
+          const coreBrandModelKeywords = [
+            'michelin', 'goodyear', 'continental', 'bridgestone', 'pirelli', 'falken', 'yokohama', 'dunlop',
+            'pilot', 'asymmetric', 'contact', 'turanza', 'alenza', 'defender', 'crossclimate', 'hpx', 'dynapro', 'sport'
+          ];
+          
+          // Stop words to filter out
+          const stopWords = ['분석', '결과', '보고', '보고서', '신제품', '신상품', '종합', '1차', '2차', '용역', '과제', '상품', '타이어', '북미', '유럽'];
+
+          let bestMatch = null;
+          let highestScore = 0;
+
+          window.PLC_DATA.reports.forEach(r => {
+            if (!r.title || !r.linkAddress || r.linkAddress === '#') return;
+            
+            let score = 0;
+            const dbTitle = r.title.toLowerCase();
+            const dbRelated = (r.relatedProducts || []).map(p => p.toLowerCase());
+
+            // 1. Token intersections
+            targetTokens.forEach(token => {
+              if (stopWords.includes(token)) return; // Ignore stop words
+              
+              const isCoreKeyword = coreBrandModelKeywords.includes(token);
+              const weight = isCoreKeyword ? 10 : 2;
+
+              // Check if token matches title
+              if (dbTitle.includes(token)) {
+                score += weight;
+              }
+              // Check if token matches related products
+              if (dbRelated.some(p => p.includes(token))) {
+                score += weight + 3; // Extra weight if it specifically matches listed related products
+              }
+            });
+
+            // 2. Exact word intersections in related products
+            dbRelated.forEach(p => {
+              targetTokens.forEach(token => {
+                if (p === token) score += 15;
+              });
+            });
+
+            // 3. Keep track of highest score
+            if (score > highestScore) {
+              highestScore = score;
+              bestMatch = r;
+            }
+          });
+
+          // A high score of 12 or more indicates a confident match (e.g. matched brand + model)
+          if (highestScore >= 12 && bestMatch) {
+            console.log(`[Fuzzy Matcher] Successfully matched report: "${report.title}" -> "${bestMatch.title}" (Score: ${highestScore})`);
+            return { url: bestMatch.linkAddress, type: 'direct' };
           }
         }
       }
