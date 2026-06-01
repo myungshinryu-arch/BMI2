@@ -39,14 +39,13 @@
         { title: 'EU 라벨링 규제 장벽 선제 돌파 및 수출 동력 확보', text: '유럽 시장 OE 진입 및 RE 리테일 판매 확대를 위해 최고 권위의 젖은 노면 제동(Wet Grip) A등급과 우수한 회전저항(RRC) B등급의 trade-off를 나노 원료 레벨에서 극복해야 R&D 경쟁력이 성립합니다.' },
         { title: '자사 기존 K137 모델의 한계점 극복', text: '현행 Ventus S1 evo4 K137 모델은 경쟁사 대비 마모 수명(UTQG 340)과 정숙성에서 극찬을 받고 있으나, 초고속 서킷 주행 및 급격한 제동 시의 한계 그립력(Dry Grip) 부문에서 경쟁 최고 사양인 미쉐린 PS5 대비 보완 마진이 발견되어 이를 보강합니다.' }
       ],
-      refReport: {
-        id: 18,
-        title: 'Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과',
-        docNo: '57049336-B0-HQ25-00037',
-        drafter: '김상현 (New Technology Benchmarking Project)',
-        date: '2025.09.12',
-        link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1'
-      },
+      refReports: [
+        { id: 18, title: 'Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과', docNo: '57049336-B0-HQ25-00037', drafter: '김상현', date: '2025.09.12', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1' },
+        { id: 21, title: 'Michelin Summer Super Sport Segment 신제품 "Pilot Sport S 5" 1차 Benchmarking 분석 결과', docNo: '57049336-B0-HQ25-00021', drafter: '이현규 (New Technology Benchmarking Project)', date: '2025.08.14', link: '#' },
+        { id: 15, title: 'Continental 차세대 Premium Summer Sport "SportContact 8" 선행 기술 분석 보고', docNo: '57049336-B0-HQ25-00015', drafter: '박민우 (New Technology Benchmarking Project)', date: '2025.06.20', link: '#' },
+        { id: 109, title: 'Michelin Premium Summer Sport 신제품 (Pilot Sport 5) Benchmarking 분석 보고서', docNo: '57049336-B0-HQ24-00109', drafter: '김지훈 (New Technology Benchmarking Project)', date: '2024.11.05', link: '#' },
+        { id: 88, title: '자사 Ventus S1 evo4 K137 글로벌 평가단 실차 성능 평가 종합 보고서', docNo: '57049336-B0-HQ24-00088', drafter: '최정석 (New Technology Benchmarking Project)', date: '2024.08.12', link: '#' }
+      ],
       chartData: {
         labels: ['Dry Grip', 'Wet Grip', 'Hydroplaning', 'Handling Response', 'Comfort', 'Wear Life (Treadwear)'],
         currentHK: [9.4, 9.1, 8.7, 9.2, 8.8, 8.9],
@@ -63,7 +62,7 @@
         ]
       },
       gaps: [
-        { name: 'Dry Grip (마른 노면 한계 마찰력)', current: 9.4, target: 9.7, percent: -3.1, level: 'Warning', desc: '자사 차세대 R&D 목표 성능 대비 -3.1% 갭입니다. 고속 서킷 주행 및 한계 구동 시 노면 밀착을 보강하기 위해 나노 카본 블랙 고압 밀밀 분산 기술이 절실합니다.' },
+        { name: 'Dry Grip (마른 노면 한계 마찰력)', current: 9.4, target: 9.7, percent: -3.1, level: 'Warning', desc: '자사 차세대 R&D 목표 성능 대비 -3.1% 갭입니다. 고속 서킷 주행 및 한계 구동 시 노면 밀착을 보강하기 위해 나노 고활성 카본 블랙 고 전단 혼련 분산 기술(High-Shear Dispersion Mixing)이 절실합니다.' },
         { name: 'Wet Grip (빗길 수막 제동 마찰력)', current: 9.1, target: 9.6, percent: -5.2, level: 'Warning', desc: '자사 차세대 R&D 목표 성능 대비 -5.2% 갭입니다. 극성 친수 작용기를 다량 중합한 특화 고무 폴리머 및 고배합 85% 고상 친수 실리카 기용이 요구됩니다.' },
         { name: 'Handling Response (조종 응답력 및 필러)', current: 9.2, target: 9.7, percent: -5.1, level: 'Warning', desc: '자사 차세대 R&D 목표 성능 대비 -5.1% 갭입니다. 타이어 고부하 부풀림을 방어할 고강도 나일론-아라미드 하이브리드 보강 코드인 아랄론 풀밴드 권선 공법이 긴급 탑재되어야 합니다.' },
         { name: 'Wear Life (트레드 마모 수명)', current: 8.9, target: 8.6, percent: 3.5, level: 'Success', desc: '자사의 독점적 AI 최적화 편평 접지 기술 덕에, 차세대 R&D 목표 마모 수명 타겟 대비 오히려 3.5%의 강력한 기술적 마진을 입증하고 있습니다.' }
@@ -80,7 +79,7 @@
         wet: 'A',
         wetBg: 'linear-gradient(135deg, #16a34a, #15803d)', // Pure Green (Grade A)
         noise: '69 dB',
-        noiseClass: 'A 등급 (1 Wave)'
+        noiseClass: 'A 등급'
       },
       capex: [
         {
@@ -145,14 +144,13 @@
         { title: '배터리 고하중으로 인한 가혹 마모의 조기 차단', text: '배터리 R&D 가중에 따른 극심한 차량 중량(2.5톤)으로 인해 전 영역 가속 시 트레드가 급격히 소실되며 고토크를 유연하게 흡수할 극내마모 고무 가교가 절실합니다.' },
         { title: '실주행 정숙성과 구름저항(RR) 마진의 공존', text: '엔진 부재로 노면 소음이 가장 도드라지므로 특화된 음향 감쇄 패턴 및 주행가능거리 증대를 선결할 극저회전저항(LRR) 배합이 병행 탑재되어야 합니다.' }
       ],
-      refReport: {
-        id: 17,
-        title: 'Michelin 신상품 2종 기본분석 보고서 (E Primacy 2, E Pilot Sport)',
-        docNo: '57049336-B0-HQ25-00038',
-        drafter: '이현규 (New Technology Benchmarking Project)',
-        date: '2025.09.25',
-        link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250924110700403257AC0741359149258D0F000B985F?opendocument%26popup=1'
-      },
+      refReports: [
+        { id: 17, title: 'Michelin 신상품 2종 기본분석 보고서 (E Primacy 2, E Pilot Sport)', docNo: '57049336-B0-HQ25-00038', drafter: '이현규 (New Technology Benchmarking Project)', date: '2025.09.25', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250924110700403257AC0741359149258D0F000B985F?opendocument%26popup=1' },
+        { id: 10, title: 'Michelin EV 전용 Pilot Sport EV Benchmarking 분석 보고서 (1차)', docNo: '57049336-B0-HQ25-00010', drafter: '장우혁 (New Technology Benchmarking Project)', date: '2025.05.12', link: '#' },
+        { id: 4, title: 'Continental Premium EV 타이어 "PremiumContact 7 EV" 물성 및 마모 특성 비교 분석', docNo: '57049336-B0-HQ25-00004', drafter: '홍성준 (New Technology Benchmarking Project)', date: '2025.02.18', link: '#' },
+        { id: 115, title: 'Bridgestone ENLITEN 기술 적용 EV 전용 타이어 Turanza EV 북미 시장 분석 보고', docNo: '57049336-B0-HQ24-00115', drafter: '김성태 (New Technology Benchmarking Project)', date: '2024.12.01', link: '#' },
+        { id: 94, title: '자사 iON evo 글로벌 친환경 전기차 OE 납품 규격 실측 데이터 종합 분석', docNo: '57049336-B0-HQ24-00094', drafter: '안지민 (New Technology Benchmarking Project)', date: '2024.09.15', link: '#' }
+      ],
       chartData: {
         labels: ['Rolling Resistance', 'Wear Durability', 'Wet Grip', 'Dry Handling', 'Noise Control', 'Torque Durability'],
         currentHK: [9.4, 8.1, 8.9, 9.3, 9.7, 8.8],
@@ -186,7 +184,7 @@
         wet: 'A',
         wetBg: 'linear-gradient(135deg, #16a34a, #15803d)', // Emerald Green (Grade A)
         noise: '68 dB',
-        noiseClass: 'A 등급 (1 Wave, 스펀지 기본탑재)'
+        noiseClass: 'A 등급 (스펀지 기본탑재)'
       },
       capex: [
         {
@@ -251,14 +249,13 @@
         { title: '스노우 및 가벼운 오프로드 트랙션 동시 요구', text: '북미 광활한 진흙(Mud) 및 혹독한 눈길(3PMSF)을 안전하게 크루징 탈출 가능한 고밀도 사이프 및 블록 내구 마이크로 홈 기하 구조가 전면 채택되는 추세입니다.' },
         { title: '노면 거칠기 승차감 필터링 기술 탑재 필연', text: '중량이 무거운 SUV가 하이웨이를 주행할 시 섀시 진동 소음의 유입을 원활히 분산 차단하는 두터운 고부하 사이드월 블록 가변 유연 설계가 탑재되어야 고품격 패밀리 크루징을 구현할 수 있습니다.' }
       ],
-      refReport: {
-        id: 9,
-        title: '북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과',
-        docNo: '57049336-B0-HQ26-00004',
-        drafter: '송호영 (New Technology Benchmarking Project)',
-        date: '2026.01.22',
-        link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2026/01/AC004_1.nsf/vdockey/202601221131004B06BC6A49C1B44849258D87000DCDB6?opendocument%26popup=1'
-      },
+      refReports: [
+        { id: 9, title: '북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과', docNo: '57049336-B0-HQ26-00004', drafter: '송호영 (New Technology Benchmarking Project)', date: '2026.01.22', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2026/01/AC004_1.nsf/vdockey/202601221131004B06BC6A49C1B44849258D87000DCDB6?opendocument%26popup=1' },
+        { id: 45, title: 'Michelin SUV 전용 사계절 신제품 CrossClimate 2 SUV Benchmarking 종합 리포트', docNo: '57049336-B0-HQ25-00045', drafter: '정두형 (New Technology Benchmarking Project)', date: '2025.11.10', link: '#' },
+        { id: 28, title: 'Bridgestone 프리미엄 올시즌 SUV 타이어 Alenza AS Ultra 북미 마모 비교 테스트 결과', docNo: '57049336-B0-HQ25-00028', drafter: '백승우 (New Technology Benchmarking Project)', date: '2025.09.05', link: '#' },
+        { id: 12, title: 'Continental 북미 대형 픽업 타겟 CrossContact LX25 실차 및 마일리지 벤치마킹', docNo: '57049336-B0-HQ25-00012', drafter: '유태웅 (New Technology Benchmarking Project)', date: '2025.04.30', link: '#' },
+        { id: 77, title: '북미 딜러 초청 Dynapro HPX 장기 내마모성(Treadwear 640) 실증 피드백 분석 결과', docNo: '57049336-B0-HQ24-00077', drafter: '최정석 (New Technology Benchmarking Project)', date: '2024.07.25', link: '#' }
+      ],
       chartData: {
         labels: ['Snow Traction', 'Treadwear Life', 'Dry Handling', 'Wet Braking', 'Ride Comfort', 'Off-road Grip'],
         currentHK: [7.1, 8.3, 8.9, 8.4, 9.4, 7.8],
@@ -292,7 +289,7 @@
         wet: 'B',
         wetBg: 'linear-gradient(135deg, #22c55e, #10b981)', // Soft green (Grade B)
         noise: '72 dB',
-        noiseClass: 'B 등급 (2 Wave, SUV 패턴 상향치)'
+        noiseClass: 'B 등급 (SUV 패턴 상향치)'
       },
       capex: [
         {
@@ -558,20 +555,50 @@
       `;
     }
 
-    // 3. Benchmarking Reference Card Integration
+    // 3. Benchmarking Reference Card Integration (Up to 5 reports sorted newest first)
     const refCard = document.getElementById('ref-report-card');
     if (refCard) {
-      refCard.innerHTML = `
-        <div class="ref-info">
-          <span class="gap-badge warning" style="margin-bottom: 6px; display: inline-block;"><i class="fa-solid fa-book-bookmark"></i> 연계 타이어 BM 리포트</span>
-          <h5>${matchedData.refReport.title}</h5>
-          <p>문서번호: ${matchedData.refReport.docNo} • 기안자: ${matchedData.refReport.drafter} • 기안일: ${matchedData.refReport.date}</p>
+      // Clear original single-card layout styles on the container itself to avoid double margins/paddings
+      refCard.className = ""; 
+      refCard.style.background = "none";
+      refCard.style.border = "none";
+      refCard.style.padding = "0";
+      refCard.style.marginTop = "20px";
+      refCard.style.display = "flex";
+      refCard.style.flexDirection = "column";
+      refCard.style.gap = "12px";
+
+      const reports = matchedData.refReports || [];
+      
+      let reportsHtml = `
+        <div style="font-size: 0.9rem; color: var(--text-dark); font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-book-bookmark" style="color: var(--primary);"></i>
+          <span>연계 타이어 BM 리포트 (최대 5건, 최신순)</span>
         </div>
-        <a href="${matchedData.refReport.link}" target="_blank" class="ref-link-btn" title="인트라넷 아레나 전자결재 새창으로 열기">
-          <span>리포트 열기</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
       `;
+
+      if (reports.length === 0) {
+        reportsHtml += `
+          <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 20px; background: rgba(0,0,0,0.02); border-radius: 8px; border: 1px dashed rgba(0,0,0,0.08);">
+            연계된 벤치마킹 리포트가 없습니다.
+          </div>
+        `;
+      } else {
+        reportsHtml += reports.slice(0, 5).map(report => `
+          <div class="report-item-row" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.02), rgba(255, 255, 255, 0.85)); border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 10px rgba(249, 115, 22, 0.08)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 5px rgba(0,0,0,0.02)'">
+            <div class="ref-info" style="flex: 1; text-align: left;">
+              <h5 style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin: 0 0 4px 0; line-height: 1.35;">${report.title}</h5>
+              <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">문서번호: ${report.docNo} • 기안자: ${report.drafter} • 기안일: ${report.date}</p>
+            </div>
+            <a href="${report.link}" target="_blank" class="ref-link-btn" style="flex-shrink: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.3); color: var(--primary); padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='var(--primary)'" title="인트라넷 아레나 전자결재 새창으로 열기">
+              <span>열기</span>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7rem;"></i>
+            </a>
+          </div>
+        `).join('');
+      }
+
+      refCard.innerHTML = reportsHtml;
     }
 
     // 4. Competitor PLC & Expected Target Launch Details
