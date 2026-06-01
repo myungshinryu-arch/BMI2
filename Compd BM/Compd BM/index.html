@@ -34,8 +34,8 @@
       
       <ul class="sidebar-menu">
         <li class="menu-item active" data-tab="tab-dashboard">
-          <i class="fa-solid fa-chart-pie"></i>
-          <span>종합 분석 대시보드</span>
+          <i class="fa-solid fa-chart-bar"></i>
+          <span>제품 성능 비교</span>
         </li>
         <li class="menu-item" data-tab="tab-explorer">
           <i class="fa-solid fa-table-list"></i>
@@ -112,7 +112,7 @@
           </button>
           <div class="header-title" style="display: flex; flex-direction: column; gap: 4px;">
             <h1 class="header-app-title" style="font-size: 1.45rem; font-weight: 800; color: var(--text-dark); margin: 0; font-family: var(--font-display);">Compound BM Report</h1>
-            <h2 id="header-title-text" style="font-size: 1.05rem; font-weight: 600; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">종합 분석 대시보드</h2>
+            <h2 id="header-title-text" style="font-size: 1.05rem; font-weight: 600; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">제품 성능 비교</h2>
           </div>
         </div>
         
@@ -136,178 +136,56 @@
         <!-- ========================================== -->
         <section id="tab-dashboard" class="tab-content active">
           
-          <!-- Key Performance Cards Row -->
-          <div class="stats-row" style="margin-bottom: 24px;">
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3>총 타이어 데이터</h3>
-                <div class="stat-value" id="stat-total-tires">0</div>
-              </div>
-              <div class="stat-icon">
-                <i class="fa-solid fa-circle-nodes"></i>
-              </div>
-            </div>
-            
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3>제조사 수</h3>
-                <div class="stat-value" id="stat-total-makers">0</div>
-              </div>
-              <div class="stat-icon">
-                <i class="fa-solid fa-industry"></i>
-              </div>
-            </div>
-            
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3>평균 ARES tanδ @ 60℃</h3>
-                <div class="stat-value" id="stat-avg-tand60">0</div>
-              </div>
-              <div class="stat-icon">
-                <i class="fa-solid fa-fire"></i>
-              </div>
-            </div>
-            
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3>평균 유리전이온도 (Tg)</h3>
-                <div class="stat-value" id="stat-avg-tg">0</div>
-              </div>
-              <div class="stat-icon">
-                <i class="fa-solid fa-temperature-low"></i>
-              </div>
-            </div>
+          <!-- Dashboard Header Title & Description -->
+          <div class="dashboard-header-container" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 8px;">
+            <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 10px; margin: 0;">
+              <span style="width: 4px; height: 24px; background: var(--accent-orange); border-radius: 2px; display: inline-block;"></span>
+              제품 성능 비교 대시보드
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0; padding-left: 14px;">
+              실시간 트레드 컴파운드 물성 빅데이터를 기반으로 한 제조사별 핵심 기술 비교 및 배합제 정밀 분석 지표입니다.
+            </p>
+          </div>
 
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3>평균 ARES G'' @ 0℃</h3>
-                <div class="stat-value" id="stat-avg-g2_0">0</div>
-              </div>
-              <div class="stat-icon">
-                <i class="fa-solid fa-gauge-high"></i>
+          <!-- Dashboard 전역 다차원 필터 바 -->
+          <div class="card dashboard-filter-card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-orange);">
+            <div class="card-body" style="padding: 20px 28px;">
+              <div class="filter-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important; align-items: flex-end; gap: 20px;">
+                <div class="filter-group" style="margin: 0;">
+                  <label for="dashboard-filter-season" style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; display: block;">Season</label>
+                  <select id="dashboard-filter-season" class="filter-control" style="width: 100%; height: 52px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: var(--text-primary); padding: 0 16px; font-size: 1.15rem; font-weight: 600;">
+                    <option value="">전체 Season</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Winter">Winter</option>
+                    <option value="All Season">All Season</option>
+                  </select>
+                </div>
+                <div class="filter-group" style="margin: 0;">
+                  <label for="dashboard-filter-segment" style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; display: block;">Segment / 차종</label>
+                  <select id="dashboard-filter-segment" class="filter-control" style="width: 100%; height: 52px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: var(--text-primary); padding: 0 16px; font-size: 1.15rem; font-weight: 600;">
+                    <option value="">전체 Segment</option>
+                    <option value="UHP">UHP (초고성능 스포츠)</option>
+                    <option value="EV">EV (전기차 전용)</option>
+                    <option value="SUV">SUV (레저용)</option>
+                    <option value="Winter">Winter (겨울용 스노우)</option>
+                    <option value="Touring">Touring (사계절 투어링)</option>
+                  </select>
+                </div>
+                <button id="btn-dashboard-filter-reset" class="btn-reset" style="height: 52px; padding: 0 24px; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.1rem; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; font-weight: 700;">
+                  <i class="fa-solid fa-arrow-rotate-left"></i>
+                  <span>필터 초기화</span>
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- Charts Layout Grid -->
-          <div class="dashboard-grid">
-            
-            <!-- Radar chart of selected properties -->
-            <div class="card col-4">
-              <div class="card-header">
-                <div class="card-title">
-                  <h3><i class="fa-solid fa-spider"></i> 대표 타이어 다차원 물성 비교 (Radar)</h3>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container">
-                  <canvas id="chart-radar"></canvas>
-                </div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 12px;">
-                  * 데이터 리스트에서 항목을 선택하면 자동으로 실시간 대조 비교가 진행됩니다.
-                </div>
-              </div>
+          <!-- 8대 제조사 독립 카드 그리드 -->
+          <div class="maker-compare-grid" id="maker-compare-viewport">
+            <div class="plc-table-loading" style="text-align: center; padding: 60px; color: var(--text-muted);">
+              <i class="fa-solid fa-circle-notch fa-spin"></i> 물성 데이터를 분석 집계 중입니다...
             </div>
-
-            <!-- Dynamic Correlation Scatter Plot (고급 분석) -->
-            <div class="card col-8">
-              <div class="card-header">
-                <div class="card-title">
-                  <h3><i class="fa-solid fa-chart-line"></i> 물성 상관관계 분석 시뮬레이터 (Scatter)</h3>
-                </div>
-                <div class="chart-controls">
-                  <select id="scatter-x" class="chart-select">
-                    <option value="Silica" selected>Silica 함량 (phr)</option>
-                    <option value="Carbon Black">Carbon Black 함량 (phr)</option>
-                    <option value="Polymer_NR">NR (천연고무) 비율 (%)</option>
-                    <option value="Polymer_SBR">SBR (합성고무) 비율 (%)</option>
-                    <option value="Polymer_BR">BR (부타디엔) 비율 (%)</option>
-                    <option value="Styrene">SBR 내 Styrene 비율 (%)</option>
-                    <option value="Vinyl">SBR 내 Vinyl 비율 (%)</option>
-                    <option value="ZnO">ZnO (산화아연) 함량 (phr)</option>
-                    <option value="Sulfur">Sulfur (황) 함량 (phr)</option>
-                  </select>
-                  <span style="color: var(--text-muted); font-size: 0.8rem; align-self: center;">vs</span>
-                  <select id="scatter-y" class="chart-select">
-                    <option value="Tg" selected>Tg_peak temp (유리전이온도, ℃)</option>
-                    <option value="Hardness">Hardness (경도, Shore A)</option>
-                    <option value="Elasticity">ARES G'' @ 0℃ (전단 손실 탄성률)</option>
-                    <option value="tanD_0">ARES tanδ @ 0℃ (젖은 제동 지표)</option>
-                    <option value="tanD_60">ARES tanδ @ 60℃ (회전저항 지표)</option>
-                    <option value="M100">Modulus 100% (MPa)</option>
-                    <option value="M300">Modulus 300% (MPa)</option>
-                    <option value="TS">Tensile Strength (인장강도, MPa)</option>
-                    <option value="Elongation">Elongation (신율, %)</option>
-                  </select>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container">
-                  <div id="scatter-correlation-badge" class="correlation-badge">
-                    <i class="fa-solid fa-calculator" style="color: var(--primary); margin-right: 6px;"></i>상관계수 (r): <span id="correlation-value">N/A</span>
-                  </div>
-                  <canvas id="chart-scatter"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- Polymer Blend Chart (stacked bar) -->
-            <div class="card col-6">
-              <div class="card-header">
-                <div class="card-title">
-                  <h3><i class="fa-solid fa-flask"></i> Polymer Blend 비율 분포 (NR / SBR / BR)</h3>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container">
-                  <canvas id="chart-polymer"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- Styrene / Vinyl Ratio Chart (신규 차트) -->
-            <div class="card col-6">
-              <div class="card-header">
-                <div class="card-title">
-                  <h3><i class="fa-solid fa-vials"></i> Styrene / Vinyl 비율 분석 (NMR, in SBR)</h3>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container">
-                  <canvas id="chart-styrene-vinyl"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- Reinforcement Fillers CB vs Silica -->
-            <div class="card col-6">
-              <div class="card-header">
-                <div class="card-title">
-                  <h3><i class="fa-solid fa-dumbbell"></i> 보강제 배합 분석 (Carbon Black vs Silica)</h3>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container">
-                  <canvas id="chart-fillers"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- ZnO / Sulfur Chart (신규 차트) -->
-            <div class="card col-6">
-              <div class="card-header">
-                <div class="card-title">
-                  <h3><i class="fa-solid fa-circle-radiation"></i> 가류제 및 촉진제 배합 분석 (ZnO vs Sulfur)</h3>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container">
-                  <canvas id="chart-zno-sulfur"></canvas>
-                </div>
-              </div>
-            </div>
-
           </div>
+
         </section>
 
         <!-- ========================================== -->
@@ -450,11 +328,64 @@
           <!-- Active Report Presentation (Hidden by default) -->
           <div id="report-active-state" style="display: none; flex-direction: column; gap: 24px; width: 100%; max-width: 100%;">
             
+            <!-- [추가] 리포트용 Key Performance Cards Row (최상단 배치) -->
+            <div class="stats-row" style="margin-top: 12px; margin-bottom: 12px;">
+              <div class="stat-card">
+                <div class="stat-info">
+                  <h3>선택된 타이어 수</h3>
+                  <div class="stat-value" id="report-stat-total-tires">0</div>
+                </div>
+                <div class="stat-icon" style="background: rgba(79, 172, 254, 0.1); color: var(--primary);">
+                  <i class="fa-solid fa-circle-nodes"></i>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-info">
+                  <h3>제조사 수</h3>
+                  <div class="stat-value" id="report-stat-total-makers">0</div>
+                </div>
+                <div class="stat-icon" style="background: rgba(0, 230, 118, 0.1); color: var(--accent-green);">
+                  <i class="fa-solid fa-industry"></i>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-info">
+                  <h3>평균 ARES tanδ @ 60℃</h3>
+                  <div class="stat-value" id="report-stat-avg-tand60">0</div>
+                </div>
+                <div class="stat-icon" style="background: rgba(255, 145, 0, 0.1); color: var(--accent-orange);">
+                  <i class="fa-solid fa-fire"></i>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-info">
+                  <h3>평균 유리전이온도</h3>
+                  <div class="stat-value" id="report-stat-avg-tg">0</div>
+                </div>
+                <div class="stat-icon" style="background: rgba(156, 39, 176, 0.1); color: #9c27b0;">
+                  <i class="fa-solid fa-temperature-low"></i>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-info">
+                  <h3>평균 ARES G'' @ 0℃</h3>
+                  <div class="stat-value" id="report-stat-avg-g2_0">0</div>
+                </div>
+                <div class="stat-icon" style="background: rgba(0, 242, 254, 0.1); color: var(--primary);">
+                  <i class="fa-solid fa-gauge-high"></i>
+                </div>
+              </div>
+            </div>
+
             <!-- Excel-style Grid Table Sheet -->
-            <div class="card">
+            <div class="card" style="border-left: 4px solid var(--accent-orange);">
               <div class="card-header" style="background: rgba(255, 255, 255, 0.02);">
                 <div class="card-title">
-                  <h3><i class="fa-solid fa-table"></i> [BM Report] 타이어 컴파운드 정밀 비교 명세서</h3>
+                  <h3><i class="fa-solid fa-table"></i> 타이어 컴파운드 정밀 비교 명세서</h3>
                 </div>
                 <div style="display: flex; gap: 10px;">
                   <button id="btn-download-raw-csv" class="filter-control" style="font-size: 0.8rem; padding: 6px 12px; display: flex; align-items: center; gap: 6px; background: rgba(0, 230, 118, 0.1); border-color: rgba(0, 230, 118, 0.2); color: var(--accent-green);">
@@ -474,54 +405,182 @@
               </div>
             </div>
 
-            <!-- 온도별 점탄성 특성 곡선 및 물성 밸런스 비교 대시보드 (ARES Sweep & Radar) -->
-            <div class="card" id="report-visco-chart-card" style="background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;">
-              <div class="card-header" style="background: #f8fafc !important; border-bottom: 1px solid #cbd5e1 !important; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 20px;">
-                <div class="card-title">
-                  <h3 style="color: #0f172a !important; font-size: 1.20rem !important; font-weight: 700 !important; display: flex; align-items: center; gap: 8px; margin: 0;"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Comp'd Radar Chart &amp; ARES curve</h3>
-                </div>
-                <!-- 실시간 점탄성 지표 전환 탭 컨트롤러 신설 -->
-                <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 0.95rem !important; color: #0f172a !important; font-weight: 600 !important; margin-right: 4px;">분석 지표:</span>
-                  <div class="visco-mode-tabs" style="display: flex; background: #f1f5f9 !important; padding: 2px; border-radius: 8px; border: 1px solid #cbd5e1 !important;">
-                    <button class="visco-mode-btn active" data-mode="tand" style="color: #334155; font-weight: 600;">tanδ</button>
-                    <button class="visco-mode-btn" data-mode="gp" style="color: #334155; font-weight: 600;">G'</button>
-                    <button class="visco-mode-btn" data-mode="gpp" style="color: #334155; font-weight: 600;">G"</button>
-                  </div>
-                </div>
+            <!-- Comp'd 물성 분석 섹션 -->
+            <div class="report-section">
+              <div class="report-section-header">
+                <h2><i class="fa-solid fa-wave-square"></i> Comp'd 물성 분석</h2>
               </div>
-              <div class="card-body" style="padding: 20px;">
-                <div class="report-visco-layout">
-                  
-                  <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 (Radar) -->
-                  <div class="visco-left-radar-panel">
-                    <h4 style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                      <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
-                      컴파운드 종합 물성 밸런스
-                    </h4>
-                    <div class="chart-container" style="height: 310px; position: relative;">
-                      <canvas id="chart-report-radar"></canvas>
+              <div class="dashboard-grid">
+                
+                <!-- 온도별 점탄성 특성 곡선 및 물성 밸런스 비교 대시보드 (하드코딩 인라인 스타일 완벽 걷어내어 글래스모피즘 반영) -->
+                <div class="card col-12" id="report-visco-chart-card">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <h3><i class="fa-solid fa-chart-line"></i> Comp'd Radar Chart &amp; ARES curve</h3>
                     </div>
-                    <div style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
-                      * 6대 핵심 지표(경도, Tg, 저온유연 G', 0℃ G", 0℃ tanδ, 60℃ tanδ) 상대 비교 점수(0~100)를 대조 시각화합니다.
-                    </div>
-                  </div>
-                  
-                  <!-- [오른쪽] ARES Sweep Line Chart -->
-                  <div class="visco-right-line-panel">
-                    <h4 id="visco-line-title" style="font-size: 1.0rem !important; color: #000000 !important; font-weight: 700 !important; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                      <i class="fa-solid fa-chart-area" style="color: var(--primary);"></i>
-                      온도별 손실 탄젠트 거동 분석 (tanδ)
-                    </h4>
-                    <div class="chart-container" style="height: 310px; position: relative;">
-                      <canvas id="chart-visco-temperature"></canvas>
-                    </div>
-                    <div id="visco-line-caption" style="font-size: 0.82rem !important; color: #334155 !important; font-weight: 500 !important; text-align: center; margin-top: 8px; line-height: 1.4;">
-                      * -80℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 스윕 데이터 추이를 실시간 대조 선형 차트로 시각화합니다.
+                    <!-- 실시간 점탄성 지표 전환 탭 컨트롤러 (글래스모피즘 입력창 스타일 .chart-select와 통일) -->
+                    <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                      <span style="font-size: 0.95rem; color: var(--text-dark); font-weight: 600; margin-right: 4px;">분석 지표:</span>
+                      <div class="visco-mode-tabs" style="display: flex; background: rgba(255, 255, 255, 0.1); padding: 2px; border-radius: 8px; border: 1px solid var(--card-border);">
+                        <button class="visco-mode-btn active" data-mode="tand" style="font-weight: 600;">tanδ</button>
+                        <button class="visco-mode-btn" data-mode="gp" style="font-weight: 600;">G'</button>
+                        <button class="visco-mode-btn" data-mode="gpp" style="font-weight: 600;">G"</button>
+                      </div>
                     </div>
                   </div>
-                  
+                  <div class="card-body" style="padding: 20px;">
+                    <div class="report-visco-layout">
+                      
+                      <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 (Radar) -->
+                      <div class="visco-left-radar-panel">
+                        <h4 style="font-size: 1.0rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                          <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
+                          컴파운드 종합 물성 밸런스
+                        </h4>
+                        <div class="chart-container" style="height: 310px; position: relative;">
+                          <canvas id="chart-report-radar"></canvas>
+                        </div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500; text-align: center; margin-top: 8px; line-height: 1.4;">
+                          * 6대 핵심 지표(경도, Tg, 저온유연 G', 0℃ G", 0℃ tanδ, 60℃ tanδ) 상대 비교 점수(0~100)를 대조 시각화합니다.
+                        </div>
+                      </div>
+                      
+                      <!-- [오른쪽] ARES Sweep Line Chart -->
+                      <div class="visco-right-line-panel">
+                        <h4 id="visco-line-title" style="font-size: 1.0rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 12px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                          <i class="fa-solid fa-chart-area" style="color: var(--primary);"></i>
+                          온도별 손실 탄젠트 거동 분석 (tanδ)
+                        </h4>
+                        <div class="chart-container" style="height: 310px; position: relative;">
+                          <canvas id="chart-visco-temperature"></canvas>
+                        </div>
+                        <div id="visco-line-caption" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500; text-align: center; margin-top: 8px; line-height: 1.4;">
+                          * -80℃부터 60℃까지 5℃ 단위 온도별 손실 탄젠트 (tanδ) 스윕 데이터 추이를 실시간 대조 선형 차트로 시각화합니다.
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Dynamic Correlation Scatter Plot (물성 상관관계) -->
+                <div class="card col-12">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <h3>
+                        <i class="fa-solid fa-chart-line"></i> 물성 상관관계 분석 시뮬레이터 (선택 항목 대조)
+                      </h3>
+                    </div>
+                    <div class="chart-controls" style="display: flex; gap: 8px; align-items: center;">
+                      <select id="report-scatter-x" class="chart-select">
+                        <option value="Silica" selected>Silica 함량</option>
+                        <option value="Carbon Black">Carbon Black 함량</option>
+                        <option value="Polymer_NR">NR 비율 (%)</option>
+                        <option value="Polymer_SBR">SBR 비율 (%)</option>
+                        <option value="Polymer_BR">BR 비율 (%)</option>
+                        <option value="Styrene">SBR 내 Styrene 비율 (%)</option>
+                        <option value="Vinyl">SBR 내 Vinyl 비율 (%)</option>
+                        <option value="ZnO">ZnO 함량</option>
+                        <option value="Sulfur">Sulfur 함량</option>
+                      </select>
+                      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">vs</span>
+                      <select id="report-scatter-y" class="chart-select">
+                        <option value="Tg" selected>Tg_peak temp (유리전이온도, ℃)</option>
+                        <option value="Hardness">Hardness (경도, Shore A)</option>
+                        <option value="Elasticity">ARES G'' @ 0℃ (전단 손실 탄성률)</option>
+                        <option value="tanD_0">ARES tanδ @ 0℃ (젖은 제동 지표)</option>
+                        <option value="tanD_60">ARES tanδ @ 60℃ (회전저항 지표)</option>
+                        <option value="M100">Modulus 100% (MPa)</option>
+                        <option value="M300">Modulus 300% (MPa)</option>
+                        <option value="TS">Tensile Strength (인장강도, MPa)</option>
+                        <option value="Elongation">Elongation (신율, %)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="card-body" style="padding: 20px;">
+                    <div class="chart-container" style="height: 340px; position: relative;">
+                      <div id="report-scatter-correlation-badge" class="correlation-badge" style="position: absolute; top: 12px; right: 12px; z-index: 10; background: rgba(79,172,254,0.1); border: 1px solid rgba(79,172,254,0.2); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">
+                        <i class="fa-solid fa-calculator" style="margin-right: 6px;"></i>상관계수: <span id="report-correlation-value">N/A</span>
+                      </div>
+                      <canvas id="chart-report-scatter"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Comp'd 배합제 분석 섹션 -->
+            <div class="report-section">
+              <div class="report-section-header">
+                <h2><i class="fa-solid fa-flask-vial"></i> Comp'd 배합제 분석</h2>
+              </div>
+              <div class="dashboard-grid" id="report-charts-grid">
+                
+                <!-- Polymer Blend Chart (stacked bar) -->
+                <div class="card col-6">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <h3>
+                        <i class="fa-solid fa-flask"></i> Polymer Blend 비율 분포
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="card-body" style="padding: 20px;">
+                    <div class="chart-container" style="height: 280px; position: relative;">
+                      <canvas id="chart-report-polymer"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Styrene / Vinyl Ratio Chart -->
+                <div class="card col-6">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <h3>
+                        <i class="fa-solid fa-vials"></i> Styrene / Vinyl 비율 분석
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="card-body" style="padding: 20px;">
+                    <div class="chart-container" style="height: 280px; position: relative;">
+                      <canvas id="chart-report-styrene-vinyl"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Reinforcement Fillers CB vs Silica -->
+                <div class="card col-6">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <h3>
+                        <i class="fa-solid fa-dumbbell"></i> 보강제 배합 분석
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="card-body" style="padding: 20px;">
+                    <div class="chart-container" style="height: 280px; position: relative;">
+                      <canvas id="chart-report-fillers"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ZnO / Sulfur Chart -->
+                <div class="card col-6">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <h3>
+                        <i class="fa-solid fa-circle-radiation"></i> 가류제 및 촉진제 배합 분석
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="card-body" style="padding: 20px;">
+                    <div class="chart-container" style="height: 280px; position: relative;">
+                      <canvas id="chart-report-zno-sulfur"></canvas>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -572,15 +631,15 @@
                   
                   <!-- 제조사 전용 드롭다운 필터 신설 -->
                   <div class="filter-group" style="margin-bottom: 2px;">
-                    <label for="compare-maker-select" style="font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-bottom: 6px; display: block;">제조사 선택 (Maker Filter)</label>
-                    <select id="compare-maker-select" class="filter-control" style="width: 100%; padding: 8px 12px; font-weight: 500;">
+                    <label for="compare-maker-select" style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; display: block;">제조사 선택 (Maker Filter)</label>
+                    <select id="compare-maker-select" class="filter-control" style="width: 100%; height: 54px; font-size: 1.15rem; font-weight: 600; padding: 0 16px;">
                       <option value="">전체 제조사 (All Makers)</option>
                     </select>
                   </div>
 
                   <div class="search-box-wrapper" style="margin-bottom: 4px; position: relative;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;"></i>
-                    <input type="text" id="compare-pattern-search" class="filter-control" placeholder="패턴명 검색..." style="width: 100%; padding-left: 38px;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem;"></i>
+                    <input type="text" id="compare-pattern-search" class="filter-control" placeholder="패턴명 검색..." style="width: 100%; height: 54px; padding-left: 44px; font-size: 1.15rem; font-weight: 600;">
                   </div>
                   
                   <div id="compare-selected-count" style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">

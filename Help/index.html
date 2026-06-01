@@ -9,7 +9,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Help CSS Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3.3.0">
 </head>
 <body>
     <div class="help-app-container">
@@ -166,7 +166,25 @@
                                 <h4>Global Top4 비교 대시보드 및 'History' 연혁 팝업창 제어</h4>
                                 <p>• <strong>조작 대상</strong>: 포털 홈 하단의 글로벌 매출/판매 동향 및 우측 상단의 <strong>[History]</strong> 링크
                                 <br>• <strong>대시보드 조작법</strong>: [분석 연도] 및 [대상 세그먼트] 드롭다운 셀렉터를 토글하여 차트의 기하학적 수치 변동을 실시간 관제합니다.
-                                <br>• <strong>History 모달 조작법</strong>: 우측 상단의 [History] 텍스트 링크를 마우스로 클릭하면 화면이 어두워지며 팝업 모달창이 활성화됩니다. 스크롤하여 연도별 동기화 히스토리를 정독한 뒤, 모달창 우측 위 <strong>[X]</strong> 버튼을 클릭하거나 바깥 영역을 선택하여 모달창을 닫습니다.</p>
+                                <br>• <strong>History 모달 조작법</strong>: 우측 상단의 [History] 텍스트 링크를 마우스로 클릭하면 화면이 어두워지며 팝업 모달창이 활성화됩니다. 스크롤하여 연도별 동기화 히스토리를 정독한 뒤, 모달창 우측 위 <strong>[X]</strong> 버튼을 클릭하여 모달창을 닫습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <h4>'BM 기반 AI 상품 전략 및 R&D 가이드라인 수립' 콘솔 제어</h4>
+                                <p>• <strong>조작 대상</strong>: 포털 메인 중앙에 새롭게 도입된 인공지능 기반 R&D 상품 전략 콘솔 패널 (`#strategy-console-widget`)
+                                <br>• <strong>조작 절차 및 활용 시나리오 (Premium v3.1 신규)</strong>:
+                                <br>1. <strong>자연어 분석 요청</strong>: 입력란에 기획하고자 하는 차세대 타이어 후속안에 대한 아이디어(예: <code>K137 후속 여름용 초고성능 스포츠 타이어</code>)를 입력한 후 <strong>[전략 수립 실행]</strong> 버튼을 누릅니다.
+                                <br>2. <strong>원터치 템플릿 프리셋 칩 활용</strong>: 입력이 복잡할 경우, 입력창 하단의 3대 추천 전략 프리셋 칩(<code>[K137 후속]</code>, <code>[iON Evo 차세대]</code>, <code>[Dynapro HPX 차세대]</code>) 중 하나를 마우스로 클릭하면 즉각 정밀 분석 시뮬레이션이 시작됩니다.
+                                <br>3. <strong>다단계 연동 로딩 모니터링</strong>: 실행 시 <em>시장 점유율 연동 ➡️ BM 보고서 데이터 탐색 ➡️ 경쟁사 PLC 수명 분석 ➡️ 성능 Gap Analysis 연산 ➡️ 투자 제안서 도출</em>의 5대 지능형 스텝이 순차 활성화되는 것을 모니터링합니다.
+                                <br>4. <strong>고밀도 전략 제안서 판독 요령</strong>:
+                                <br>- <strong>KPI 핵심 요약</strong>: 경쟁사의 차세대 출시 분기, R&D 및 Capex 총 설비 투자 예산안, 최우선 달성 성능 평점을 즉각 관제합니다.
+                                <br>- <strong>수립 근거 및 원천 보고서</strong>: 기획 배경을 숙독하고, 하단의 <strong>[Hankook ARENA 원천 BM 보고서 DWP 링크]</strong>를 클릭해 실물 결재 문서를 새 탭으로 대조할 수 있습니다.
+                                <br>- <strong>성능 6대축 Gap Analysis 레이더 차트</strong>: 목표 평점 대비 자사 기존 모델의 부족 수치를 정량 편차율(%)과 경고 뱃지로 시각 진단합니다.
+                                <br>- <strong>제조 설비 & 원재료 투자 가이드 (Capex)</strong>: 초고상 친수 혼련기 기용, 아랄론 하이브리드 보강 코드, 특화 SBR 중합 및 고상 실리카 함량 가이드 등 R&D 부서에 지시할 핵심 기술 솔루션을 확인합니다.
+                                <br>- <strong>목표 라벨 등급 및 SKU 전략</strong>: 최적의 RE/OE 규격 비율과 달성 목표 EU Labeling 등급(Wet, RR, Noise) 지표를 한눈에 수립합니다.</p>
                             </div>
                         </div>
                     </div>
@@ -313,12 +331,26 @@
                         <div class="step-card">
                             <div class="step-num">1</div>
                             <div class="step-content">
-                                <h4>[종합 분석 대시보드] 탭 그래프 범례 필터 및 마우스 툴팁 조작</h4>
+                                <h4>[제품 성능 비교] 탭 9대 메이커 개별 독립 카드 & 동적 대시보드 필터 가이드</h4>
                                 <p>• <strong>실제 화면 위치</strong>: Comp'd BM 페이지의 첫 번째 서브 탭
-                                <br>• <strong>조작법</strong>:
-                                <br>1. <strong>[종합 분석 대시보드]</strong> 탭을 엽니다.
-                                <br>2. 중앙 점탄성 온도 스윕 ($\tan\delta$) 그래프 상단 범례 영역의 제조사 라벨(예: <code>Continental</code>)을 마우스 클릭하여 해당 곡선을 그래프 캔버스에서 일시적으로 감추거나 재생시킵니다.
-                                <br>3. 마우스를 그래프 위 0℃(젖은 노면 제동 성능 지표) 및 60℃(회전저항 연비 지표) 구간의 곡선 좌표 지점에 가볍게 올려둡니다. 그 즉시 팝업되는 가이드 툴팁으로 실측 정량 소수점 수치(예: <code>0.4851</code>)를 즉각 판독할 수 있습니다.</p>
+                                <br>• <strong>조작법 및 주요 개편 사양 (Premium v1.5 적용)</strong>:
+                                <br>1. <strong>[제품 성능 비교]</strong> 탭을 엽니다. (기존 <strong>'Maker 별 제품 성능 비교'</strong> 또는 '종합 분석 대시보드'에서 폰트 크기 및 시인성이 대폭 강화되며 명칭이 보다 세련되고 직관적인 <strong>'제품 성능 비교'</strong>로 개편되었습니다.)
+                                <br>2. <strong>상단 Season 및 Segment 동적 대시보드 필터창 활용 (필터 및 글씨 크기 대폭 상향)</strong>:
+                                <br>&nbsp;&nbsp;: 대시보드 상단에 배치된 <strong>[Season(시즌)]</strong> 및 <strong>[Segment / 차종]</strong> 필터 드롭다운을 통해 원하는 분류(예: <code>Summer</code>, <code>EV</code> 등)를 선택합니다.
+                                <br>&nbsp;&nbsp;: 특히, 사용자의 직관적인 조작을 돕기 위해 <strong>전체적인 필터 컨트롤의 크기와 높이(52px), 선택 폰트 글씨 크기(1.15rem)를 이전보다 훨씬 크게 상향 조정</strong>하여 고해상도 환경에서도 매우 시원한 가독성을 제공합니다.
+                                <br>&nbsp;&nbsp;: 필터를 적용하면 하단의 9대 메이커 카드 내 드롭다운 리스트에 <strong>해당 시즌 및 차종 조건에 부합하는 타이어 패턴들만 실시간으로 동적 정제</strong>되어 표출됩니다.
+                                <br>&nbsp;&nbsp;: 필터를 전체 초기화하여 원시 데이터셋으로 돌아가려면 필터 패널 우측의 <strong>[초기화]</strong> 단추를 클릭합니다.
+                                <br>3. <strong>9대 제조사 개별 독립 프리미엄 카드 레이아웃 (9번째 KUMHO 추가)</strong>:
+                                <br>&nbsp;&nbsp;: 기존에 하나의 거대한 카드 컨테이너 내부에 묶여 있던 제조사 카드들을 <strong>완전히 분리된 개별 독립형 대형 카드 섹션</strong>으로 전면 개편하였습니다.
+                                <br>&nbsp;&nbsp;: 특히 글로벌 벤치마킹 확대 수요를 반영하여 <strong>9번째 자리에 금호타이어(KUMHO)를 정식 신규 추가</strong>함으로써, 총 9대 글로벌 메이커가 독립 카드로 확장 및 자동 균등 정렬되도록 레이아웃 가독성을 완벽하게 끌어올렸습니다.
+                                <br>4. <strong>시인성 및 가독성 개선 (Select Pattern 제거, Maker 및 카드 내 전반 글자 확대)</strong>:
+                                <br>&nbsp;&nbsp;: 불필요했던 <strong>'Select Pattern' 문구를 영구히 완전히 생략</strong>하여 쓸데없는 가독성 낭비를 미연에 정화했습니다.
+                                <br>&nbsp;&nbsp;: 카드 최상단의 <strong>Maker (제조사명 브랜드 타이틀) 글자 크기를 한 차원 더 웅장하게 확대(1.95rem)</strong>하여 어떤 메이커인지 직관적으로 정체성을 띠게 하였습니다.
+                                <br>&nbsp;&nbsp;: <strong>카드 내부에 수납된 모든 글씨와 패턴 필터 드롭다운 폰트(1.35rem), 샘플 개수, 가교 밀도 등의 세부 텍스트 크기를 이전보다 일제히 묵직하게 상향</strong>하여, 고령 연구원이나 어두운 랩실 모니터링 환경에서도 인체공학적으로 완벽히 읽을 수 있도록 세심히 보정하였습니다.
+                                <br>5. <strong>고무비(Polymer Blend) 분석 차트 내 SBR 색상 변경</strong>:
+                                <br>&nbsp;&nbsp;: 분석 차트 및 배합제 대조 뷰에서 합성고무인 <strong>SBR(Styrene Butadiene Rubber)의 식별성 향상을 위해 고유 색상을 파란색(Blue, #2563eb)으로 전격 변경</strong>하였습니다. 천연고무(NR) 및 부타디엔 고무(BR)와의 대조 시각화가 극대화되었습니다.
+                                <br>6. <strong>점탄성 그래프 인터랙션</strong>:
+                                <br>&nbsp;&nbsp;: 마우스를 중앙 점탄성 온도 스윕 ($\tan\delta$) 그래프 상단 범례 영역의 제조사 라벨(예: <code>Continental</code>)을 클릭하여 해당 곡선을 실시간으로 켜거나 끌 수 있으며, 꼭짓점에 커서를 대어 구체적 수치를 파악합니다.</p>
                             </div>
                         </div>
 
@@ -338,13 +370,20 @@
                         <div class="step-card">
                             <div class="step-num">3</div>
                             <div class="step-content">
-                                <h4>[BM Report 생성기] 탭 드롭다운 & 리포트 생성 버튼 조작</h4>
+                                <h4>[BM Report 생성기] 탭 드롭다운 & 체계적 리포트 레이아웃 조작</h4>
                                 <p>• <strong>실제 화면 위치</strong>: Comp'd BM 페이지의 세 번째 서브 탭
-                                <br>• <strong>조작법</strong>:
+                                <br>• <strong>조작법 및 최신 리포트 구조 개편 (Premium v1.5 적용)</strong>:
                                 <br>1. <strong>[BM Report 생성기]</strong> 탭을 마우스로 클릭하여 진입합니다.
                                 <br>2. 화면 상단의 드롭다운을 열고 원하는 [제조사 선택] 및 [타이어 모델 선택]을 마우스로 지정합니다.
-                                <br>3. 우측의 오렌지색 <strong>[BM Report 생성]</strong> 버튼을 마우스로 클릭합니다.
-                                <br>4. 즉시 하단 영역 전체가 페이드인 되며, 해당 고무 컴파운드의 실측 물성 인포그래픽 리포트가 화면 상에 선명하게 자동 드로잉 렌더링되어 나타납니다.</p>
+                                <br>3. 우측의 오렌지색 <strong>[BM Report 생성]</strong> 버튼을 마우스로 클릭하면, 고무 컴파운드의 실측 물성 정밀 명세서 및 2대 개편 섹션 장표가 선명하게 자동 드로잉 렌더링되어 나타납니다.
+                                <br><br>• <strong>체계적으로 구조화된 2대 대형 분석 섹션 안내</strong>:
+                                <br>- <strong>[섹션 1] Comp'd 물성 분석 섹션 (좌측 주황색 강조 바 탑재)</strong>:
+                                <br>&nbsp;&nbsp;: <code>Comp'd Radar Chart & ARES curve</code>(종합 물성 밸런스 레이더 차트 및 온도별 점탄성 거동 분석 곡선)와 <code>물성 상관관계 분석 시뮬레이터 (선택 항목 대조)</code>가 하나로 통합되어 물성 변화 추이를 직관적으로 연동 분석할 수 있습니다.
+                                <br>- <strong>[섹션 2] Comp'd 배합제 분석 섹션 (좌측 주황색 강조 바 탑재)</strong>:
+                                <br>&nbsp;&nbsp;: <code>Polymer Blend 비율 분포</code>, <code>Styrene / Vinyl 비율 분석</code>, <code>보강제 배합 분석</code>, <code>가류제 및 촉진제 배합 분석</code>의 총 4대 정량 성분 분석 차트가 하나의 대형 박스 안에 깔끔하게 통합 그룹화되어 화학 배합 설계의 계층적 가독성이 대폭 상향되었습니다.
+                                <br><br>• <strong>비교 명세서 및 코멘트 박스 프리미엄 디자인 일치화</strong>:
+                                <br>- <strong>[타이어 컴파운드 정밀 비교 명세서]</strong>: 이전의 군더더기 같던 대괄호 타이틀(<code>[BM Report]</code>)을 과감히 제거하여 명밀하게 정형화했습니다.
+                                <br>- <strong>[디자인 통일]</strong>: 명세서 카드 테두리 및 <strong>[Engineering Insight] AI 물성 예측 및 코멘트</strong> 등의 하위 중간 박스들은 예전의 미려하고 깨끗한 기본 글래스 프레임 형태로 정교하게 되돌렸으며, 가장 최상위 큰 Box 레이아웃 좌측에만 프리미엄 주황색 세로 바 포인트를 주어 세련된 시각적 무게감과 완성도를 확보하였습니다.</p>
                             </div>
                         </div>
 
@@ -614,6 +653,46 @@
                                 <br>3. **자동 오픈 메모리 버그 해결**: 페이지 이동 시 사이드바가 저절로 확 펼쳐진 채 고정되던 메모리 유지 현상을 원천적으로 제거하였으므로, 사용자가 마우스를 다시 오버하기 전까지는 깨끗한 대시보드를 넓게 관제하실 수 있습니다.</p>
                             </div>
                         </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q5</span>
+                                <h4>Q. 제품 성능 비교 카드 내의 글씨가 대폭 커졌는데, 화면 해상도나 레이아웃에 맞춰 스크롤 없이 한눈에 볼 수 있는 방법이 있나요?</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>원인 및 사양 개선 내용 (Premium v1.5 적용)</strong>:
+                                <br>1. **연구원 가독성 피드백 반영**: 카드 내 제조사 브랜드명을 1.95rem으로, 드롭다운은 1.35rem으로 확대하고 배합 평균 및 성능 지수 텍스트 크기를 전반적으로 상향하여 시인성을 극대화하였습니다.
+                                <br>2. **드롭다운 시각 직관성 확보**: 불필요한 'Select Pattern' 라벨을 완전히 생략하고 선택된 패턴명과 샘플 개수(N)가 넓은 영역에서 선명하게 표시되도록 정리했습니다.
+                                <br>3. **최적 권장 렌더링 비율**: 글씨 크기 증가로 인해 레이아웃에 줄바꿈이 빈번히 발생하거나 화면 높이가 모자라 보일 경우, 브라우저 축소 비율(<code>Ctrl + 마우스 휠 아래 스크롤</code>)을 80%~90% 정도로 세팅하시면 초고해상도의 9대 메이커 비교 장표를 한눈에 관제하실 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q6</span>
+                                <h4>Q. Compound BM 제품 성능 비교 페이지에서 특정 제조사의 패턴 드롭다운을 열었는데 원하는 패턴이 보이지 않습니다.</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>원인</strong>: 대시보드 상단에 배치된 [Season] 또는 [Segment / 차종] 필터가 활성화되어 있어, 해당 조건에 맞는 패턴들만 드롭다운에 노출되도록 동적 제한이 걸려 있기 때문입니다.
+                                <br>• <strong>해결 조치 단계</strong>:
+                                <br>1. [제품 성능 비교] 화면 최상단의 <strong>[Season]</strong> 또는 <strong>[Segment / 차종]</strong> 필터 드롭다운이 특정 값(예: <code>Summer</code> 등)으로 선택되어 있는지 확인합니다.
+                                <br>2. 해당 필터들의 값을 전체 또는 공백으로 되돌리거나, 우측의 <strong>[초기화]</strong> 버튼을 클릭하여 필터 조건을 소거합니다.
+                                <br>3. 필터가 해제되면 9대 제조사 카드 내의 패턴 드롭다운 리스트에 전체 데이터베이스 패턴 목록이 다시 복원되어 표시됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q7</span>
+                                <h4>Q. 포털 메인 'AI 상품 전략 콘솔'에서 도출되는 R&D 제안서 상의 경쟁사 차세대 타이어 출시 시점이나 예산안(Capex)은 어떤 수식을 거쳐 계산되나요?</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>정량 산출 기준 및 데이터 정합성 (Premium v3.1 적용)</strong>:
+                                <br>1. **PLC 타임라인 DB 실측 연동**: 가상의 예측 수치가 아닙니다. 내장된 6,000여 건의 'Tire BM PLC Timeline Map' 내 세그먼트별 실측 가중 PLC 수명(예: 여름용 Max Performance UHP 세그먼트는 평균 <code>5.8년</code>, 고성능 EV 전용 세그먼트는 평균 <code>6.0년</code> 등)을 기반으로 계산을 가동합니다.
+                                <br>2. **실 출시 주기 동기화**: 경쟁사의 기존 세대 제품이 출시된 연도(예: Michelin PS5의 경우 <code>2022년</code>)에 해당 세그먼트의 가중 평균 수명을 합산하여, 미쉐린의 실제 PS6 차세대 타이어의 글로벌 출시 분기를 실시간 유추 도출합니다.
+                                <br>3. **R&D 마진 및 Capex 공정 투자금 계산**: 자사와 경쟁 최고 수준 간의 실측 타이어 그루브/컴파운드 물성 데이터베이스 갭(Gap)을 보강하기 위해, 나노 가류 몰드 챔버 증설 및 초고상 친수 밀밀 혼련기 라인 증설 등에 소요되는 실질 제조 설비 인프라 감가상각 가치사슬 공식을 AI가 동적으로 대조하여 초정밀 제안서를 출력합니다.</p>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -621,6 +700,6 @@
     </div>
 
     <!-- Script imports -->
-    <script src="app.js"></script>
+    <script src="app.js?v=3.3.0"></script>
 </body>
 </html>

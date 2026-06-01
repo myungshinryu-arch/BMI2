@@ -928,7 +928,7 @@ body {
 
 .mc-brand-name {
   font-family: var(--font-display);
-  font-size: 1.28rem;
+  font-size: 1.95rem;
   font-weight: 900;
   color: var(--text-dark);
 }
@@ -943,7 +943,7 @@ body {
 .mc-brand-name.vredestein { color: #ec4899; }   /* 브레데스타인 시그니처 핫핑크 */
 
 .mc-badge {
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   font-weight: 700;
   background: rgba(249, 115, 22, 0.05);
   color: var(--primary);
@@ -971,12 +971,13 @@ body {
 
 .mc-pattern-dropdown-large {
   width: 100%;
-  padding: 6px 14px 6px 8px;
-  border-radius: 6px;
-  border: 1.5px solid rgba(249, 115, 22, 0.18);
+  height: 48px;
+  padding: 10px 30px 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(249, 115, 22, 0.25);
   background: rgba(255, 255, 255, 0.85);
   color: var(--text-dark);
-  font-size: 0.72rem;
+  font-size: 1.35rem;
   font-weight: 800;             /* 볼드 처리하여 세련된 시각적 존재감 유지 */
   font-family: var(--font-display);
   outline: none;
@@ -985,20 +986,23 @@ body {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f97316' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 4px center;
-  background-size: 8px;         /* 화살표 아이콘 크기 미세 축소 */
+  background-position: right 12px center;
+  background-size: 14px;         
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .mc-pattern-dropdown-large option {
-  font-size: 0.68rem;           /* 옵션 드롭다운 내부 텍스트 크기도 0.68rem으로 동기화 */
-  font-weight: 500;
+  font-size: 1.2rem;           /* 옵션 드롭다운 내부 텍스트 크기도 동기화 */
+  font-weight: 600;
   color: var(--text-dark);
   background-color: #fff;
-  padding: 4px 6px;
+  padding: 8px 12px;
 }
 
 .mc-pattern-dropdown-large:hover {
@@ -1026,7 +1030,7 @@ body {
 
 .mc-ingredients-section .section-title,
 .mc-gauge-section .section-title {
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--primary);
   text-transform: uppercase;
@@ -1046,7 +1050,7 @@ body {
 .ing-info {
   display: flex;
   justify-content: space-between;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-muted);
 }
@@ -1098,13 +1102,13 @@ body {
 }
 
 .meta-ing .lbl {
-  font-size: 0.68rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   font-weight: 600;
 }
 
 .meta-ing .val {
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--text-dark);
   font-family: var(--font-display);
@@ -1127,7 +1131,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-muted);
 }

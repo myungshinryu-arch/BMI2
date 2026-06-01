@@ -4,6 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BM-Intelligence Hub Portal v3.1</title>
+  
+  <!-- Premium Uncaught exception reporting banner for real-time diagnostics -->
+  <script>
+    window.addEventListener('error', function(e) {
+      console.error("Uncaught exception intercepted:", e);
+      // 'Script error.' is a browser-enforced security wrapper that hides the actual error of cross-origin or local file (file:///) scripts.
+      // It has zero diagnostic value and is usually harmless CDN warning noise. We filter it from rendering the massive red screen banner.
+      if (e.message === 'Script error.' || !e.filename || e.filename.indexOf('chrome-extension') !== -1) {
+        console.warn("[CORS/Extension Filtered] Script error noise ignored to preserve premium UI layout.");
+        return;
+      }
+      showDiagnosticBanner('Exception: ' + e.message + ' at ' + e.filename + ':' + e.lineno + '\n' + (e.error ? e.error.stack : ''));
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error("Unhandled promise rejection intercepted:", e);
+      // Also filter meaningless CORS/empty unhandled promise rejections if necessary
+      if (!e.reason || e.reason.message === 'Script error.') return;
+      showDiagnosticBanner('Promise Rejection: ' + e.reason);
+    });
+    function showDiagnosticBanner(msg) {
+      var banner = document.getElementById('diagnostic-error-banner');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'diagnostic-error-banner';
+        banner.style.cssText = 'position:fixed;top:15px;left:50%;transform:translateX(-50%);background:#dc2626;color:#fff;padding:18px 28px;border-radius:12px;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,sans-serif;font-size:13.5px;font-weight:700;z-index:999999;box-shadow:0 12px 35px rgba(220,38,38,0.45);max-width:92%;word-break:break-all;white-space:pre-wrap;line-height:1.55;border:1px solid rgba(255,255,255,0.25);';
+        
+        var closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'background:none;border:none;color:#fff;font-size:16px;font-weight:bold;margin-left:15px;float:right;cursor:pointer;opacity:0.8;';
+        closeBtn.onclick = function() { banner.remove(); };
+        
+        banner.appendChild(closeBtn);
+        
+        var title = document.createElement('div');
+        title.innerHTML = '⚠️ <span style="text-decoration:underline;">실시간 JS 런타임 오류 감지됨</span>';
+        title.style.marginBottom = '8px';
+        title.style.fontSize = '14.5px';
+        banner.appendChild(title);
+        
+        var textNode = document.createTextNode('');
+        banner.appendChild(textNode);
+        
+        document.body.appendChild(banner);
+      }
+      banner.childNodes[2].textContent = msg;
+    }
+  </script>
   <meta name="description" content="타이어 출시 타임라인 PLC Map 및 제조사별 컴파운드 물성을 한 화면에서 직접 관제하는 네이버 스타일 프리미엄 통합 포털">
   
   <!-- Google Fonts -->
@@ -183,286 +230,816 @@
 
     </section>
 
-    <!-- MAIN CONSOLE LAYOUT: 1단 풀-너비 관제 대시보드 (100% 가로 확장) -->
+    <!-- MAIN CONSOLE LAYOUT: AI 기반 R&D 상품 전략 및 설비 투자 제안 시스템 -->
     <main class="portal-main-layout">
-
-      <!-- PORTAL STRATEGY MONITOR WIDGET (Global Top4 비교 대시보드) -->
-      <section class="dashboard-widget-section portal-strategy-dashboard">
-        <div class="widget-header-row">
-          <div class="widget-header-title">
-            <h2 class="widget-title"><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Global Top4 비교</h2>
-            <p class="widget-subtitle">제조사별 글로벌 매출/판매량 비교, 세그먼트별 상품 기술 경쟁력 분석 및 대표 상품 세대별 성능 진화 트렌드 통합 관제</p>
+      
+      <!-- Scoped Styles for R&D Strategic Console -->
+      <style>
+        .strategy-console-section {
+          background: var(--card-bg);
+          border: 1px solid var(--card-border);
+          border-radius: 20px;
+          padding: 30px;
+          box-shadow: var(--shadow-premium);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          margin-bottom: 30px;
+          transition: var(--transition);
+        }
+        .strategy-console-section:hover {
+          border-color: var(--card-hover-border);
+          box-shadow: var(--glow-orange), 0 20px 45px rgba(249, 115, 22, 0.12);
+        }
+        .console-header {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 20px;
+          border-bottom: 1px solid rgba(249, 115, 22, 0.15);
+          padding-bottom: 15px;
+        }
+        .console-icon {
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(135deg, var(--primary), var(--secondary));
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          font-size: 1.5rem;
+          box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+        }
+        .console-title-group h2 {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.6rem;
+          color: var(--text-dark);
+          margin-bottom: 4px;
+        }
+        .console-title-group p {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+        }
+        
+        /* Input Area styling */
+        .console-prompt-container {
+          background: rgba(255, 255, 255, 0.9);
+          border: 1.5px solid rgba(249, 115, 22, 0.15);
+          border-radius: 15px;
+          padding: 10px 15px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 15px;
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+          transition: var(--transition);
+        }
+        .console-prompt-container:focus-within {
+          border-color: var(--primary);
+          box-shadow: 0 0 15px rgba(249, 115, 22, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.01);
+        }
+        .console-prompt-container textarea {
+          flex: 1;
+          background: transparent;
+          border: none;
+          outline: none;
+          resize: none;
+          font-family: var(--font-sans);
+          font-size: 1.05rem;
+          font-weight: 500;
+          color: var(--text-dark);
+          height: 55px;
+          padding: 8px 0;
+          line-height: 1.4;
+        }
+        .console-prompt-container textarea::placeholder {
+          color: #94a3b8;
+        }
+        .console-submit-btn {
+          background: linear-gradient(135deg, var(--primary), var(--accent-orange));
+          border: none;
+          border-radius: 12px;
+          color: #ffffff;
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: 1.05rem;
+          padding: 12px 24px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25);
+          transition: var(--transition);
+          white-space: nowrap;
+        }
+        .console-submit-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+        .console-submit-btn:active {
+          transform: translateY(0);
+        }
+        
+        /* Template Chips styling */
+        .template-chips-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-top: 15px;
+        }
+        .chip-label {
+          font-size: 0.85rem;
+          font-weight: 800;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .template-chip {
+          background: rgba(249, 115, 22, 0.04);
+          border: 1px solid rgba(249, 115, 22, 0.15);
+          border-radius: 30px;
+          color: var(--text-primary);
+          font-size: 0.85rem;
+          font-weight: 700;
+          padding: 8px 16px;
+          cursor: pointer;
+          transition: var(--transition);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .template-chip:hover {
+          background: rgba(249, 115, 22, 0.08);
+          border-color: var(--primary);
+          color: var(--primary);
+          transform: translateY(-1.5px);
+        }
+        .template-chip i {
+          font-size: 0.8rem;
+          color: var(--primary);
+        }
+        
+        /* Loading Screen styling */
+        .strategy-loader-container {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 60px 40px;
+          text-align: center;
+        }
+        .neon-spinner {
+          width: 70px;
+          height: 70px;
+          border: 5px solid rgba(249, 115, 22, 0.15);
+          border-top-color: var(--primary);
+          border-radius: 50%;
+          animation: spin 1s infinite linear;
+          margin-bottom: 25px;
+          box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .loader-headline {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.4rem;
+          color: var(--text-dark);
+          margin-bottom: 20px;
+        }
+        .loader-steps {
+          max-width: 500px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          text-align: left;
+          background: rgba(255, 255, 255, 0.6);
+          padding: 20px;
+          border-radius: 15px;
+          border: 1px solid rgba(249, 115, 22, 0.08);
+        }
+        .loader-step {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          transition: var(--transition);
+        }
+        .loader-step.active {
+          color: var(--primary);
+        }
+        .loader-step.completed {
+          color: var(--accent-green);
+        }
+        .loader-step-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #cbd5e1;
+          transition: var(--transition);
+        }
+        .loader-step.active .loader-step-dot {
+          background: var(--primary);
+          box-shadow: 0 0 8px var(--primary);
+          transform: scale(1.2);
+        }
+        .loader-step.completed .loader-step-dot {
+          background: var(--accent-green);
+        }
+        
+        /* Empty/Idle State styling */
+        .strategy-empty-state {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 80px 40px;
+          text-align: center;
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px dashed rgba(249, 115, 22, 0.2);
+          border-radius: 20px;
+        }
+        .empty-icon {
+          font-size: 3rem;
+          color: var(--secondary);
+          margin-bottom: 20px;
+          animation: pulseGlow 2s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.2)); }
+          50% { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.4)); }
+        }
+        .empty-title {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.3rem;
+          color: var(--text-dark);
+          margin-bottom: 10px;
+        }
+        .empty-desc {
+          font-size: 0.95rem;
+          color: var(--text-muted);
+          max-width: 550px;
+          line-height: 1.5;
+        }
+        
+        /* Report Dashboard Layout */
+        .report-dashboard {
+          display: none;
+          animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* KPI Grid Cards */
+        .strategy-kpi-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+        .kpi-card {
+          background: rgba(255, 255, 255, 0.85);
+          border-top: 4px solid var(--primary);
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: var(--shadow-light);
+          border-left: 1px solid rgba(249, 115, 22, 0.08);
+          border-right: 1px solid rgba(249, 115, 22, 0.08);
+          border-bottom: 1px solid rgba(249, 115, 22, 0.08);
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          transition: var(--transition);
+        }
+        .kpi-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba(249, 115, 22, 0.05);
+        }
+        .kpi-icon-wrapper {
+          width: 45px;
+          height: 45px;
+          border-radius: 10px;
+          background: rgba(249, 115, 22, 0.08);
+          color: var(--primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.25rem;
+        }
+        .kpi-text-wrapper {
+          display: flex;
+          flex-direction: column;
+        }
+        .kpi-label {
+          font-size: 0.8rem;
+          font-weight: 800;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 4px;
+        }
+        .kpi-value {
+          font-family: var(--font-display);
+          font-size: 1.15rem;
+          font-weight: 800;
+          color: var(--text-dark);
+          line-height: 1.2;
+        }
+        
+        /* 2-Column Section Layout */
+        .strategy-grid-split {
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 30px;
+          margin-bottom: 30px;
+        }
+        @media (max-width: 1100px) {
+          .strategy-grid-split {
+            grid-template-columns: 1fr;
+          }
+        }
+        
+        .strategy-widget-panel {
+          background: rgba(255, 255, 255, 0.7);
+          border: 1px solid rgba(249, 115, 22, 0.08);
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: var(--shadow-light);
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+        .panel-heading-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1.5px solid rgba(249, 115, 22, 0.1);
+          padding-bottom: 12px;
+          margin-bottom: 18px;
+        }
+        .panel-heading-title {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.15rem;
+          color: var(--text-dark);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .panel-heading-title i {
+          color: var(--primary);
+        }
+        
+        /* Strategic Ground List */
+        .strategy-list {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .strategy-list-item {
+          display: flex;
+          gap: 12px;
+          font-size: 0.95rem;
+          line-height: 1.5;
+          color: var(--text-primary);
+        }
+        .strategy-list-item i {
+          margin-top: 4px;
+          color: var(--primary);
+          font-size: 0.9rem;
+        }
+        .strategy-list-item strong {
+          color: var(--text-dark);
+          font-weight: 700;
+        }
+        
+        /* Benchmarking Report Box */
+        .report-ref-card {
+          background: linear-gradient(135deg, rgba(249, 115, 22, 0.02), rgba(255, 255, 255, 0.8));
+          border: 1px solid rgba(249, 115, 22, 0.15);
+          border-radius: 12px;
+          padding: 15px;
+          margin-top: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 15px;
+        }
+        .ref-info h5 {
+          font-size: 0.95rem;
+          font-weight: 800;
+          color: var(--text-dark);
+          margin-bottom: 4px;
+        }
+        .ref-info p {
+          font-size: 0.82rem;
+          color: var(--text-muted);
+        }
+        .ref-link-btn {
+          background: #ffffff;
+          border: 1px solid rgba(249, 115, 22, 0.3);
+          color: var(--primary);
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-size: 0.8rem;
+          font-weight: 800;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: var(--transition);
+          white-space: nowrap;
+        }
+        .ref-link-btn:hover {
+          background: var(--primary);
+          color: #ffffff;
+          border-color: var(--primary);
+        }
+        
+        /* Radar Chart Wrapper */
+        .radar-chart-wrapper {
+          width: 100%;
+          height: 290px;
+          position: relative;
+          margin: 10px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* Gap Analysis styling */
+        .gap-container {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .gap-metric-row {
+          background: rgba(255, 255, 255, 0.6);
+          border: 1px solid rgba(226, 232, 240, 0.8);
+          border-radius: 10px;
+          padding: 12px 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .gap-metric-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .gap-metric-name {
+          font-size: 0.9rem;
+          font-weight: 800;
+          color: var(--text-dark);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .gap-badge {
+          font-size: 0.78rem;
+          font-weight: 800;
+          padding: 3px 10px;
+          border-radius: 30px;
+          text-transform: uppercase;
+        }
+        .gap-badge.warning {
+          background: rgba(239, 68, 68, 0.08);
+          color: var(--danger);
+          border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+        .gap-badge.success {
+          background: rgba(16, 185, 129, 0.08);
+          color: var(--accent-green);
+          border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .gap-visual-bar-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+        }
+        .gap-score-label {
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          width: 55px;
+          white-space: nowrap;
+        }
+        .gap-bar-track {
+          flex: 1;
+          height: 7px;
+          background: #e2e8f0;
+          border-radius: 10px;
+          position: relative;
+          overflow: hidden;
+        }
+        .gap-bar-fill {
+          height: 100%;
+          border-radius: 10px;
+          background: linear-gradient(90deg, var(--primary), var(--secondary));
+          transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gap-bar-fill.target {
+          background: #94a3b8;
+        }
+        
+        /* 3-Column Capex Suggestions */
+        .capex-grid-layout {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          margin-top: 15px;
+        }
+        @media (max-width: 950px) {
+          .capex-grid-layout {
+            grid-template-columns: 1fr;
+          }
+        }
+        
+        .capex-card {
+          background: rgba(255, 255, 255, 0.8);
+          border: 1px solid rgba(249, 115, 22, 0.08);
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: var(--shadow-light);
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          transition: var(--transition);
+        }
+        .capex-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 30px rgba(249, 115, 22, 0.08);
+          border-color: rgba(249, 115, 22, 0.25);
+        }
+        .capex-card-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          border-bottom: 1.5px solid rgba(249, 115, 22, 0.08);
+          padding-bottom: 12px;
+        }
+        .capex-card-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.15rem;
+          color: #ffffff;
+        }
+        .capex-card-icon.blue {
+          background: linear-gradient(135deg, var(--accent-blue), #60a5fa);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+        .capex-card-icon.green {
+          background: linear-gradient(135deg, var(--accent-green), #34d399);
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        .capex-card-icon.orange {
+          background: linear-gradient(135deg, var(--primary), var(--secondary));
+          box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+        }
+        .capex-card-title {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.05rem;
+          color: var(--text-dark);
+        }
+        .capex-sublist {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .capex-sublist-item {
+          font-size: 0.9rem;
+          line-height: 1.4;
+          color: var(--text-primary);
+          padding-left: 12px;
+          position: relative;
+        }
+        .capex-sublist-item::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 7px;
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: var(--primary);
+        }
+        .capex-card-icon.blue ~ .capex-sublist .capex-sublist-item::before {
+          background: var(--accent-blue);
+        }
+        .capex-card-icon.green ~ .capex-sublist .capex-sublist-item::before {
+          background: var(--accent-green);
+        }
+      </style>
+      
+      <!-- STRATEGY CONSOLE WIDGET -->
+      <section class="strategy-console-section" id="strategy-console-widget">
+        <div class="console-header">
+          <div class="console-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
-          <a href="Market_Strategy/index.html" class="strategy-shortcut-link">
-            전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
-          </a>
+          <div class="console-title-group">
+            <h2>BM 기반의 상품 전략 수립 및 R&D 가이드라인 시스템</h2>
+            <p>실제 벤치마킹(BM) 데이터와 시장 통계, 타이어 출시 타임라인 PLC Map을 입체적으로 융합하여 최적의 상품 개발 전략과 R&D 가이드라인을 제안합니다.</p>
+          </div>
         </div>
-
-        <div class="strategy-quad-grid">
+        
+        <!-- Interactive Prompt Input Bar -->
+        <div class="console-prompt-container">
+          <textarea id="strategy-prompt-input" placeholder="개발하고자 하는 후속 상품이나 타겟 세그먼트 R&D 전략에 대해 질문해 주세요. (예: K137 후속 여름용 초고성능 프리미엄 스포츠 타이어 개발 전략 수립해줘)"></textarea>
+          <button id="strategy-submit-btn" class="console-submit-btn">
+            <span>전략 수립 실행</span>
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </button>
+        </div>
+        
+        <!-- Template Preset Suggestion Chips -->
+        <div class="template-chips-row">
+          <span class="chip-label"><i class="fa-solid fa-tags"></i> 추천 전략 수립 템플릿:</span>
+          <button class="template-chip" data-query="K137 후속 여름용 초고성능 프리미엄 스포츠 타이어 개발 전략 수립해줘">
+            <i class="fa-solid fa-car"></i> <span>[K137 후속] 여름용 초고성능 프리미엄 스포츠 타이어 개발 전략</span>
+          </button>
+          <button class="template-chip" data-query="차세대 고성능 EV 전용 iON Evo 후속 상품의 R&D 및 Capex 투자 방향을 수립해줘">
+            <i class="fa-solid fa-charging-station"></i> <span>[iON Evo 차세대] 고성능 EV 전용 타이어 설계 및 R&D 가이드라인</span>
+          </button>
+          <button class="template-chip" data-query="북미 SUV 타겟 Dynapro HPX 차세대 상품 개발을 위한 경쟁사 PLC 분석 및 Gap analysis를 제안해줘">
+            <i class="fa-solid fa-mountain-sun"></i> <span>[Dynapro HPX 차세대] 북미 SUV 전용 타이어 Gap Analysis 및 전략</span>
+          </button>
+        </div>
+      </section>
+      
+      <!-- LOADING SCREEN SIMULATOR -->
+      <section class="strategy-console-section strategy-loader-container" id="strategy-loader-screen">
+        <div class="neon-spinner"></div>
+        <div class="loader-headline">BM 기반 상품 전략 및 R&D 가이드라인 수립 중</div>
+        <div class="loader-steps">
+          <div class="loader-step" id="loader-step-1">
+            <div class="loader-step-dot"></div>
+            <span>[시장 인텔리전스] 글로벌 시장 점유율 및 세그먼트 데이터 연동 중...</span>
+          </div>
+          <div class="loader-step" id="loader-step-2">
+            <div class="loader-step-dot"></div>
+            <span>[Tire BM 보고서] 자사 벤치마킹 분석 보고서 및 시험실 빅데이터 로드 중...</span>
+          </div>
+          <div class="loader-step" id="loader-step-3">
+            <div class="loader-step-dot"></div>
+            <span>[경쟁사 PLC 산출] 세그먼트 평균 PLC 주기 기반 경쟁사 차세대 출시일 산출 중...</span>
+          </div>
+          <div class="loader-step" id="loader-step-4">
+            <div class="loader-step-dot"></div>
+            <span>[성능 Gap Analysis] 차기 목표성능 대비 자사 현 모델 성능 갭 분석 연산 중...</span>
+          </div>
+          <div class="loader-step" id="loader-step-5">
+            <div class="loader-step-dot"></div>
+            <span>[R&D 및 Capex 가이드라인 수립] 최적 컴파운드 설계 기술 및 공정 설비 최적화 방향 도출 중...</span>
+          </div>
+        </div>
+      </section>
+      
+      <!-- WAITING/EMPTY STATE SCREEN -->
+      <section class="strategy-empty-state" id="strategy-empty-screen">
+        <div class="empty-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <div class="empty-title">전략 수립을 대기 중입니다</div>
+        <div class="empty-desc">개발하고자 하는 후속 타이어 기획안에 대해 질문해 주세요. 내장된 Global Top4 매출/판매 데이터, 6000여 건의 타이어 PLC 로드맵 및 컴파운드 물성 빅데이터를 종합 대조하여 초정밀 R&D 제안서를 실시간으로 도출합니다.</div>
+      </section>
+      
+      <!-- OUTPUT STRATEGIC REPORT DASHBOARD -->
+      <section class="report-dashboard" id="strategy-report-viewport">
+        <!-- Section A: KPI 핵심 요약 (두괄식 Summary) -->
+        <div class="strategy-kpi-grid" id="kpi-cards-container">
+          <!-- Dynamically filled by JS -->
+        </div>
+        
+        <!-- Section B & C split -->
+        <div class="strategy-grid-split">
+          <!-- Left Panel: Market Grounds & Positioning -->
+          <div class="strategy-widget-panel">
+            <div class="panel-heading-row">
+              <div class="panel-heading-title">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>시장 분석 및 전략 수립 근거</span>
+              </div>
+            </div>
+            <div id="market-grounds-container">
+              <!-- Dynamically filled by JS -->
+            </div>
+            
+            <!-- Benchmarking Report link -->
+            <div class="report-ref-card" id="ref-report-card">
+              <!-- Dynamically filled by JS -->
+            </div>
+          </div>
           
-          <!-- 꼭지 1: 전체 매출 & 판매량 (글로벌 매출액 및 판매량 비교) -->
-          <div class="quad-panel panel-global-market">
-            <div class="panel-header trend-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-earth-americas"></i> 전체 매출 & 판매량</h3>
-              
-              <!-- 상단 색인 필터 영역 -->
-              <div class="trend-filters">
-                <div class="filter-group">
-                  <label for="global-market-year"><i class="fa-solid fa-calendar-days"></i> 분석 연도</label>
-                  <select id="global-market-year" class="filter-select">
-                    <option value="2021">2021년</option>
-                    <option value="2022">2022년</option>
-                    <option value="2023">2023년</option>
-                    <option value="2024">2024년</option>
-                    <option value="2025">2025년</option>
-                    <option value="2026" selected>2026년</option>
-                  </select>
-                </div>
-                <div class="filter-group">
-                  <label for="global-market-seg"><i class="fa-solid fa-layer-group"></i> 대상 세그먼트</label>
-                  <select id="global-market-seg" class="filter-select">
-                    <option value="all" selected>전체 세그먼트</option>
-                    <option value="Ultra High Performance (UHP)">초고성능 스포츠</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절</option>
-                    <option value="All-Season Passenger">일반 승용 사계절</option>
-                    <option value="Winter / Snow">겨울용 스노우</option>
-                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV</option>
-                  </select>
-                </div>
-                
-                <div class="panel-meta" style="margin-left: auto; align-self: center;">단위: 매출액(십억 USD) / 판매량(백만 본)</div>
+          <!-- Right Panel: Radar Performance Chart -->
+          <div class="strategy-widget-panel">
+            <div class="panel-heading-row">
+              <div class="panel-heading-title">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <span>자사 최신 상품 및 경쟁사 성능 지표 비교 레이더 차트</span>
               </div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">단위: 10점 만점 평점</div>
             </div>
-            <div class="panel-content chart-container">
-              <canvas id="global-market-chart"></canvas>
+            <div class="radar-chart-wrapper">
+              <canvas id="strategy-radar-chart"></canvas>
             </div>
+            <!-- 성능 평점 계산 근거 컨테이너 (JS에 의해 동적 로드) -->
+            <div id="radar-chart-grounds-container"></div>
           </div>
-
-          <!-- 꼭지 2: 상품 기술 경쟁력 비교 (한국타이어 vs. 벤치마크 핵심성능 비교) -->
-          <div class="quad-panel panel-product-competitiveness">
-            <div class="panel-header tech-header-filters">
-              <h3 class="panel-title"><i class="fa-solid fa-gauge-high"></i> 상품 기술 경쟁력 비교</h3>
-              
-              <!-- 전용 대상 세그먼트 및 성능데이터소스 필터 영역 (시장/상품전략 UI 연동) -->
-              <div class="trend-filters" style="margin-bottom: 0; width: 100%;">
-                <div class="filter-group">
-                  <label for="tech-seg"><i class="fa-solid fa-layer-group"></i> 분석 세그먼트</label>
-                  <select id="tech-seg" class="filter-select">
-                    <option value="Ultra High Performance (UHP)" selected>초고성능 스포츠</option>
-                    <option value="Grand Touring (All-Season)">투어링 사계절</option>
-                    <option value="All-Season Passenger">일반 승용 사계절</option>
-                    <option value="Winter / Snow">겨울용 스노우</option>
-                    <option value="All-Terrain (SUV/Truck)">온/오프로드 SUV</option>
-                  </select>
-                </div>
-
-                <div class="filter-group tech-performance-source-group" style="margin-left: auto;">
-                  <label><i class="fa-solid fa-database"></i> 성능데이터소스</label>
-                  <div class="btn-group-performance" role="group" id="tech-source-group">
-                    <button type="button" class="btn-source active" data-source="NorthAmerica">북미종합평점</button>
-                    <button type="button" class="btn-source" data-source="Europe">유럽종합평점</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="panel-content tech-split-container">
-              <!-- 좌측: 레이더 차트 영역 (55%) -->
-              <div class="tech-chart-area">
-                <canvas id="product-comp-chart"></canvas>
-              </div>
-              
-              <!-- 우측: 3대 핵심 분석 카드 영역 (45%) -->
-              <div class="tech-info-area">
-                <!-- 1위 제품 카드 -->
-                <div class="tech-info-card best-product">
-                  <div class="t-card-icon"><i class="fa-solid fa-trophy"></i></div>
-                  <div class="t-card-body">
-                    <div class="t-card-label">세그먼트 벤치마크 1위 제품</div>
-                    <div class="t-card-value" id="tech-best-product">MICHELIN Pilot Sport 5</div>
-                  </div>
-                </div>
-                <!-- 시장 포지션 카드 -->
-                <div class="tech-info-card market-position">
-                  <div class="t-card-icon"><i class="fa-solid fa-map-pin"></i></div>
-                  <div class="t-card-body">
-                    <div class="t-card-label">한국타이어 시장포지션</div>
-                    <div class="t-card-value" id="tech-market-position">글로벌 기술 추격형</div>
-                  </div>
-                </div>
-                <!-- 최우선 보강 성능 카드 -->
-                <div class="tech-info-card priority-enhancement">
-                  <div class="t-card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                  <div class="t-card-body">
-                    <div class="t-card-label">최우선 보강 필요 성능</div>
-                    <div class="t-card-value" id="tech-priority-enhancement">젖은 노면 제동력</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 꼭지 3 (하단 풀-너비 10열): 대표 상품 세대별 성능 분석 -->
-          <div id="panel-generation-trends" class="quad-panel panel-generation-trends" style="grid-column: span 10;">
-            <div class="panel-header" style="border-bottom: none; padding-bottom: 0;">
-              <h3 class="panel-title"><i class="fa-solid fa-arrows-spin"></i> 대표 상품 세대별 성능 분석</h3>
-            </div>
-            
-            <!-- Filter and Selector Section -->
-            <div class="panel-filter-bar" style="margin-bottom: 20px; display: flex; flex-direction: row; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: flex-start; width: 100%;">
-              <div class="filter-bar-group">
-                <span class="filter-bar-title">분석 대상 제조사:</span>
-                <div class="tab-btn-group" id="gt-brand-selector">
-                  <button class="tab-toggle-btn active" data-brand="Michelin" style="border-left-color: #5cb2ff; border-left-width: 4px;">미쉐린</button>
-                  <button class="tab-toggle-btn" data-brand="Continental" style="border-left-color: #ff9f24; border-left-width: 4px;">콘티넨탈</button>
-                  <button class="tab-toggle-btn" data-brand="Pirelli" style="border-left-color: #3b82f6; border-left-width: 4px;">피렐리</button>
-                </div>
-              </div>
-              <div class="filter-bar-group" id="gt-lineup-container">
-                <span class="filter-bar-title">세그먼트 / 라인업:</span>
-                <div class="tab-btn-group" id="gt-lineup-selector">
-                  <!-- JS에 의해 동적으로 라인업 버튼 주입 -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Layout Grid: Left (Brochure Deck), Right (Evolution Chart & Insights) -->
-            <div class="gt-main-grid" style="width: 100%;">
-              <!-- 1. Left: Brochure Pamphlet Deck -->
-              <div class="gt-left-column">
-                <h4 class="gt-section-title" style="font-size: 1.1rem; font-weight: 800; color: #000000; border-left: 5px solid #ff6b00; padding-left: 12px; margin-top: 0; margin-bottom: 15px;">세대별 공식 리플렛/브로셔 핵심 분석</h4>
-                <div class="gt-brochure-deck" id="gt-brochure-container">
-                  <!-- JS에 의해 동적으로 카드 주입 -->
-                </div>
-              </div>
-
-              <!-- 2. Right: Chart and Strategic Insights -->
-              <div class="gt-right-column">
-                <!-- Evolutionary Radar/Line Chart -->
-                <div class="chart-card gt-chart-card border-hankook-glow-subtle" style="margin-bottom: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 12px; padding: 20px; border: 1px solid rgba(249, 115, 22, 0.1);">
-                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-                    <h4 class="chart-card-title" id="gt-chart-title" style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #000000;">세대별 세부 성능 항목 진화 트렌드</h4>
-                    <div class="filter-bar-group" style="padding: 0; margin-bottom: 0;">
-                      <select id="gt-generation-selector" class="filter-select" style="font-size: 0.8rem; height: 30px; padding: 4px 24px 4px 10px !important;">
-                        <option value="gen3" selected>3세대 최신 모델 매칭 비교</option>
-                        <option value="gen2">2세대 중간 모델 매칭 비교</option>
-                        <option value="gen1">1세대 과거 모델 매칭 비교</option>
-                        <option value="all-comp">경쟁사 세대별 진화 추이</option>
-                        <option value="all-hk">한국타이어 세대별 진화 추이</option>
-                        <option value="all-six">전체 6개 라인업 동시 비교</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="chart-wrapper" style="height: 320px; position: relative;">
-                    <canvas id="chart-generation-evolution"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </section>
-
-      <!-- WIDGET 1: PLC TIMELINE MATRIX DIRECT MONITOR -->
-      <section class="dashboard-widget-section portal-strategy-dashboard">
-        <div class="widget-header-row">
-          <div class="widget-header-title">
-            <h2 class="widget-title"><i class="fa-solid fa-timeline"></i> Tire BM Matrix</h2>
-            <p class="widget-subtitle">자사 타이어 출시 연도 및 세그먼트 매트릭스 로드맵</p>
+        
+        <!-- Section D & E split -->
+        <div class="strategy-grid-split">
+          <!-- Left Panel: Competitor PLC & Target -->
+          <div class="strategy-widget-panel">
+            <div class="panel-heading-row">
+              <div class="panel-heading-title">
+                <i class="fa-solid fa-timeline"></i>
+                <span>경쟁사 PLC 분석 및 차기 상품 출시 예측</span>
+              </div>
+            </div>
+            <div id="competitor-plc-container">
+              <!-- Dynamically filled by JS -->
+            </div>
           </div>
           
-          <!-- 우측 헤더 컨트롤 그룹 (탭 필터 -> 3대 대화식 멀티 필터 + 전체 분석 시스템 이동 숏컷 연동) -->
-          <div class="widget-header-controls" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-left: auto;">
-            
-            <!-- 엑셀 스타일 실시간 대화형 멀티셀렉트 필터 조작반 -->
-            <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 12px; background: rgba(249, 115, 22, 0.04); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(249, 115, 22, 0.15); position: relative; flex-wrap: wrap;">
-              
-              <!-- Season 단일 선택 필터 (Tire BM UI 연계 8개 확장) -->
-              <div class="plc-multiselect-container" style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 0.85rem; font-weight: 800; color: #1e293b;"><i class="fa-solid fa-cloud-sun" style="color: var(--primary);"></i> Season</span>
-                <select id="portal-filter-season" class="filter-control" style="min-width: 140px; background: #ffffff !important; border: 1.5px solid rgba(249, 115, 22, 0.25) !important; border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #1e293b !important; cursor: pointer; outline: none; transition: var(--transition);">
-                  <option value="Summer">Summer</option>
-                  <option value="Winter-Alpin">Winter-Alpin</option>
-                  <option value="Winter-Nordic">Winter-Nordic</option>
-                  <option value="All Weather">All Weather</option>
-                  <option value="NA All Season">NA All Season</option>
-                  <option value="Pick UP">Pick UP</option>
-                  <option value="SUV">SUV</option>
-                  <option value="Van">Van</option>
-                </select>
+          <!-- Right Panel: Gap Analysis -->
+          <div class="strategy-widget-panel">
+            <div class="panel-heading-row">
+              <div class="panel-heading-title">
+                <i class="fa-solid fa-arrows-left-right"></i>
+                <span>성능 Gap Analysis (자사 vs 목표성능)</span>
               </div>
-
-              <!-- Segment 멀티 필터 -->
-              <div class="plc-multiselect-container" id="container-filter-segment" style="position: relative; display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 0.85rem; font-weight: 800; color: #1e293b;"><i class="fa-solid fa-layer-group" style="color: var(--primary);"></i> Segment</span>
-                <div class="plc-multiselect-wrapper" style="position: relative;">
-                  <button type="button" id="btn-filter-segment" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.25); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #1e293b; outline: none; min-width: 140px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); transition: var(--transition);">
-                    <span class="btn-text">전체 세그먼트</span>
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
-                  </button>
-                  <!-- 드롭다운 레이어 -->
-                  <div id="dropdown-filter-segment" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 8px; min-width: 200px; max-height: 240px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Maker 멀티 필터 -->
-              <div class="plc-multiselect-container" id="container-filter-maker" style="position: relative; display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 0.85rem; font-weight: 800; color: #1e293b;"><i class="fa-solid fa-building" style="color: var(--primary);"></i> Maker</span>
-                <div class="plc-multiselect-wrapper" style="position: relative;">
-                  <button type="button" id="btn-filter-maker" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.25); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #1e293b; outline: none; min-width: 130px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); transition: var(--transition);">
-                    <span class="btn-text">전체 제조사</span>
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
-                  </button>
-                  <!-- 드롭다운 레이어 -->
-                  <div id="dropdown-filter-maker" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 8px; min-width: 180px; max-height: 240px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
-                  </div>
-                </div>
-              </div>
-              
-              <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.95); border: 1.5px solid rgba(249, 115, 22, 0.2); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 800; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.01);">
-                <i class="fa-solid fa-rotate-left"></i> 필터 초기화
-              </button>
             </div>
-            
-            <a href="Tire_BM_UI_FINAL/index.html" class="strategy-shortcut-link" style="font-size: 0.85rem; font-weight: 800; height: 38px; display: inline-flex; align-items: center;">
-              전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
-            </a>
+            <div class="gap-container" id="gap-analysis-container">
+              <!-- Dynamically filled by JS -->
+            </div>
           </div>
         </div>
-
-        <!-- Dynamic Table Viewport -->
-        <div class="plc-table-viewport-wrapper">
-          <div class="plc-table-loading" id="plc-table-loader" style="display: none;">
-            <i class="fa-solid fa-circle-notch fa-spin"></i> 타임라인 매트릭스를 연산 중입니다...
+        
+        <!-- Section E2: SKU Strategy & Labeling Targets -->
+        <div class="strategy-grid-split">
+          <!-- Left Panel: SKU Settings Recommendations -->
+          <div class="strategy-widget-panel">
+            <div class="panel-heading-row">
+              <div class="panel-heading-title">
+                <i class="fa-solid fa-boxes-packing"></i>
+                <span>상품화 라인업 구성 및 SKU 세팅 추천 (SKU Strategy)</span>
+              </div>
+            </div>
+            <div id="sku-recommendations-container">
+              <!-- Dynamically filled by JS -->
+            </div>
           </div>
-          <div class="plc-table-container" id="plc-table-viewport">
-            <!-- Table will be rendered dynamically by app.js -->
+          
+          <!-- Right Panel: Core Target Labeling Grades -->
+          <div class="strategy-widget-panel">
+            <div class="panel-heading-row">
+              <div class="panel-heading-title">
+                <i class="fa-solid fa-stamp"></i>
+                <span>글로벌 규제 대응 기본 라벨링(Labeling) 목표 등급</span>
+              </div>
+            </div>
+            <div id="labeling-targets-container">
+              <!-- Dynamically filled by JS -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Section F: Capex & R&D Direction Pillars -->
+        <div class="strategy-widget-panel" style="margin-bottom: 30px;">
+          <div class="panel-heading-row">
+            <div class="panel-heading-title">
+              <i class="fa-solid fa-compass"></i>
+              <span>R&D 기술 제안 및 공정 설비 Capex 가이드라인 (R&D & Capex Guideline)</span>
+            </div>
+          </div>
+          
+          <div class="capex-grid-layout" id="capex-proposals-container">
+            <!-- Dynamically filled by JS -->
           </div>
         </div>
       </section>
 
-      <!-- WIDGET 2: MAKER COMPOUND COMPARISON GAUGE CHART -->
-      <section class="dashboard-widget-section portal-strategy-dashboard" style="margin-bottom: 0;">
-        <div class="widget-header-row">
-          <div class="widget-header-title">
-            <h2 class="widget-title"><i class="fa-solid fa-chart-bar"></i> Maker 별 제품 성능 비교</h2>
-            <p class="widget-subtitle">실시간 트레드 컴파운드 물성 빅데이터 가공 제조사별 기술 비교 지표</p>
-          </div>
-          <a href="Compd BM/index.html" class="strategy-shortcut-link">
-            전체 분석 시스템 이동 <i class="fa-solid fa-chevron-right"></i>
-          </a>
-        </div>
-
-        <!-- Custom HTML5/CSS Progress-Bar Gauge Widgets Grid -->
-        <div class="maker-compare-grid" id="maker-compare-viewport">
-          <!-- Live Gauges will be rendered dynamically by app.js -->
-          <div class="plc-table-loading">
-            <i class="fa-solid fa-circle-notch fa-spin"></i> 물성 데이터를 분석 집계 중입니다...
-          </div>
-        </div>
-      </section>
-
+      
     </main>
 
     <!-- PORTAL FOOTER -->
@@ -472,7 +1049,7 @@
         <p class="system-meta">v3.1 HYBRID PORTAL • CONNECTIVITY OK</p>
       </div>
       <div class="footer-help-wrapper">
-        <a href="Help/index.html" target="_blank" class="btn-portal-help">
+        <a href="Help/index.html?v=3.3.0" target="_blank" class="btn-portal-help">
           <i class="fa-solid fa-circle-question"></i>
           <span>Portal 사용 설명서</span>
         </a>
@@ -516,5 +1093,8 @@
 
   <!-- Core App JS -->
   <script src="app.js"></script>
+
+  <!-- AI Product Strategy Controller -->
+  <script src="strategy-controller.js"></script>
 </body>
 </html>
