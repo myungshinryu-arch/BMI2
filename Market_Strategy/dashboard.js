@@ -1669,6 +1669,52 @@ class TireDashboard {
         // 대표 시즌을 갖는 모델들만 필터링하여 일관성 유지 (수막현상/눈길 등 비교 항목 정합 확보)
         const targetModels = filteredData.filter(item => item.season === targetSeason);
 
+        // 동적 서브타이틀 업데이트 (어떤 브랜드/상품의 점수 변화인지 명시)
+        const subtitleEl = document.getElementById('yoy-chart-subtitle');
+        if (subtitleEl) {
+            const selectedBrandVal = this.brandSelect ? this.brandSelect.value : 'all';
+            const selectedSegmentVal = this.segmentSelect ? this.segmentSelect.value : 'all';
+            
+            const brandNamesKo = {
+                'all': '전체 제조사',
+                'Hankook': '한국타이어',
+                'Michelin': '미쉐린',
+                'Bridgestone': '브리지스톤',
+                'Continental': '콘티넨탈',
+                'Goodyear': '굿이어',
+                'Pirelli': '피렐리',
+                'Kumho': '금호타이어'
+            };
+            
+            const segmentNamesKo = {
+                'all': '전체 세그먼트',
+                'Ultra High Performance (UHP)': '초고성능 스포츠 (UHP)',
+                'Grand Touring (All-Season) - Passenger': '투어링 승용 사계절 (Grand Touring Passenger)',
+                'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (Grand Touring SUV)',
+                'All-Season Passenger': '일반 승용 사계절 (All-Season)',
+                'Winter / Snow': '겨울용 스노우 (Winter/Snow)',
+                'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)'
+            };
+
+            const brandText = brandNamesKo[selectedBrandVal] || selectedBrandVal;
+            const segmentText = segmentNamesKo[selectedSegmentVal] || selectedSegmentVal;
+
+            if (targetModels.length === 0) {
+                subtitleEl.innerHTML = `⚠️ <span style="color: var(--color-red);">선택된 조건에 부합하는 분석 데이터가 없습니다. 필터를 조정해주세요.</span>`;
+            } else if (selectedBrandVal !== 'all') {
+                if (targetModels.length === 1) {
+                    subtitleEl.innerHTML = `분석 대상: <strong style="color: var(--color-hankook);">${targetModels[0].brand} ${targetModels[0].model}</strong> (단일 상품 실측 점수 추이)`;
+                } else {
+                    const modelNames = targetModels.map(item => item.model).join(', ');
+                    subtitleEl.innerHTML = `분석 대상: <strong style="color: var(--color-hankook);">${brandText}</strong> (${modelNames}) - <strong>총 ${targetModels.length}개 상품의 연도별 평균 점수</strong>`;
+                }
+            } else {
+                const uniqueBrands = [...new Set(targetModels.map(item => item.brand))];
+                const brandListKo = uniqueBrands.map(b => brandNamesKo[b] || b).join(', ');
+                subtitleEl.innerHTML = `분석 대상: <strong style="color: var(--color-hankook);">${segmentText}</strong> 전체 평균 (제조사: ${brandListKo} | <strong>총 ${targetModels.length}개 상품 평균</strong>)`;
+            }
+        }
+
         const numAttrs = attributes.length;
         const attrSumsByYear = Array(numAttrs).fill(0).map(() => Array(yearsRange.length).fill(0));
         const countsByYear = Array(yearsRange.length).fill(0);
