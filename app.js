@@ -850,7 +850,6 @@ function renderMakerComparison() {
       
       <!-- Pattern 단독 고품격 대형 드롭다운 필터 행 (패턴명 극대화 강조) -->
       <div class="mc-pattern-select-container">
-        <span class="mc-pattern-lbl">Select Pattern</span>
         <select class="mc-pattern-dropdown-large" data-maker="${maker}">
           ${patternOptionsHtml}
         </select>

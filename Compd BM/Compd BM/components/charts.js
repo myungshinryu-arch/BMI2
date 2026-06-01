@@ -13,8 +13,10 @@ window.TireCharts = (function() {
 
   function init() {
     // Dropdown change listeners for scatter plot configuration
-    document.getElementById('scatter-x').addEventListener('change', updateScatterChart);
-    document.getElementById('scatter-y').addEventListener('change', updateScatterChart);
+    const scatterX = document.getElementById('scatter-x');
+    const scatterY = document.getElementById('scatter-y');
+    if (scatterX) scatterX.addEventListener('change', updateScatterChart);
+    if (scatterY) scatterY.addEventListener('change', updateScatterChart);
 
     // Initial draw
     updateAllCharts();
@@ -77,7 +79,7 @@ window.TireCharts = (function() {
           {
             label: 'SBR (합성고무)',
             data: sbrData,
-            backgroundColor: '#00f2fe',
+            backgroundColor: '#2563eb',
             borderWidth: 0
           },
           {
