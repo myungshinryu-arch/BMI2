@@ -33,16 +33,72 @@ const FALLBACK_STATS = {
   tbrCount: 148
 };
 
-// 2. Document Ready Entry Point
-document.addEventListener('DOMContentLoaded', () => {
-  checkCORS();
-  loadPortalData();
-  setupIntegratedSearch();
-  setupTabs();
-  setupCardInteractions();
-  setupHistoryPopup(); // History.png 팝업 모달 추가
-  setupPlcTimelineFilters(); // PLC 타임라인 3대 대화식 필터 추가
-});
+// 2. Document Ready Entry Point (With robust fallback check for race conditions)
+function runPortalInitialization() {
+  if (window.isPortalInitialized) return;
+  window.isPortalInitialized = true;
+  console.log("[Portal Hub] Starting portal initialization pipeline...");
+
+  try {
+    checkCORS();
+  } catch (err) {
+    console.error("Initialization: checkCORS failed ->", err);
+  }
+
+  try {
+    loadPortalData();
+  } catch (err) {
+    console.error("Initialization: loadPortalData failed ->", err);
+  }
+
+  try {
+    setupIntegratedSearch();
+  } catch (err) {
+    console.error("Initialization: setupIntegratedSearch failed ->", err);
+  }
+
+  try {
+    setupTabs();
+  } catch (err) {
+    console.error("Initialization: setupTabs failed ->", err);
+  }
+
+  try {
+    setupCardInteractions();
+  } catch (err) {
+    console.error("Initialization: setupCardInteractions failed ->", err);
+  }
+
+  try {
+    setupHistoryPopup(); // History.png 팝업 모달 추가
+  } catch (err) {
+    console.error("Initialization: setupHistoryPopup failed ->", err);
+  }
+
+  try {
+    setupPlcTimelineFilters(); // PLC 타임라인 3대 대화식 필터 추가
+  } catch (err) {
+    console.error("Initialization: setupPlcTimelineFilters failed ->", err);
+  }
+}
+
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  runPortalInitialization();
+} else {
+  document.addEventListener('DOMContentLoaded', runPortalInitialization);
+}
+window.addEventListener('load', runPortalInitialization);
+
+// Robust polling backup to guarantee initialization in offline/cached environments
+let portalInitRetries = 0;
+const portalInitInterval = setInterval(() => {
+  portalInitRetries++;
+  if (window.isPortalInitialized || portalInitRetries > 20) {
+    clearInterval(portalInitInterval);
+  } else {
+    runPortalInitialization();
+  }
+}, 100);
 
 // 2.5 History Popup Modal Controller
 function setupHistoryPopup() {
@@ -211,19 +267,19 @@ async function loadPortalData() {
 
     // C. UI 렌더링 가동
     if (loader) loader.style.display = 'none';
-    renderPortalStats();
-    updatePlcFilterOptions();
-    renderPortalTimeline();
-    renderMakerComparison();
-    initStrategyDashboard();
+    try { renderPortalStats(); } catch (e) { console.error("Render: renderPortalStats failed ->", e); }
+    try { updatePlcFilterOptions(); } catch (e) { console.error("Render: updatePlcFilterOptions failed ->", e); }
+    try { renderPortalTimeline(); } catch (e) { console.error("Render: renderPortalTimeline failed ->", e); }
+    try { renderMakerComparison(); } catch (e) { console.error("Render: renderMakerComparison failed ->", e); }
+    try { initStrategyDashboard(); } catch (e) { console.error("Render: initStrategyDashboard failed ->", e); }
 
   } catch (err) {
     console.error("Portal global pipeline error:", err);
-    renderPortalStats();
-    updatePlcFilterOptions();
-    renderPortalTimeline();
-    renderMakerComparison();
-    initStrategyDashboard();
+    try { renderPortalStats(); } catch (e) { console.error("Fallback Render: renderPortalStats failed ->", e); }
+    try { updatePlcFilterOptions(); } catch (e) { console.error("Fallback Render: updatePlcFilterOptions failed ->", e); }
+    try { renderPortalTimeline(); } catch (e) { console.error("Fallback Render: renderPortalTimeline failed ->", e); }
+    try { renderMakerComparison(); } catch (e) { console.error("Fallback Render: renderMakerComparison failed ->", e); }
+    try { initStrategyDashboard(); } catch (e) { console.error("Fallback Render: initStrategyDashboard failed ->", e); }
   }
 }
 
@@ -1867,26 +1923,47 @@ function initStrategyDashboard() {
   const gCtx = document.getElementById('global-market-chart');
   const pCtx = document.getElementById('product-comp-chart');
   
-  if (!gCtx) return;
-
   // 꼭지 1: 글로벌 마켓 차트 그리기
-  initGlobalMarketChart(gCtx);
+  if (gCtx) {
+    try { initGlobalMarketChart(gCtx); } catch (e) { console.error("gCtx Error:", e); }
+  }
 
   // 꼭지 2: 상품 기술 경쟁력 비교 차트 그리기
   if (pCtx) {
-    initProductCompChart(pCtx);
+    try { initProductCompChart(pCtx); } catch (e) { console.error("pCtx Error:", e); }
   }
 
   // 꼭지 3: 대표 상품 세대별 성능 분석 초기 로드
-  renderGenerationTrendsLineupButtons('Michelin');
+  try {
+    const brandSelector = document.getElementById('gt-brand-selector');
+    if (brandSelector) {
+      renderGenerationTrendsLineupButtons('Michelin');
+    }
+  } catch (e) {
+    console.error("renderGenerationTrendsLineupButtons Error:", e);
+  }
 
   // 이벤트 바인딩
-  setupStrategyEventListeners();
+  try {
+    setupStrategyEventListeners();
+  } catch (e) {
+    console.error("setupStrategyEventListeners Error:", e);
+  }
 }
 
 function initGlobalMarketChart(ctx) {
-  const selectedYear = document.getElementById('global-market-year').value;
-  const selectedSeg = document.getElementById('global-market-seg').value;
+  if (!ctx || typeof Chart === 'undefined') return;
+  
+  const yearSelect = document.getElementById('global-market-year');
+  const segSelect = document.getElementById('global-market-seg');
+  
+  if (!yearSelect || !segSelect) {
+    console.warn("[Portal Hub] Skipping Global Market Chart - missing dropdown filters.");
+    return;
+  }
+
+  const selectedYear = yearSelect.value;
+  const selectedSeg = segSelect.value;
   const yearData = GLOBAL_MARKET_DATABASE[selectedYear] || GLOBAL_MARKET_DATABASE["2026"];
   const dataForYear = yearData[selectedSeg] || yearData["all"];
 
@@ -1964,12 +2041,27 @@ function initGlobalMarketChart(ctx) {
 }
 
 function initTrendPerformanceChart(ctx) {
-  const mfg = document.getElementById('trend-mfg').value;
-  const seg = document.getElementById('trend-seg').value;
+  if (!ctx || typeof Chart === 'undefined') return;
+  
+  const mfgSelect = document.getElementById('trend-mfg');
+  const segSelect = document.getElementById('trend-seg');
+  
+  if (!mfgSelect || !segSelect) {
+    console.warn("[Portal Hub] Skipping Trend Performance Chart - missing dropdown filters.");
+    return;
+  }
+
+  const mfg = mfgSelect.value;
+  const seg = segSelect.value;
   const activeBtn = document.querySelector('#trend-source-group .btn-source.active');
   const source = activeBtn ? activeBtn.getAttribute('data-source') : 'NorthAmerica';
 
-  const dataset = TREND_PERFORMANCE_DATABASE[mfg][seg][source];
+  const mfgData = TREND_PERFORMANCE_DATABASE[mfg];
+  if (!mfgData) return;
+  const segData = mfgData[seg];
+  if (!segData) return;
+  const dataset = segData[source];
+  if (!dataset) return;
 
   if (trendPerformanceChart) trendPerformanceChart.destroy();
 
@@ -2053,6 +2145,7 @@ function initTrendPerformanceChart(ctx) {
 }
 
 function initRdPriorityChart(ctx) {
+  if (!ctx || typeof Chart === 'undefined') return;
   const activeTabs = document.querySelectorAll('.rd-tab-btn.active');
   
   if (rdPriorityChart) rdPriorityChart.destroy();

@@ -12,3 +12,9 @@ __pycache__/
 # Raw data (do not commit to Git/Render)
 data/raw/
 backend/data/raw/
+
+# Local custom dashboard & backups
+tire-dashboard/
+tire-dashboard.zip
+tire-dashboard.7z
+tetris-backup/
