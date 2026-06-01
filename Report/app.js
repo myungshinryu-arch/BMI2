@@ -781,7 +781,8 @@ function buildIntegratedReport(brandKey, modelKey) {
     wetGripValue: realCompSpec.wetGripRaw,
     isReal: true,
     sourceYear: realCompSpec.sourceYear,
-    polymer: realCompSpec.polymerRatio
+    polymer: realCompSpec.polymerRatio,
+    rawMatch: realCompSpec.rawMatch
   } : {
     silicaRate: defaultCompSpec.silicaRate,
     silicaValue: parseFloat(defaultCompSpec.silicaRate.replace(/[^0-9.]/g, '')),
@@ -805,7 +806,8 @@ function buildIntegratedReport(brandKey, modelKey) {
     wetGripValue: realHankookSpec.wetGripRaw,
     isReal: true,
     sourceYear: realHankookSpec.sourceYear,
-    polymer: realHankookSpec.polymerRatio
+    polymer: realHankookSpec.polymerRatio,
+    rawMatch: realHankookSpec.rawMatch
   } : {
     silicaRate: defaultHankookSpec.silicaRate,
     silicaValue: parseFloat(defaultHankookSpec.silicaRate.replace(/[^0-9.]/g, '')),
@@ -829,7 +831,11 @@ function buildIntegratedReport(brandKey, modelKey) {
 
   // 2-2. Retrieve and parse Competitor BI News Trend data
   const newsDb = typeof BI_NEWS_DATA !== 'undefined' ? BI_NEWS_DATA : [];
-  let brandNews = newsDb.filter(n => n.brand.toLowerCase() === brandKey.toLowerCase() || n.brandName.toLowerCase() === brandKey.toLowerCase());
+  let brandNews = newsDb.filter(n => {
+    const b = (n.brand || n.brandName || "").toLowerCase();
+    const targetB = (brandKey || "").toLowerCase();
+    return b === targetB;
+  });
   if (brandNews.length === 0) {
     brandNews = newsDb.slice(0, 2);
   } else {
@@ -839,30 +845,36 @@ function buildIntegratedReport(brandKey, modelKey) {
   const newsRowsHtml = brandNews.map((n, idx) => {
     let sentimentIcon = '<i class="fa-solid fa-circle-minus" style="color: #64748b;"></i>';
     let sentimentColor = '#64748b';
-    if (n.sentiment === 'positive') {
+    const sentiment = (n.sentiment || 'neutral').toLowerCase();
+    if (sentiment === 'positive') {
       sentimentIcon = '<i class="fa-solid fa-circle-up" style="color: var(--accent-green);"></i>';
       sentimentColor = 'var(--accent-green)';
-    } else if (n.sentiment === 'negative') {
+    } else if (sentiment === 'negative') {
       sentimentIcon = '<i class="fa-solid fa-circle-down" style="color: #ef4444;"></i>';
       sentimentColor = '#ef4444';
     }
+
+    const aiSummary = n.aiAnalysis?.summary || "R&D 핵심 기술 분석 진행 중";
+    const aiImpact = n.aiAnalysis?.impact || "영향 분석 진행 중";
+    const aiRec = n.aiAnalysis?.recommendation || "대응 전략 제안 수립 중";
+    const sentimentScore = n.sentimentScore !== undefined ? n.sentimentScore : 50;
 
     return `
       <div class="arena-report-item" style="flex-direction: column; align-items: stretch; gap: 10px; padding: 15px; background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 8px; margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 6px; margin-bottom: 4px;">
           <span style="font-size: 0.72rem; font-weight: 800; background: rgba(249, 115, 22, 0.08); color: var(--primary); padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">
-            [BI동향 #${idx + 1}] ${n.brandName} • ${n.category}
+            [BI동향 #${idx + 1}] ${(n.brandName || n.brand || brandKey)} • ${(n.category || "R&D 특허")}
           </span>
           <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">
-            <i class="fa-regular fa-calendar-days"></i> ${n.date}
+            <i class="fa-regular fa-calendar-days"></i> ${(n.date || "2026-06-01")}
           </span>
         </div>
         <div>
           <h4 style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark); margin: 0 0 6px 0; line-height: 1.4;">
-            ${n.title}
+            ${(n.title || "경쟁사 R&D 신규 기술 동향")}
           </h4>
           <p style="font-size: 0.78rem; color: var(--text-main); line-height: 1.5; margin: 0 0 8px 0; font-weight: 500;">
-            ${n.excerpt || n.content.substring(0, 100) + '...'}
+            ${n.excerpt || (n.content ? n.content.substring(0, 100) + '...' : "상세 내용을 불러오고 있습니다.")}
           </p>
         </div>
         
@@ -870,24 +882,24 @@ function buildIntegratedReport(brandKey, modelKey) {
           <tbody>
             <tr style="background: rgba(249, 115, 22, 0.01);">
               <td style="width: 25%; font-weight: 800; padding: 4px 8px; border-top: none; border-bottom: 1px solid rgba(0,0,0,0.03);">R&D 요약</td>
-              <td style="padding: 4px 8px; border-top: none; border-bottom: 1px solid rgba(0,0,0,0.03);">${n.aiAnalysis.summary}</td>
+              <td style="padding: 4px 8px; border-top: none; border-bottom: 1px solid rgba(0,0,0,0.03);">${aiSummary}</td>
             </tr>
             <tr>
               <td style="font-weight: 800; padding: 4px 8px; color: #ef4444; border-bottom: 1px solid rgba(0,0,0,0.03);">위협 영향도</td>
-              <td style="padding: 4px 8px; font-weight: 600; color: #ef4444; border-bottom: 1px solid rgba(0,0,0,0.03);">${n.aiAnalysis.impact}</td>
+              <td style="padding: 4px 8px; font-weight: 600; color: #ef4444; border-bottom: 1px solid rgba(0,0,0,0.03);">${aiImpact}</td>
             </tr>
             <tr style="background: rgba(16, 185, 129, 0.01);">
               <td style="font-weight: 800; padding: 4px 8px; color: var(--accent-green);">자사 대응전략</td>
-              <td style="padding: 4px 8px; font-weight: 600; color: var(--accent-green);">${n.aiAnalysis.recommendation}</td>
+              <td style="padding: 4px 8px; font-weight: 600; color: var(--accent-green);">${aiRec}</td>
             </tr>
           </tbody>
         </table>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 0.7rem;">
           <span style="font-weight: 700; color: ${sentimentColor};">
-            감성 분석: ${sentimentIcon} ${n.sentiment.toUpperCase()} (${n.sentimentScore}점)
+            감성 분석: ${sentimentIcon} ${sentiment.toUpperCase()} (${sentimentScore}점)
           </span>
-          <a href="${n.raw_link}" target="_blank" style="color: var(--primary); font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 2px;">
+          <a href="${n.raw_link || '#'}" target="_blank" style="color: var(--primary); font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 2px;">
             기사 원문 <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.6rem;"></i>
           </a>
         </div>
@@ -929,18 +941,175 @@ function buildIntegratedReport(brandKey, modelKey) {
   const compRadarScores = calculateRadarScores(compSpec, modelKey);
   const hankookRadarScores = calculateRadarScores(hankookSpec, rivalKey);
 
-  // 1) Wet Grip Prediction Score (Weighted 0℃ tanδ and G")
   const compWetAI = Math.round(compRadarScores[4] * 0.7 + compRadarScores[3] * 0.3);
-  const hankookWetAI = Math.round(hankookRadarScores[4] * 0.7 + hankookRa  // 4. Define complete render function to execute after Gemini LLM yields insights
-  function completeRender(llmReport, isSuccess) {
+  const hankookWetAI = Math.round(hankookRadarScores[4] * 0.7 + hankookRadarScores[3] * 0.3);
+
+  // 2) Rolling Resistance Prediction Score (tanδ @ 60℃)
+  const compRRAI = Math.round(compRadarScores[5]);
+  const hankookRRAI = Math.round(hankookRadarScores[5]);
+
+  // 3) Snow Performance Prediction Score (G' @ -20℃ or snow index)
+  const compSnowAI = Math.round(compRadarScores[2]);
+  const hankookSnowAI = Math.round(hankookRadarScores[2]);
+
+  // 4) Wear Resistance Prediction Score (Tg or wear index)
+  const compWearAI = Math.round(compRadarScores[1]);
+  const hankookWearAI = Math.round(hankookRadarScores[1]);
+
+  // Define dynamic AI simulation diagnostic summary based on predictive scores
+  let aiDiagnosticSummary = "";
+  if (hankookWetAI > compWetAI) {
+    aiDiagnosticSummary += `자사 대항마 제품의 가상 빗길 제동 예측 지수가 ${hankookWetAI}점으로 경쟁사(${compWetAI}점) 대비 우수하게 추론되었습니다. `;
+  } else {
+    aiDiagnosticSummary += `경쟁사 제품의 가상 빗길 제동 성능(${compWetAI}점)이 자사 대비 다소 우세하게 시뮬레이션되었으나, `;
+  }
+  if (hankookRRAI > compRRAI) {
+    aiDiagnosticSummary += `연비 및 저구름저항 지수 측면에서도 자사 제품(${hankookRRAI}점)이 뛰어난 친환경 특성을 구현하는 것으로 분석됩니다. `;
+  } else {
+    aiDiagnosticSummary += `회전저항(RR) 효율성 및 고온 연비 특성 극대화를 위한 R&D 원료 처방 보강 설계가 병행되어야 합니다. `;
+  }
+
+  function completeRender(llmReport, isSuccess, isPending = false) {
     if (printBtn) printBtn.style.display = 'inline-flex';
+
+    // Smart partial DOM update if card already exists (prevents layout shifting and chart re-rendering)
+    const existingCard = document.getElementById('gemini-premium-insight-card');
+    if (!isPending && existingCard) {
+      if (isSuccess && llmReport) {
+        existingCard.style.animation = "none";
+        existingCard.style.transition = "all 0.5s ease";
+        existingCard.style.border = "1.5px solid rgba(139, 92, 246, 0.25)";
+        existingCard.style.background = "linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)";
+        existingCard.innerHTML = `
+          <div style="position: absolute; right: -20px; top: -20px; font-size: 8rem; color: rgba(139, 92, 246, 0.03); transform: rotate(15deg); pointer-events: none;"><i class="fa-solid fa-brain"></i></div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(139, 92, 246, 0.15); padding-bottom: 12px; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: var(--text-dark); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif;">
+              <i class="fa-solid fa-wand-magic-sparkles" style="color: #8b5cf6;"></i>
+              <span>Gemini AI Intelligent Executive Insight</span>
+            </h3>
+            <span style="font-size: 0.68rem; font-weight: 800; background: linear-gradient(135deg, #ea580c, #8b5cf6); color: #fff; padding: 3px 8px; border-radius: 20px; text-transform: uppercase;">
+              <i class="fa-solid fa-bolt"></i> Real-time LLM
+            </span>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <h4 style="font-size: 0.8rem; font-weight: 800; color: #8b5cf6; margin: 0 0 6px 0;">🎯 종합 보고 요약 (Executive Summary)</h4>
+            <p style="font-size: 0.78rem; color: var(--text-main); line-height: 1.6; margin: 0; font-weight: 600;">${llmReport.executive_summary}</p>
+          </div>
+          
+          <div class="gemini-grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div style="background: rgba(249, 115, 22, 0.01); border: 1px solid rgba(249, 115, 22, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: var(--primary); margin: 0 0 6px 0;"><i class="fa-solid fa-square-poll-vertical"></i> 주요 분석 결과 (Key Findings)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.key_findings ? llmReport.key_findings.map(f => `<li style="margin-bottom:4px;">${f}</li>`).join('') : ''}
+              </ul>
+            </div>
+            <div style="background: rgba(59, 130, 246, 0.01); border: 1px solid rgba(59, 130, 246, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: var(--secondary); margin: 0 0 6px 0;"><i class="fa-solid fa-lightbulb"></i> 시장 분석 인사이트 (Market Insights)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.market_insights ? llmReport.market_insights.map(i => `<li style="margin-bottom:4px;">${i}</li>`).join('') : ''}
+              </ul>
+            </div>
+          </div>
+
+          <div class="gemini-grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div style="background: rgba(16, 185, 129, 0.01); border: 1px solid rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: #10b981; margin: 0 0 6px 0;"><i class="fa-solid fa-screwdriver-wrench"></i> 기술 분석 인사이트 (Technical Insights)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.technical_insights ? llmReport.technical_insights.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join('') : ''}
+              </ul>
+            </div>
+            <div style="background: rgba(239, 68, 68, 0.01); border: 1px solid rgba(239, 68, 68, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: #ef4444; margin: 0 0 6px 0;"><i class="fa-solid fa-circle-exclamation"></i> 리스크 요인 (Risk Notes)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.risk_notes ? llmReport.risk_notes.map(r => `<li style="margin-bottom:4px;">${r}</li>`).join('') : ''}
+              </ul>
+            </div>
+          </div>
+
+          <div style="background: rgba(139, 92, 246, 0.03); border: 1px dashed rgba(139, 92, 246, 0.25); border-radius: 8px; padding: 12px; margin-top: 10px;">
+            <h4 style="font-size: 0.8rem; font-weight: 800; color: #8b5cf6; margin: 0 0 6px 0;"><i class="fa-solid fa-flag"></i> 최우선 권장 액션 제언 (Recommended Actions)</h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 700;">
+              ${llmReport.recommended_actions ? llmReport.recommended_actions.map(a => `<li style="margin-bottom:4px;">${a}</li>`).join('') : ''}
+            </ul>
+          </div>
+        `;
+      } else {
+        existingCard.style.background = "rgba(239, 68, 68, 0.03)";
+        existingCard.style.border = "1px dashed rgba(239, 68, 68, 0.15)";
+        existingCard.style.animation = "none";
+        existingCard.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #ef4444; font-weight: 700;">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>Gemini AI Cloud 연동 오프라인 (로컬 fallback 보고서 모드로 자동 전환됨)</span>
+            </div>
+            <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600;">* 백엔드 ADC 인증 상태 및 쿼터 제한을 확인하세요.</span>
+          </div>
+        `;
+      }
+      return;
+    }
 
     // Build the Gemini premium block if LLM succeeded
     let geminiPremiumBlock = "";
-    if (isSuccess && llmReport) {
+    if (isPending) {
+      geminiPremiumBlock = `
+        <!-- SKELETON GEMINI AI INSIGHT -->
+        <div id="gemini-premium-insight-card" class="rep-summary-card gemini-premium-insight-card" style="margin-top: 15px; margin-bottom: 25px; background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border: 1.5px solid rgba(139, 92, 246, 0.25); border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08); position: relative; overflow: hidden; page-break-inside: avoid; animation: pulse-light 2s infinite ease-in-out;">
+          <style>
+            @keyframes pulse-light {
+              0%, 100% { opacity: 0.75; transform: scale(0.998); }
+              50% { opacity: 1; transform: scale(1); }
+            }
+            .skeleton-line {
+              height: 12px;
+              background: rgba(139, 92, 246, 0.08);
+              border-radius: 4px;
+              margin-bottom: 8px;
+              position: relative;
+              overflow: hidden;
+            }
+            .skeleton-line::after {
+              content: "";
+              position: absolute;
+              top: 0; right: 0; bottom: 0; left: 0;
+              background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+              transform: translateX(-100%);
+              animation: shimmer-effect 1.5s infinite;
+            }
+            @keyframes shimmer-effect {
+              100% { transform: translateX(100%); }
+            }
+          </style>
+          <div style="position: absolute; right: -20px; top: -20px; font-size: 8rem; color: rgba(139, 92, 246, 0.03); transform: rotate(15deg); pointer-events: none;"><i class="fa-solid fa-brain"></i></div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(139, 92, 246, 0.15); padding-bottom: 12px; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: var(--text-dark); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif;">
+              <i class="fa-solid fa-wand-magic-sparkles" style="color: #8b5cf6; animation: spin 2s linear infinite;"></i>
+              <span>Gemini AI Intelligent Executive Insight 수립 중...</span>
+            </h3>
+            <span style="font-size: 0.68rem; font-weight: 800; background: linear-gradient(135deg, #ea580c, #8b5cf6); color: #fff; padding: 3px 8px; border-radius: 20px; text-transform: uppercase;">
+              <i class="fa-solid fa-spinner fa-spin"></i> 실시간 연산 중
+            </span>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <h4 style="font-size: 0.8rem; font-weight: 800; color: #8b5cf6; margin: 0 0 6px 0;">🎯 종합 보고 요약 (Executive Summary)</h4>
+            <p style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-gears fa-spin"></i> 물리/화학 물성, 예측 성능, 특허 장벽 및 실시간 동향 교차 분석 보고서를 자동 작성하고 있습니다. 약 10~15초 정도 소요되나 다른 보고서 데이터는 먼저 확인하실 수 있습니다.
+            </p>
+          </div>
+          <div class="skeleton-line" style="width: 95%;"></div>
+          <div class="skeleton-line" style="width: 90%;"></div>
+          <div class="skeleton-line" style="width: 75%;"></div>
+        </div>
+      `;
+    } else if (isSuccess && llmReport) {
       geminiPremiumBlock = `
         <!-- PREMIUM GEMINI AI INSIGHT -->
-        <div class="rep-summary-card gemini-premium-insight-card" style="margin-top: 15px; margin-bottom: 25px; background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border: 1.5px solid rgba(139, 92, 246, 0.25); border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08); position: relative; overflow: hidden; page-break-inside: avoid;">
+        <div id="gemini-premium-insight-card" class="rep-summary-card gemini-premium-insight-card" style="margin-top: 15px; margin-bottom: 25px; background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border: 1.5px solid rgba(139, 92, 246, 0.25); border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08); position: relative; overflow: hidden; page-break-inside: avoid;">
           <div style="position: absolute; right: -20px; top: -20px; font-size: 8rem; color: rgba(139, 92, 246, 0.03); transform: rotate(15deg); pointer-events: none;"><i class="fa-solid fa-brain"></i></div>
           
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(139, 92, 246, 0.15); padding-bottom: 12px; margin-bottom: 15px;">
@@ -999,7 +1168,7 @@ function buildIntegratedReport(brandKey, modelKey) {
     } else {
       geminiPremiumBlock = `
         <!-- GEMINI OFFLINE NOTICE -->
-        <div style="margin-top: 15px; margin-bottom: 25px; background: rgba(239, 68, 68, 0.03); border: 1px dashed rgba(239, 68, 68, 0.15); border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between; page-break-inside: avoid;">
+        <div id="gemini-premium-insight-card" style="margin-top: 15px; margin-bottom: 25px; background: rgba(239, 68, 68, 0.03); border: 1px dashed rgba(239, 68, 68, 0.15); border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between; page-break-inside: avoid;">
           <div style="display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #ef4444; font-weight: 700;">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span>Gemini AI Cloud 연동 오프라인 (로컬 fallback 보고서 모드로 자동 전환됨)</span>
@@ -1647,23 +1816,9 @@ function buildIntegratedReport(brandKey, modelKey) {
     }
   }
 
-  // 5. Render Loading screen to WOW user with responsive UI feedback
-  documentCanvas.innerHTML = `
-    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center;">
-      <div class="loading-gemini-ring" style="width: 50px; height: 50px; border: 4px solid rgba(139, 92, 246, 0.1); border-top: 4px solid #8b5cf6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
-      <style>
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-      </style>
-      <h3 style="font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--text-dark); margin: 0 0 8px 0; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <i class="fa-solid fa-wand-magic-sparkles" style="color: #8b5cf6; animation: pulse 1.5s infinite;"></i>
-        <span>Gemini AI 통합 R&D 인텔리전스 가동 중...</span>
-      </h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin: 0; line-height: 1.5;">
-        선택한 ${brandKey} ${modelKey}와 자사 대항마 ${rivalKey}의 다차원 격차 데이터를 교차 검증하고 있습니다.<br>
-        실시간 경영 지표, 가상 시뮬레이터 수치, 최신 BI 뉴스 및 특허 장벽 스펙트럼 분석 보고서를 작성 중입니다. (약 3초 소요)
-      </p>
-    </div>
-  `;
+  // 5. Instantly pre-render the full report layout, charts and tables (Takes <0.1s!)
+  // This provides immediate user feedback and makes the page feel incredibly fast.
+  completeRender(null, false, true);
 
   // 6. Gather and package the structured data context
   const contextDataObj = {
@@ -1710,121 +1865,5 @@ function buildIntegratedReport(brandKey, modelKey) {
     console.error('LLM Report fetch error, executing local fallback:', err);
     completeRender(null, false);
   });
-}       </div>
-        `).join('') : `
-          <div class="arena-report-item" style="justify-content: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 600;">
-            <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px; color: var(--primary);"></i> 본 해당 상품 모델군에 직결된 사내 Arena 결재 완료 보고서 이력이 데이터베이스에 부재합니다.
-          </div>
-        `}
-    </div>
-
-    <!-- SECTION 6: COMPETITOR BI NEWS & THREAT INTELLIGENCE ANALYSIS -->
-    <div class="rep-section" style="page-break-inside: avoid;">
-      <h3 class="rep-section-title">
-        <i class="fa-solid fa-newspaper"></i> 6. 경쟁사 실시간 BI 뉴스 & R&D 위협 동향 분석
-        <span class="live-db-badge" style="background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.25); color: var(--primary);"><i class="fa-solid fa-square-rss"></i> BI News 실시간 연동</span>
-      </h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
-        실시간 구글 뉴스를 통해 수집 및 크롤링된 <strong>100건 이상의 프리미엄 비즈니스 데이터베이스</strong>에서, 현재 비교 대상인 <strong>${compBrandData.nameKo}</strong>에 관련된 최신 R&D 및 마케팅 위협 요소를 추출했습니다.
-      </p>
-
-      <div class="arena-report-list">
-        ${newsRowsHtml}
-      </div>
-    </div>
-
-    <!-- SECURE COGNITIVE R&D ADVISORY BOX -->
-    <div class="rep-advisory-box" style="page-break-inside: avoid;">
-      <div class="rep-advisory-title">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <span>수석 R&D 자문 위원 정책 제언서</span>
-      </div>
-      <div class="rep-advisory-desc" style="font-size: 0.82rem;">
-        대조 분석 결과, 자사 <strong>한국타이어</strong>의 <strong>${rivalKey}</strong>는 경쟁 강대국인 <strong>${compBrandData.nameKo} ${modelKey}</strong> 대비 고밀도 컴파운드 물성 실측값 격차를 약 95% 이상 좁히며 급격히 기술을 추격하고 있습니다. 
-        그러나 글로벌 원천 특허 장벽수 격차 자사 ${hankookStratData.patents}건 대 경쟁사 ${compStratData.patents}건 및 매출 규모 격차는 여전히 극복해야 할 R&D 당면 과제입니다.<br><br>
-        <strong>[최우선 실행 제언]</strong> 자사는 향후 친환경 실리카 나노 중합 패턴 분산 장치를 특허 회피 설계 형태로 독자 양산 실용화해야 하며, 
-        특히 젖은 노면 그립 마찰력과 마모 수명 간의 R&D 트레이드오프를 극복하기 위해 극저온 저구름저항 배합 비율 실리카 함량 ${hankookSpec.silicaRate} 이상 고도화 및 고기능성 점탄성 수지 첨가 기안서 작성에 선제적으로 나설 것을 강력히 제언합니다.
-      </div>
-    </div>
-  `;
-
-  // 5. Setup Visco Mode Tabs Event Listeners
-  bindViscoModeTabs();
-
-  // 6. Draw Radar Chart & Initial Sweep Chart
-  updateRadarChart();
-  updateSweepChart();
-
-  // 7. Draw IR Double Bar Chart using Chart.js
-  const irCtx = document.getElementById('rep-ir-canvas');
-  if (irCtx) {
-    if (irChartInstance) {
-      irChartInstance.destroy();
-    }
-
-    // Revenue parsing & dynamic comparison graph
-    const compRev2024 = parseFloat(compBrandData.globalRevenue["2024"].replace(/[^0-9.]/g, ''));
-    const hankookRev2024 = parseFloat(hankookBrandData.globalRevenue["2024"].replace(/[^0-9.]/g, ''));
-    
-    // Growth rates estimations based on predictions
-    const compRev2025 = compRev2024 * 1.03;
-    const hankookRev2025 = hankookRev2024 * 1.04;
-    const compRev2026 = compRev2024 * 1.06;
-    const hankookRev2026 = hankookRev2024 * 1.10;
-
-    irChartInstance = new Chart(irCtx, {
-      type: 'bar',
-      data: {
-        labels: ['2024', '2025', '2026'],
-        datasets: [
-          {
-            label: brandKey,
-            data: [compRev2024, compRev2025, compRev2026],
-            backgroundColor: 'rgba(59, 130, 246, 0.65)',
-            borderColor: 'rgba(59, 130, 246, 0.95)',
-            borderWidth: 1,
-            borderRadius: 4
-          },
-          {
-            label: 'HANKOOK',
-            data: [hankookRev2024, hankookRev2025, hankookRev2026],
-            backgroundColor: 'rgba(249, 115, 22, 0.75)',
-            borderColor: 'rgba(249, 115, 22, 0.95)',
-            borderWidth: 1,
-            borderRadius: 4
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-            labels: {
-              font: { size: 8, weight: 'bold' },
-              boxWidth: 8
-            }
-          },
-          title: {
-            display: true,
-            text: '글로벌 매출 추이 비교 ($B)',
-            font: { size: 9, weight: 'bold' },
-            padding: { top: 0, bottom: 4 }
-          }
-        },
-        scales: {
-          x: {
-            grid: { display: false },
-            ticks: { font: { size: 8, weight: 'bold' } }
-          },
-          y: {
-            grid: { color: 'rgba(0, 0, 0, 0.02)' },
-            ticks: { font: { size: 8 } }
-          }
-        }
-      }
-    });
-  }
 }
+

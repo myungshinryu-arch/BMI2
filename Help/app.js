@@ -41,6 +41,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.help-content-viewport').scrollTop = 0;
     }
 
+    // Preprocess Markdown syntax to beautiful HTML dynamically
+    sections.forEach(section => {
+        let html = section.innerHTML;
+        // 1. Replace Markdown bold: **text** -> <strong>$1</strong>
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        // 2. Replace Markdown headers if any: ### text -> <h3>$1</h3>
+        html = html.replace(/###\s*(.+)/g, '<h3>$1</h3>');
+        // 3. Replace Markdown list items: - text -> • text
+        html = html.replace(/(<br>|<p>|^)\s*-\s*/gi, '$1• ');
+        
+        section.innerHTML = html;
+    });
+
     // 3. Realtime Keyword Highlighting & Auto Tab Switching
     let originalContentsMap = new Map();
 
