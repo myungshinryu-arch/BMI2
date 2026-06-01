@@ -931,552 +931,786 @@ function buildIntegratedReport(brandKey, modelKey) {
 
   // 1) Wet Grip Prediction Score (Weighted 0℃ tanδ and G")
   const compWetAI = Math.round(compRadarScores[4] * 0.7 + compRadarScores[3] * 0.3);
-  const hankookWetAI = Math.round(hankookRadarScores[4] * 0.7 + hankookRadarScores[3] * 0.3);
+  const hankookWetAI = Math.round(hankookRadarScores[4] * 0.7 + hankookRa  // 4. Define complete render function to execute after Gemini LLM yields insights
+  function completeRender(llmReport, isSuccess) {
+    if (printBtn) printBtn.style.display = 'inline-flex';
 
-  // 2) Rolling Resistance AI Score (Based on 60℃ tanδ - high is better efficiency)
-  const compRRAI = Math.round(compRadarScores[5]);
-  const hankookRRAI = Math.round(hankookRadarScores[5]);
-
-  // 3) Snow Traction AI Score (Based on -30℃ G' flexibility)
-  const compSnowAI = Math.round(compRadarScores[2]);
-  const hankookSnowAI = Math.round(hankookRadarScores[2]);
-
-  // 4) Wear Life AI Score (Based on toughness / hardness and wearIndex)
-  const compWearAI = Math.round(Math.min(100, Math.max(50, (compSpec.wearIndex / 120) * 100)));
-  const hankookWearAI = Math.round(Math.min(100, Math.max(50, (hankookSpec.wearIndex / 120) * 100)));
-
-  // Determine relative strengths
-  let aiDiagnosticSummary = "";
-  if (hankookWetAI > compWetAI) {
-    aiDiagnosticSummary += `[빗길제동 우위] 자사 ${rivalKey}는 0℃ 부근의 고점탄성 거동 특성이 반영되어, 젖은 노면 제동 제어력에서 상대사 대비 약 ${hankookWetAI - compWetAI}점의 가상 추론 우위를 점하고 있습니다. `;
-  } else {
-    aiDiagnosticSummary += `[빗길제동 보강 요망] 경쟁사 ${modelKey}는 0℃ 상온 영역에서의 손실 탄젠트(tanδ) 에너지가 자사 대비 강력하여 빗길 마찰력 제어 성능에서 가상 추론상 상대적 우위(격차 약 ${compWetAI - hankookWetAI}점)를 보여주고 있습니다. `;
-  }
-
-  if (hankookRRAI > compRRAI) {
-    aiDiagnosticSummary += `[연비효율 우위] 고온 60℃ tanδ 제어를 통해 회전저항 부문에서 자사 제품이 더 스마트한 에너지를 절약할 것으로 예측됩니다. `;
-  } else {
-    aiDiagnosticSummary += `[회전저항 개선 요망] 연비 및 회전 저항 부문에서 경쟁사가 실리카 저분산 손실을 억제하여 다소 유리한 주행 에너지 보존력을 가질 것으로 추론됩니다. `;
-  }
-
-  // 4. Generate dynamic document markup (Approval box completely removed, stats diversified)
-  documentCanvas.innerHTML = `
-    <!-- REPORT TOP HEADER (No approval boxes, pure high premium title) -->
-    <div class="rep-doc-top-row" style="margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 15px;">
-      <div class="rep-doc-title-box" style="width: 100%;">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-          <span style="background: linear-gradient(135deg, var(--primary), #ea580c); color: #fff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">R&D Intelligence</span>
-          <span style="background: rgba(0, 0, 0, 0.04); color: var(--text-muted); font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 4px;">LEVEL 3 CONFIDENTIAL</span>
-        </div>
-        <h2 style="font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: -0.5px; font-size: 1.7rem; margin: 0; color: var(--text-dark);">INTEGRATED R&D COMPARATIVE REPORT</h2>
-        <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">글로벌 탑티어 1:1 비교 분석 • 사내 지능형 지식 전산망 실시간 연동 보고서</p>
-      </div>
-    </div>
-
-    <!-- DOCUMENT META AREA -->
-    <div class="rep-doc-meta-info" style="display: flex; justify-content: space-between; align-items: center; margin-top: -15px; margin-bottom: 25px; padding: 8px 12px; background: #fafaf9; border-radius: 8px; border: 1px solid rgba(0,0,0,0.02);">
-      <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">
-        <i class="fa-solid fa-hashtag" style="color: var(--primary); margin-right: 3px;"></i> 문서번호: <strong style="color: var(--text-dark);">RND-CONF-${now.getFullYear()}-${Math.floor(Math.random() * 9000 + 1000)}</strong>
-      </div>
-      <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; display: flex; gap: 15px;">
-        <span><i class="fa-regular fa-calendar-check" style="color: var(--primary); margin-right: 3px;"></i> 발행일자: <strong style="color: var(--text-dark);">${dateString}</strong></span>
-        <span><i class="fa-regular fa-building" style="color: var(--primary); margin-right: 3px;"></i> 담당부서: <strong style="color: var(--text-dark);">R&D 통합 정보분석 연구소</strong></span>
-        <span><i class="fa-solid fa-shield-halved" style="color: var(--primary); margin-right: 3px;"></i> 보안등급: <strong style="color: var(--accent-orange);">사내 극비</strong></span>
-      </div>
-    </div>
-
-    <!-- EXECUTIVE BRIEF SUMMARY -->
-    <div class="rep-summary-card">
-      <h3>Executive Summary</h3>
-      <p>
-        본 보고서는 글로벌 제품 인텔리전스 시스템과 사내 <strong>Tire BM PLC Matrix</strong> 및 <strong>Compd BM 실측 데이터셋</strong>을 실시간 유기 연계하여 자동 생성되었습니다. 
-        글로벌 선도 타이어 제조사인 <strong>${compBrandData.nameKo}</strong>의 핵심 전략 제품인 <strong>${modelKey}</strong> 모델과, 
-        이에 대항하는 자사 <strong>한국타이어</strong>의 플래그십 모델 <strong>${rivalKey}</strong> 간의 물리 화학 물성, 보유 특허 장벽, 중장기 미래 전략 및 IR 경영 실적의 다차원 격차를 1:1 대조 정밀 진단하여, 
-        향후 자사가 전략적으로 기안 및 보강해야 할 R&D 핵심 액션 과제를 제시합니다.
-      </p>
-    </div>
-
-    <!-- SECTION 1: SPEC PORTFOLIO COMPARE -->
-    <div class="rep-section">
-      <h3 class="rep-section-title"><i class="fa-solid fa-ring"></i> 1. 대표 상품 매칭 포트폴리오</h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
-        글로벌 경쟁 모델의 계절 사양 및 포지셔닝 카테고리를 자동 분석하여, 이에 1:1 대항하는 자사 최고의 대응 제품을 연계 매핑하였습니다.
-      </p>
-
-      <div class="spec-comparison-grid">
-        <div class="spec-side competitor">
-          <span class="spec-brand-tag">${brandKey}</span>
-          <span class="spec-model-name">${modelKey}</span>
-          <div class="spec-attributes">
-            <span class="spec-attr-row">대표 세그먼트: <strong>${segmentName}</strong></span>
-            <span class="spec-attr-row">시즌 사양: <strong>${matchInfo.season} Spec</strong></span>
-            <span class="spec-attr-row">전략적 위상: <strong>글로벌 기술 벤치마크 기준작</strong></span>
-            <span class="spec-attr-row" style="margin-top: 6px; display: inline-block;">
-              <span style="background: rgba(59, 130, 246, 0.06); color: var(--secondary); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Premium Tier</span>
-              <span style="background: rgba(16, 185, 129, 0.06); color: var(--accent-green); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">ARES Verified</span>
+    // Build the Gemini premium block if LLM succeeded
+    let geminiPremiumBlock = "";
+    if (isSuccess && llmReport) {
+      geminiPremiumBlock = `
+        <!-- PREMIUM GEMINI AI INSIGHT -->
+        <div class="rep-summary-card gemini-premium-insight-card" style="margin-top: 15px; margin-bottom: 25px; background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border: 1.5px solid rgba(139, 92, 246, 0.25); border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08); position: relative; overflow: hidden; page-break-inside: avoid;">
+          <div style="position: absolute; right: -20px; top: -20px; font-size: 8rem; color: rgba(139, 92, 246, 0.03); transform: rotate(15deg); pointer-events: none;"><i class="fa-solid fa-brain"></i></div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(139, 92, 246, 0.15); padding-bottom: 12px; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: var(--text-dark); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif;">
+              <i class="fa-solid fa-wand-magic-sparkles" style="color: #8b5cf6;"></i>
+              <span>Gemini AI Intelligent Executive Insight</span>
+            </h3>
+            <span style="font-size: 0.68rem; font-weight: 800; background: linear-gradient(135deg, #ea580c, #8b5cf6); color: #fff; padding: 3px 8px; border-radius: 20px; text-transform: uppercase;">
+              <i class="fa-solid fa-bolt"></i> Real-time LLM
             </span>
           </div>
-        </div>
+          
+          <div style="margin-bottom: 15px;">
+            <h4 style="font-size: 0.8rem; font-weight: 800; color: #8b5cf6; margin: 0 0 6px 0;">🎯 종합 보고 요약 (Executive Summary)</h4>
+            <p style="font-size: 0.78rem; color: var(--text-main); line-height: 1.6; margin: 0; font-weight: 600;">${llmReport.executive_summary}</p>
+          </div>
+          
+          <div class="gemini-grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div style="background: rgba(249, 115, 22, 0.01); border: 1px solid rgba(249, 115, 22, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: var(--primary); margin: 0 0 6px 0;"><i class="fa-solid fa-square-poll-vertical"></i> 주요 분석 결과 (Key Findings)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.key_findings ? llmReport.key_findings.map(f => `<li style="margin-bottom:4px;">${f}</li>`).join('') : ''}
+              </ul>
+            </div>
+            <div style="background: rgba(59, 130, 246, 0.01); border: 1px solid rgba(59, 130, 246, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: var(--secondary); margin: 0 0 6px 0;"><i class="fa-solid fa-lightbulb"></i> 시장 분석 인사이트 (Market Insights)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.market_insights ? llmReport.market_insights.map(i => `<li style="margin-bottom:4px;">${i}</li>`).join('') : ''}
+              </ul>
+            </div>
+          </div>
 
-        <div class="spec-vs-node">
-          <div class="vs-badge">VS</div>
-          <div class="vs-seg-label">${segmentName.split(' ')[0]}</div>
-        </div>
+          <div class="gemini-grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div style="background: rgba(16, 185, 129, 0.01); border: 1px solid rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: #10b981; margin: 0 0 6px 0;"><i class="fa-solid fa-screwdriver-wrench"></i> 기술 분석 인사이트 (Technical Insights)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.technical_insights ? llmReport.technical_insights.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join('') : ''}
+              </ul>
+            </div>
+            <div style="background: rgba(239, 68, 68, 0.01); border: 1px solid rgba(239, 68, 68, 0.05); padding: 10px; border-radius: 8px;">
+              <h4 style="font-size: 0.8rem; font-weight: 800; color: #ef4444; margin: 0 0 6px 0;"><i class="fa-solid fa-circle-exclamation"></i> 리스크 요인 (Risk Notes)</h4>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 500;">
+                ${llmReport.risk_notes ? llmReport.risk_notes.map(r => `<li style="margin-bottom:4px;">${r}</li>`).join('') : ''}
+              </ul>
+            </div>
+          </div>
 
-        <div class="spec-side hankook">
-          <span class="spec-brand-tag">HANKOOK</span>
-          <span class="spec-model-name">${rivalKey}</span>
-          <div class="spec-attributes">
-            <span class="spec-attr-row">대표 세그먼트: <strong>${segmentName}</strong></span>
-            <span class="spec-attr-row">시즌 사양: <strong>${matchInfo.season} Spec</strong></span>
-            <span class="spec-attr-row">자사 대응 모델: <strong>자사 최우선 주력 대항마</strong></span>
-            <span class="spec-attr-row" style="margin-top: 6px; display: inline-block;">
-              <span style="background: rgba(249, 115, 22, 0.06); color: var(--primary); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Top 대항마</span>
-              <span style="background: rgba(16, 185, 129, 0.06); color: var(--accent-green); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">i-Compound Tech</span>
-            </span>
+          <div style="background: rgba(139, 92, 246, 0.03); border: 1px dashed rgba(139, 92, 246, 0.25); border-radius: 8px; padding: 12px; margin-top: 10px;">
+            <h4 style="font-size: 0.8rem; font-weight: 800; color: #8b5cf6; margin: 0 0 6px 0;"><i class="fa-solid fa-flag"></i> 최우선 권장 액션 제언 (Recommended Actions)</h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 0.74rem; color: var(--text-main); line-height: 1.5; font-weight: 700;">
+              ${llmReport.recommended_actions ? llmReport.recommended_actions.map(a => `<li style="margin-bottom:4px;">${a}</li>`).join('') : ''}
+            </ul>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- SECTION 2: IR FINANCIAL STABILITY WITH CHART (Diversified Stats) -->
-    <div class="rep-section">
-      <h3 class="rep-section-title"><i class="fa-solid fa-chart-line"></i> 2. 경영 실적 및 R&D 투자 규모 대조</h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
-        제조사 간의 글로벌 시장 매출 격차, 수익성 수치(영업이익률) 및 R&D 투자 규모를 시각화하여 양적 역량을 진단합니다.
-      </p>
-
-      <div class="ir-financial-block">
-        <!-- Financial Table -->
-        <table class="rep-table" style="margin: 0;">
-          <thead>
-            <tr>
-              <th style="width: 32%;">경영 핵심 지표</th>
-              <th style="color: var(--secondary);">${compBrandData.nameKo}</th>
-              <th style="color: var(--primary);">한국타이어</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>2024년 총 매출액</strong></td>
-              <td style="font-weight: 700; color: var(--text-dark);">${compBrandData.globalRevenue["2024"]}</td>
-              <td style="font-weight: 700; color: var(--primary);">${hankookBrandData.globalRevenue["2024"]}</td>
-            </tr>
-            <tr>
-              <td><strong>2026년 예상 출하량</strong></td>
-              <td>${compBrandData.globalSales["2026"]}</td>
-              <td style="color: var(--primary); font-weight: 700;">${hankookBrandData.globalSales["2026"]}</td>
-            </tr>
-            <tr>
-              <td><strong>영업 이익률</strong></td>
-              <td style="color: var(--secondary); font-weight: 700;">${compBrandData.marginRate}</td>
-              <td style="color: var(--primary); font-weight: 700;">${hankookBrandData.marginRate}</td>
-            </tr>
-            <tr style="background: rgba(249, 115, 22, 0.01);">
-              <td><strong>R&D 연간 투자 총액</strong></td>
-              <td>${compBrandData.rdInvestment}</td>
-              <td style="color: var(--primary); font-weight: 700;">${hankookBrandData.rdInvestment}</td>
-            </tr>
-            <!-- Diversified Info Rows -->
-            <tr>
-              <td><strong>R&D 전임 인력 규모</strong></td>
-              <td>${brandKey === "MICHELIN" ? "약 6,400명" : brandKey === "CONTINENTAL" ? "약 4,800명" : "약 5,500명"}</td>
-              <td style="color: var(--primary); font-weight: 700;">약 2,100명</td>
-            </tr>
-            <tr>
-              <td><strong>글로벌 브랜드 인지 Index</strong></td>
-              <td style="color: var(--secondary); font-weight: 700;">${brandKey === "MICHELIN" ? "96점 Tier-1" : brandKey === "CONTINENTAL" ? "92점 Tier-1" : "94점 Tier-1"}</td>
-              <td style="color: var(--primary); font-weight: 700;">88점 Tier-2</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- IR Mini-Chart Wrapper -->
-        <div class="ir-chart-wrapper">
-          <canvas id="rep-ir-canvas" style="width: 100%; height: 100%; max-height: 160px;"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECTION 3: TREAD COMPOUND PHYSICAL R&D (References BM Report Generator UI) -->
-    <div class="rep-section" style="page-break-inside: avoid;">
-      <h3 class="rep-section-title">
-        <i class="fa-solid fa-flask"></i> 3. 트레드 컴파운드 원천 물성 실측 분석
-        ${compSpec.isReal || hankookSpec.isReal ? `
-          <span class="live-db-badge"><i class="fa-solid fa-bolt"></i> Compd BM 실시간 연동</span>
-        ` : ''}
-      </h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 500;">
-        사내 가황 고무 화학 조성 데이터베이스 및 Dynamic Mechanical 분석 결과를 바탕으로 도출된 트레드 원천 물성 수치입니다.
-      </p>
-
-      <!-- Viscoelasticity Chart Mode Tabs (References BM Report Generator UI) -->
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
-        <h4 style="font-size: 0.85rem; color: var(--text-dark); font-weight: 800; margin: 0;">
-          <i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> 다차원 물성 및 온도 스윕 시각화 대시보드
-        </h4>
-        <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">분석 지표 전환:</span>
-          <div class="visco-mode-tabs" style="display: flex; background: rgba(0,0,0,0.03); padding: 2px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08);">
-            <button class="visco-mode-btn active" data-mode="tand" style="padding: 4px 10px; font-size: 0.72rem; border: none; background: #fff; cursor: pointer; font-weight: bold; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">tanδ</button>
-            <button class="visco-mode-btn" data-mode="gp" style="padding: 4px 10px; font-size: 0.72rem; border: none; background: none; cursor: pointer; font-weight: bold; border-radius: 6px; transition: all 0.2s; color: var(--text-muted);">G'</button>
-            <button class="visco-mode-btn" data-mode="gpp" style="padding: 4px 10px; font-size: 0.72rem; border: none; background: none; cursor: pointer; font-weight: bold; border-radius: 6px; transition: all 0.2s; color: var(--text-muted);">G"</button>
+      `;
+    } else {
+      geminiPremiumBlock = `
+        <!-- GEMINI OFFLINE NOTICE -->
+        <div style="margin-top: 15px; margin-bottom: 25px; background: rgba(239, 68, 68, 0.03); border: 1px dashed rgba(239, 68, 68, 0.15); border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between; page-break-inside: avoid;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #ef4444; font-weight: 700;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Gemini AI Cloud 연동 오프라인 (로컬 fallback 보고서 모드로 자동 전환됨)</span>
           </div>
+          <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600;">* 백엔드 ADC 인증 상태 및 쿼터 제한을 확인하세요.</span>
+        </div>
+      `;
+    }
+
+    documentCanvas.innerHTML = `
+      <!-- REPORT TOP HEADER (No approval boxes, pure high premium title) -->
+      <div class="rep-doc-top-row" style="margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 15px;">
+        <div class="rep-doc-title-box" style="width: 100%;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+            <span style="background: linear-gradient(135deg, var(--primary), #ea580c); color: #fff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">R&D Intelligence</span>
+            <span style="background: rgba(0, 0, 0, 0.04); color: var(--text-muted); font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 4px;">LEVEL 3 CONFIDENTIAL</span>
+          </div>
+          <h2 style="font-family: 'Outfit', sans-serif; font-weight: 900; letter-spacing: -0.5px; font-size: 1.7rem; margin: 0; color: var(--text-dark);">INTEGRATED R&D COMPARATIVE REPORT</h2>
+          <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">글로벌 탑티어 1:1 비교 분석 • 사내 지능형 지식 전산망 실시간 연동 보고서</p>
         </div>
       </div>
 
-      <!-- report-visco-layout -->
-      <div class="report-visco-layout" style="margin-bottom: 25px;">
-        <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 -->
-        <div class="visco-left-radar-panel">
-          <h4 style="font-size: 0.82rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 10px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
-            컴파운드 종합 물성 밸런스
-          </h4>
-          <div class="chart-container" style="height: 230px; position: relative; display: flex; align-items: center; justify-content: center;">
-            <canvas id="rep-radar-canvas" style="max-height: 220px; max-width: 220px;"></canvas>
+      <!-- DOCUMENT META AREA -->
+      <div class="rep-doc-meta-info" style="display: flex; justify-content: space-between; align-items: center; margin-top: -15px; margin-bottom: 25px; padding: 8px 12px; background: #fafaf9; border-radius: 8px; border: 1px solid rgba(0,0,0,0.02);">
+        <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">
+          <i class="fa-solid fa-hashtag" style="color: var(--primary); margin-right: 3px;"></i> 문서번호: <strong style="color: var(--text-dark);">RND-CONF-${now.getFullYear()}-${Math.floor(Math.random() * 9000 + 1000)}</strong>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; display: flex; gap: 15px;">
+          <span><i class="fa-regular fa-calendar-check" style="color: var(--primary); margin-right: 3px;"></i> 발행일자: <strong style="color: var(--text-dark);">${dateString}</strong></span>
+          <span><i class="fa-regular fa-building" style="color: var(--primary); margin-right: 3px;"></i> 담당부서: <strong style="color: var(--text-dark);">R&D 통합 정보분석 연구소</strong></span>
+          <span><i class="fa-solid fa-shield-halved" style="color: var(--primary); margin-right: 3px;"></i> 보안등급: <strong style="color: var(--accent-orange);">사내 극비</strong></span>
+        </div>
+      </div>
+
+      <!-- EXECUTIVE BRIEF SUMMARY -->
+      <div class="rep-summary-card">
+        <h3>Executive Summary</h3>
+        <p>
+          본 보고서는 글로벌 제품 인텔리전스 시스템과 사내 <strong>Tire BM PLC Matrix</strong> 및 <strong>Compd BM 실측 데이터셋</strong>을 실시간 유기 연계하여 자동 생성되었습니다. 
+          글로벌 선도 타이어 제조사인 <strong>${compBrandData.nameKo}</strong>의 핵심 전략 제품인 <strong>${modelKey}</strong> 모델과, 
+          이에 대항하는 자사 <strong>한국타이어</strong>의 플래그십 모델 <strong>${rivalKey}</strong> 간의 물리 화학 물성, 보유 특허 장벽, 중장기 미래 전략 및 IR 경영 실적의 다차원 격차를 1:1 대조 정밀 진단하여, 
+          향후 자사가 전략적으로 기안 및 보강해야 할 R&D 핵심 액션 과제를 제시합니다.
+        </p>
+      </div>
+
+      ${geminiPremiumBlock}
+
+      <!-- SECTION 1: SPEC PORTFOLIO COMPARE -->
+      <div class="rep-section">
+        <h3 class="rep-section-title"><i class="fa-solid fa-ring"></i> 1. 대표 상품 매칭 포트폴리오</h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+          글로벌 경쟁 모델의 계절 사양 및 포지셔닝 카테고리를 자동 분석하여, 이에 1:1 대항하는 자사 최고의 대응 제품을 연계 매핑하였습니다.
+        </p>
+
+        <div class="spec-comparison-grid">
+          <div class="spec-side competitor">
+            <span class="spec-brand-tag">${brandKey}</span>
+            <span class="spec-model-name">${modelKey}</span>
+            <div class="spec-attributes">
+              <span class="spec-attr-row">대표 세그먼트: <strong>${segmentName}</strong></span>
+              <span class="spec-attr-row">시즌 사양: <strong>${matchInfo.season} Spec</strong></span>
+              <span class="spec-attr-row">전략적 위상: <strong>글로벌 기술 벤치마크 기준작</strong></span>
+              <span class="spec-attr-row" style="margin-top: 6px; display: inline-block;">
+                <span style="background: rgba(59, 130, 246, 0.06); color: var(--secondary); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Premium Tier</span>
+                <span style="background: rgba(16, 185, 129, 0.06); color: var(--accent-green); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">ARES Verified</span>
+              </span>
+            </div>
           </div>
-          <div style="font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-top: 6px; line-height: 1.4;">
-            * 6대 핵심 지표 상대 비교 점수를 대조 시각화합니다.
+
+          <div class="spec-vs-node">
+            <div class="vs-badge">VS</div>
+            <div class="vs-seg-label">${segmentName.split(' ')[0]}</div>
+          </div>
+
+          <div class="spec-side hankook">
+            <span class="spec-brand-tag">HANKOOK</span>
+            <span class="spec-model-name">${rivalKey}</span>
+            <div class="spec-attributes">
+              <span class="spec-attr-row">대표 세그먼트: <strong>${segmentName}</strong></span>
+              <span class="spec-attr-row">시즌 사양: <strong>${matchInfo.season} Spec</strong></span>
+              <span class="spec-attr-row">자사 대응 모델: <strong>자사 최우선 주력 대항마</strong></span>
+              <span class="spec-attr-row" style="margin-top: 6px; display: inline-block;">
+                <span style="background: rgba(249, 115, 22, 0.06); color: var(--primary); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Top 대항마</span>
+                <span style="background: rgba(16, 185, 129, 0.06); color: var(--accent-green); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">i-Compound Tech</span>
+              </span>
+            </div>
           </div>
         </div>
-        
-        <!-- [오른쪽] ARES Sweep Line Chart -->
-        <div class="visco-right-line-panel">
-          <h4 id="visco-line-title" style="font-size: 0.82rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 10px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+      </div>
+
+      <!-- SECTION 2: IR FINANCIAL STABILITY WITH CHART (Diversified Stats) -->
+      <div class="rep-section">
+        <h3 class="rep-section-title"><i class="fa-solid fa-chart-line"></i> 2. 경영 실적 및 R&D 투자 규모 대조</h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+          제조사 간의 글로벌 시장 매출 격차, 수익성 수치(영업이익률) 및 R&D 투자 규모를 시각화하여 양적 역량을 진단합니다.
+        </p>
+
+        <div class="ir-financial-block">
+          <!-- Financial Table -->
+          <table class="rep-table" style="margin: 0;">
+            <thead>
+              <tr>
+                <th style="width: 32%;">경영 핵심 지표</th>
+                <th style="color: var(--secondary);">${compBrandData.nameKo}</th>
+                <th style="color: var(--primary);">한국타이어</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>2024년 총 매출액</strong></td>
+                <td style="font-weight: 700; color: var(--text-dark);">${compBrandData.globalRevenue["2024"]}</td>
+                <td style="font-weight: 700; color: var(--primary);">${hankookBrandData.globalRevenue["2024"]}</td>
+              </tr>
+              <tr>
+                <td><strong>2026년 예상 출하량</strong></td>
+                <td>${compBrandData.globalSales["2026"]}</td>
+                <td style="color: var(--primary); font-weight: 700;">${hankookBrandData.globalSales["2026"]}</td>
+              </tr>
+              <tr>
+                <td><strong>영업 이익률</strong></td>
+                <td style="color: var(--secondary); font-weight: 700;">${compBrandData.marginRate}</td>
+                <td style="color: var(--primary); font-weight: 700;">${hankookBrandData.marginRate}</td>
+              </tr>
+              <tr style="background: rgba(249, 115, 22, 0.01);">
+                <td><strong>R&D 연간 투자 총액</strong></td>
+                <td>${compBrandData.rdInvestment}</td>
+                <td style="color: var(--primary); font-weight: 700;">${hankookBrandData.rdInvestment}</td>
+              </tr>
+              <!-- Diversified Info Rows -->
+              <tr>
+                <td><strong>R&D 전임 인력 규모</strong></td>
+                <td>${brandKey === "MICHELIN" ? "약 6,400명" : brandKey === "CONTINENTAL" ? "약 4,800명" : "약 5,500명"}</td>
+                <td style="color: var(--primary); font-weight: 700;">약 2,100명</td>
+              </tr>
+              <tr>
+                <td><strong>글로벌 브랜드 인지 Index</strong></td>
+                <td style="color: var(--secondary); font-weight: 700;">${brandKey === "MICHELIN" ? "96점 Tier-1" : brandKey === "CONTINENTAL" ? "92점 Tier-1" : "94점 Tier-1"}</td>
+                <td style="color: var(--primary); font-weight: 700;">88점 Tier-2</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- IR Mini-Chart Wrapper -->
+          <div class="ir-chart-wrapper">
+            <canvas id="rep-ir-canvas" style="width: 100%; height: 100%; max-height: 160px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: TREAD COMPOUND PHYSICAL R&D (References BM Report Generator UI) -->
+      <div class="rep-section" style="page-break-inside: avoid;">
+        <h3 class="rep-section-title">
+          <i class="fa-solid fa-flask"></i> 3. 트레드 컴파운드 원천 물성 실측 분석
+          ${compSpec.isReal || hankookSpec.isReal ? `
+            <span class="live-db-badge"><i class="fa-solid fa-bolt"></i> Compd BM 실시간 연동</span>
+          ` : ''}
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 500;">
+          사내 가황 고무 화학 조성 데이터베이스 및 Dynamic Mechanical 분석 결과를 바탕으로 도출된 트레드 원천 물성 수치입니다.
+        </p>
+
+        <!-- Viscoelasticity Chart Mode Tabs (References BM Report Generator UI) -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+          <h4 style="font-size: 0.85rem; color: var(--text-dark); font-weight: 800; margin: 0;">
             <i class="fa-solid fa-chart-line" style="color: var(--primary);"></i>
-            ARES 온도별 손실 탄젠트 분석
+            다차원 물성 및 온도 스윕 시각화 대시보드
           </h4>
-          <div class="chart-container" style="height: 230px; position: relative;">
-            <canvas id="rep-sweep-canvas" style="width: 100%; height: 100%; max-height: 220px;"></canvas>
+          <div class="chart-mode-wrapper" style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">분석 지표 전환:</span>
+            <div class="visco-mode-tabs" style="display: flex; background: rgba(0,0,0,0.03); padding: 2px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08);">
+              <button class="visco-mode-btn active" data-mode="tand" style="padding: 4px 10px; font-size: 0.72rem; border: none; background: #fff; cursor: pointer; font-weight: bold; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">tanδ</button>
+              <button class="visco-mode-btn" data-mode="gp" style="padding: 4px 10px; font-size: 0.72rem; border: none; background: none; cursor: pointer; font-weight: bold; border-radius: 6px; transition: all 0.2s; color: var(--text-muted);">G'</button>
+              <button class="visco-mode-btn" data-mode="gpp" style="padding: 4px 10px; font-size: 0.72rem; border: none; background: none; cursor: pointer; font-weight: bold; border-radius: 6px; transition: all 0.2s; color: var(--text-muted);">G"</button>
+            </div>
           </div>
-          <div id="visco-line-caption" style="font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-top: 6px; line-height: 1.4;">
-            * -60℃부터 60℃까지 5℃ 단위 ARES 온도별 손실 탄젠트 스윕 데이터 추이를 시각화합니다.
+        </div>
+
+        <!-- report-visco-layout -->
+        <div class="report-visco-layout" style="margin-bottom: 25px;">
+          <!-- [왼쪽] 컴파운드 종합 물성 밸런스 레이더 차트 -->
+          <div class="visco-left-radar-panel">
+            <h4 style="font-size: 0.82rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 10px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <i class="fa-solid fa-circle-nodes" style="color: var(--primary);"></i>
+              컴파운드 종합 물성 밸런스
+            </h4>
+            <div class="chart-container" style="height: 230px; position: relative; display: flex; align-items: center; justify-content: center;">
+              <canvas id="rep-radar-canvas" style="max-height: 220px; max-width: 220px;"></canvas>
+            </div>
+            <div style="font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-top: 6px; line-height: 1.4;">
+              * 6대 핵심 지표 상대 비교 점수를 대조 시각화합니다.
+            </div>
           </div>
+          
+          <!-- [오른쪽] ARES Sweep Line Chart -->
+          <div class="visco-right-line-panel">
+            <h4 id="visco-line-title" style="font-size: 0.82rem; color: var(--text-dark); font-weight: 700; margin-top: 0; margin-bottom: 10px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <i class="fa-solid fa-chart-line" style="color: var(--primary);"></i>
+              ARES 온도별 손실 탄젠트 분석
+            </h4>
+            <div class="chart-container" style="height: 230px; position: relative;">
+              <canvas id="rep-sweep-canvas" style="width: 100%; height: 100%; max-height: 220px;"></canvas>
+            </div>
+            <div id="visco-line-caption" style="font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-top: 6px; line-height: 1.4;">
+              * -60℃부터 60℃까지 5℃ 단위 ARES 온도별 손실 탄젠트 스윕 데이터 추이를 시각화합니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- Excel Replica Parallel Table (Highly Diversified with chemistry values) -->
+        <p style="font-size: 0.8rem; color: var(--text-dark); font-weight: 700; margin-bottom: 8px;">
+          <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> 실측 원료 처방 및 물성 상세 대조 명세서
+        </p>
+        <div style="overflow-x: auto; background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 8px;">
+          <table class="rep-table" style="margin: 0; font-size: 0.78rem; border-top: none;">
+            <thead>
+              <tr style="background: rgba(249, 115, 22, 0.03);">
+                <th style="width: 34%; font-weight: 800; border-top: none; padding: 8px 12px;">물성 및 분석 항목</th>
+                <th style="color: var(--secondary); font-weight: 800; border-top: none; padding: 8px 12px;">${modelKey} ${compSpec.isReal ? ` ${compSpec.sourceYear}년 실측` : ''}</th>
+                <th style="color: var(--primary); font-weight: 800; border-top: none; padding: 8px 12px;">${rivalKey} ${hankookSpec.isReal ? ` ${hankookSpec.sourceYear}년 실측` : ''}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 원료 배합 -->
+              <tr style="background: rgba(255, 255, 255, 0.3);">
+                <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 6px 12px;">
+                  <i class="fa-solid fa-flask-vial" style="color: var(--primary); margin-right: 4px;"></i> 고무 배합 화학조성
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>고분자 배합 비율</strong></td>
+                <td style="color: var(--secondary); font-weight: 700; padding: 6px 12px;">${compSpec.polymer}</td>
+                <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">${hankookSpec.polymer}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>친환경 고밀도 실리카 함량</strong></td>
+                <td style="font-weight: 700; padding: 6px 12px;">${compSpec.silicaRate}</td>
+                <td style="font-weight: 700; color: var(--primary); padding: 6px 12px;">${hankookSpec.silicaRate}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>실란 커플링제 배합량</strong></td>
+                <td style="padding: 6px 12px;">${brandKey === "MICHELIN" ? "6.4 phr TESPT 표준형" : "6.0 phr TESPT 표준형"}</td>
+                <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">8.2 phr 고분사 오가노실란 촉진형</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>S-SBR 마이크로 구조 스티렌 함량</strong></td>
+                <td style="padding: 6px 12px;">${brandKey === "MICHELIN" ? "28%" : "26%"}</td>
+                <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">25% 연비 및 저온성능 최적화 설계</td>
+              </tr>
+              <!-- 가황 가교 밀도 -->
+              <tr style="background: rgba(255, 255, 255, 0.3);">
+                <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 6px 12px;">
+                  <i class="fa-solid fa-atom" style="color: var(--primary); margin-right: 4px;"></i> 물리적 가교 결합 구조
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>가황 가교 밀도</strong></td>
+                <td style="padding: 6px 12px;">1.32 안정적 주행 특화</td>
+                <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">1.45 초고속 내구성 특화 가황 가교</td>
+              </tr>
+              <!-- 기계적 물성 -->
+              <tr>
+                <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); border-top: 1px solid rgba(0,0,0,0.03); padding: 6px 12px;">
+                  <i class="fa-solid fa-gauge" style="color: var(--primary); margin-right: 4px;"></i> 대표 기계적 물성 및 거동 성능
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>트레드 고무 경도</strong></td>
+                <td style="padding: 6px 12px;">${compSpec.hardness}</td>
+                <td style="padding: 6px 12px;">${hankookSpec.hardness}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>마모 수명 지수</strong></td>
+                <td style="color: var(--secondary); font-weight: 700; padding: 6px 12px;">${compSpec.wearIndex} pts</td>
+                <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">${hankookSpec.wearIndex} pts</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>젖은 노면 제동 성능</strong></td>
+                <td style="padding: 6px 12px;">${compSpec.wetGrip}</td>
+                <td style="padding: 6px 12px;">${hankookSpec.wetGrip}</td>
+              </tr>
+              <!-- 동적 점탄성 요약 -->
+              <tr>
+                <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); border-top: 1px solid rgba(0,0,0,0.03); padding: 6px 12px;">
+                  <i class="fa-solid fa-chart-line" style="color: var(--primary); margin-right: 4px;"></i> 동적 점탄성 요약 지표
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>유리전이온도</strong></td>
+                <td style="padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch && compSpec.rawMatch["Tg_peak temp. (℃)"] ? compSpec.rawMatch["Tg_peak temp. (℃)"] + " ℃" : simulateTg(modelKey) + " ℃"}</td>
+                <td style="padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch && hankookSpec.rawMatch["Tg_peak temp. (℃)"] ? hankookSpec.rawMatch["Tg_peak temp. (℃)"] + " ℃" : simulateTg(rivalKey) + " ℃"}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>눈길 유연성</strong></td>
+                <td style="padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch ? getGMinusValue(compSpec.rawMatch, 1) : simulateGMinus(modelKey)}</td>
+                <td style="padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch ? getGMinusValue(hankookSpec.rawMatch, 1) : simulateGMinus(rivalKey)}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>상온 빗길 그립성</strong></td>
+                <td style="padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch && compSpec.rawMatch["G” @ 0℃ (E+06)"] ? compSpec.rawMatch["G” @ 0℃ (E+06)"].toFixed(3) : simulateG2(modelKey)}</td>
+                <td style="padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch && hankookSpec.rawMatch["G” @ 0℃ (E+06)"] ? hankookSpec.rawMatch["G” @ 0℃ (E+06)"].toFixed(3) : simulateG2(rivalKey)}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 12px;"><strong>고온 주행 연비 성능</strong></td>
+                <td style="color: var(--secondary); font-weight: 700; padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch && compSpec.rawMatch["tanδ @ 60℃"] ? compSpec.rawMatch["tanδ @ 60℃"].toFixed(4) : simulateSingleTand(60, modelKey).toFixed(4)}</td>
+                <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch && hankookSpec.rawMatch["tanδ @ 60℃"] ? hankookSpec.rawMatch["tanδ @ 60℃"].toFixed(4) : simulateSingleTand(60, rivalKey).toFixed(4)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="anal-highlight-box" style="margin-top: 15px;">
+          <i class="fa-solid fa-magnifying-glass-chart" style="color: var(--secondary); margin-right: 4px;"></i>
+          <strong>실측 R&D 종합 소견:</strong><br>
+          ${advisoryText} 향후 자사 ${rivalKey}는 마모 수명 인덱스 격차 약 ${wearDelta} pts 관리를 넘어서, 젖은 노면 제동 tanδ 수치를 극한으로 끌어올릴 특수 점탄성 수지 적용이 긴요합니다.
         </div>
       </div>
 
-      <!-- Excel Replica Parallel Table (Highly Diversified with chemistry values) -->
-      <p style="font-size: 0.8rem; color: var(--text-dark); font-weight: 700; margin-bottom: 8px;">
-        <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> 실측 원료 처방 및 물성 상세 대조 명세서
-      </p>
-      <div style="overflow-x: auto; background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 8px;">
-        <table class="rep-table" style="margin: 0; font-size: 0.78rem; border-top: none;">
+      <!-- SECTION 3-2: AI SIMULATOR VIRTUAL PERFORMANCE PREDICTION -->
+      <div class="rep-section" style="page-break-inside: avoid;">
+        <h3 class="rep-section-title">
+          <i class="fa-solid fa-brain"></i> 3-2. AI Simulator 기반 물성-성능 Virtual 추론 분석
+          <span class="live-db-badge" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.25); color: var(--secondary);"><i class="fa-solid fa-microchip"></i> AI-Predict v2.1 Active</span>
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 500;">
+          ARES 온도 Sweep 물리 화학적 점탄성 스펙트럼 데이터를 심층 신경망 모델의 입력 특성으로 활용하여, 가혹 환경에서의 실차 주행 거동 성능을 98.4%의 수렴 신뢰도로 가상 추론한 결과입니다.
+        </p>
+
+        <div class="ai-prediction-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
+          <!-- Left: Competitor AI Predict Card -->
+          <div class="ai-predict-card" style="background: #fafaf9; border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 12px; padding: 16px;">
+            <h4 style="font-size: 0.82rem; color: var(--secondary); font-weight: 800; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-cube"></i> ${modelKey} AI 예측</span>
+              <span style="font-size: 0.68rem; background: rgba(59, 130, 246, 0.08); padding: 2px 6px; border-radius: 4px; color: var(--secondary); font-weight: 700;">Inference Class</span>
+            </h4>
+            <div class="ai-metric-progress-group" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Metric 1 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>빗길 제동 성능</span>
+                  <span>${compWetAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${compWetAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
+                </div>
+              </div>
+              <!-- Metric 2 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>연비 및 저구름저항</span>
+                  <span>${compRRAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${compRRAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
+                </div>
+              </div>
+              <!-- Metric 3 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>겨울철 눈길 제어력</span>
+                  <span>${compSnowAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${compSnowAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
+                </div>
+              </div>
+              <!-- Metric 4 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>가상 마모 수명 지수</span>
+                  <span>${compWearAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${compWearAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Hankook AI Predict Card -->
+          <div class="ai-predict-card" style="background: #fafaf9; border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 12px; padding: 16px;">
+            <h4 style="font-size: 0.82rem; color: var(--primary); font-weight: 800; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-microchip"></i> ${rivalKey} AI 예측</span>
+              <span style="font-size: 0.68rem; background: rgba(249, 115, 22, 0.08); padding: 2px 6px; border-radius: 4px; color: var(--primary); font-weight: 700;">Inference Class</span>
+            </h4>
+            <div class="ai-metric-progress-group" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Metric 1 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>빗길 제동 성능</span>
+                  <span style="color: var(--primary);">${hankookWetAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${hankookWetAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
+                </div>
+              </div>
+              <!-- Metric 2 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>연비 및 저구름저항</span>
+                  <span style="color: var(--primary);">${hankookRRAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${hankookRRAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
+                </div>
+              </div>
+              <!-- Metric 3 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>겨울철 눈길 제어력</span>
+                  <span style="color: var(--primary);">${hankookSnowAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${hankookSnowAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
+                </div>
+              </div>
+              <!-- Metric 4 -->
+              <div class="ai-progress-row">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
+                  <span>가상 마모 수명 지수</span>
+                  <span style="color: var(--primary);">${hankookWearAI}점</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                  <div style="width: ${hankookWearAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Simulation Inference Logs & Focus Radar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid rgba(0,0,0,0.04); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">
+          <span><i class="fa-solid fa-circle-nodes"></i> Model Matrix: <strong>Deep-DMA-Net v2.1 XGBoost 및 MLP 하이브리드</strong></span>
+          <span><i class="fa-solid fa-bullseye"></i> Prediction Confidence: <strong style="color: var(--accent-green);">98.4% Verified</strong></span>
+          <span><i class="fa-solid fa-server"></i> Focus Attention Temp: <strong>[0℃, 60℃, -30℃]</strong></span>
+        </div>
+
+        <div class="anal-highlight-box" style="background: rgba(234, 88, 12, 0.03); border-color: rgba(234, 88, 12, 0.15); margin-top: 10px;">
+          <i class="fa-solid fa-robot" style="color: var(--primary); margin-right: 4px;"></i>
+          <strong>AI Virtual Simulation 종합 소견:</strong><br>
+          <span style="font-size: 0.78rem; line-height: 1.5; font-weight: 500;">
+            ${aiDiagnosticSummary} AI 가상 실차 시뮬레이션 결과, 전반적인 물성 간의 균형 설계 측면에서 자사 ${rivalKey}는 타깃 가혹 노면 주행 시 마모-그립 간 트레이드오프 손실율이 대폭 감소하도록 지능적으로 포지셔닝되어 있음을 입증했습니다.
+          </span>
+        </div>
+      </div>
+
+      <!-- SECTION 4: R&D ROADMAP & PATENT STRENGTH (Information diversified) -->
+      <div class="rep-section">
+        <h3 class="rep-section-title"><i class="fa-solid fa-compass"></i> 4. 중장기 R&D 세부전략 및 특허 장벽 비교</h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+          제조사 간의 중장기 연구 방향 테마, 원천 고무 배합 특허수 및 기술 가치 스코어 비교 가이드맵입니다.
+        </p>
+
+        <div class="rd-metric-gauge-group">
+          <!-- Metric 1: Patents Count -->
+          <div class="rd-metric-row">
+            <div class="rd-metric-meta">
+              <span class="rd-metric-label"><i class="fa-solid fa-award"></i> 친환경 물질 관련 고유 특허 보유수</span>
+              <span>
+                <span class="rd-m-val-comp">${compStratData.patents}건</span> vs 
+                <span class="rd-m-val-hankook">${hankookStratData.patents}건</span>
+              </span>
+            </div>
+            <div class="double-gauge-track">
+              <div class="gauge-fill-competitor" style="width: ${(compStratData.patents / (compStratData.patents + hankookStratData.patents) * 100).toFixed(1)}%;"></div>
+              <div class="gauge-fill-hankook" style="width: ${(hankookStratData.patents / (compStratData.patents + hankookStratData.patents) * 100).toFixed(1)}%;"></div>
+            </div>
+          </div>
+
+          <!-- Metric 2: R&D Score Value -->
+          <div class="rd-metric-row">
+            <div class="rd-metric-meta">
+              <span class="rd-metric-label"><i class="fa-solid fa-chart-pie"></i> 북미/유럽 평점 기반 종합 기술 가치 스코어</span>
+              <span>
+                <span class="rd-m-val-comp">${compStratData.score}점</span> vs 
+                <span class="rd-m-val-hankook">${hankookStratData.score}점</span>
+              </span>
+            </div>
+            <div class="double-gauge-track">
+              <div class="gauge-fill-competitor" style="width: ${(compStratData.score / (compStratData.score + hankookStratData.score) * 100).toFixed(1)}%;"></div>
+              <div class="gauge-fill-hankook" style="width: ${(hankookStratData.score / (compStratData.score + hankookStratData.score) * 100).toFixed(1)}%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="rep-table" style="margin-top: 15px; font-size: 0.8rem;">
           <thead>
-            <tr style="background: rgba(249, 115, 22, 0.03);">
-              <th style="width: 34%; font-weight: 800; border-top: none; padding: 8px 12px;">물성 및 분석 항목</th>
-              <th style="color: var(--secondary); font-weight: 800; border-top: none; padding: 8px 12px;">${modelKey} ${compSpec.isReal ? ` ${compSpec.sourceYear}년 실측` : ''}</th>
-              <th style="color: var(--primary); font-weight: 800; border-top: none; padding: 8px 12px;">${rivalKey} ${hankookSpec.isReal ? ` ${hankookSpec.sourceYear}년 실측` : ''}</th>
+            <tr>
+              <th style="width: 25%;">제조사명</th>
+              <th>중장기 최우선 R&D 집중 방향 테마</th>
             </tr>
           </thead>
           <tbody>
-            <!-- 원료 배합 -->
-            <tr style="background: rgba(255, 255, 255, 0.3);">
-              <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 6px 12px;">
-                <i class="fa-solid fa-flask-vial" style="color: var(--primary); margin-right: 4px;"></i> 고무 배합 화학조성
-              </td>
-            </tr>
             <tr>
-              <td style="padding: 6px 12px;"><strong>고분자 배합 비율</strong></td>
-              <td style="color: var(--secondary); font-weight: 700; padding: 6px 12px;">${compSpec.polymer}</td>
-              <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">${hankookSpec.polymer}</td>
+              <td style="font-weight: 800; color: var(--secondary);">${brandKey}</td>
+              <td>${compStratData.priority}</td>
             </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>친환경 고밀도 실리카 함량</strong></td>
-              <td style="font-weight: 700; padding: 6px 12px;">${compSpec.silicaRate}</td>
-              <td style="font-weight: 700; color: var(--primary); padding: 6px 12px;">${hankookSpec.silicaRate}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>실란 커플링제 배합량</strong></td>
-              <td style="padding: 6px 12px;">${brandKey === "MICHELIN" ? "6.4 phr TESPT 표준형" : "6.0 phr TESPT 표준형"}</td>
-              <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">8.2 phr 고분사 오가노실란 촉진형</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>S-SBR 마이크로 구조 스티렌 함량</strong></td>
-              <td style="padding: 6px 12px;">${brandKey === "MICHELIN" ? "28%" : "26%"}</td>
-              <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">25% 연비 및 저온성능 최적화 설계</td>
-            </tr>
-            <!-- 가황 가교 밀도 -->
-            <tr style="background: rgba(255, 255, 255, 0.3);">
-              <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 6px 12px;">
-                <i class="fa-solid fa-atom" style="color: var(--primary); margin-right: 4px;"></i> 물리적 가교 결합 구조
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>가황 가교 밀도</strong></td>
-              <td style="padding: 6px 12px;">1.32 안정적 주행 특화</td>
-              <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">1.45 초고속 내구성 특화 가황 가교</td>
-            </tr>
-            <!-- 기계적 물성 -->
-            <tr>
-              <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); border-top: 1px solid rgba(0,0,0,0.03); padding: 6px 12px;">
-                <i class="fa-solid fa-gauge" style="color: var(--primary); margin-right: 4px;"></i> 대표 기계적 물성 및 거동 성능
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>트레드 고무 경도</strong></td>
-              <td style="padding: 6px 12px;">${compSpec.hardness}</td>
-              <td style="padding: 6px 12px;">${hankookSpec.hardness}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>마모 수명 지수</strong></td>
-              <td style="color: var(--secondary); font-weight: 700; padding: 6px 12px;">${compSpec.wearIndex} pts</td>
-              <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">${hankookSpec.wearIndex} pts</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>젖은 노면 제동 성능</strong></td>
-              <td style="padding: 6px 12px;">${compSpec.wetGrip}</td>
-              <td style="padding: 6px 12px;">${hankookSpec.wetGrip}</td>
-            </tr>
-            <!-- 동적 점탄성 요약 -->
-            <tr>
-              <td colspan="3" style="font-weight: 800; color: var(--text-dark); background: rgba(0,0,0,0.02); font-size: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); border-top: 1px solid rgba(0,0,0,0.03); padding: 6px 12px;">
-                <i class="fa-solid fa-chart-line" style="color: var(--primary); margin-right: 4px;"></i> 동적 점탄성 요약 지표
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>유리전이온도</strong></td>
-              <td style="padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch && compSpec.rawMatch["Tg_peak temp. (℃)"] ? compSpec.rawMatch["Tg_peak temp. (℃)"] + " ℃" : simulateTg(modelKey) + " ℃"}</td>
-              <td style="padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch && hankookSpec.rawMatch["Tg_peak temp. (℃)"] ? hankookSpec.rawMatch["Tg_peak temp. (℃)"] + " ℃" : simulateTg(rivalKey) + " ℃"}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>눈길 유연성</strong></td>
-              <td style="padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch ? getGMinusValue(compSpec.rawMatch, 1) : simulateGMinus(modelKey)}</td>
-              <td style="padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch ? getGMinusValue(hankookSpec.rawMatch, 1) : simulateGMinus(rivalKey)}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>상온 빗길 그립성</strong></td>
-              <td style="padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch && compSpec.rawMatch["G” @ 0℃ (E+06)"] ? compSpec.rawMatch["G” @ 0℃ (E+06)"].toFixed(3) : simulateG2(modelKey)}</td>
-              <td style="padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch && hankookSpec.rawMatch["G” @ 0℃ (E+06)"] ? hankookSpec.rawMatch["G” @ 0℃ (E+06)"].toFixed(3) : simulateG2(rivalKey)}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 12px;"><strong>고온 주행 연비 성능</strong></td>
-              <td style="color: var(--secondary); font-weight: 700; padding: 6px 12px;">${compSpec.isReal && compSpec.rawMatch && compSpec.rawMatch["tanδ @ 60℃"] ? compSpec.rawMatch["tanδ @ 60℃"].toFixed(4) : simulateSingleTand(60, modelKey).toFixed(4)}</td>
-              <td style="color: var(--primary); font-weight: 700; padding: 6px 12px;">${hankookSpec.isReal && hankookSpec.rawMatch && hankookSpec.rawMatch["tanδ @ 60℃"] ? hankookSpec.rawMatch["tanδ @ 60℃"].toFixed(4) : simulateSingleTand(60, rivalKey).toFixed(4)}</td>
+            <tr style="background: rgba(249, 115, 22, 0.02);">
+              <td style="font-weight: 800; color: var(--primary);">HANKOOK</td>
+              <td>${hankookStratData.priority}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="anal-highlight-box" style="margin-top: 15px;">
-        <i class="fa-solid fa-magnifying-glass-chart" style="color: var(--secondary); margin-right: 4px;"></i>
-        <strong>실측 R&D 종합 소견:</strong><br>
-        ${advisoryText} 향후 자사 ${rivalKey}는 마모 수명 인덱스 격차 약 ${wearDelta} pts 관리를 넘어서, 젖은 노면 제동 tanδ 수치를 극한으로 끌어올릴 특수 점탄성 수지 적용이 긴요합니다.
-      </div>
-    </div>
+      <!-- SECTION 5: REAL-TIME PLC ARENA DOCUMENTS MAPPING -->
+      <div class="rep-section" style="page-break-inside: avoid;">
+        <h3 class="rep-section-title">
+          <i class="fa-solid fa-file-signature"></i> 5. 관련 사내 R&D 기안서 및 심층 분석 리포트 연동
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+          사내 결재 통합 포털 내 승인 완료된 리포트 중, 매칭된 브랜드 및 타이어군과 직결된 중요 품의 보고서를 실시간 매핑하여 출력합니다.
+        </p>
 
-    <!-- SECTION 3-2: AI SIMULATOR VIRTUAL PERFORMANCE PREDICTION -->
-    <div class="rep-section" style="page-break-inside: avoid;">
-      <h3 class="rep-section-title">
-        <i class="fa-solid fa-brain"></i> 3-2. AI Simulator 기반 물성-성능 Virtual 추론 분석
-        <span class="live-db-badge" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.25); color: var(--secondary);"><i class="fa-solid fa-microchip"></i> AI-Predict v2.1 Active</span>
+        <div class="arena-report-list">
+          ${arenaReports.length > 0 ? arenaReports.map(rep => `
+            <div class="arena-report-item">
+              <div class="arena-report-meta-left">
+                <div class="arena-report-title"><i class="fa-regular fa-file-lines" style="color: var(--primary); margin-right: 6px;"></i> ${rep.title}</div>
+                <div class="arena-report-subtitle">
+                  <span><i class="fa-solid fa-user-pen"></i> 기안자: ${rep.drafter} ${rep.dept || '본사 R&D 테크놀로지'}</span>
+                  <span><i class="fa-solid fa-hashtag"></i> 문서번호: ${rep.docNo}</span>
+                  <span><i class="fa-solid fa-calendar-check"></i> 완료일자: ${rep.completeDate}</span>
+                </div>
+              </div>
+              <a href="${rep.linkAddress}" target="_blank" class="arena-link-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span>Arena 바로가기</span>
+              </a>
+            </div>
+          `).join('') : `
+            <div class="arena-report-item" style="justify-content: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 600;">
+              <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px; color: var(--primary);"></i> 본 해당 상품 모델군에 직결된 사내 Arena 결재 완료 보고서 이력이 데이터베이스에 부재합니다.
+            </div>
+          `}
+      </div>
+
+      <!-- SECTION 6: COMPETITOR BI NEWS & THREAT INTELLIGENCE ANALYSIS -->
+      <div class="rep-section" style="page-break-inside: avoid;">
+        <h3 class="rep-section-title">
+          <i class="fa-solid fa-newspaper"></i> 6. 경쟁사 실시간 BI 뉴스 & R&D 위협 동향 분석
+          <span class="live-db-badge" style="background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.25); color: var(--primary);"><i class="fa-solid fa-square-rss"></i> BI News 실시간 연동</span>
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+          실시간 구글 뉴스를 통해 수집 및 크롤링된 <strong>100건 이상의 프리미엄 비즈니스 데이터베이스</strong>에서, 현재 비교 대상인 <strong>${compBrandData.nameKo}</strong>에 관련된 최신 R&D 및 마케팅 위협 요소를 추출했습니다.
+        </p>
+
+        <div class="arena-report-list">
+          ${newsRowsHtml}
+        </div>
+      </div>
+
+      <!-- SECURE COGNITIVE R&D ADVISORY BOX -->
+      <div class="rep-advisory-box" style="page-break-inside: avoid;">
+        <div class="rep-advisory-title">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>수석 R&D 자문 위원 정책 제언서</span>
+        </div>
+        <div class="rep-advisory-desc" style="font-size: 0.82rem;">
+          대조 분석 결과, 자사 <strong>한국타이어</strong>의 <strong>${rivalKey}</strong>는 경쟁 강대국인 <strong>${compBrandData.nameKo} ${modelKey}</strong> 대비 고밀도 컴파운드 물성 실측값 격차를 약 95% 이상 좁히며 급격히 기술을 추격하고 있습니다. 
+          그러나 글로벌 원천 특허 장벽수 격차 자사 ${hankookStratData.patents}건 대 경쟁사 ${compStratData.patents}건 및 매출 규모 격차는 여전히 극복해야 할 R&D 당면 과제입니다.<br><br>
+          <strong>[최우선 실행 제언]</strong> 자사는 향후 친환경 실리카 나노 중합 패턴 분산 장치를 특허 회피 설계 형태로 독자 양산 실용화해야 하며, 
+          특히 젖은 노면 그립 마찰력과 마모 수명 간의 R&D 트레이드오프를 극복하기 위해 극저온 저구름저항 배합 비율 실리카 함량 ${hankookSpec.silicaRate} 이상 고도화 및 고기능성 점탄성 수지 첨가 기안서 작성에 선제적으로 나설 것을 강력히 제언합니다.
+        </div>
+      </div>
+    `;
+
+    // 5. Setup Visco Mode Tabs Event Listeners
+    bindViscoModeTabs();
+
+    // 6. Draw Radar Chart & Initial Sweep Chart
+    updateRadarChart();
+    updateSweepChart();
+
+    // 7. Draw IR Double Bar Chart using Chart.js
+    const irCtx = document.getElementById('rep-ir-canvas');
+    if (irCtx) {
+      if (irChartInstance) {
+        irChartInstance.destroy();
+      }
+
+      // Revenue parsing & dynamic comparison graph
+      const compRev2024 = parseFloat(compBrandData.globalRevenue["2024"].replace(/[^0-9.]/g, ''));
+      const hankookRev2024 = parseFloat(hankookBrandData.globalRevenue["2024"].replace(/[^0-9.]/g, ''));
+      
+      // Growth rates estimations based on predictions
+      const compRev2025 = compRev2024 * 1.03;
+      const hankookRev2025 = hankookRev2024 * 1.04;
+      const compRev2026 = compRev2024 * 1.06;
+      const hankookRev2026 = hankookRev2024 * 1.10;
+
+      irChartInstance = new Chart(irCtx, {
+        type: 'bar',
+        data: {
+          labels: ['2024', '2025', '2026'],
+          datasets: [
+            {
+              label: brandKey,
+              data: [compRev2024, compRev2025, compRev2026],
+              backgroundColor: 'rgba(59, 130, 246, 0.65)',
+              borderColor: 'rgba(59, 130, 246, 0.95)',
+              borderWidth: 1,
+              borderRadius: 4
+            },
+            {
+              label: 'HANKOOK',
+              data: [hankookRev2024, hankookRev2025, hankookRev2026],
+              backgroundColor: 'rgba(249, 115, 22, 0.75)',
+              borderColor: 'rgba(249, 115, 22, 0.95)',
+              borderWidth: 1,
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                font: { size: 8, weight: 'bold' },
+                boxWidth: 8
+              }
+            },
+            title: {
+              display: true,
+              text: '글로벌 매출 추이 비교 ($B)',
+              font: { size: 9, weight: 'bold' },
+              padding: { top: 0, bottom: 4 }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 8, weight: 'bold' } }
+            },
+            y: {
+              grid: { color: 'rgba(0, 0, 0, 0.02)' },
+              ticks: { font: { size: 8 } }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  // 5. Render Loading screen to WOW user with responsive UI feedback
+  documentCanvas.innerHTML = `
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center;">
+      <div class="loading-gemini-ring" style="width: 50px; height: 50px; border: 4px solid rgba(139, 92, 246, 0.1); border-top: 4px solid #8b5cf6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+      <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      </style>
+      <h3 style="font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--text-dark); margin: 0 0 8px 0; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: #8b5cf6; animation: pulse 1.5s infinite;"></i>
+        <span>Gemini AI 통합 R&D 인텔리전스 가동 중...</span>
       </h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 500;">
-        ARES 온도 Sweep 물리 화학적 점탄성 스펙트럼 데이터를 심층 신경망 모델의 입력 특성으로 활용하여, 가혹 환경에서의 실차 주행 거동 성능을 98.4%의 수렴 신뢰도로 가상 추론한 결과입니다.
+      <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin: 0; line-height: 1.5;">
+        선택한 ${brandKey} ${modelKey}와 자사 대항마 ${rivalKey}의 다차원 격차 데이터를 교차 검증하고 있습니다.<br>
+        실시간 경영 지표, 가상 시뮬레이터 수치, 최신 BI 뉴스 및 특허 장벽 스펙트럼 분석 보고서를 작성 중입니다. (약 3초 소요)
       </p>
-
-      <div class="ai-prediction-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
-        <!-- Left: Competitor AI Predict Card -->
-        <div class="ai-predict-card" style="background: #fafaf9; border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 12px; padding: 16px;">
-          <h4 style="font-size: 0.82rem; color: var(--secondary); font-weight: 800; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-            <span><i class="fa-solid fa-cube"></i> ${modelKey} AI 예측</span>
-            <span style="font-size: 0.68rem; background: rgba(59, 130, 246, 0.08); padding: 2px 6px; border-radius: 4px; color: var(--secondary); font-weight: 700;">Inference Class</span>
-          </h4>
-          <div class="ai-metric-progress-group" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Metric 1 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>빗길 제동 성능</span>
-                <span>${compWetAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${compWetAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
-              </div>
-            </div>
-            <!-- Metric 2 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>연비 및 저구름저항</span>
-                <span>${compRRAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${compRRAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
-              </div>
-            </div>
-            <!-- Metric 3 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>겨울철 눈길 제어력</span>
-                <span>${compSnowAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${compSnowAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
-              </div>
-            </div>
-            <!-- Metric 4 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>가상 마모 수명 지수</span>
-                <span>${compWearAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${compWearAI}%; height: 100%; background: var(--secondary); border-radius: 3px;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Hankook AI Predict Card -->
-        <div class="ai-predict-card" style="background: #fafaf9; border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 12px; padding: 16px;">
-          <h4 style="font-size: 0.82rem; color: var(--primary); font-weight: 800; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-            <span><i class="fa-solid fa-microchip"></i> ${rivalKey} AI 예측</span>
-            <span style="font-size: 0.68rem; background: rgba(249, 115, 22, 0.08); padding: 2px 6px; border-radius: 4px; color: var(--primary); font-weight: 700;">Inference Class</span>
-          </h4>
-          <div class="ai-metric-progress-group" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Metric 1 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>빗길 제동 성능</span>
-                <span style="color: var(--primary);">${hankookWetAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${hankookWetAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
-              </div>
-            </div>
-            <!-- Metric 2 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>연비 및 저구름저항</span>
-                <span style="color: var(--primary);">${hankookRRAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${hankookRRAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
-              </div>
-            </div>
-            <!-- Metric 3 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>겨울철 눈길 제어력</span>
-                <span style="color: var(--primary);">${hankookSnowAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${hankookSnowAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
-              </div>
-            </div>
-            <!-- Metric 4 -->
-            <div class="ai-progress-row">
-              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 3px;">
-                <span>가상 마모 수명 지수</span>
-                <span style="color: var(--primary);">${hankookWearAI}점</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div style="width: ${hankookWearAI}%; height: 100%; background: var(--primary); border-radius: 3px;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- AI Simulation Inference Logs & Focus Radar -->
-      <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid rgba(0,0,0,0.04); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">
-        <span><i class="fa-solid fa-circle-nodes"></i> Model Matrix: <strong>Deep-DMA-Net v2.1 XGBoost 및 MLP 하이브리드</strong></span>
-        <span><i class="fa-solid fa-bullseye"></i> Prediction Confidence: <strong style="color: var(--accent-green);">98.4% Verified</strong></span>
-        <span><i class="fa-solid fa-server"></i> Focus Attention Temp: <strong>[0℃, 60℃, -30℃]</strong></span>
-      </div>
-
-      <div class="anal-highlight-box" style="background: rgba(234, 88, 12, 0.03); border-color: rgba(234, 88, 12, 0.15); margin-top: 10px;">
-        <i class="fa-solid fa-robot" style="color: var(--primary); margin-right: 4px;"></i>
-        <strong>AI Virtual Simulation 종합 소견:</strong><br>
-        <span style="font-size: 0.78rem; line-height: 1.5; font-weight: 500;">
-          ${aiDiagnosticSummary} AI 가상 실차 시뮬레이션 결과, 전반적인 물성 간의 균형 설계 측면에서 자사 ${rivalKey}는 타깃 가혹 노면 주행 시 마모-그립 간 트레이드오프 손실율이 대폭 감소하도록 지능적으로 포지셔닝되어 있음을 입증했습니다.
-        </span>
-      </div>
     </div>
+  `;
 
-    <!-- SECTION 4: R&D ROADMAP & PATENT STRENGTH (Information diversified) -->
-    <div class="rep-section">
-      <h3 class="rep-section-title"><i class="fa-solid fa-compass"></i> 4. 중장기 R&D 세부전략 및 특허 장벽 비교</h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
-        제조사 간의 중장기 연구 방향 테마, 원천 고무 배합 특허수 및 기술 가치 스코어 비교 가이드맵입니다.
-      </p>
+  // 6. Gather and package the structured data context
+  const contextDataObj = {
+    rival: rivalKey,
+    segment: segmentName,
+    compSpec: compSpec,
+    hankookSpec: hankookSpec,
+    compBrandData: compBrandData,
+    hankookBrandData: hankookBrandData,
+    compStratData: compStratData,
+    hankookStratData: hankookStratData,
+    news: brandNews,
+    diagnostic: aiDiagnosticSummary,
+    scores: {
+      comp: { wet: compWetAI, rr: compRRAI, snow: compSnowAI, wear: compWearAI },
+      hankook: { wet: hankookWetAI, rr: hankookRRAI, snow: hankookSnowAI, wear: hankookWearAI }
+    }
+  };
 
-      <div class="rd-metric-gauge-group">
-        <!-- Metric 1: Patents Count -->
-        <div class="rd-metric-row">
-          <div class="rd-metric-meta">
-            <span class="rd-metric-label"><i class="fa-solid fa-award"></i> 친환경 물질 관련 고유 특허 보유수</span>
-            <span>
-              <span class="rd-m-val-comp">${compStratData.patents}건</span> vs 
-              <span class="rd-m-val-hankook">${hankookStratData.patents}건</span>
-            </span>
-          </div>
-          <div class="double-gauge-track">
-            <div class="gauge-fill-competitor" style="width: ${(compStratData.patents / (compStratData.patents + hankookStratData.patents) * 100).toFixed(1)}%;"></div>
-            <div class="gauge-fill-hankook" style="width: ${(hankookStratData.patents / (compStratData.patents + hankookStratData.patents) * 100).toFixed(1)}%;"></div>
-          </div>
-        </div>
+  // 7. Make the POST request to local FastAPI LLM gateway
+  const API_BASE = window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1") || window.location.protocol === "file:"
+    ? "http://localhost:8000"
+    : "";
 
-        <!-- Metric 2: R&D Score Value -->
-        <div class="rd-metric-row">
-          <div class="rd-metric-meta">
-            <span class="rd-metric-label"><i class="fa-solid fa-chart-pie"></i> 북미/유럽 평점 기반 종합 기술 가치 스코어</span>
-            <span>
-              <span class="rd-m-val-comp">${compStratData.score}점</span> vs 
-              <span class="rd-m-val-hankook">${hankookStratData.score}점</span>
-            </span>
-          </div>
-          <div class="double-gauge-track">
-            <div class="gauge-fill-competitor" style="width: ${(compStratData.score / (compStratData.score + hankookStratData.score) * 100).toFixed(1)}%;"></div>
-            <div class="gauge-fill-hankook" style="width: ${(hankookStratData.score / (compStratData.score + hankookStratData.score) * 100).toFixed(1)}%;"></div>
-          </div>
-        </div>
-      </div>
-
-      <table class="rep-table" style="margin-top: 15px; font-size: 0.8rem;">
-        <thead>
-          <tr>
-            <th style="width: 25%;">제조사명</th>
-            <th>중장기 최우선 R&D 집중 방향 테마</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight: 800; color: var(--secondary);">${brandKey}</td>
-            <td>${compStratData.priority}</td>
-          </tr>
-          <tr style="background: rgba(249, 115, 22, 0.02);">
-            <td style="font-weight: 800; color: var(--primary);">HANKOOK</td>
-            <td>${hankookStratData.priority}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- SECTION 5: REAL-TIME PLC ARENA DOCUMENTS MAPPING -->
-    <div class="rep-section" style="page-break-inside: avoid;">
-      <h3 class="rep-section-title">
-        <i class="fa-solid fa-file-signature"></i> 5. 관련 사내 R&D 기안서 및 심층 분석 리포트 연동
-      </h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
-        사내 결재 통합 포털 내 승인 완료된 리포트 중, 매칭된 브랜드 및 타이어군과 직결된 중요 품의 보고서를 실시간 매핑하여 출력합니다.
-      </p>
-
-      <div class="arena-report-list">
-        ${arenaReports.length > 0 ? arenaReports.map(rep => `
-          <div class="arena-report-item">
-            <div class="arena-report-meta-left">
-              <div class="arena-report-title"><i class="fa-regular fa-file-lines" style="color: var(--primary); margin-right: 6px;"></i> ${rep.title}</div>
-              <div class="arena-report-subtitle">
-                <span><i class="fa-solid fa-user-pen"></i> 기안자: ${rep.drafter} ${rep.dept || '본사 R&D 테크놀로지'}</span>
-                <span><i class="fa-solid fa-hashtag"></i> 문서번호: ${rep.docNo}</span>
-                <span><i class="fa-solid fa-calendar-check"></i> 완료일자: ${rep.completeDate}</span>
-              </div>
-            </div>
-            <a href="${rep.linkAddress}" target="_blank" class="arena-link-btn">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              <span>Arena 바로가기</span>
-            </a>
-          </div>
+  fetch(API_BASE + '/api/llm/report', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      brand: brandKey,
+      model: modelKey,
+      context_data: contextDataObj
+    })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to generate real-time AI report');
+    return res.json();
+  })
+  .then(llmReport => {
+    completeRender(llmReport, true);
+  })
+  .catch(err => {
+    console.error('LLM Report fetch error, executing local fallback:', err);
+    completeRender(null, false);
+  });
+}       </div>
         `).join('') : `
           <div class="arena-report-item" style="justify-content: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 600;">
             <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px; color: var(--primary);"></i> 본 해당 상품 모델군에 직결된 사내 Arena 결재 완료 보고서 이력이 데이터베이스에 부재합니다.

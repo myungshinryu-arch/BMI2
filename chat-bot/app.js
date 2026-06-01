@@ -108,8 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // LLM 상태 판별 및 UI 동적 변경 헬퍼
 function isLlmActive() {
   const toggle = document.getElementById('llm-toggle');
-  const apiKey = document.getElementById('gemini-api-key');
-  return toggle && toggle.checked && apiKey && apiKey.value.trim() !== '';
+  return toggle && toggle.checked;
 }
 
 function updateEngineStatusUI() {
@@ -123,7 +122,7 @@ function updateEngineStatusUI() {
   const footerStatusDot = document.getElementById('system-status-dot');
 
   if (isLlmActive()) {
-    if (activeEngineType) activeEngineType.textContent = "Gemini 1.5 Flash (RAG)";
+    if (activeEngineType) activeEngineType.textContent = "Gemini 2.5 Flash (ADC)";
     if (aiStatusText) aiStatusText.textContent = "Gemini LLM Active";
     if (aiStatusDot) {
       aiStatusDot.style.backgroundColor = "var(--secondary)";
@@ -162,11 +161,10 @@ function setupLlmConfig() {
 
   if (!llmToggle || !geminiApiKeyInput || !llmKeyContainer) return;
 
-  const llmEnabled = localStorage.getItem('llm_enabled') === 'true';
-  const savedKey = localStorage.getItem('gemini_api_key') || '';
+  const llmEnabled = localStorage.getItem('llm_enabled') === null ? true : (localStorage.getItem('llm_enabled') === 'true');
 
   llmToggle.checked = llmEnabled;
-  geminiApiKeyInput.value = savedKey;
+  geminiApiKeyInput.value = "gcp-adc-auth";
 
   if (llmEnabled) {
     llmKeyContainer.style.display = 'flex';
@@ -185,30 +183,25 @@ function setupLlmConfig() {
     }
     updateEngineStatusUI();
   });
-
-  geminiApiKeyInput.addEventListener('change', () => {
-    localStorage.setItem('gemini_api_key', geminiApiKeyInput.value.trim());
-    updateEngineStatusUI();
-  });
-
-  geminiApiKeyInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      localStorage.setItem('gemini_api_key', geminiApiKeyInput.value.trim());
-      updateEngineStatusUI();
-      geminiApiKeyInput.blur();
-    }
-  });
 }
 
 // Markdown Parser Helper
 function parseMarkdown(text) {
+  let html = text;
   if (typeof marked !== 'undefined') {
-    return marked.parse(text);
+    html = marked.parse(text);
+  } else {
+    html = text
+      .replace(/\n/g, '<br>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>');
   }
-  return text
-    .replace(/\n/g, '<br>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+  
+  // Post-process: Wrap tables in a beautiful responsive scrollable container
+  html = html.replace(/<table>/g, '<div style="overflow-x:auto; margin: 12px 0; border-radius: 8px; border: 1px solid rgba(59,130,246,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.02);"><table style="width:100%; border-collapse:collapse; background:rgba(255,255,255,0.7);">');
+  html = html.replace(/<\/table>/g, '</table></div>');
+  
+  return html;
 }
 
 // 2. Chat Messenger Controller
@@ -239,54 +232,93 @@ function setupChatMessenger() {
     typingIndicator.style.display = 'flex';
     scrollToBottom();
 
-    // High-End LLM Engine Route
-    if (isLlmActive()) {
-      const apiKey = localStorage.getItem('gemini_api_key') || '';
-      
-      fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: text,
-          apiKey: apiKey
-        })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Gemini API Proxy server connection failed');
-        }
-        return response.json();
-      })
-      .then(data => {
-        typingIndicator.style.display = 'none';
-        if (data.status === 'success') {
-          const parsedResponse = parseMarkdown(data.response);
-          appendMessage('bot', parsedResponse);
-        } else {
-          // Fallback
-          const answerHtml = performAiNaturalQuery(text);
-          appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> Gemini API 설정 오류 또는 키가 비활성화되어 로컬Fallback 모델로 답변합니다.</p>` + answerHtml);
-        }
-        scrollToBottom();
-      })
-      .catch(error => {
-        console.error('LLM API Error:', error);
-        typingIndicator.style.display = 'none';
-        const answerHtml = performAiNaturalQuery(text);
-        appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> 네트워크 장애 또는 에러가 발생하여 로컬 지능형 모델(Fallback)로 답변합니다.</p>` + answerHtml);
-        scrollToBottom();
-      });
-    } else {
-      // Offline Engine Route
+    // Check if query is meaningless (e.g. "ㅎㅎ", "ㅋㅋ", too short etc.)
+    const isMeaningless = /^[ㄱ-ㅎㅏ-ㅣㅋㅋㅎㅎㅇㅇ\s\?\!\.]{1,10}$/i.test(text) || text.length < 3;
+
+    if (isMeaningless) {
+      console.log("[LLM] Meaningless or very short query detected. Using fast local rule-based engine.");
       setTimeout(() => {
         typingIndicator.style.display = 'none';
         const answerHtml = performAiNaturalQuery(text);
-        appendMessage('bot', answerHtml);
+        appendMessage('bot', answerHtml, 'local');
         scrollToBottom();
-      }, 650);
+      }, 300);
+      return;
     }
+
+    // Meaningful query: Force call to actual FastAPI /api/llm/chat endpoint!
+    const contextObj = {
+      ir_data: typeof AI_IR_DATA !== 'undefined' ? AI_IR_DATA : null,
+      compd_bm: typeof COMPD_BM_KNOWLEDGE !== 'undefined' ? COMPD_BM_KNOWLEDGE : null,
+      tire_bm: typeof TIRE_BM_KNOWLEDGE !== 'undefined' ? TIRE_BM_KNOWLEDGE : null,
+      strategy: typeof STRATEGY_BM_KNOWLEDGE !== 'undefined' ? STRATEGY_BM_KNOWLEDGE : null,
+      reports: typeof REPORT_LIBRARY_DB !== 'undefined' ? REPORT_LIBRARY_DB : null,
+      segments: typeof SEGMENT_METADATA !== 'undefined' ? SEGMENT_METADATA : null,
+      news_data: typeof BI_NEWS_DATA !== 'undefined' ? BI_NEWS_DATA : [],
+      rule_based_result: typeof performAiNaturalQuery === 'function' ? performAiNaturalQuery(text) : null
+    };
+
+    const API_BASE = window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1") || window.location.protocol === "file:"
+      ? "http://localhost:8000"
+      : "";
+
+    const targetUrl = API_BASE + '/api/llm/chat';
+    const payload = {
+      query: text,
+      context: contextObj
+    };
+
+    console.log("[LLM] Requesting Gemini LLM...");
+    console.log("[LLM] Request URL:", targetUrl);
+    console.log("[LLM] Request Payload:", payload);
+
+    const startTime = performance.now();
+
+    fetch(targetUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      const endTime = performance.now();
+      const elapsedSec = (endTime - startTime) / 1000;
+      
+      console.log(`[LLM] Response received in ${elapsedSec.toFixed(3)}s`);
+      console.log("[LLM] Response Data:", data);
+
+      typingIndicator.style.display = 'none';
+      if (data.status === 'success' && data.response) {
+        console.log("[LLM] Gemini response used");
+        const parsedResponse = parseMarkdown(data.response);
+        appendMessage('bot', parsedResponse, 'gemini', elapsedSec, data.grounding_used, data.sources, data.badge);
+      } else {
+        const errDesc = data.message || "Unknown error";
+        console.warn("[LLM] fallback used", errDesc);
+        const answerHtml = performAiNaturalQuery(text);
+        appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700; margin-bottom: 8px;"><i class="fa-solid fa-triangle-exclamation"></i> Gemini API 연결 또는 연산 제한으로 로컬Fallback 모델로 답변합니다.</p>` + answerHtml, 'fallback', elapsedSec);
+      }
+      scrollToBottom();
+    })
+    .catch(error => {
+      const endTime = performance.now();
+      const elapsedSec = (endTime - startTime) / 1000;
+
+      console.warn("[LLM] fallback used", error);
+      console.log(`[LLM] Request failed in ${elapsedSec.toFixed(3)}s`);
+
+      typingIndicator.style.display = 'none';
+      const answerHtml = performAiNaturalQuery(text);
+      appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700; margin-bottom: 8px;"><i class="fa-solid fa-triangle-exclamation"></i> 네트워크 장애 또는 에러가 발생하여 로컬 지능형 모델(Fallback)로 답변합니다.</p>` + answerHtml, 'fallback', elapsedSec);
+      scrollToBottom();
+    });
   }
 
   chatInput.addEventListener('keydown', (e) => {
@@ -310,7 +342,7 @@ function setupChatMessenger() {
 }
 
 // 3. Append Message Markup Builder
-function appendMessage(sender, content) {
+function appendMessage(sender, content, mode = 'local', duration = null, grounding_used = false, sources = [], badge = null) {
   const chatHistory = document.getElementById('chat-history');
   if (!chatHistory) return;
 
@@ -322,11 +354,122 @@ function appendMessage(sender, content) {
 
   let avatarIcon = sender === 'user' ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-robot"></i>';
   let senderName = sender === 'user' ? '사용자' : 'Local AI Insight Agent';
-  
-  if (sender === 'bot' && isLlmActive()) {
-    senderName = 'AI Insight Agent (Gemini)';
-    avatarIcon = '<i class="fa-solid fa-brain" style="color: var(--secondary);"></i>';
-    msgDiv.classList.add('gemini-active-glow');
+  let badgeHtml = '';
+
+  if (sender === 'bot') {
+    if (mode === 'gemini') {
+      senderName = 'AI Insight Agent (Gemini)';
+      avatarIcon = '<i class="fa-solid fa-brain" style="color: #a855f7;"></i>';
+      msgDiv.classList.add('gemini-active-glow');
+      const timeTag = duration ? ` • ${duration.toFixed(2)}s` : '';
+      
+      // Separate/detailed badges based on grounding usage and badge parameter
+      let secondaryBadge = '';
+      if (badge === 'hybrid') {
+        secondaryBadge = `
+          <span class="ai-badge hybrid-badge" style="margin-left: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none;">
+            <i class="fa-solid fa-network-wired"></i>
+            Hybrid 분석
+          </span>
+        `;
+      } else if (badge === 'web' || (grounding_used && badge !== 'internal')) {
+        secondaryBadge = `
+          <span class="ai-badge web-grounding-badge" style="margin-left: 6px; background: linear-gradient(135deg, #ec4899, #db2777); color: white; border: none;">
+            <i class="fa-solid fa-globe"></i>
+            Web Grounding 사용
+          </span>
+        `;
+      } else {
+        secondaryBadge = `
+          <span class="ai-badge internal-badge" style="margin-left: 6px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none;">
+            <i class="fa-solid fa-database"></i>
+            내부 데이터 기반
+          </span>
+        `;
+      }
+
+      badgeHtml = `
+        <div class="ai-badge-container">
+          <span class="ai-badge gemini-badge">
+            <i class="fa-solid fa-bolt" style="animation: pulse 1.5s infinite;"></i>
+            Gemini LLM${timeTag}
+          </span>
+          ${secondaryBadge}
+        </div>
+      `;
+    } else if (mode === 'fallback') {
+      senderName = 'AI Insight Agent (Fallback)';
+      avatarIcon = '<i class="fa-solid fa-triangle-exclamation" style="color: var(--primary);"></i>';
+      const timeTag = duration ? ` • ${duration.toFixed(2)}s` : '';
+      badgeHtml = `
+        <div class="ai-badge-container">
+          <span class="ai-badge fallback-badge" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            로컬 Fallback${timeTag}
+          </span>
+        </div>
+      `;
+    } else {
+      senderName = 'Local AI Insight Agent';
+      avatarIcon = '<i class="fa-solid fa-robot" style="color: var(--accent-green);"></i>';
+      badgeHtml = `
+        <div class="ai-badge-container">
+          <span class="ai-badge local-badge">
+            <i class="fa-solid fa-circle-info"></i>
+            로컬 가이드 응답
+          </span>
+        </div>
+      `;
+    }
+  }
+
+  const useCollapsible = sender === 'bot' && (mode === 'gemini' || mode === 'fallback');
+  const innerContent = useCollapsible 
+    ? `<div class="msg-collapsible-container">${content}</div>`
+    : content;
+
+  // Build grounding sources section
+  let sourcesHtml = '';
+  if (sender === 'bot' && mode === 'gemini' && grounding_used && sources && sources.length > 0) {
+    sourcesHtml = `
+      <div class="msg-sources-container">
+        <div class="sources-title">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>참고 출처</span>
+        </div>
+        <ul class="sources-list">
+    `;
+    const visibleSources = sources.slice(0, 3);
+    visibleSources.forEach(src => {
+      const title = src.title || "참고 문서";
+      const url = src.url || "";
+      let domain = "";
+      if (url) {
+        try {
+          const parsedUrl = new URL(url);
+          domain = parsedUrl.hostname;
+        } catch (e) {
+          domain = url;
+        }
+      }
+      
+      const isInternalDomain = domain.includes("vertexaisearch.cloud.google.com") || domain.includes("google.com");
+      const displayDomain = isInternalDomain ? "" : domain;
+
+      sourcesHtml += `
+        <li class="source-item">
+          <a href="${url}" target="_blank" class="source-link-btn" title="${url}">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>${title}</span>
+            ${displayDomain ? `<span class="source-domain">(${displayDomain})</span>` : ''}
+          </a>
+        </li>
+      `;
+    });
+    sourcesHtml += `
+        </ul>
+      </div>
+    `;
   }
 
   msgDiv.innerHTML = `
@@ -335,14 +478,48 @@ function appendMessage(sender, content) {
     </div>
     <div class="msg-bubble-wrapper">
       <div class="msg-sender-name">${senderName}</div>
-      <div class="msg-bubble">
-        ${content}
+      <div class="msg-bubble" style="display: flex; flex-direction: column;">
+        ${badgeHtml}
+        ${innerContent}
+        ${sourcesHtml}
       </div>
       <span class="msg-timestamp">${timeStr}</span>
     </div>
   `;
 
   chatHistory.appendChild(msgDiv);
+
+  if (useCollapsible) {
+    const container = msgDiv.querySelector('.msg-collapsible-container');
+    if (container) {
+      setTimeout(() => {
+        const threshold = 260; // 260px 초과 시 접음
+        if (container.scrollHeight > threshold) {
+          container.classList.add('collapsed');
+          
+          const bubble = msgDiv.querySelector('.msg-bubble');
+          const trigger = document.createElement('div');
+          trigger.className = 'msg-expand-trigger';
+          trigger.innerHTML = '<span>상세 내용 보기</span> <i class="fa-solid fa-chevron-down"></i>';
+          
+          trigger.addEventListener('click', () => {
+            if (container.classList.contains('collapsed')) {
+              container.classList.remove('collapsed');
+              trigger.classList.add('expanded');
+              trigger.querySelector('span').textContent = '상세 내용 접기';
+            } else {
+              container.classList.add('collapsed');
+              trigger.classList.remove('expanded');
+              trigger.querySelector('span').textContent = '상세 내용 보기';
+              msgDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          });
+          
+          bubble.appendChild(trigger);
+        }
+      }, 50);
+    }
+  }
 }
 
 // 4. Natural Query Analysis and Response Generation (Supports Compd BM, Tire BM, and Strategy Deep Links)

@@ -8,3 +8,5 @@ pydantic
 pyarrow
 scipy
 requests
+google-cloud-aiplatform
+google-genai
