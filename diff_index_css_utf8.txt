@@ -1,0 +1,350 @@
+﻿diff --git a/Compd BM/index.css b/Compd BM/index.css
+index e81989c..5630af4 100644
+--- a/Compd BM/index.css	
++++ b/Compd BM/index.css	
+@@ -1404,4 +1404,344 @@ h1, h2, h3, h4, .logo-text {
+     page-break-inside: avoid !important;
+     margin-bottom: 20px !important;
+   }
++}
++
++/* ==========================================================================
++   MAKER PROPERTY COMPARE GAUGE CHART STYLE (?쒖“???섑룊 遺꾩꽍湲?
++   ========================================================================== */
++.maker-compare-grid {
++  display: grid;
++  grid-template-columns: repeat(4, 1fr); /* 8? 釉뚮옖?쒕? ?꾪빐 4??2??援ъ“濡??뺣룉 */
++  gap: 20px;
++}
++
++.maker-compare-card {
++  background: rgba(255, 255, 255, 0.45);
++  border: 1px solid rgba(249, 115, 22, 0.08);
++  border-radius: 20px;
++  padding: 24px;
++  display: flex;
++  flex-direction: column;
++  gap: 16px;
++  transition: var(--transition);
++  position: relative;
++  overflow: hidden;
++}
++
++.maker-compare-card::before {
++  content: '';
++  position: absolute;
++  top: 0;
++  left: 0;
++  width: 100%;
++  height: 100%;
++  background: radial-gradient(
++    400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
++    rgba(249, 115, 22, 0.08),
++    transparent 45%
++  );
++  z-index: 1;
++  pointer-events: none;
++  opacity: 0;
++  transition: opacity 0.5s ease;
++}
++
++.maker-compare-card:hover {
++  background: #fff;
++  border-color: var(--card-hover-border);
++  box-shadow: var(--shadow-premium);
++  transform: translateY(-4px);
++}
++
++.maker-compare-card:hover::before {
++  opacity: 1;
++}
++
++.maker-compare-card > * {
++  position: relative;
++  z-index: 2;
++}
++
++.mc-brand-header {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++}
++
++.mc-brand-name {
++  font-family: var(--font-display);
++  font-size: 1.28rem;
++  font-weight: 900;
++  color: var(--text-dark);
++}
++
++.mc-brand-name.hankook { color: var(--primary); }
++.mc-brand-name.michelin { color: var(--accent-blue); }
++.mc-brand-name.continental { color: #854d0e; }
++.mc-brand-name.goodyear { color: #0284c7; }
++.mc-brand-name.bridgestone { color: #ef4444; }
++.mc-brand-name.pirelli { color: #d97706; }      /* ?쇰젏由??쒓렇?덉쿂 怨⑤뱶/?곕쾭 */
++.mc-brand-name.toyo { color: #06b6d4; }         /* ?좎슂 ?쒓렇?덉쿂 ?쒖븞 */
++.mc-brand-name.vredestein { color: #ec4899; }   /* 釉뚮젅?곗뒪????쒓렇?덉쿂 ?ロ븨??*/
++
++.mc-badge {
++  font-size: 0.65rem;
++  font-weight: 700;
++  background: rgba(249, 115, 22, 0.05);
++  color: var(--primary);
++  padding: 2px 8px;
++  border-radius: 4px;
++}
++
++/* Pattern紐??⑤룆 洹뱀쟻 媛뺤“ ?쒕∼?ㅼ슫 ?붿옄??(v3.5) */
++.mc-pattern-select-container {
++  width: 100%;
++  position: relative;
++  margin-top: -2px;
++  margin-bottom: 6px;
++}
++
++.mc-pattern-lbl {
++  font-size: 0.7rem;
++  font-weight: 800;
++  color: var(--text-muted);
++  text-transform: uppercase;
++  letter-spacing: 0.6px;
++  margin-bottom: 3px;           /* 議곕???怨듦컙 理쒖쟻?붾? ?꾪빐 ?щ갚 異뺤냼 */
++  display: block;
++}
++
++.mc-pattern-dropdown-large {
++  width: 100%;
++  padding: 6px 14px 6px 8px;
++  border-radius: 6px;
++  border: 1.5px solid rgba(249, 115, 22, 0.18);
++  background: rgba(255, 255, 255, 0.85);
++  color: var(--text-dark);
++  font-size: 0.72rem;
++  font-weight: 800;             /* 蹂쇰뱶 泥섎━?섏뿬 ?몃젴???쒓컖??議댁옱媛??좎? */
++  font-family: var(--font-display);
++  outline: none;
++  cursor: pointer;
++  transition: var(--transition);
++  appearance: none;
++  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f97316' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
++  background-repeat: no-repeat;
++  background-position: right 4px center;
++  background-size: 8px;         /* ?붿궡???꾩씠肄??ш린 誘몄꽭 異뺤냼 */
++  text-overflow: ellipsis;
++  white-space: nowrap;
++  overflow: hidden;
++  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
++}
++
++.mc-pattern-dropdown-large option {
++  font-size: 0.68rem;           /* ?듭뀡 ?쒕∼?ㅼ슫 ?대? ?띿뒪???ш린??0.68rem?쇰줈 ?숆린??*/
++  font-weight: 500;
++  color: var(--text-dark);
++  background-color: #fff;
++  padding: 4px 6px;
++}
++
++.mc-pattern-dropdown-large:hover {
++  border-color: var(--primary);
++  background: #fff;
++  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.08);
++  transform: translateY(-1px);
++}
++
++.mc-pattern-dropdown-large:focus {
++  border-color: var(--primary);
++  background: #fff;
++  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
++}
++
++/* Ingredients Section Styling */
++.mc-ingredients-section {
++  display: flex;
++  flex-direction: column;
++  gap: 10px;
++  border-top: 1px dashed rgba(249, 115, 22, 0.08);
++  border-bottom: 1px dashed rgba(249, 115, 22, 0.08);
++  padding: 12px 0;
++}
++
++.mc-ingredients-section .section-title,
++.mc-gauge-section .section-title {
++  font-size: 0.82rem;
++  font-weight: 800;
++  color: var(--primary);
++  text-transform: uppercase;
++  letter-spacing: 0.5px;
++  margin-bottom: 2px;
++}
++
++/* Rubber Triple Ratio Bar */
++.mini-ratio-bar-wrapper,
++.ingredient-item-row {
++  display: flex;
++  flex-direction: column;
++  gap: 4px;
++}
++
++.ratio-info,
++.ing-info {
++  display: flex;
++  justify-content: space-between;
++  font-size: 0.78rem;
++  font-weight: 600;
++  color: var(--text-muted);
++}
++
++.ratio-info .ratio-val {
++  font-weight: 700;
++  color: var(--text-dark);
++}
++
++.triple-ratio-bar,
++.reinf-ratio-bar {
++  display: flex;
++  width: 100%;
++  height: 6px;
++  background: rgba(249, 115, 22, 0.03);
++  border-radius: 4px;
++  overflow: hidden;
++}
++
++.ratio-segment {
++  height: 100%;
++  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
++}
++
++.ratio-segment.nr { background: var(--accent-green); }
++.ratio-segment.sbr { background: var(--accent-blue); }
++.ratio-segment.br { background: var(--primary); }
++
++.ratio-segment.cb { background: #475569; }
++.ratio-segment.sil { background: #94a3b8; }
++
++/* Grid Meta Ing */
++.ingredient-grid-meta {
++  display: grid;
++  grid-template-columns: repeat(3, 1fr);
++  gap: 6px;
++  margin-top: 2px;
++}
++
++.meta-ing {
++  background: rgba(249, 115, 22, 0.02);
++  border: 1px solid rgba(249, 115, 22, 0.05);
++  border-radius: 8px;
++  padding: 4px;
++  text-align: center;
++  display: flex;
++  flex-direction: column;
++  gap: 1px;
++}
++
++.meta-ing .lbl {
++  font-size: 0.68rem;
++  color: var(--text-muted);
++  font-weight: 600;
++}
++
++.meta-ing .val {
++  font-size: 0.82rem;
++  font-weight: 800;
++  color: var(--text-dark);
++  font-family: var(--font-display);
++}
++
++/* Progress-Bar Gauges */
++.mc-gauge-section {
++  display: flex;
++  flex-direction: column;
++  gap: 10px;
++}
++
++.mc-gauge-wrapper {
++  display: flex;
++  flex-direction: column;
++  gap: 4px;
++}
++
++.mc-gauge-info {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  font-size: 0.78rem;
++  font-weight: 600;
++  color: var(--text-muted);
++}
++
++.mc-gauge-info .val {
++  font-weight: 800;
++  color: var(--text-dark);
++  font-family: var(--font-display);
++}
++
++.mc-progress-bar {
++  width: 100%;
++  height: 6px;
++  background: rgba(249, 115, 22, 0.03);
++  border: 1px solid rgba(249, 115, 22, 0.05);
++  border-radius: 10px;
++  overflow: hidden;
++  position: relative;
++}
++
++.mc-progress-fill {
++  height: 100%;
++  border-radius: 10px;
++  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
++  background: linear-gradient(90deg, var(--primary), var(--secondary));
++}
++
++.mc-progress-fill.tg {
++  background: linear-gradient(90deg, var(--accent-green), #059669);
++}
++
++.mc-progress-fill.g0 {
++  background: linear-gradient(90deg, #a855f7, #6366f1);
++}
++
++/* BM Report Sections styling */
++.report-section {
++  display: flex;
++  flex-direction: column;
++  gap: 16px;
++  background: var(--card-bg);
++  border: 1px solid var(--card-border);
++  border-radius: 20px;
++  padding: 24px;
++  margin-bottom: 24px;
++  box-shadow: var(--shadow);
++}
++
++.report-section-header {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  border-bottom: 1px solid var(--card-border);
++  padding-bottom: 16px;
++  margin-bottom: 8px;
++}
++
++.report-section-header h2 {
++  font-size: 1.25rem;
++  font-weight: 700;
++  color: var(--text-dark);
++  display: flex;
++  align-items: center;
++  gap: 10px;
++  margin: 0;
++}
++
++.report-section-header h2 i {
++  color: var(--primary);
++}
++
++/* Only the largest boxes (.report-section) get the left orange accent border, and middle cards are restored */
++#tab-report .report-section {
++  border-left: 4px solid var(--accent-orange);
+ }
+\ No newline at end of file

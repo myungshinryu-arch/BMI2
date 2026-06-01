@@ -67,6 +67,34 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // Listeners
+  // 대시보드 전용 전역 필터 이벤트 리스너 바인딩
+  const dbSeason = document.getElementById('dashboard-filter-season');
+  const dbSegment = document.getElementById('dashboard-filter-segment');
+  const dbReset = document.getElementById('btn-dashboard-filter-reset');
+
+  if (dbSeason) {
+    dbSeason.addEventListener('change', (e) => {
+      if (!window.appState.dashboardFilters) window.appState.dashboardFilters = { season: '', segment: '' };
+      window.appState.dashboardFilters.season = e.target.value;
+      renderMakerComparison();
+    });
+  }
+  if (dbSegment) {
+    dbSegment.addEventListener('change', (e) => {
+      if (!window.appState.dashboardFilters) window.appState.dashboardFilters = { season: '', segment: '' };
+      window.appState.dashboardFilters.segment = e.target.value;
+      renderMakerComparison();
+    });
+  }
+  if (dbReset) {
+    dbReset.addEventListener('click', () => {
+      if (dbSeason) dbSeason.value = '';
+      if (dbSegment) dbSegment.value = '';
+      window.appState.dashboardFilters = { season: '', segment: '' };
+      renderMakerComparison();
+    });
+  }
+
   document.getElementById('data-source').addEventListener('change', handleSourceChange);
   document.getElementById('btn-filter-reset').addEventListener('click', resetFilters);
   document.getElementById('check-all').addEventListener('change', handleSelectAll);
@@ -627,7 +655,10 @@ function handleFilterChange() {
 // Update Top Dashboard Stat Widgets
 function updateDashboard() {
   const data = window.appState.filteredData;
-  document.getElementById('stat-total-tires').textContent = data.length.toLocaleString();
+  const statTotalTiresEl = document.getElementById('stat-total-tires');
+  if (statTotalTiresEl) {
+    statTotalTiresEl.textContent = data.length.toLocaleString();
+  }
   
   // Dynamic Makers Set
   const makers = new Set();
@@ -673,10 +704,20 @@ function updateDashboard() {
     }
   });
   
-  document.getElementById('stat-total-makers').textContent = makers.size;
-  document.getElementById('stat-avg-tand60').textContent = countTanD60 > 0 ? (totalTanD60 / countTanD60).toFixed(4) : 'N/A';
-  document.getElementById('stat-avg-tg').textContent = countTg > 0 ? (totalTg / countTg).toFixed(1) + ' ℃' : 'N/A';
-  document.getElementById('stat-avg-g2_0').textContent = countG2_0 > 0 ? (totalG2_0 / countG2_0).toFixed(2) + ' E+06' : 'N/A';
+  const statTotalMakersEl = document.getElementById('stat-total-makers');
+  const statAvgTand60El = document.getElementById('stat-avg-tand60');
+  const statAvgTgEl = document.getElementById('stat-avg-tg');
+  const statAvgG20El = document.getElementById('stat-avg-g2_0');
+
+  if (statTotalMakersEl) statTotalMakersEl.textContent = makers.size;
+  if (statAvgTand60El) statAvgTand60El.textContent = countTanD60 > 0 ? (totalTanD60 / countTanD60).toFixed(4) : 'N/A';
+  if (statAvgTgEl) statAvgTgEl.textContent = countTg > 0 ? (totalTg / countTg).toFixed(1) + ' ℃' : 'N/A';
+  if (statAvgG20El) statAvgG20El.textContent = countG2_0 > 0 ? (totalG2_0 / countG2_0).toFixed(2) + ' E+06' : 'N/A';
+
+  // 제조사 수평 분석기(Gauges Grid) 렌더링 호출
+  if (typeof renderMakerComparison === 'function') {
+    renderMakerComparison();
+  }
 }
 
 // Render dynamic table rows in Explorer
@@ -812,4 +853,396 @@ function changePage(direction) {
     window.appState.currentPage = newPage;
     updateExplorerTable();
   }
+}
+
+// ==========================================================================
+// MAKER PRODUCT PERFORMANCE COMPARISON GAUGE WIDGET INTEGRATION
+// ==========================================================================
+
+// 데이터 레코드가 속한 Segment(차종)를 동적 판별하는 지능형 분류 헬퍼 함수
+function getSegmentOfRecord(item) {
+  const pattern = ((item.Pattern || '') + ' ' + (item['BM 주제'] || '')).toUpperCase();
+  const season = (item.Season || '').toUpperCase();
+  
+  if (pattern.includes('EV') || pattern.includes('ION') || pattern.includes('아이온') || pattern.includes('E-PRIMACY') || pattern.includes('ELECT') || pattern.includes('ELECTRIC')) {
+    return 'EV';
+  }
+  if (pattern.includes('SUV') || pattern.includes('HPX') || pattern.includes('ALENZA') || pattern.includes('CROSSCONTACT') || pattern.includes('DYNAPRO') || pattern.includes('CRUGEN')) {
+    return 'SUV';
+  }
+  if (pattern.includes('WINTER') || pattern.includes('ICEPT') || pattern.includes('BLIZZAK') || pattern.includes('ALPIN') || pattern.includes('SNOW') || pattern.includes('스노우') || season.includes('WINTER')) {
+    return 'Winter';
+  }
+  if (pattern.includes('SPORT') || pattern.includes('UHP') || pattern.includes('S1 EVO') || pattern.includes('PILOT SPORT') || pattern.includes('P ZERO') || pattern.includes('POTENZA') || pattern.includes('ADVAN') || pattern.includes('CORSA') || pattern.includes('YOKOHAMA')) {
+    return 'UHP';
+  }
+  return 'Touring'; // 기본 사계절/투어링 세그먼트
+}
+
+// 7. Maker Compound properties Group By Calculator & Gauge Render (대시보드 직접 연동 이식)
+function renderMakerComparison() {
+  const viewport = document.getElementById('maker-compare-viewport');
+  if (!viewport) return;
+
+  // window.appState.allData.tread 또는 Mockup
+  let treadList = window.appState.allData.tread;
+  if (!treadList || treadList.length === 0) {
+    treadList = getMockupTreadCompounds();
+    window.appState.allData.tread = treadList;
+  }
+
+  // 대시보드 전역 필터값 조회
+  const selectedSeason = window.appState.dashboardFilters ? window.appState.dashboardFilters.season : '';
+  const selectedSegment = window.appState.dashboardFilters ? window.appState.dashboardFilters.segment : '';
+
+  const makers = ["HANKOOK", "MICHELIN", "CONTINENTAL", "GOODYEAR", "BRIDGESTONE", "PIRELLI", "TOYO", "VREDESTEIN", "KUMHO"];
+
+  if (!window.appState.selectedCompoundFilters) {
+    window.appState.selectedCompoundFilters = {};
+  }
+
+  viewport.innerHTML = '';
+  
+  makers.forEach(maker => {
+    const makerRecords = getMakerRecords(treadList, maker);
+
+    // 1차 필터링: 전역 Season 및 Segment에 부합하는 레코드만 선별
+    const filteredRecords = makerRecords.filter(item => {
+      if (selectedSeason) {
+        const itemSeason = (item.Season || '').trim().toUpperCase();
+        const targetSeason = selectedSeason.trim().toUpperCase();
+        if (itemSeason !== targetSeason) return false;
+      }
+      if (selectedSegment) {
+        const itemSeg = getSegmentOfRecord(item);
+        if (itemSeg !== selectedSegment) return false;
+      }
+      return true;
+    });
+
+    // 메이커 전체 패턴 목록 및 데이터 개수 계산 (필터링된 결과 기반)
+    const pCounts = {};
+    filteredRecords.forEach(item => {
+      const p = (item.Pattern || '').trim();
+      if (p && p !== '-' && p !== 'N/A' && p !== 'N/A ' && p.toLowerCase() !== 'test' && p.toLowerCase() !== 'n/a' && p.length > 1) {
+        pCounts[p] = (pCounts[p] || 0) + 1;
+      }
+    });
+
+    const pList = Object.keys(pCounts).sort();
+
+    // 초기 상태 할당 또는 필터 조건 변경에 따른 패턴 자동 바인딩
+    let activePattern = window.appState.selectedCompoundFilters[maker] ? window.appState.selectedCompoundFilters[maker].pattern : "";
+    
+    if (!activePattern || !pList.includes(activePattern)) {
+      let maxPattern = "";
+      let maxCount = 0;
+      for (let p in pCounts) {
+        if (pCounts[p] > maxCount) {
+          maxCount = pCounts[p];
+          maxPattern = p;
+        }
+      }
+      activePattern = maxPattern || (pList.length > 0 ? pList[0] : "N/A");
+      window.appState.selectedCompoundFilters[maker] = {
+        pattern: activePattern
+      };
+    }
+
+    // 최적 레코드 필터링 (필터링된 결과 내에서 activePattern 일치 레코드만 필터링)
+    const selectedRecords = filteredRecords.filter(item => {
+      return (item.Pattern || '').trim() === activePattern;
+    });
+
+    const averages = calculatePatternAverages(selectedRecords);
+    
+    const card = document.createElement('div');
+    card.className = 'maker-compare-card';
+    card.setAttribute('data-maker', maker);
+
+    // 마우스 빛 번짐 효과 (Hover Glow Effect) 감지용 리스너 바인딩
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+
+    // 물성 프로그레스 게이지 퍼센트 계산
+    const tgVal = parseFloat(averages.avgTg);
+    const tgPct = isNaN(tgVal) ? 0 : Math.min(100, Math.max(5, ((tgVal - (-45)) / 30) * 100));
+
+    const tandVal = parseFloat(averages.avgTand60);
+    const tandPct = isNaN(tandVal) ? 0 : Math.min(100, Math.max(5, ((tandVal - 0.03) / 0.06) * 100));
+
+    const g0Val = parseFloat(averages.avgG0);
+    const g0Pct = isNaN(g0Val) ? 0 : Math.min(100, Math.max(5, ((g0Val - 0.5) / 1.0) * 100));
+
+    // 고무비 삼중 바 채움
+    const nr = parseFloat(averages.avgNR) || 0;
+    const sbr = parseFloat(averages.avgSBR) || 0;
+    const br = parseFloat(averages.avgBR) || 0;
+    const totalRubber = nr + sbr + br;
+    const nrPct = totalRubber > 0 ? (nr / totalRubber) * 100 : 0;
+    const sbrPct = totalRubber > 0 ? (sbr / totalRubber) * 100 : 0;
+    const brPct = totalRubber > 0 ? (br / totalRubber) * 100 : 0;
+
+    // 보강제 이중 바 채움
+    const cbVal = parseFloat(averages.avgCB) || 0;
+    const silVal = parseFloat(averages.avgSilica) || 0;
+    const totalReinf = cbVal + silVal;
+    const cbPct = totalReinf > 0 ? (cbVal / totalReinf) * 100 : 0;
+    const silPct = totalReinf > 0 ? (silVal / totalReinf) * 100 : 0;
+
+    const lowercaseMaker = maker.toLowerCase();
+
+    // 단독 패턴 옵션 리스트 생성
+    const patternOptionsHtml = pList.length > 0 ? pList.map(p => `
+      <option value="${p}" ${p === activePattern ? 'selected' : ''}>${p} (N=${pCounts[p] || 0})</option>
+    `).join('') : `<option value="">해당 조건 패턴 없음</option>`;
+
+    card.innerHTML = `
+      <div class="mc-brand-header">
+        <span class="mc-brand-name ${lowercaseMaker}">${maker}</span>
+      </div>
+      
+      <!-- Pattern 단독 대형 드롭다운 필터 행 (패턴명 극대화 강조) -->
+      <div class="mc-pattern-select-container">
+        <select class="mc-pattern-dropdown-large" data-maker="${maker}">
+          ${patternOptionsHtml}
+        </select>
+      </div>
+
+      <!-- 배합 분석 결과 -->
+      <div class="mc-ingredients-section">
+        <div class="section-title">배합 분석 평균</div>
+        
+        <!-- 고무비 삼중 바 -->
+        <div class="mini-ratio-bar-wrapper">
+          <div class="ratio-info">
+            <span>고무비</span>
+            <span class="ratio-val">${averages.avgNR}/${averages.avgSBR}/${averages.avgBR}</span>
+          </div>
+          <div class="triple-ratio-bar">
+            <div class="ratio-segment nr" style="width: ${nrPct}%;" title="NR: ${averages.avgNR}%"></div>
+            <div class="ratio-segment sbr" style="width: ${sbrPct}%;" title="SBR: ${averages.avgSBR}%"></div>
+            <div class="ratio-segment br" style="width: ${brPct}%;" title="BR: ${averages.avgBR}%"></div>
+          </div>
+        </div>
+
+        <!-- CB / Silica 보강제 -->
+        <div class="ingredient-item-row">
+          <div class="ing-info">
+            <span>보강제</span>
+            <span class="ratio-val" style="font-weight: 700; color: var(--text-primary);">${averages.avgCB} / ${averages.avgSilica} phr</span>
+          </div>
+          <div class="reinf-ratio-bar">
+            <div class="ratio-segment cb" style="width: ${cbPct}%;" title="Carbon Black: ${averages.avgCB} phr"></div>
+            <div class="ratio-segment sil" style="width: ${silPct}%;" title="Silica: ${averages.avgSilica} phr"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 물성 분석 결과 -->
+      <div class="mc-gauge-section">
+        <div class="section-title">핵심 물성 분석 결과</div>
+        
+        <!-- Tg Gauge -->
+        <div class="mc-gauge-wrapper">
+          <div class="mc-gauge-info">
+            <span>유리전이온도</span>
+            <span class="val">${averages.avgTg} ℃</span>
+          </div>
+          <div class="mc-progress-bar">
+            <div class="mc-progress-fill" style="width: ${tgPct}%;"></div>
+          </div>
+        </div>
+
+        <!-- Tand 60 Gauge -->
+        <div class="mc-gauge-wrapper">
+          <div class="mc-gauge-info">
+            <span>회전저항지수 (Tan δ @ 60℃)</span>
+            <span class="val">${averages.avgTand60}</span>
+          </div>
+          <div class="mc-progress-bar">
+            <div class="mc-progress-fill tg" style="width: ${tandPct}%;"></div>
+          </div>
+        </div>
+
+        <!-- G"0 Gauge -->
+        <div class="mc-gauge-wrapper">
+          <div class="mc-gauge-info">
+            <span>제동성능지수 (G” @ 0℃)</span>
+            <span class="val">${averages.avgG0} E+06</span>
+          </div>
+          <div class="mc-progress-bar">
+            <div class="mc-progress-fill g0" style="width: ${g0Pct}%;"></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // 패턴 변경 시 상태 저장 후 실시간 비교 보드 리액티브 일제 갱신
+    card.querySelector('.mc-pattern-dropdown-large').addEventListener('change', (e) => {
+      window.appState.selectedCompoundFilters[maker].pattern = e.target.value;
+      renderMakerComparison();
+    });
+
+    viewport.appendChild(card);
+  });
+}
+
+// 브랜드 정밀 필터링 유닛 (Pirelli, Toyo, Vredestein 및 다국어/이명 통합 감지 지원)
+function getMakerRecords(treadList, makerName) {
+  return treadList.filter(item => {
+    const m = (item.Maker || '').toUpperCase().replace(/[^A-Z0-9가-힣]/g, '').trim();
+    const target = makerName.toUpperCase().replace(/[^A-Z0-9가-힣]/g, '').trim();
+    
+    // 브랜드별 다양한 이명/오기 매칭 네트워크 구축
+    if (target === "HANKOOK") {
+      return m.includes("HANKOOK") || m.includes("한국") || m.includes("KOREA");
+    }
+    if (target === "MICHELIN") {
+      return m.includes("MICHELIN") || m.includes("미쉐린") || m.includes("미슐랭");
+    }
+    if (target === "CONTINENTAL") {
+      return m.includes("CONTINENTAL") || m.includes("CONT") || m.includes("콘티");
+    }
+    if (target === "GOODYEAR") {
+      return m.includes("GOODYEAR") || m.includes("GOOD") || m.includes("굿이어");
+    }
+    if (target === "BRIDGESTONE") {
+      return m.includes("BRIDGESTONE") || m.includes("BRIDGE") || m.includes("브리지");
+    }
+    if (target === "PIRELLI") {
+      return m.includes("PIRELLI") || m.includes("PIRE") || m.includes("피렐리");
+    }
+    if (target === "TOYO") {
+      return m.includes("TOYO") || m.includes("토요");
+    }
+    if (target === "VREDESTEIN") {
+      return m.includes("VREDESTEIN") || m.includes("VRED") || m.includes("브레데");
+    }
+    return m.includes(target);
+  });
+}
+
+// 7.1 Compound String Parsers & Stat Calculators (Intelligent Property Lookup Helper 연계 이식)
+function parseRubberRatio(str) {
+  if (!str) return null;
+  const parts = str.split('/').map(p => p.trim());
+  if (parts.length >= 3) {
+    const nr = parseFloat(parts[0].replace(/[^0-9.-]/g, '')) || 0;
+    const sbr = parseFloat(parts[1].replace(/[^0-9.-]/g, '')) || 0;
+    const br = parseFloat(parts[2].replace(/[^0-9.-]/g, '')) || 0;
+    return { nr, sbr, br };
+  }
+  return null;
+}
+
+function parseReinforcer(str) {
+  if (!str) return null;
+  const parts = str.split('/').map(p => p.trim());
+  if (parts.length >= 2) {
+    const cb = parseFloat(parts[0].replace(/[^0-9.-]/g, '')) || 0;
+    const silica = parseFloat(parts[1].replace(/[^0-9.-]/g, '')) || 0;
+    return { cb, silica };
+  }
+  return null;
+}
+
+function parseOthers(str) {
+  if (!str) return null;
+  const parts = str.split('/').map(p => p.trim());
+  if (parts.length >= 3) {
+    const aceton = parseFloat(parts[0].replace(/[^0-9.-]/g, '')) || 0;
+    const zno = parseFloat(parts[1].replace(/[^0-9.-]/g, '')) || 0;
+    const sulfur = parseFloat(parts[2].replace(/[^0-9.-]/g, '')) || 0;
+    return { aceton, zno, sulfur };
+  }
+  return null;
+}
+
+function calculatePatternAverages(records) {
+  let rubberSum = { nr: 0, sbr: 0, br: 0, count: 0 };
+  let reinfSum = { cb: 0, silica: 0, count: 0 };
+  let otherSum = { aceton: 0, zno: 0, sulfur: 0, count: 0 };
+  let tgSum = { val: 0, count: 0 };
+  let tandSum = { val: 0, count: 0 };
+  let g0Sum = { val: 0, count: 0 };
+
+  records.forEach(item => {
+    // 1. 고무비 파싱 (지능형 변종 수집 적용)
+    const rr = parseRubberRatio(window.appState.getProp(item, ["NR / SBR / BR_NMR", "NR / SBR / BR_GC"]));
+    if (rr) {
+      rubberSum.nr += rr.nr;
+      rubberSum.sbr += rr.sbr;
+      rubberSum.br += rr.br;
+      rubberSum.count++;
+    }
+
+    // 2. 보강제 파싱
+    const rf = parseReinforcer(window.appState.getProp(item, ["Carbon Black / Silica (phr)", "Carbon Black / Silica"]));
+    if (rf) {
+      reinfSum.cb += rf.cb;
+      reinfSum.silica += rf.silica;
+      reinfSum.count++;
+    }
+
+    // 3. 기타배합제 파싱
+    const ot = parseOthers(window.appState.getProp(item, ["Aceton / ZnO / T.Sulfur (phr)", "Aceton / ZnO / T.Sulfur"]));
+    if (ot) {
+      otherSum.aceton += ot.aceton;
+      otherSum.zno += ot.zno;
+      otherSum.sulfur += ot.sulfur;
+      otherSum.count++;
+    }
+
+    // 4. Tg 파싱
+    const tg = parseFloat(window.appState.getProp(item, ["Tg_peak temp. (℃)", "Tg_peak temp. (C)", "Tg"]));
+    if (!isNaN(tg)) {
+      tgSum.val += tg;
+      tgSum.count++;
+    }
+
+    // 5. Tan d 60 파싱
+    const tand = parseFloat(window.appState.getProp(item, ["tanδ @ 60℃", "tanδ @ 60C", "tand60", "tand 60"]));
+    if (!isNaN(tand)) {
+      tandSum.val += tand;
+      tandSum.count++;
+    }
+
+    // 6. G" 0 파싱
+    const g0 = parseFloat(window.appState.getProp(item, ["G” @ 0℃ (E+06)", "G” @ 0C", "G\" @ 0C", "G\"0"]));
+    if (!isNaN(g0)) {
+      g0Sum.val += g0;
+      g0Sum.count++;
+    }
+  });
+
+  return {
+    count: records.length,
+    avgNR: rubberSum.count > 0 ? Math.round(rubberSum.nr / rubberSum.count) : 0,
+    avgSBR: rubberSum.count > 0 ? Math.round(rubberSum.sbr / rubberSum.count) : 0,
+    avgBR: rubberSum.count > 0 ? Math.round(rubberSum.br / rubberSum.count) : 0,
+    avgCB: reinfSum.count > 0 ? (reinfSum.cb / reinfSum.count).toFixed(1) : 0,
+    avgSilica: reinfSum.count > 0 ? (reinfSum.silica / reinfSum.count).toFixed(1) : 0,
+    avgAceton: otherSum.count > 0 ? (otherSum.aceton / otherSum.count).toFixed(1) : 0,
+    avgZnO: otherSum.count > 0 ? (otherSum.zno / otherSum.count).toFixed(2) : 0,
+    avgSulfur: otherSum.count > 0 ? (otherSum.sulfur / otherSum.count).toFixed(2) : 0,
+    avgTg: tgSum.count > 0 ? (tgSum.val / tgSum.count).toFixed(1) : "N/A",
+    avgTand60: tandSum.count > 0 ? (tandSum.val / tandSum.count).toFixed(3) : "N/A",
+    avgG0: g0Sum.count > 0 ? (g0Sum.val / g0Sum.count).toFixed(2) : "N/A"
+  };
+}
+
+function getMockupTreadCompounds() {
+  return [
+    { "Maker": "HANKOOK", "Pattern": "Ventus S1 evo3", "NR / SBR / BR_GC": "5 / 75 / 20", "Carbon Black / Silica (phr)": "5.0 / 85.0", "Aceton / ZnO / T.Sulfur (phr)": "48.0 / 0.4 / 3.4", "Tg_peak temp. (℃)": -20.5, "tanδ @ 60℃": 0.052, "G” @ 0℃ (E+06)": 1.15, "Season": "Summer", "분석년도": 2021 },
+    { "Maker": "HANKOOK", "Pattern": "Ventus S1 evo3 EV", "NR / SBR / BR_GC": "5 / 72 / 23", "Carbon Black / Silica (phr)": "4.0 / 88.0", "Aceton / ZnO / T.Sulfur (phr)": "49.0 / 0.38 / 3.5", "Tg_peak temp. (℃)": -19.2, "tanδ @ 60℃": 0.048, "G” @ 0℃ (E+06)": 1.22, "Season": "Summer", "분석년도": 2024 },
+    { "Maker": "HANKOOK", "Pattern": "iON EVO", "NR / SBR / BR_GC": "5 / 70 / 25", "Carbon Black / Silica (phr)": "3.5 / 85.0", "Aceton / ZnO / T.Sulfur (phr)": "48.0 / 0.4 / 3.4", "Tg_peak temp. (℃)": -20.5, "tanδ @ 60℃": 0.043, "G” @ 0℃ (E+06)": 1.12, "Season": "Summer", "분석년도": 2025 },
+    { "Maker": "MICHELIN", "Pattern": "PILOT SPORT 4S", "NR / SBR / BR_GC": "5 / 75 / 20", "Carbon Black / Silica (phr)": "5.0 / 85.0", "Aceton / ZnO / T.Sulfur (phr)": "48.0 / 0.4 / 3.5", "Tg_peak temp. (℃)": -20.8, "tanδ @ 60℃": 0.052, "G” @ 0℃ (E+06)": 1.15, "Season": "Summer", "분석년도": 2022 },
+    { "Maker": "CONTINENTAL", "Pattern": "SportContact 7", "NR / SBR / BR_GC": "0 / 80 / 20", "Carbon Black / Silica (phr)": "3.0 / 92.0", "Aceton / ZnO / T.Sulfur (phr)": "52.0 / 0.35 / 3.8", "Tg_peak temp. (℃)": -18.5, "tanδ @ 60℃": 0.056, "G” @ 0℃ (E+06)": 1.34, "Season": "Summer", "분석년도": 2023 }
+  ];
 }

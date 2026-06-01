@@ -1225,7 +1225,7 @@ window.AverageCompare = (function() {
           labels: labels,
           datasets: [
             { label: 'NR', data: nrData, backgroundColor: '#ff9100' },
-            { label: 'SBR', data: sbrData, backgroundColor: '#00f2fe' },
+            { label: 'SBR', data: sbrData, backgroundColor: '#2563eb' },
             { label: 'BR', data: brData, backgroundColor: '#00e676' }
           ]
         },
