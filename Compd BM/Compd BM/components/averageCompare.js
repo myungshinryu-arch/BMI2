@@ -816,10 +816,10 @@ window.AverageCompare = (function() {
     
     let html = `
       <div class="diagnosis-container">
-        <div class="diagnosis-header">
+        <div class="diagnosis-header" style="border-bottom: 1px solid rgba(0, 0, 0, 0.08);">
           <i class="fa-solid fa-microchip" style="color: var(--primary); font-size: 1.4rem;"></i>
-          <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">스마트 AI 엔지니어 특성 예측 진단서</h3>
-          <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: auto;">* 기준 모델 [${basePattern.maker}] 대비 타이어 물리 거동 분석</span>
+          <h3 style="font-size: 1.15rem; color: #1e293b; margin: 0; font-weight: 700;">스마트 AI 엔지니어 특성 예측 진단서</h3>
+          <span style="font-size: 0.75rem; color: #64748b; margin-left: auto;">* 기준 모델 [${basePattern.maker}] 대비 타이어 물리 거동 분석</span>
         </div>
         <div class="diagnosis-grid">
     `;
@@ -827,7 +827,7 @@ window.AverageCompare = (function() {
     // 1) 마모 성능 (Wear) 진단
     // 기준 대비 내마모 우수 지표: Tg가 낮을수록(▽), BR 함량이 높을수록(▲) 우수
     html += `
-      <div class="diagnosis-item">
+      <div class="diagnosis-item" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.08);">
         <div class="diagnosis-perf-header">
           <span class="diagnosis-badge wear">내마모 성능 (Wear)</span>
         </div>
@@ -848,32 +848,32 @@ window.AverageCompare = (function() {
         statusText = '타협 우려';
       }
 
-      const factText = `기준 모델 대비 유리전이온도(Tg)가 <strong>${tgDiff > 0 ? '+' : ''}${tgDiff.toFixed(1)}℃</strong> 변동하였고, BR 배합 비율이 <strong>${brDiff > 0 ? '+' : ''}${brDiff.toFixed(1)}%</strong> 차이를 보입니다.`;
+      const factText = `기준 모델 대비 유리전이온도(Tg)가 <strong style="color: #111827;">${tgDiff > 0 ? '+' : ''}${tgDiff.toFixed(1)}℃</strong> 변동하였고, BR 배합 비율이 <strong style="color: #111827;">${brDiff > 0 ? '+' : ''}${brDiff.toFixed(1)}%</strong> 차이를 보입니다.`;
       const inferenceText = tgDiff < -2 || brDiff > 5 
-        ? `유리전이온도(Tg) 하강으로 저온 유연성이 확보되고 고마모성 BR 중합체 배합이 증대되어, 가혹 마찰 시 컴파운드 탈락이 억제되고 <strong>내마모 내구 성능이 크게 향상</strong>될 것으로 AI가 예측합니다.` 
+        ? `유리전이온도(Tg) 하강으로 저온 유연성이 확보되고 고마모성 BR 중합체 배합이 증대되어, 가혹 마찰 시 컴파운드 탈락이 억제되고 <strong style="color: #111827;">내마모 내구 성능이 크게 향상</strong>될 것으로 AI가 예측합니다.` 
         : (tgDiff > 2 || brDiff < -5 
-          ? `유리전이온도의 국부적 상승 또는 BR 함량 감축으로 인해, 가동 시 기계 피로 균열 진전 속도가 가속화되어 <strong>마모 수명이 소폭 하락(Wear 마진 저하)</strong>할 소지가 있다고 AI가 판단합니다.` 
-          : `고무 중합체 블렌드 비율 및 유리전이 영역 온도가 대등하여, 통상적인 실주행 노면 접지 마찰 상황에서 기준 모델과 <strong>동등한 수준의 마모 수명 유지 패턴</strong>이 거동 예측됩니다.`);
+          ? `유리전이온도의 국부적 상승 또는 BR 함량 감축으로 인해, 가동 시 기계 피로 균열 진전 속도가 가속화되어 <strong style="color: #111827;">마모 수명이 소폭 하락(Wear 마진 저하)</strong>할 소지가 있다고 AI가 판단합니다.` 
+          : `고무 중합체 블렌드 비율 및 유리전이 영역 온도가 대등하여, 통상적인 실주행 노면 접지 마찰 상황에서 기준 모델과 <strong style="color: #111827;">동등한 수준의 마모 수명 유지 패턴</strong>이 거동 예측됩니다.`);
 
       html += `
-        <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.04); padding-bottom: 8px;">
+        <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: #fff; font-size: 0.8rem;">👉 ${p.maker} ${p.pattern}</strong>
+            <strong style="color: #1e293b; font-size: 0.8rem; font-weight: 700;">👉 ${p.maker} ${p.pattern}</strong>
             <span class="diagnosis-status-tag ${statusClass}">${statusText}</span>
           </div>
           
           <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
-            <div style="background: rgba(0, 242, 254, 0.02); border-left: 2px solid var(--primary); padding: 4px 8px; border-radius: 0 4px 4px 0;">
-              <span style="font-size: 0.72rem; font-weight: bold; color: var(--primary); display: block; margin-bottom: 2px;">
+            <div style="background: rgba(249, 115, 22, 0.02); border-left: 2px solid var(--primary); padding: 4px 8px; border-radius: 0 4px 4px 0;">
+              <span style="font-size: 0.72rem; font-weight: bold; color: #d97706; display: block; margin-bottom: 2px;">
                 <i class="fa-solid fa-clipboard-list"></i> [Fact 기반 설명]
               </span>
-              <p style="margin: 0; font-size: 0.76rem; color: var(--text-main); line-height: 1.35;">${factText}</p>
+              <p style="margin: 0; font-size: 0.76rem; color: #1F2937; line-height: 1.35;">${factText}</p>
             </div>
             <div style="background: rgba(156, 39, 176, 0.02); border-left: 2px solid #9c27b0; padding: 4px 8px; border-radius: 0 4px 4px 0;">
-              <span style="font-size: 0.72rem; font-weight: bold; color: #ba68c8; display: block; margin-bottom: 2px;">
+              <span style="font-size: 0.72rem; font-weight: bold; color: #7b1fa2; display: block; margin-bottom: 2px;">
                 <i class="fa-solid fa-brain"></i> [AI 거동 추측]
               </span>
-              <p style="margin: 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.35;">${inferenceText}</p>
+              <p style="margin: 0; font-size: 0.76rem; color: #475569; line-height: 1.35;">${inferenceText}</p>
             </div>
           </div>
         </div>
@@ -884,7 +884,7 @@ window.AverageCompare = (function() {
     // 2) 저온/눈길 성능 (Snow) 진단
     // 기준 대비 눈길 우수 지표: Tg가 낮을수록(▽), 경도가 낮을수록(▽) 유연하여 우수
     html += `
-      <div class="diagnosis-item">
+      <div class="diagnosis-item" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.08);">
         <div class="diagnosis-perf-header">
           <span class="diagnosis-badge snow">눈길 및 저온성능 (Snow)</span>
         </div>
@@ -905,32 +905,32 @@ window.AverageCompare = (function() {
         statusText = '빙판 주의';
       }
 
-      const factText = `기준 모델 대비 유리전이온도(Tg)가 <strong>${tgDiff > 0 ? '+' : ''}${tgDiff.toFixed(1)}℃</strong> 변동하였고, 경도가 <strong>${hardDiff > 0 ? '+' : ''}${hardDiff.toFixed(1)} Shore A</strong> 차이를 보입니다.`;
+      const factText = `기준 모델 대비 유리전이온도(Tg)가 <strong style="color: #111827;">${tgDiff > 0 ? '+' : ''}${tgDiff.toFixed(1)}℃</strong> 변동하였고, 경도가 <strong style="color: #111827;">${hardDiff > 0 ? '+' : ''}${hardDiff.toFixed(1)} Shore A</strong> 차이를 보입니다.`;
       const inferenceText = (tgDiff < -2.5 && hardDiff <= 1)
-        ? `Tg가 낮아져 극저온 영하 노면 환경에서도 트레드 고무가 유연성을 잃지 않고 노면 밀착도가 극대화됨으로써, <strong>스노우 및 아이스 제동력이 비약적으로 개선</strong>될 것으로 AI가 거동 예측합니다.`
+        ? `Tg가 낮아져 극저온 영하 노면 환경에서도 트레드 고무가 유연성을 잃지 않고 노면 밀착도가 극대화됨으로써, <strong style="color: #111827;">스노우 및 아이스 제동력이 비약적으로 개선</strong>될 것으로 AI가 거동 예측합니다.`
         : (tgDiff > 2.5 
-          ? `저온 Tg 수치 상승에 기인하여 영하 노면 주행 시 고무 경화(Glass State 전이)가 빠르게 진행되며, 이로 인한 블록 강성 급증과 접지 유연성 결여로 <strong>눈길 슬립 및 미끄러짐 위험성이 증가</strong>할 것으로 판단됩니다.`
-          : `저온 물성의 지배 인자인 Tg 및 상온 경도 차이가 동등 제어 범위에 있으므로, 극한 저온 영역에서도 기준 모델과 <strong>대등한 노면 순응성 및 눈길 제동 성능</strong>을 가질 것으로 추측됩니다.`);
+          ? `저온 Tg 수치 상승에 기인하여 영하 노면 주행 시 고무 경화(Glass State 전이)가 빠르게 진행되며, 이로 인한 블록 강성 급증과 접지 유연성 결여로 <strong style="color: #111827;">눈길 슬립 및 미끄러짐 위험성이 증가</strong>할 것으로 판단됩니다.`
+          : `저온 물성의 지배 인자인 Tg 및 상온 경도 차이가 동등 제어 범위에 있으므로, 극한 저온 영역에서도 기준 모델과 <strong style="color: #111827;">대등한 노면 순응성 및 눈길 제동 성능</strong>을 가질 것으로 추측됩니다.`);
 
       html += `
-        <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.04); padding-bottom: 8px;">
+        <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: #fff; font-size: 0.8rem;">👉 ${p.maker} ${p.pattern}</strong>
+            <strong style="color: #1e293b; font-size: 0.8rem; font-weight: 700;">👉 ${p.maker} ${p.pattern}</strong>
             <span class="diagnosis-status-tag ${statusClass}">${statusText}</span>
           </div>
           
           <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
-            <div style="background: rgba(0, 242, 254, 0.02); border-left: 2px solid var(--primary); padding: 4px 8px; border-radius: 0 4px 4px 0;">
-              <span style="font-size: 0.72rem; font-weight: bold; color: var(--primary); display: block; margin-bottom: 2px;">
+            <div style="background: rgba(249, 115, 22, 0.02); border-left: 2px solid var(--primary); padding: 4px 8px; border-radius: 0 4px 4px 0;">
+              <span style="font-size: 0.72rem; font-weight: bold; color: #d97706; display: block; margin-bottom: 2px;">
                 <i class="fa-solid fa-clipboard-list"></i> [Fact 기반 설명]
               </span>
-              <p style="margin: 0; font-size: 0.76rem; color: var(--text-main); line-height: 1.35;">${factText}</p>
+              <p style="margin: 0; font-size: 0.76rem; color: #1F2937; line-height: 1.35;">${factText}</p>
             </div>
             <div style="background: rgba(156, 39, 176, 0.02); border-left: 2px solid #9c27b0; padding: 4px 8px; border-radius: 0 4px 4px 0;">
-              <span style="font-size: 0.72rem; font-weight: bold; color: #ba68c8; display: block; margin-bottom: 2px;">
+              <span style="font-size: 0.72rem; font-weight: bold; color: #7b1fa2; display: block; margin-bottom: 2px;">
                 <i class="fa-solid fa-brain"></i> [AI 거동 추측]
               </span>
-              <p style="margin: 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.35;">${inferenceText}</p>
+              <p style="margin: 0; font-size: 0.76rem; color: #475569; line-height: 1.35;">${inferenceText}</p>
             </div>
           </div>
         </div>
@@ -941,7 +941,7 @@ window.AverageCompare = (function() {
     // 3) 젖은 노면 그립 성능 (Wet) 진단
     // 기준 대비 젖은 노면 그립 우수 지표: tanδ @ 0℃가 높을수록(▲), G'' @ 0℃가 높을수록(▲), Silica 함량이 높을수록(▲) 우수
     html += `
-      <div class="diagnosis-item">
+      <div class="diagnosis-item" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.08);">
         <div class="diagnosis-perf-header">
           <span class="diagnosis-badge wet">젖은 제동 및 그립 (Wet Grip)</span>
         </div>
@@ -962,32 +962,32 @@ window.AverageCompare = (function() {
         statusText = '젖은 제동 타협';
       }
 
-      const factText = `기준 모델 대비 0℃ 손실탄젠트(tanδ)가 <strong>${tand0Diff > 0 ? '+' : ''}${tand0Diff.toFixed(4)}</strong> 차이를 보이고, 실리카 함량이 <strong>${silicaDiff > 0 ? '+' : ''}${silicaDiff.toFixed(1)} phr</strong> 변동하였습니다.`;
+      const factText = `기준 모델 대비 0℃ 손실탄젠트(tanδ)가 <strong style="color: #111827;">${tand0Diff > 0 ? '+' : ''}${tand0Diff.toFixed(4)}</strong> 차이를 보이고, 실리카 함량이 <strong style="color: #111827;">${silicaDiff > 0 ? '+' : ''}${silicaDiff.toFixed(1)} phr</strong> 변동하였습니다.`;
       const inferenceText = (tand0Diff > 0.02 || silicaDiff > 8)
-        ? `친수성 실리카 충전제 대량 증량 및 0℃ 에너지 손실탄젠트의 대폭 향상에 따라, 빗길 고속 질주 시 노이즈 성분이 소실 저항 마찰력으로 작용하여 <strong>빗길 및 젖은 배수 제동 마진이 비약적으로 향상</strong>될 것으로 강력 예측됩니다.`
+        ? `친수성 실리카 충전제 대량 증량 및 0℃ 에너지 손실탄젠트의 대폭 향상에 따라, 빗길 고속 질주 시 노이즈 성분이 소실 저항 마찰력으로 작용하여 <strong style="color: #111827;">빗길 및 젖은 배수 제동 마진이 비약적으로 향상</strong>될 것으로 강력 예측됩니다.`
         : (tand0Diff < -0.02 || silicaDiff < -8
-          ? `0℃ 점성 히스테리시스 저항 성분의 결여 및 보강 보강제(실리카) 함량 축소로 인해 수막 상태에서의 고밀도 마찰 유도가 제한되며, 수막 현상 방어 및 <strong>빗길 제동력 저하 우려</strong>가 관찰됩니다.`
-          : `점탄성 손실률과 실리카 배합 수준이 동등 범주 내에 있어, 젖은 배수 제동 성능 및 수막 노면에서의 노이즈 점성 소실량이 기준 모델과 <strong>대등한 상태로 억제 및 관리</strong>될 것으로 AI가 추측합니다.`);
+          ? `0℃ 점성 히스테리시스 저항 성분의 결여 및 보강 보강제(실리카) 함량 축소로 인해 수막 상태에서의 고밀도 마찰 유도가 제한되며, 수막 현상 방어 및 <strong style="color: #111827;">빗길 제동력 저하 우려</strong>가 관찰됩니다.`
+          : `점탄성 손실률과 실리카 배합 수준이 동등 범주 내에 있어, 젖은 배수 제동 성능 및 수막 노면에서의 노이즈 점성 소실량이 기준 모델과 <strong style="color: #111827;">대등한 상태로 억제 및 관리</strong>될 것으로 AI가 추측합니다.`);
 
       html += `
-        <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.04); padding-bottom: 8px;">
+        <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: #fff; font-size: 0.8rem;">👉 ${p.maker} ${p.pattern}</strong>
+            <strong style="color: #1e293b; font-size: 0.8rem; font-weight: 700;">👉 ${p.maker} ${p.pattern}</strong>
             <span class="diagnosis-status-tag ${statusClass}">${statusText}</span>
           </div>
           
           <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
-            <div style="background: rgba(0, 242, 254, 0.02); border-left: 2px solid var(--primary); padding: 4px 8px; border-radius: 0 4px 4px 0;">
-              <span style="font-size: 0.72rem; font-weight: bold; color: var(--primary); display: block; margin-bottom: 2px;">
+            <div style="background: rgba(249, 115, 22, 0.02); border-left: 2px solid var(--primary); padding: 4px 8px; border-radius: 0 4px 4px 0;">
+              <span style="font-size: 0.72rem; font-weight: bold; color: #d97706; display: block; margin-bottom: 2px;">
                 <i class="fa-solid fa-clipboard-list"></i> [Fact 기반 설명]
               </span>
-              <p style="margin: 0; font-size: 0.76rem; color: var(--text-main); line-height: 1.35;">${factText}</p>
+              <p style="margin: 0; font-size: 0.76rem; color: #1F2937; line-height: 1.35;">${factText}</p>
             </div>
             <div style="background: rgba(156, 39, 176, 0.02); border-left: 2px solid #9c27b0; padding: 4px 8px; border-radius: 0 4px 4px 0;">
-              <span style="font-size: 0.72rem; font-weight: bold; color: #ba68c8; display: block; margin-bottom: 2px;">
+              <span style="font-size: 0.72rem; font-weight: bold; color: #7b1fa2; display: block; margin-bottom: 2px;">
                 <i class="fa-solid fa-brain"></i> [AI 거동 추측]
               </span>
-              <p style="margin: 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.35;">${inferenceText}</p>
+              <p style="margin: 0; font-size: 0.76rem; color: #475569; line-height: 1.35;">${inferenceText}</p>
             </div>
           </div>
         </div>

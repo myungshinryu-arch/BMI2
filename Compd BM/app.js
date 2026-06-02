@@ -1113,7 +1113,7 @@ function renderMakerComparison() {
 
     // 단독 패턴 옵션 리스트 생성
     const patternOptionsHtml = pList.length > 0 ? pList.map(p => `
-      <option value="${p}" ${p === activePattern ? 'selected' : ''}>${p} (N=${pCounts[p] || 0})</option>
+      <option value="${p}" ${p === activePattern ? 'selected' : ''}>${p}</option>
     `).join('') : `<option value="">해당 조건 패턴 없음</option>`;
 
     card.innerHTML = `

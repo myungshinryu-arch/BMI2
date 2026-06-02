@@ -522,8 +522,10 @@ body {
 .cat-label {
   font-size: 0.85rem;
   font-weight: 600;
-  width: 90px;
+  width: 110px;
   color: var(--text-muted);
+  white-space: nowrap;
+  word-break: keep-all;
 }
  
 .cat-progress-bar {
@@ -597,6 +599,9 @@ body {
   font-weight: 700;
   letter-spacing: 0.3px;
   text-shadow: 0 0 5px rgba(249, 115, 22, 0.1);
+  word-break: keep-all;
+  overflow-wrap: normal;
+  display: inline-block;
 }
  
 .badge-spec {
@@ -2095,4 +2100,27 @@ option,
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   텍스트 줄바꿈/가독성 방지 유틸리티 클래스 (Word wrap / Break override)
+   ========================================================================== */
+.category-label,
+.report-table th,
+.report-table td,
+.report-badge,
+.short-label,
+.data-table th,
+.data-table td,
+.badge-brand {
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+}
+
+.category-label,
+.goto-header,
+.nowrap,
+th.nowrap,
+td.nowrap {
+  white-space: nowrap !important;
 }
