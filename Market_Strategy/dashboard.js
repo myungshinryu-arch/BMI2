@@ -428,10 +428,10 @@ class TireDashboard {
         // DOM 요소 캐싱
         this.form = document.getElementById('filter-form');
         this.sourceSelect = document.getElementById('filter-source');
-        this.brandSelect = document.getElementById('filter-brand') || { value: 'all' };
-        this.segmentSelect = document.getElementById('filter-segment');
-        this.yearSelect = document.getElementById('filter-year'); // 단일 분석 연도 필터
-        this.metricSelect = document.getElementById('filter-metric') || { value: 'revenue' }; // 신규 지표 기준 필터
+        this.brandSelect = document.getElementById('filter-brand') || { value: 'all', addEventListener: () => {} };
+        this.segmentSelect = document.getElementById('filter-segment') || { value: 'all', addEventListener: () => {} };
+        this.yearSelect = document.getElementById('filter-year') || { value: '2026', addEventListener: () => {} }; // 단일 분석 연도 필터
+        this.metricSelect = document.getElementById('filter-metric') || { value: 'revenue', addEventListener: () => {} }; // 신규 지표 기준 필터
         this.resetBtn = document.getElementById('btn-reset-filters');
         this.searchInput = document.getElementById('model-search');
         this.tableBody = document.getElementById('table-body');
@@ -3497,3 +3497,4 @@ class TireDashboard {
 window.addEventListener('load', () => {
     window.TireDashboardApp = new TireDashboard();
 });
+// Redeploy Trigger: Force Cloud & CDN re-deployment with clean cache propagation (v1.0.4 - Fix selector addEventListener mock after merge)
