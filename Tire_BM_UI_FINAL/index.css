@@ -1582,27 +1582,37 @@ body {
   box-shadow: 0 15px 35px rgba(120, 53, 4, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), 0 0 15px rgba(249, 115, 22, 0.1) !important;
 }
 
-/* Welcome Card Jumbotron - Premium Energetic Orange Accent */
+/* Welcome Card Jumbotron - Premium White Glass Theme */
 .welcome-card-gradient {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
-  border: 1px solid rgba(249, 115, 22, 0.25) !important;
-  box-shadow: 0 15px 35px rgba(234, 88, 12, 0.2), 0 0 25px rgba(249, 115, 22, 0.1) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(30px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(120, 53, 4, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.welcome-card-gradient:hover {
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 15px 35px rgba(120, 53, 4, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), 0 0 15px rgba(249, 115, 22, 0.1) !important;
 }
 
 .welcome-badge {
-  background: rgba(255, 255, 255, 0.25) !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  color: #fff !important;
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  color: #ea580c !important;
 }
 
 .btn-guide-primary {
   background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
   color: var(--text-dark) !important;
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3) !important;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.15) !important;
 }
 
 .btn-guide-primary:hover {
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45) !important;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* Category Progress fill */
@@ -1834,11 +1844,33 @@ option,
   color: var(--primary) !important;
 }
 
-/* Welcome Jumbotron Exception: Bold high-contrast white layout on deep orange background */
-.welcome-card-gradient h1,
-.welcome-card-gradient p,
-.welcome-card-gradient .welcome-badge {
-  color: #ffffff !important;
+/* Welcome Jumbotron text styling on premium white background */
+.welcome-card-gradient h1 {
+  color: #1e293b !important;
+}
+
+.welcome-desc-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.welcome-desc-line {
+  color: #334155 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.7 !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 1200px) {
+  .welcome-desc-line {
+    white-space: normal !important;
+  }
 }
 
 
@@ -1978,18 +2010,25 @@ option,
    Tire BM System - Premium White Theme Usability & Contrast Patches
    ========================================================================== */
 
-/* 1. 웰컴 카드 (Tire Benchmarking System) 마우스 호버 시 글씨색 검정색 변환 */
-.welcome-card-gradient:hover h1,
-.welcome-card-gradient:hover p,
-.welcome-card-gradient:hover .welcome-badge {
-  color: #1e293b !important;
-  transition: var(--transition);
+/* 1. 웰컴 카드 (Tire Benchmarking System) 및 가이드 버튼 스타일 */
+.welcome-card-gradient .btn-guide-secondary {
+  background: rgba(30, 41, 59, 0.03) !important;
+  border: 1px solid rgba(30, 41, 59, 0.15) !important;
+  color: #334155 !important;
 }
 
-.welcome-card-gradient:hover .btn-guide-secondary {
-  color: #1e293b !important;
+.welcome-card-gradient .btn-guide-secondary:hover {
+  background: rgba(30, 41, 59, 0.08) !important;
   border-color: rgba(30, 41, 59, 0.3) !important;
-  background: rgba(30, 41, 59, 0.05) !important;
+  color: #0f172a !important;
+}
+
+.welcome-card-gradient:hover h1 {
+  color: #1e293b !important;
+}
+
+.welcome-card-gradient:hover p {
+  color: #334155 !important;
 }
 
 /* 2. 카테고리 구성 비율 텍스트 및 퍼센트 가독성 대폭 향상 */
