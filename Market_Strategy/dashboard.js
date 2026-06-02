@@ -1949,6 +1949,255 @@ class TireDashboard {
                 }
             }
         });
+
+        this.renderRadarChartBasis(strategyData, selectedYear);
+    }
+
+    renderRadarChartBasis(strategyData, selectedYear) {
+        const container = document.getElementById('radar-chart-grounds-container');
+        if (!container) return;
+
+        if (!strategyData) {
+            container.innerHTML = '';
+            return;
+        }
+
+        const isNA = this.currentMarket === 'na';
+        const isSummer = strategyData.isSummer;
+        const recHK = strategyData.selectedHankookModel ? strategyData.selectedHankookModel.yearlyData[selectedYear] : null;
+        const recComp = strategyData.bestCompetitor ? strategyData.bestCompetitor.yearlyData[selectedYear] : null;
+
+        if (!recHK || !recComp) {
+            container.innerHTML = '<div style="font-size: 0.8rem; color: var(--text-secondary); text-align: center; padding: 10px;">세부 계측 데이터 분석 중...</div>';
+            return;
+        }
+
+        const metricsList = [];
+
+        if (isNA) {
+            // 북미 시장
+            // 1. 마른 노면 접지력
+            metricsList.push({
+                metric: '마른 노면 접지력',
+                scores: { hk: strategyData.hankookScores[0].toFixed(1), comp: strategyData.benchmarkScores[0].toFixed(1) },
+                formula: '(Tire Rack Dry Traction + CR Dry Braking / 10) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> Tire Rack 접지 평점 ${recHK.tirerack?.dry_traction || 0}점, Consumer Reports 제동 ${recHK.consumerreports?.dry_braking || 0}점 (100점 만점)<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> Tire Rack 접지 평점 ${recComp.tirerack?.dry_traction || 0}점, Consumer Reports 제동 ${recComp.consumerreports?.dry_braking || 0}점`
+            });
+
+            // 2. 젖은 노면 제동력
+            metricsList.push({
+                metric: '젖은 노면 제동력',
+                scores: { hk: strategyData.hankookScores[1].toFixed(1), comp: strategyData.benchmarkScores[1].toFixed(1) },
+                formula: '(Tire Rack Wet Traction + CR Wet Braking / 10) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> Tire Rack 제동 평점 ${recHK.tirerack?.wet_traction || 0}점, Consumer Reports 제동 ${recHK.consumerreports?.wet_braking || 0}점 (100점 만점)<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> Tire Rack 제동 평점 ${recComp.tirerack?.wet_traction || 0}점, Consumer Reports 제동 ${recComp.consumerreports?.wet_braking || 0}점`
+            });
+
+            // 3. 수막현상 방지
+            metricsList.push({
+                metric: '수막현상 방지',
+                scores: { hk: strategyData.hankookScores[2].toFixed(1), comp: strategyData.benchmarkScores[2].toFixed(1) },
+                formula: '(Tire Rack Hydroplaning + CR Handling / 10) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> Tire Rack 배수성 ${recHK.tirerack?.hydroplaning || 0}점, Consumer Reports 조종성 ${recHK.consumerreports?.handling || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> Tire Rack 배수성 ${recComp.tirerack?.hydroplaning || 0}점, Consumer Reports 조종성 ${recComp.consumerreports?.handling || 0}점`
+            });
+
+            // 4. 승차감 및 소음
+            metricsList.push({
+                metric: '승차감 및 소음',
+                scores: { hk: strategyData.hankookScores[3].toFixed(1), comp: strategyData.benchmarkScores[3].toFixed(1) },
+                formula: '(Tire Rack Comfort + Tire Rack Noise) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> 승차감 평점 ${recHK.tirerack?.comfort || 0}점, 소음 평점 ${recHK.tirerack?.noise || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> 승차감 평점 ${recComp.tirerack?.comfort || 0}점, 소음 평점 ${recComp.tirerack?.noise || 0}점`
+            });
+
+            // 5. 트레드 수명
+            metricsList.push({
+                metric: '트레드 수명',
+                scores: { hk: strategyData.hankookScores[4].toFixed(1), comp: strategyData.benchmarkScores[4].toFixed(1) },
+                formula: '(Tire Rack Treadwear + CR Tread Life / 10) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> Tire Rack 내마모 ${recHK.tirerack?.treadwear || 0}점, Consumer Reports 수명 ${recHK.consumerreports?.tread_life || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> Tire Rack 내마모 ${recComp.tirerack?.treadwear || 0}점, Consumer Reports 수명 ${recComp.consumerreports?.tread_life || 0}점`
+            });
+
+            if (isSummer) {
+                // 6. 연비 효율성 (Summer는 6축)
+                metricsList.push({
+                    metric: '연비 효율성',
+                    scores: { hk: strategyData.hankookScores[5].toFixed(1), comp: strategyData.benchmarkScores[5].toFixed(1) },
+                    formula: 'Consumer Reports Fuel Economy / 10',
+                    description: `<strong>자사 (${strategyData.hankookName}):</strong> 연비 평점 ${recHK.consumerreports?.fuel_economy || 0}점 (100점 만점)<br>` +
+                                 `<strong>경쟁 (${strategyData.benchmarkName}):</strong> 연비 평점 ${recComp.consumerreports?.fuel_economy || 0}점`
+                });
+            } else {
+                // 6. 눈길/빙판 제동 (All-Season or Winter는 7축)
+                metricsList.push({
+                    metric: '눈길/빙판 제동',
+                    scores: { hk: strategyData.hankookScores[5].toFixed(1), comp: strategyData.benchmarkScores[5].toFixed(1) },
+                    formula: '(CR Snow Traction / 10 + CR Ice Braking / 10) / 2',
+                    description: `<strong>자사 (${strategyData.hankookName}):</strong> 눈길 구동력 ${recHK.consumerreports?.snow_traction || 0}점, 빙판 제동력 ${recHK.consumerreports?.ice_braking || 0}점<br>` +
+                                 `<strong>경쟁 (${strategyData.benchmarkName}):</strong> 눈길 구동력 ${recComp.consumerreports?.snow_traction || 0}점, 빙판 제동력 ${recComp.consumerreports?.ice_braking || 0}점`
+                });
+                // 7. 연비 효율성
+                metricsList.push({
+                    metric: '연비 효율성',
+                    scores: { hk: strategyData.hankookScores[6].toFixed(1), comp: strategyData.benchmarkScores[6].toFixed(1) },
+                    formula: 'Consumer Reports Fuel Economy / 10',
+                    description: `<strong>자사 (${strategyData.hankookName}):</strong> 연비 평점 ${recHK.consumerreports?.fuel_economy || 0}점 (100점 만점)<br>` +
+                                 `<strong>경쟁 (${strategyData.benchmarkName}):</strong> 연비 평점 ${recComp.consumerreports?.fuel_economy || 0}점`
+                });
+            }
+        } else {
+            // 유럽 시장 (6개 축)
+            const adacHK = recHK.europe?.adac || { dry_safety: 3.0, wet_safety: 3.0, mileage: 3.0, efficiency: 3.0, noise: 3.0 };
+            const abHK = recHK.europe?.autobild || { dry_performance: 7.0, wet_performance: 7.0, aquaplaning: 7.0, comfort: 7.0, treadwear: 7.0 };
+            const adacComp = recComp.europe?.adac || { dry_safety: 3.0, wet_safety: 3.0, mileage: 3.0, efficiency: 3.0, noise: 3.0 };
+            const abComp = recComp.europe?.autobild || { dry_performance: 7.0, wet_performance: 7.0, aquaplaning: 7.0, comfort: 7.0, treadwear: 7.0 };
+
+            // 1. 마른 노면 성능
+            metricsList.push({
+                metric: '마른 노면 성능',
+                scores: { hk: strategyData.hankookScores[0].toFixed(1), comp: strategyData.benchmarkScores[0].toFixed(1) },
+                formula: '((6.0 - ADAC Dry Safety) * 2 + Auto Bild Dry Performance) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> ADAC Dry Safety ${adacHK.dry_safety || 0}점 (역방향), Auto Bild Dry ${abHK.dry_performance || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> ADAC Dry Safety ${adacComp.dry_safety || 0}점, Auto Bild Dry ${abComp.dry_performance || 0}점`
+            });
+
+            // 2. 젖은 노면 성능
+            metricsList.push({
+                metric: '젖은 노면 성능',
+                scores: { hk: strategyData.hankookScores[1].toFixed(1), comp: strategyData.benchmarkScores[1].toFixed(1) },
+                formula: '((6.0 - ADAC Wet Safety) * 2 + Auto Bild Wet Performance) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> ADAC Wet Safety ${adacHK.wet_safety || 0}점, Auto Bild Wet ${abHK.wet_performance || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> ADAC Wet Safety ${adacComp.wet_safety || 0}점, Auto Bild Wet ${abComp.wet_performance || 0}점`
+            });
+
+            // 3. 수막현상 방지
+            metricsList.push({
+                metric: '수막현상 방지',
+                scores: { hk: strategyData.hankookScores[2].toFixed(1), comp: strategyData.benchmarkScores[2].toFixed(1) },
+                formula: 'Auto Bild Aquaplaning',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> Auto Bild 수막현상 방지 평점 ${abHK.aquaplaning || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> Auto Bild 수막현상 방지 평점 ${abComp.aquaplaning || 0}점`
+            });
+
+            // 4. 수명 및 마일리지
+            metricsList.push({
+                metric: '수명 및 마일리지',
+                scores: { hk: strategyData.hankookScores[3].toFixed(1), comp: strategyData.benchmarkScores[3].toFixed(1) },
+                formula: '((6.0 - ADAC Mileage) * 2 + Auto Bild Treadwear) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> ADAC 내마모 ${adacHK.mileage || 0}점, Auto Bild 수명 ${abHK.treadwear || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> ADAC 내마모 ${adacComp.mileage || 0}점, Auto Bild 수명 ${abComp.treadwear || 0}점`
+            });
+
+            // 5. 회전저항 (연비) (R.R.)
+            metricsList.push({
+                metric: '회전저항 (연비) (R.R.)',
+                scores: { hk: strategyData.hankookScores[4].toFixed(1), comp: strategyData.benchmarkScores[4].toFixed(1) },
+                formula: '(6.0 - ADAC Efficiency) * 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> ADAC 회전저항 연비 평가 ${adacHK.efficiency || 0}점 (낮을수록 우수)<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> ADAC 회전저항 연비 평가 ${adacComp.efficiency || 0}점`
+            });
+
+            // 6. 승차감 및 소음
+            metricsList.push({
+                metric: '승차감 및 소음',
+                scores: { hk: strategyData.hankookScores[5].toFixed(1), comp: strategyData.benchmarkScores[5].toFixed(1) },
+                formula: '((6.0 - ADAC Noise) * 2 + Auto Bild Comfort) / 2',
+                description: `<strong>자사 (${strategyData.hankookName}):</strong> ADAC 소음 ${adacHK.noise || 0}점, Auto Bild 안락성 ${abHK.comfort || 0}점<br>` +
+                             `<strong>경쟁 (${strategyData.benchmarkName}):</strong> ADAC 소음 ${adacComp.noise || 0}점, Auto Bild 안락성 ${abComp.comfort || 0}점`
+            });
+        }
+
+        container.innerHTML = `
+            <div style="background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(0, 0, 0, 0.04); border-radius: 12px; padding: 14px; font-size: 0.85rem; line-height: 1.5; margin-top: 15px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: var(--shadow-sm);">
+                <div style="font-weight: 800; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-calculator" style="color: var(--color-hankook);"></i>
+                    <span>다차원 성능 지표 평가 평점 산출 근거</span>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.8rem; margin: 0 0 10px 0; line-height: 1.45;">
+                    본 분석은 신뢰도 높은 공인 테스트 미디어 데이터(Tire Rack, Consumer Reports, ADAC, Auto Bild)의 핵심 지표들을 10점 만점의 표준 스케일로 선형 정규화하여 산정했습니다.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 6px; border-top: 1px dashed rgba(0, 0, 0, 0.08); padding-top: 8px;">
+                    <div style="display: flex; gap: 8px; align-items: flex-start; margin-bottom: 4px;">
+                        <span style="font-size: 0.72rem; font-weight: 800; color: #fff; background: var(--color-hankook); padding: 1px 6px; border-radius: 4px; white-space: nowrap;">자사 모델</span>
+                        <span style="color: var(--text-primary); font-size: 0.8rem; font-weight: 700;">${strategyData.hankookLabel}</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px;">
+                        <span style="font-size: 0.72rem; font-weight: 800; color: #fff; background: #3b82f6; padding: 1px 6px; border-radius: 4px; white-space: nowrap;">비교 1위</span>
+                        <span style="color: var(--text-primary); font-size: 0.8rem; font-weight: 700;">${strategyData.benchmarkLabel}</span>
+                    </div>
+                </div>
+                
+                <button id="toggle-radar-metrics-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.15); border-radius: 10px; padding: 10px 14px; margin-top: 12px; cursor: pointer; color: var(--color-hankook); font-size: 0.85rem; font-weight: 800; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); outline: none;">
+                    <span style="display: flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-square-poll-vertical" style="font-size: 0.95rem;"></i>
+                        <span>지표별 계측 데이터 및 점수 계산식 (세부 증빙)</span>
+                    </span>
+                    <i id="toggle-radar-icon" class="fa-solid fa-chevron-down" style="font-size: 0.8rem; transition: transform 0.2s ease;"></i>
+                </button>
+                
+                <div id="radar-metrics-collapsible" style="display: none; margin-top: 10px; animation: slideDown 0.3s ease-out; overflow: hidden;">
+                    <div style="background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255, 107, 0, 0.12); border-radius: 12px; padding: 14px; font-size: 0.85rem; overflow-x: auto; box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 500px;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid rgba(255, 107, 0, 0.15); font-size: 0.78rem; font-weight: 800; color: #475569;">
+                                    <th style="padding: 10px 12px; background: rgba(255, 107, 0, 0.02);">평가 항목</th>
+                                    <th style="padding: 10px 12px; text-align: center; width: 120px; background: rgba(255, 107, 0, 0.02);">평점 (자사/경쟁)</th>
+                                    <th style="padding: 10px 12px; background: rgba(255, 107, 0, 0.02);">정량 계측 데이터 및 산출 산식 근거</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${metricsList.map(m => `
+                                    <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.05); font-size: 0.8rem; vertical-align: top; transition: background 0.15s ease;">
+                                        <td style="padding: 12px 10px; font-weight: 800; color: var(--text-primary); border-right: 1px solid rgba(0, 0, 0, 0.03); background: rgba(0,0,0,0.005); white-space: nowrap;">
+                                            ${m.metric}
+                                        </td>
+                                        <td style="padding: 12px 10px; text-align: center; border-right: 1px solid rgba(0, 0, 0, 0.03);">
+                                            <div style="display: flex; gap: 4px; justify-content: center; align-items: center; flex-wrap: nowrap; font-size: 0.72rem; font-weight: 800;">
+                                                <span title="자사 현행" style="background: var(--color-hankook); color: #fff; padding: 2px 6px; border-radius: 4px; box-shadow: 0 1px 3px rgba(249,115,22,0.25);">${m.scores.hk}</span>
+                                                <span style="color: #94a3b8;">/</span>
+                                                <span title="경쟁 현행" style="background: #3b82f6; color: #fff; padding: 2px 6px; border-radius: 4px; box-shadow: 0 1px 3px rgba(59,130,246,0.25);">${m.scores.comp}</span>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 12px 10px; color: var(--text-primary); line-height: 1.45;">
+                                            <div style="font-family: monospace; font-size: 0.75rem; background: rgba(15, 23, 42, 0.04); padding: 4px 8px; border-radius: 6px; color: #0f172a; margin-bottom: 6px; display: inline-block; border-left: 3px solid var(--color-hankook); font-weight: 600;">
+                                                ${m.formula}
+                                            </div>
+                                            <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">${m.description}</div>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Set up interactive toggle click handler
+        const toggleBtn = document.getElementById('toggle-radar-metrics-btn');
+        const collapsiblePanel = document.getElementById('radar-metrics-collapsible');
+        const toggleIcon = document.getElementById('toggle-radar-icon');
+        
+        if (toggleBtn && collapsiblePanel) {
+            toggleBtn.addEventListener('click', () => {
+                const isCollapsed = collapsiblePanel.style.display === 'none';
+                if (isCollapsed) {
+                    collapsiblePanel.style.display = 'block';
+                    toggleIcon.className = 'fa-solid fa-chevron-up';
+                    toggleIcon.style.transform = 'rotate(180deg)';
+                    toggleBtn.style.background = 'rgba(255, 107, 0, 0.1)';
+                } else {
+                    collapsiblePanel.style.display = 'none';
+                    toggleIcon.className = 'fa-solid fa-chevron-down';
+                    toggleIcon.style.transform = 'rotate(0deg)';
+                    toggleBtn.style.background = 'rgba(255, 107, 0, 0.05)';
+                }
+            });
+        }
+    }
     }
 
     /**
@@ -2321,7 +2570,9 @@ class TireDashboard {
             maxNegIdx,
             maxNegValue,
             targetSeason,
-            isSummer
+            isSummer,
+            selectedHankookModel,
+            bestCompetitor
         };
     }
 
