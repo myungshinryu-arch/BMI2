@@ -1,0 +1,810 @@
+/* -------------------------------------------------------------
+ * Antigravity Premium Screen Recorder Design System (style.css)
+ * HSL-tailored premium Dark Theme, Glassmorphism, 
+ * sleek micro-animations, and fluid responsive layouts.
+ * ------------------------------------------------------------- */
+
+/* 1. Global Reset & Theme Tokens */
+:root {
+    /* Color Palette */
+    --primary-hue: 24;     /* Orange-accent */
+    --primary: hsl(var(--primary-hue), 95%, 53%);
+    --primary-hover: hsl(var(--primary-hue), 95%, 45%);
+    --primary-light: hsl(var(--primary-hue), 95%, 65%);
+    --primary-glow: hsla(var(--primary-hue), 95%, 53%, 0.35);
+
+    --bg-dark: #090d16;
+    --bg-card: rgba(17, 24, 39, 0.7);
+    --bg-sidebar: rgba(13, 18, 30, 0.85);
+    
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-border-active: rgba(249, 115, 22, 0.3);
+
+    --text-primary: #f3f4f6;
+    --text-muted: #9ca3af;
+    --text-dark: #1f2937;
+
+    --success: #10b981;
+    --success-glow: rgba(16, 185, 129, 0.25);
+    --danger: #ef4444;
+    --danger-glow: rgba(239, 68, 68, 0.25);
+    --warning: #f59e0b;
+    --warning-glow: rgba(245, 158, 11, 0.25);
+
+    /* Fonts & Transitions */
+    --font-outfit: 'Outfit', 'Inter', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: 0.15s ease;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-inter);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. Premium Glow Background Effect */
+.glow-bg-radial {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(circle at 10% 20%, hsla(24, 95%, 53%, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, hsla(220, 95%, 50%, 0.07) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, hsla(0, 0%, 0%, 0.95) 0%, #060910 100%);
+    pointer-events: none;
+    transition: background 0.8s ease;
+}
+
+/* 3. Main Container Layout */
+.recorder-container {
+    width: 100%;
+    max-width: 1280px;
+    height: 850px;
+    margin: 20px;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* 4. Sidebar Styles (Settings) */
+.settings-sidebar {
+    background: rgba(10, 14, 26, 0.5);
+    border-right: 1px solid var(--card-border);
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--primary), #3b82f6);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.logo-icon i {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.logo-text h2 {
+    font-family: var(--font-outfit);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    color: #fff;
+}
+
+.logo-text span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.settings-group {
+    margin-bottom: 30px;
+}
+
+.settings-title {
+    font-family: var(--font-outfit);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.setting-item {
+    margin-bottom: 16px;
+}
+
+.setting-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Custom Styled Select dropdown */
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.custom-select-wrapper select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 0.85rem;
+    font-family: var(--font-inter);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    transition: var(--transition-fast);
+}
+
+.custom-select-wrapper select:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.custom-select-wrapper::after {
+    content: '\f107';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 0.9rem;
+}
+
+/* Setting Toggle (Switch) */
+.setting-item-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+    transition: var(--transition-fast);
+}
+
+.setting-item-toggle:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toggle-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.toggle-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Toggle Switch Pure CSS */
+.switch-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.switch-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-round {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 34px;
+    transition: .3s;
+}
+
+.slider-round:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+input:checked + .slider-round {
+    background-color: var(--primary);
+}
+
+input:focus + .slider-round {
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+input:checked + .slider-round:before {
+    transform: translateX(22px);
+}
+
+/* Info Panel Status Card */
+.rec-info-panel {
+    background: rgba(17, 24, 39, 0.4);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    margin-top: auto;
+    transition: var(--transition);
+}
+
+.rec-info-panel.recording {
+    border-color: var(--card-border-active);
+    box-shadow: inset 0 0 15px rgba(249, 115, 22, 0.05);
+}
+
+.info-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.status-indicator {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-indicator.idle {
+    color: var(--text-muted);
+}
+
+.status-indicator.ready {
+    color: #3b82f6;
+    animation: fade-glow 2s infinite alternate;
+}
+
+.status-indicator.recording {
+    color: var(--danger);
+    animation: pulse-red 1s infinite alternate;
+}
+
+.status-indicator.paused {
+    color: var(--warning);
+    animation: fade-glow 1.5s infinite alternate;
+}
+
+.status-timer {
+    font-family: var(--font-outfit);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.recorder-stats p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.recorder-stats p i {
+    width: 14px;
+    color: var(--text-muted);
+}
+
+.copyright-notice {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.copyright-notice p {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.copyright-notice span {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+/* 5. Main Workspace Layout */
+.main-workspace {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.workspace-header {
+    margin-bottom: 24px;
+}
+
+.main-heading {
+    font-family: var(--font-outfit);
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #fff;
+    margin-bottom: 8px;
+    background: linear-gradient(to right, #fff, #9ca3af);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sub-heading {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 720px;
+}
+
+/* 6. Video Preview Box (Viewport) */
+.preview-viewport {
+    flex: 1;
+    background: #04070d;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 4px 30px rgba(0, 0, 0, 0.8);
+    margin-bottom: 24px;
+    transition: border-color var(--transition);
+}
+
+.preview-viewport.recording-glow {
+    border-color: var(--danger);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.15), inset 0 0 15px rgba(239, 68, 68, 0.1);
+}
+
+.preview-viewport.ready-glow {
+    border-color: #3b82f6;
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.15);
+}
+
+/* Idle State Watermark Graphic */
+.viewport-placeholder {
+    padding: 40px;
+    text-align: center;
+    max-width: 480px;
+    z-index: 2;
+    animation: fade-in 0.8s ease;
+}
+
+.placeholder-art {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radial-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    animation: rotate-clockwise 20s linear infinite;
+}
+
+.screen-pulse-icon {
+    font-size: 2.2rem;
+    color: var(--primary);
+    animation: bobbing 3s ease-in-out infinite;
+}
+
+.viewport-placeholder h2 {
+    font-family: var(--font-outfit);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.viewport-placeholder p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Video Frame */
+.video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+/* Status Floating Badge on top right of video */
+.status-floating-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    animation: slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pulse-indicator {
+    width: 8px;
+    height: 8px;
+    background-color: var(--danger);
+    border-radius: 50%;
+    animation: pulse-red-scale 1.2s infinite;
+}
+
+.status-floating-overlay .status-text {
+    font-family: var(--font-outfit);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+/* 7. Controls Center */
+.control-center {
+    background: rgba(17, 24, 39, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+}
+
+.control-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Button UI Spec */
+.btn {
+    font-family: var(--font-outfit);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition-fast);
+}
+
+/* Button Variations */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), #ea580c);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px hsla(var(--primary-hue), 95%, 53%, 0.5);
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+}
+
+.btn-record {
+    background: linear-gradient(135deg, var(--danger), #dc2626);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--danger-glow);
+}
+
+.btn-record:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-warn {
+    background: linear-gradient(135deg, var(--warning), #d97706);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--warning-glow);
+}
+
+.btn-warn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--success-glow);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--card-border);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* 8. Download Panel Section (Post Record) */
+.post-recording-panel {
+    margin-top: 24px;
+    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.panel-icon-success {
+    width: 48px;
+    height: 48px;
+    background: rgba(16, 185, 129, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.panel-icon-success i {
+    font-size: 1.5rem;
+    color: var(--success);
+}
+
+.panel-content {
+    flex: 1;
+}
+
+.panel-content h3 {
+    font-family: var(--font-outfit);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.panel-content p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.btn-download {
+    background: #fff;
+    color: var(--text-dark);
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.05);
+}
+
+.btn-download:hover {
+    background: #e5e7eb;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(255, 255, 255, 0.1);
+}
+
+/* 9. Error Banner */
+.error-banner {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(18, 18, 18, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    max-width: 450px;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    animation: slide-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.error-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.error-icon {
+    font-size: 1.25rem;
+    color: var(--danger);
+}
+
+.error-text {
+    font-size: 0.85rem;
+    color: #fff;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.btn-close-error {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition-fast);
+}
+
+.btn-close-error:hover {
+    color: #fff;
+}
+
+/* 10. Helper Utilities */
+.hidden {
+    display: none !important;
+}
+
+/* Keyframes & Animations */
+@keyframes rotate-clockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes bobbing {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-red {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@keyframes pulse-red-scale {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes fade-glow {
+    0% { opacity: 0.5; filter: drop-shadow(0 0 2px currentColor); }
+    100% { opacity: 1; filter: drop-shadow(0 0 8px currentColor); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slide-down {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-left {
+    from { transform: translateX(30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* 11. Responsive Styles */
+@media (max-width: 1024px) {
+    .recorder-container {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+    }
+    
+    .settings-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--card-border);
+        padding: 24px;
+    }
+
+    .main-workspace {
+        padding: 24px;
+    }
+
+    .preview-viewport {
+        min-height: 400px;
+    }
+}
