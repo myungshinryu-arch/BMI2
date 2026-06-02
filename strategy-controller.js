@@ -638,7 +638,7 @@
             metric: 'Wet Braking (빗길 제동력)',
             scores: { currentHK: 7.8, competitorCurrent: 8.2, targetNext: 8.4 },
             formula: 'S = 10 - [ (W_actual - 28.0) / (35.0 - 28.0) ] * 10',
-            description: '수심 1mm 빗길 실차 제동 거리(80km/h → 0, m) 및 습윤 배수 유량 계측.'
+            description: '수심 1mm 빗길 실차 제동 거리(80km/h → 0, m) 및 젖은 노면 배수 유량 계측.'
           },
           {
             metric: 'Dry Grip (건조 노면 제동)',

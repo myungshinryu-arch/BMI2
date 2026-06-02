@@ -2787,7 +2787,7 @@ function renderGenerationTrends(lineupKey, chartMode = 'gen3') {
 
     const labels = [
       "마른 노면 접지",
-      "습윤 노면 접지",
+      "젖은 노면 접지",
       "수막 저항성",
       "정숙성/승차감",
       "마모 수명",

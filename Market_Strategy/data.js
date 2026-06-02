@@ -813,98 +813,7 @@ const TIRE_EVOLUTION_DATABASE = {
             present: "균일 마모 구조(MaxTouch)를 바탕으로 한 수명 연장(지속가능 수명) 및 고하중 EV 대응 정숙성/회전저항 보완.",
             future: "친환경 천연/재생 원료 비율 40% 이상 확대, 패턴 깊이 자가 복원 기술(Self-Regenerating Tread), Euro 7 미세 먼지 마모 감소 컴파운드."
         },
-        proposal: "미쉐린 PS5의 일관된 마모 성능 한계에 대응하기 위해, 당사는 마모 한계 시점(트레드 깊이 30% 이하)에서도 습윤 그립 소실을 5% 이내로 제어하는 '다층 컴파운드 기술(Multi-layer Compound)' 및 가황 컴파운드 배합 다각화를 R&D 최우선 과제로 지정하여 개발하여야 합니다."
-    },
-    Michelin_Primacy: {
-        brand: "Michelin",
-        lineupKey: "Michelin_Primacy",
-        lineupName: "Primacy (Comfort All-Season)",
-        segmentEU: "All-Season Passenger",
-        segmentUS: "Grand Touring (All-Season) - Passenger",
-        flagshipLine: "Primacy Series (Comfort All-Season)",
-        hankookLine: "Kinergy XP (Comfort All-Season)",
-        generations: [
-            {
-                year: "2010",
-                compYear: "2010",
-                hkYear: "2009",
-                compModel: "Primacy MXM4",
-                compSlogan: "Comfort, handling and all-season safety with premium OE matching",
-                compBrochure: {
-                    compound: "Sunflower Oil & Helio Compound (저온 고무 유연성 확보)",
-                    tech: "MaxTouch Construction (접지압 균등 배분 구조)",
-                    treadwear: "UTQG 500 / A A",
-                    focus: "All-season touring safety, soft ride, and low rolling resistance"
-                },
-                compScores: { dry_grip: 8.0, wet_grip: 7.9, hydro_resist: 7.8, comfort_noise: 8.8, tread_life: 8.5, efficiency: 8.2 },
-                hkModel: "Optimo H426",
-                hkSlogan: "Silent luxury passenger comfort with quiet riding performance",
-                hkBrochure: {
-                    compound: "Silica-rich passenger comfort compound",
-                    tech: "Asymmetric pattern pitch design (주행 진동 흡수 리브)",
-                    treadwear: "UTQG 440 / A A",
-                    focus: "Low pattern noise level and soft plush highway comfort"
-                },
-                hkScores: { dry_grip: 7.8, wet_grip: 7.2, hydro_resist: 7.4, comfort_noise: 8.5, tread_life: 7.4, efficiency: 7.8 }
-            },
-            {
-                year: "2018",
-                compYear: "2018",
-                hkYear: "2013",
-                compModel: "Primacy Tour A/S",
-                compSlogan: "The quietest and most comfortable ride among premium touring tires",
-                compBrochure: {
-                    compound: "Advanced Silica & Functional Elastomer 배합",
-                    tech: "PIANO Noise Reduction Tuning (피아노 주파수 상쇄 소음 기술)",
-                    treadwear: "UTQG 540 / A A",
-                    focus: "Prestige sedan cabin extreme quietness and improved snow traction"
-                },
-                compScores: { dry_grip: 8.4, wet_grip: 8.3, hydro_resist: 8.1, comfort_noise: 9.3, tread_life: 8.7, efficiency: 8.3 },
-                hkModel: "Ventus S1 noble2 (H452)",
-                hkSlogan: "Premium high performance touring with luxury quiet riding",
-                hkBrochure: {
-                    compound: "Hybrid Silica & High Grip Resin",
-                    tech: "3D Sipe Technology (블록 가장자리 직립 변형 억제 리브)",
-                    treadwear: "UTQG 500 / A A",
-                    focus: "UHP-grade dry handling response with comfortable touring ride"
-                },
-                hkScores: { dry_grip: 8.5, wet_grip: 8.0, hydro_resist: 7.9, comfort_noise: 8.7, tread_life: 8.0, efficiency: 7.9 }
-            },
-            {
-                year: "2024",
-                compYear: "2021",
-                hkYear: "2024",
-                compModel: "Primacy A/S",
-                compSlogan: "Next generation touring - optimized for electric prestige vehicles",
-                compBrochure: {
-                    compound: "Eco-Focus Low-Resist Compound (지속가능 배합)",
-                    tech: "Acoustic Tech (타이어 내측 특수 폴리우레탄 흡음 폼 장착)",
-                    treadwear: "UTQG 540 / A A",
-                    focus: "Eco-efficiency, low rolling resistance and silent EV touring comfort"
-                },
-                compScores: { dry_grip: 8.5, wet_grip: 8.5, hydro_resist: 8.4, comfort_noise: 9.5, tread_life: 8.9, efficiency: 8.8 },
-                hkModel: "Kinergy XP (H315)",
-                hkSlogan: "The ultimate grand touring all-season passenger tire providing premium comfort, quietness, and extreme durability",
-                hkBrochure: {
-                    compound: "Advanced Silica-Rich Compound with Odor-free Pure Oils (친환경 정제 오일 및 실리카 함량 극대화 고마모 컴팩트 배합)",
-                    tech: "Cor輻-Sipe Technology & Knurling Acoustic System (눈길 견인력 제어용 3D 톱니형 사이프 및 패턴 소음 소멸 널링 오토 기술)",
-                    treadwear: "UTQG 700 / A A (75,000마일 압도적 워런티 보증)",
-                    focus: "Extreme tire tread longevity (75k miles), whisper-quiet cabin acoustics, and wet/snow grip safety"
-                },
-                hkScores: { dry_grip: 8.6, wet_grip: 8.5, hydro_resist: 8.4, comfort_noise: 9.4, tread_life: 9.6, efficiency: 8.5 }
-            }
-        ],
-        evolutionDirection: {
-            gen1_to_gen2: "미쉐린은 MXM4에서 Tour A/S로 넘어오며 노면 소음 주파수를 정밀 제어하는 '피아노 튜닝 소음 패턴'을 고도화하여 실내 정숙성을 전면에 내세웠습니다. 한국타이어는 Optimo H426에서 프리미엄 UHP 투어링 성격을 가미한 Ventus S1 noble2로 세대 교체하며 단순 안락한 주행에서 탈피해 고속 조종 안정성 및 스포츠 핸들링 그립 성능을 보강했습니다.",
-            gen2_to_gen3: "Tour A/S에서 Primacy A/S로 전환하며 미쉐린은 전기차 및 고급 세단의 저소음을 위해 'Acoustic 흡음 폼' 및 구름저항 15% 감축을 달성했습니다. 이에 맞서 한국타이어는 기존 Ventus S1 AS의 뛰어난 컴포트 가치 위에 차세대 그랜드 투어링 신제품인 Kinergy XP(H315)를 2024년 투입하며 눈길 견인용 톱니형 3D 사이프와 소음 소멸 널링 기술을 적용했습니다. 특히 최적의 컴파운드 설계로 마일리지를 동급 최고 수준인 UTQG 700(미쉐린 540 대비 압도적 우위)까지 연장하는 독보적인 실용 명품 세대교체를 이룩했습니다.",
-            comparisonSummary: "미쉐린 Primacy는 극단적인 실내 음향 노이즈 흡수(Acoustic Foam)와 럭셔리한 실크 라이딩 질감에 역량을 맞추는 반면, 한국타이어 Kinergy XP는 프리미엄 조종 반응을 든든하게 받치면서 트레드 마일리지 수명을 극대화(UTQG 700)하는 초장수명 컴포트 투어링 밸런스에 압도적인 장점이 있습니다."
-        },
-        insights: {
-            past: "미주 대륙 특성에 부합하는 부드러운 직진 고속 주행감 및 기본 사계절 견인력 보장에 전력 투구.",
-            present: "정숙성 소음 주파수 상쇄 패턴 설계 및 전기차 타이어 전용 내장 우레탄 흡음 패드(Acoustic) 전폭 도입.",
-            future: "바이오 대체 오일(해바라기유 등) 및 재생 고무 배합비 45% 돌파, 초고하중(HL) EV 규격 최적화 서스펜션 질감 융합."
-        },
-        proposal: "미쉐린 Primacy의 우수한 흡음 질감에 대응하기 위해, 당사 Ventus S1 AS 및 iON 시리즈의 우레탄 흡음 패드 부착 자동화 신공정(소리 부착 신공법)을 고도화하고, 겨울철 눈길/젖은 노면 제동력을 추가 확보할 수 있는 저온 전용 해바라기씨유 친환경 가황제 배합 기술을 신속하게 양산화해야 합니다."
+        proposal: "미쉐린 PS5의 일관된 마모 성능 한계에 대응하기 위해, 당사는 마모 한계 시점(트레드 깊이 30% 이하)에서도 젖은 노면 그립 소실을 5% 이내로 제어하는 '다층 컴파운드 기술(Multi-layer Compound)' 및 가황 컴파운드 배합 다각화를 R&D 최우선 과제로 지정하여 개발하여야 합니다."
     },
     Continental_Sport: {
         brand: "Continental",
@@ -1036,7 +945,7 @@ const TIRE_EVOLUTION_DATABASE = {
                 compModel: "WinterContact TS860",
                 compSlogan: "Cool precision - master snow, rain, and ice with maximum grip",
                 compBrochure: {
-                    compound: "Cool Chili Compound (가황 습윤 제동 극대화 수지 혼합)",
+                    compound: "Cool Chili Compound (가황 젖은 노면 제동 극대화 수지 혼합)",
                     tech: "Liquid Layer Drainage (빙판 수막을 탈출시키는 미세 흡수 유로)",
                     treadwear: "Winter-rated / No UTQG",
                     focus: "Wet-winter asphalt braking excellence and snow groove cornering"
@@ -1086,7 +995,7 @@ const TIRE_EVOLUTION_DATABASE = {
             present: "유럽 겨울철 복합 기후(눈길+젖은 노면+건조 블랙아이스) 상쇄를 위한 복합 사이프 마이크로 패터닝 집중.",
             future: "친환경 재생 바이오 레진 사용량 50% 이상 돌파, 중하중 고출력 고토크 EV 겨울철 트랙션 한계 보강."
         },
-        proposal: "콘티넨탈 WinterContact TS870의 독보적인 저온 습윤 제동 및 겨울철 수명 마일리지 밸런스에 대항하여, 당사 iON Winter 및 Winter i*cept evo3의 겨울철 고속 주행 시 열/응력 집중에 따른 컴파운드 찢김 방지 3D 인터로킹 윈터 사이프 설계를 고도화하고 친환경 고유성 천연 오일 수급 플랫폼을 확보해야 합니다."
+        proposal: "콘티넨탈 WinterContact TS870의 독보적인 저온 젖은 노면 제동 및 겨울철 수명 마일리지 밸런스에 대항하여, 당사 iON Winter 및 Winter i*cept evo3의 겨울철 고속 주행 시 열/응력 집중에 따른 컴파운드 찢김 방지 3D 인터로킹 윈터 사이프 설계를 고도화하고 친환경 고유성 천연 오일 수급 플랫폼을 확보해야 합니다."
     },
     Pirelli_Sport: {
         brand: "Pirelli",
