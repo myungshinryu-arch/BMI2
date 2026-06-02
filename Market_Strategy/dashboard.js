@@ -406,16 +406,23 @@ const BRAND_IR_METADATA = {
 
 class TireDashboard {
     constructor() {
-        this.db = window.TIRE_DATABASE;
+        this.db = window.TIRE_DATABASE || (typeof TIRE_DATABASE !== 'undefined' ? TIRE_DATABASE : null);
+        
+        if (!this.db) {
+            console.warn("[TireDashboard] TIRE_DATABASE is not defined! Initializing with empty dataset.");
+            this.db = [];
+        }
         
         // Scale database dynamically by 100x to represent realistic market scales (k units)
         this.db.forEach(item => {
-            Object.keys(item.yearlyData).forEach(year => {
-                if (!item.yearlyData[year]._scaled) {
-                    item.yearlyData[year].sales = parseFloat((item.yearlyData[year].sales * 100).toFixed(1));
-                    item.yearlyData[year]._scaled = true;
-                }
-            });
+            if (item && item.yearlyData) {
+                Object.keys(item.yearlyData).forEach(year => {
+                    if (item.yearlyData[year] && !item.yearlyData[year]._scaled) {
+                        item.yearlyData[year].sales = parseFloat((item.yearlyData[year].sales * 100).toFixed(1));
+                        item.yearlyData[year]._scaled = true;
+                    }
+                });
+            }
         });
         this.charts = {};
         this.sortColumn = 'combined';
@@ -429,8 +436,8 @@ class TireDashboard {
         this.form = document.getElementById('filter-form');
         this.sourceSelect = document.getElementById('filter-source');
         this.brandSelect = document.getElementById('filter-brand') || { value: 'all' };
-        this.segmentSelect = document.getElementById('filter-segment');
-        this.yearSelect = document.getElementById('filter-year'); // 단일 분석 연도 필터
+        this.segmentSelect = document.getElementById('filter-segment') || { value: 'all' };
+        this.yearSelect = document.getElementById('filter-year') || { value: '2026' }; // 단일 분석 연도 필터
         this.metricSelect = document.getElementById('filter-metric') || { value: 'revenue' }; // 신규 지표 기준 필터
         this.resetBtn = document.getElementById('btn-reset-filters');
         this.searchInput = document.getElementById('model-search');
