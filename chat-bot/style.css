@@ -681,10 +681,10 @@ body {
 }
 
 .gemini-active-glow {
-  background: rgba(59, 130, 246, 0.08) !important;
-  border-color: var(--secondary) !important;
-  color: var(--secondary) !important;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.15) !important;
+  background: rgba(255, 111, 0, 0.04) !important;
+  border-color: rgba(255, 111, 0, 0.18) !important;
+  color: var(--primary) !important;
+  box-shadow: 0 1px 0 rgba(255, 111, 0, 0.12) !important;
 }
 
 
@@ -863,15 +863,15 @@ body {
   font-size: 0.85rem;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 8px;
-  border: 1px solid rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.15);
   overflow: hidden;
 }
 .msg-bubble table th {
-  background: rgba(59, 130, 246, 0.08);
-  color: var(--secondary);
+  background: rgba(249, 115, 22, 0.08);
+  color: var(--primary);
   font-weight: 800;
   padding: 8px 12px;
-  border-bottom: 1.5px solid rgba(59, 130, 246, 0.15);
+  border-bottom: 1.5px solid rgba(249, 115, 22, 0.15);
   text-align: left;
 }
 .msg-bubble table td {
@@ -901,7 +901,7 @@ body {
   margin-bottom: 0;
 }
 .msg-bubble blockquote {
-  border-left: 3px solid var(--secondary);
+  border-left: 3px solid var(--primary);
   padding-left: 12px;
   color: var(--text-muted);
   margin: 8px 0;

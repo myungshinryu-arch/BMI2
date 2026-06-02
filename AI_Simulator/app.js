@@ -31,18 +31,44 @@
     let btnReset = null;
     let tabButtons = null;
 
-    // API Base URLs - Automatically route ports if running from local environment to fastapi port 8000, else to Render
-    let API_BASE =
-        window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1")
-            ? "http://localhost:8000"
-            : "https://bmi2-api.onrender.com"; // Render 배포 후 이 URL을 실제 Render 배포 URL로 변경해 주세요 (예: https://bmi2-api.onrender.com)
+    // API Base URLs - Automatically route to local or Cloud Run backends
+    const MAIN_PROD_API_BASE = "https://bmi2-api-235631437371.asia-northeast3.run.app";
+    const RENDER_FALLBACK_API_BASE = "https://bmi2-api.onrender.com";
+
+    const isLocal = window.location.hostname.includes("localhost") || 
+                    window.location.hostname.includes("127.0.0.1") || 
+                    window.location.protocol === "file:";
+
+    let API_BASE = isLocal ? "http://localhost:8000" : MAIN_PROD_API_BASE;
     let API_SPEC = `${API_BASE}/api/data-spec`;
     let API_PREDICT = `${API_BASE}/api/predict`;
     let API_ADVISOR = `${API_BASE}/api/ai-advisor`;
     let API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
     let API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
 
-    const FALLBACK_API_BASE = "https://bmi2-api.onrender.com";
+    let FALLBACK_API_BASE = isLocal ? MAIN_PROD_API_BASE : RENDER_FALLBACK_API_BASE;
+
+    // API Failure Logger conforming to Requirement 6
+    async function logApiFailure(url, response, error, fallbackUsed) {
+        let statusCode = "N/A";
+        let responseText = "N/A";
+        if (response) {
+            statusCode = response.status;
+            try {
+                responseText = await response.text();
+            } catch (e) {
+                responseText = "Error reading response text: " + e.message;
+            }
+        } else if (error) {
+            responseText = error.message || String(error);
+        }
+        console.error("=== API Call Failure ===");
+        console.error("- Request URL:", url);
+        console.error("- HTTP Status Code:", statusCode);
+        console.error("- Response Text:", responseText);
+        console.error("- Fallback Used:", fallbackUsed ? "Yes" : "No");
+        console.error("========================");
+    }
 
     // Global toast notifier helper
     window.showToast = function(message) {
@@ -92,11 +118,15 @@
         let response;
         try {
             response = await fetch(API_SPEC);
-            if (!response.ok) throw new Error("Could not fetch data spec");
+            if (!response.ok) {
+                await logApiFailure(API_SPEC, response, null, API_BASE !== FALLBACK_API_BASE);
+                throw new Error("Could not fetch data spec");
+            }
         } catch (localError) {
-            // If local connection fails, fallback to production Render backend dynamically
+            // If local connection fails, fallback to production backend dynamically
             if (API_BASE !== FALLBACK_API_BASE) {
-                console.warn(`Local FastAPI backend (${API_BASE}) is not running. Automatically falling back to production Render backend (${FALLBACK_API_BASE})...`);
+                console.warn(`Local FastAPI backend (${API_BASE}) is not running. Automatically falling back to production backend (${FALLBACK_API_BASE})...`);
+                
                 API_BASE = FALLBACK_API_BASE;
                 API_SPEC = `${API_BASE}/api/data-spec`;
                 API_PREDICT = `${API_BASE}/api/predict`;
@@ -104,8 +134,16 @@
                 API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
                 API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
                 
-                response = await fetch(API_SPEC);
-                if (!response.ok) throw new Error("Could not fetch data spec from production fallback server");
+                try {
+                    response = await fetch(API_SPEC);
+                    if (!response.ok) {
+                        await logApiFailure(API_SPEC, response, null, true);
+                        throw new Error("Could not fetch data spec from fallback server");
+                    }
+                } catch (fallbackError) {
+                    await logApiFailure(API_SPEC, null, fallbackError, true);
+                    throw fallbackError;
+                }
                 
                 // Show a helpful toast notifying that the system is running using fallback backend
                 setTimeout(() => {
@@ -114,6 +152,7 @@
                     }
                 }, 1000);
             } else {
+                await logApiFailure(API_SPEC, response || null, localError, false);
                 throw localError;
             }
         }
@@ -136,6 +175,7 @@
                 cachedBenchmarkSummaryList = await summaryResponse.json();
                 console.log(`[Performance] Loaded ${cachedBenchmarkSummaryList.length} benchmark summary items via API`);
             } else {
+                await logApiFailure(API_BENCHMARK_SUMMARY, summaryResponse, null, false);
                 throw new Error("Benchmark summary response not ok");
             }
         } catch (err) {
@@ -408,11 +448,15 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recipe: currentRecipe })
             });
-            if (!response.ok) throw new Error("Prediction API failed");
+            if (!response.ok) {
+                await logApiFailure(API_PREDICT, response, null, API_BASE !== FALLBACK_API_BASE);
+                throw new Error("Prediction API failed");
+            }
         } catch (e) {
-            // If local connection fails, fallback to production Render backend dynamically
+            // If local connection fails, fallback to production backend dynamically
             if (API_BASE !== FALLBACK_API_BASE) {
                 console.warn(`Local Prediction API call failed. Retrying with fallback production server...`);
+                await logApiFailure(API_PREDICT, response || null, e, true);
                 API_BASE = FALLBACK_API_BASE;
                 API_SPEC = `${API_BASE}/api/data-spec`;
                 API_PREDICT = `${API_BASE}/api/predict`;
@@ -426,12 +470,17 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ recipe: currentRecipe })
                     });
-                    if (!response.ok) throw new Error("Prediction API failed on fallback production server");
+                    if (!response.ok) {
+                        await logApiFailure(API_PREDICT, response, null, true);
+                        throw new Error("Prediction API failed on fallback production server");
+                    }
                 } catch (retryErr) {
+                    await logApiFailure(API_PREDICT, response || null, retryErr, true);
                     console.error("Simulation error on fallback production server:", retryErr);
                     return;
                 }
             } else {
+                await logApiFailure(API_PREDICT, response || null, e, false);
                 console.error("Simulation error:", e);
                 return;
             }
@@ -1578,9 +1627,14 @@
                             ref.avgData.temps = await detailRes.json();
                             console.log(`[Performance] Lazy-loaded detail temps for ID: ${ref.id}`);
                         } else {
+                            await logApiFailure(detailUrl, detailRes, null, false);
                             throw new Error("Detail fetch response not ok");
                         }
                     } catch (detailErr) {
+                        if (detailErr.message !== "Detail fetch response not ok") {
+                            const detailUrl = `${API_BENCHMARK_DETAIL}?id=${encodeURIComponent(ref.id)}`;
+                            await logApiFailure(detailUrl, null, detailErr, false);
+                        }
                         console.error("Failed to lazy load detail for benchmark:", ref.id, detailErr);
                         ref.avgData.temps = {}; // empty fallback
                     }
@@ -2361,17 +2415,21 @@
                     distribution_bounds: distributionBounds
                 };
 
-                try {
+                 try {
                     response = await fetch(API_ADVISOR, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    if (!response.ok) throw new Error("AI Advisor request failed");
+                    if (!response.ok) {
+                        await logApiFailure(API_ADVISOR, response, null, API_BASE !== FALLBACK_API_BASE);
+                        throw new Error("AI Advisor request failed");
+                    }
                 } catch (advisorError) {
-                    // If local connection fails, fallback to production Render backend dynamically
+                    // If local connection fails, fallback to production backend dynamically
                     if (API_BASE !== FALLBACK_API_BASE) {
                         console.warn(`Local AI Advisor API call failed. Retrying with fallback production server...`);
+                        await logApiFailure(API_ADVISOR, response || null, advisorError, true);
                         API_BASE = FALLBACK_API_BASE;
                         API_SPEC = `${API_BASE}/api/data-spec`;
                         API_PREDICT = `${API_BASE}/api/predict`;
@@ -2379,12 +2437,20 @@
                         API_BENCHMARK_SUMMARY = `${API_BASE}/api/benchmark/summary`;
                         API_BENCHMARK_DETAIL = `${API_BASE}/api/benchmark/detail`;
 
-                        response = await fetch(API_ADVISOR, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (!response.ok) throw new Error("AI Advisor request failed on fallback production server");
+                        try {
+                            response = await fetch(API_ADVISOR, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            if (!response.ok) {
+                                await logApiFailure(API_ADVISOR, response, null, true);
+                                throw new Error("AI Advisor request failed on fallback production server");
+                            }
+                        } catch (retryErr) {
+                            await logApiFailure(API_ADVISOR, response || null, retryErr, true);
+                            throw retryErr;
+                        }
 
                         setTimeout(() => {
                             if (window.showToast) {
@@ -2392,6 +2458,7 @@
                             }
                         }, 1000);
                     } else {
+                        await logApiFailure(API_ADVISOR, response || null, advisorError, false);
                         throw advisorError;
                     }
                 }

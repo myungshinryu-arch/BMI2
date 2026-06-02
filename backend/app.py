@@ -525,6 +525,22 @@ class ReportRequest(BaseModel):
     model: str
     context_data: dict
 
+@app.get("/api/health")
+async def get_health():
+    try:
+        from llm_client import is_initialized
+        llm_available = is_initialized
+    except Exception:
+        llm_available = False
+        
+    return {
+        "ok": True,
+        "service": "BMI2 API",
+        "models_loaded": model is not None,
+        "benchmark_loaded": len(benchmark_summary) > 0,
+        "llm_available": llm_available
+    }
+
 @app.get("/api/llm/health")
 async def get_llm_health():
     try:

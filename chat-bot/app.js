@@ -258,10 +258,36 @@ function setupChatMessenger() {
       rule_based_result: typeof performAiNaturalQuery === 'function' ? performAiNaturalQuery(text) : null
     };
 
-    const API_BASE = window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1") || window.location.protocol === "file:"
-      ? "http://localhost:8000"
-      : "";
+    // API Failure Logger conforming to Requirement 6
+    async function logApiFailure(url, response, error, fallbackUsed) {
+      let statusCode = "N/A";
+      let responseText = "N/A";
+      if (response) {
+        statusCode = response.status;
+        try {
+          responseText = await response.text();
+        } catch (e) {
+          responseText = "Error reading response text: " + e.message;
+        }
+      } else if (error) {
+        responseText = error.message || String(error);
+      }
+      console.error("=== API Call Failure ===");
+      console.error("- Request URL:", url);
+      console.error("- HTTP Status Code:", statusCode);
+      console.error("- Response Text:", responseText);
+      console.error("- Fallback Used:", fallbackUsed ? "Yes" : "No");
+      console.error("========================");
+    }
 
+    const MAIN_PROD_API_BASE = "https://bmi2-api-235631437371.asia-northeast3.run.app";
+    const RENDER_FALLBACK_API_BASE = "https://bmi2-api.onrender.com";
+
+    const isLocal = window.location.hostname.includes("localhost") || 
+                    window.location.hostname.includes("127.0.0.1") || 
+                    window.location.protocol === "file:";
+
+    let API_BASE = isLocal ? "http://localhost:8000" : MAIN_PROD_API_BASE;
     const targetUrl = API_BASE + '/api/llm/chat';
     const payload = {
       query: text,
@@ -274,51 +300,92 @@ function setupChatMessenger() {
 
     const startTime = performance.now();
 
-    fetch(targetUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      const endTime = performance.now();
-      const elapsedSec = (endTime - startTime) / 1000;
-      
-      console.log(`[LLM] Response received in ${elapsedSec.toFixed(3)}s`);
-      console.log("[LLM] Response Data:", data);
-
+    async function handleResponse(resData, elapsedSec) {
       typingIndicator.style.display = 'none';
-      if (data.status === 'success' && data.response) {
+      if (resData.status === 'success' && resData.response) {
         console.log("[LLM] Gemini response used");
-        const parsedResponse = parseMarkdown(data.response);
-        appendMessage('bot', parsedResponse, 'gemini', elapsedSec, data.grounding_used, data.sources, data.badge);
+        const parsedResponse = parseMarkdown(resData.response);
+        appendMessage('bot', parsedResponse, 'gemini', elapsedSec, resData.grounding_used, resData.sources, resData.badge);
       } else {
-        const errDesc = data.message || "Unknown error";
+        const errDesc = resData.message || "Unknown error";
         console.warn("[LLM] fallback used", errDesc);
         const answerHtml = performAiNaturalQuery(text);
         appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700; margin-bottom: 8px;"><i class="fa-solid fa-triangle-exclamation"></i> Gemini API 연결 또는 연산 제한으로 로컬Fallback 모델로 답변합니다.</p>` + answerHtml, 'fallback', elapsedSec);
       }
       scrollToBottom();
-    })
-    .catch(error => {
-      const endTime = performance.now();
-      const elapsedSec = (endTime - startTime) / 1000;
+    }
 
-      console.warn("[LLM] fallback used", error);
-      console.log(`[LLM] Request failed in ${elapsedSec.toFixed(3)}s`);
+    async function tryFetchChat(url, isFallback) {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        await logApiFailure(url, res, null, isFallback);
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    }
 
-      typingIndicator.style.display = 'none';
-      const answerHtml = performAiNaturalQuery(text);
-      appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700; margin-bottom: 8px;"><i class="fa-solid fa-triangle-exclamation"></i> 네트워크 장애 또는 에러가 발생하여 로컬 지능형 모델(Fallback)로 답변합니다.</p>` + answerHtml, 'fallback', elapsedSec);
-      scrollToBottom();
-    });
+    async function performChatSequence() {
+      try {
+        const data = await tryFetchChat(targetUrl, false);
+        const endTime = performance.now();
+        const elapsedSec = (endTime - startTime) / 1000;
+        await handleResponse(data, elapsedSec);
+      } catch (err) {
+        // Fallback sequence
+        if (isLocal) {
+          const fallbackUrl1 = MAIN_PROD_API_BASE + '/api/llm/chat';
+          console.warn(`Local API failed. Retrying with Cloud Run fallback: ${fallbackUrl1}`);
+          try {
+            const data = await tryFetchChat(fallbackUrl1, true);
+            const endTime = performance.now();
+            const elapsedSec = (endTime - startTime) / 1000;
+            await handleResponse(data, elapsedSec);
+            return;
+          } catch (fbErr1) {
+            const fallbackUrl2 = RENDER_FALLBACK_API_BASE + '/api/llm/chat';
+            console.warn(`Cloud Run fallback failed. Retrying with Render fallback: ${fallbackUrl2}`);
+            try {
+              const data = await tryFetchChat(fallbackUrl2, true);
+              const endTime = performance.now();
+              const elapsedSec = (endTime - startTime) / 1000;
+              await handleResponse(data, elapsedSec);
+              return;
+            } catch (fbErr2) {
+              // all remote options failed, use local rule-based fallback
+              await logApiFailure(fallbackUrl2, null, fbErr2, true);
+            }
+          }
+        } else {
+          // On production, retry with Render fallback
+          const fallbackUrl2 = RENDER_FALLBACK_API_BASE + '/api/llm/chat';
+          console.warn(`Cloud Run API failed. Retrying with Render fallback: ${fallbackUrl2}`);
+          try {
+            const data = await tryFetchChat(fallbackUrl2, true);
+            const endTime = performance.now();
+            const elapsedSec = (endTime - startTime) / 1000;
+            await handleResponse(data, elapsedSec);
+            return;
+          } catch (fbErr2) {
+            await logApiFailure(fallbackUrl2, null, fbErr2, true);
+          }
+        }
+
+        // Rule-based local fallback execution
+        const endTime = performance.now();
+        const elapsedSec = (endTime - startTime) / 1000;
+        console.warn("[LLM] fallback used", err);
+        typingIndicator.style.display = 'none';
+        const answerHtml = performAiNaturalQuery(text);
+        appendMessage('bot', `<p style="color:var(--accent-orange); font-weight:700; margin-bottom: 8px;"><i class="fa-solid fa-triangle-exclamation"></i> 네트워크 장애 또는 에러가 발생하여 로컬 지능형 모델(Fallback)로 답변합니다.</p>` + answerHtml, 'fallback', elapsedSec);
+        scrollToBottom();
+      }
+    }
+
+    performChatSequence();
   }
 
   chatInput.addEventListener('keydown', (e) => {
