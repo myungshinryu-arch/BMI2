@@ -180,7 +180,7 @@ ${JSON.stringify(COMPANY_KNOWLEDGE_CONTEXT, null, 2)}
 `;
 
   try {
-    const apiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeApiKey}`;
+    const apiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${activeApiKey}`;
     
     const requestBody = {
       contents: [
@@ -218,7 +218,7 @@ ${JSON.stringify(COMPANY_KNOWLEDGE_CONTEXT, null, 2)}
       const aiResponseText = data.candidates[0].content.parts[0].text;
       return res.json({ 
         status: "success", 
-        model: "gemini-1.5-flash",
+        model: "gemini-2.5-flash",
         response: aiResponseText 
       });
     } else {

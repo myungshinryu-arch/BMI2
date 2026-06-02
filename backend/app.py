@@ -1,7 +1,15 @@
+import sys
 import os
 import pickle
 import json
 from pathlib import Path
+
+# Force UTF-8 stdout/stderr encoding on Windows to prevent Unicode/cp949 print crashes
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='backslashreplace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='backslashreplace')
+
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException
@@ -499,6 +507,275 @@ async def run_ai_advisor(req: AdvisorRequest):
             "report": f"### ❌ AI Advisor Error (Debug Mode)\n\n**Error Message:** `{str(e)}`\n\n**Traceback:**\n```python\n{tb}\n```",
             "optimized_recipe": {}
         }
+
+
+# ==========================================
+# Google Vertex AI Gemini LLM Integration API
+# ==========================================
+
+class LLMTestRequest(BaseModel):
+    prompt: str
+
+class ChatRequest(BaseModel):
+    query: str
+    context: dict = None
+
+class ReportRequest(BaseModel):
+    brand: str
+    model: str
+    context_data: dict
+
+@app.get("/api/llm/health")
+async def get_llm_health():
+    try:
+        from llm_client import is_initialized, MODEL_NAME, PROJECT_ID, LOCATION
+        return {
+            "ok": True,
+            "initialized": is_initialized,
+            "model": MODEL_NAME,
+            "project": PROJECT_ID,
+            "location": LOCATION
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"LLM Client Module Import Error: {str(e)}")
+
+@app.post("/api/llm/test")
+async def post_llm_test(req: LLMTestRequest):
+    from llm_client import call_gemini, is_initialized
+    if not is_initialized:
+        raise HTTPException(status_code=503, detail="Vertex AI is not initialized on the server.")
+    try:
+        response_text = call_gemini(req.prompt)
+        return {"ok": True, "text": response_text}
+    except Exception as e:
+        import logging
+        logger = logging.getLogger("app")
+        logger.error(f"Error in /api/llm/test: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Gemini model call failed.")
+
+@app.post("/api/llm/chat")
+async def post_llm_chat(req: ChatRequest):
+    import logging
+    import json
+    logger = logging.getLogger("app")
+    
+    # Direct stdout print to guarantee terminal visibility
+    print(f"\n[FastAPI API_CHAT] ===============================================")
+    print(f"[FastAPI API_CHAT] Received user query: '{req.query}'")
+    print(f"[FastAPI API_CHAT] ===============================================")
+    
+    logger.info(f"[LLM CHAT] === Received user query: '{req.query}' ===")
+    
+    from llm_client import call_gemini, is_initialized
+    if not is_initialized:
+        logger.error("[LLM CHAT] Vertex AI is not initialized on the server.")
+        print("[FastAPI API_CHAT] Error: Vertex AI is not initialized on the server.")
+        raise HTTPException(status_code=503, detail="Vertex AI is not initialized on the server.")
+        
+    try:
+        query_lower = req.query.lower()
+        
+        # A. Internal-only keywords (force local RAG)
+        internal_keywords = [
+            "시뮬레이터", "simulator", "wet 제동", "제동 성능", "ares", "곡선", "curve", 
+            "물성", "score", "점수", "조견표", "실험", "레시피", "recipe", "처방"
+        ]
+        
+        # B. External-only keywords (activate google search grounding)
+        external_keywords = [
+            "최신", "최근", "출시", "예상", "동향", "뉴스", "로드맵", "언제", "전망", "특허", 
+            "투자", "공장", "파트너십", "차세대", "2025", "2026", "2027", "2028", "시장", "트렌드",
+            "뉴스레터", "업계 소식", "경쟁사 동향", "출시년도", "출시일", "예상 출시", "차세대 상품",
+            "후속 모델", "경쟁사 신제품", "제품 로드맵", "공식 발표", "보도자료", "기사 기반",
+            "후속", "uhp", "라인업", "기술 전략", "전략 차이", "신제품", "비교", "차이", "매출액", "매출",
+            "defender", "michelin", "미쉐린", "한국타이어", "hankook"
+        ]
+        
+        is_internal_only = any(kw in query_lower for kw in internal_keywords)
+        is_external_query = any(kw in query_lower for kw in external_keywords) or not is_internal_only
+        
+        logger.info(f"[LLM CHAT] Query Routing Result: is_external_query={is_external_query}")
+        
+        bi_news_context = ""
+        news_list = req.context.get("news_data", []) if req.context else []
+        has_internal_data = False
+        
+        if news_list and is_external_query:
+            matched_news = []
+            news_keywords = ["미쉐린", "michelin", "한국", "hankook", "친환경", "소재", "ev", "전기차", "실리카", "silica", "출시", "기술", "공장", "동향", "트렌드", "전략", "uhp", "라인업"]
+            matched_kw = [kw for kw in news_keywords if kw in query_lower]
+            
+            for news in news_list:
+                news_content = ""
+                if isinstance(news, dict):
+                    news_content = f"{news.get('title', '')} {news.get('content', '')} {news.get('summary', '')} {news.get('excerpt', '')}"
+                elif isinstance(news, str):
+                    news_content = news
+                
+                if any(kw in news_content.lower() for kw in matched_kw):
+                    matched_news.append(news)
+                    if len(matched_news) >= 5:
+                        break
+                        
+            if matched_news:
+                bi_news_context = "이하의 사내 수집 최신 BI News 데이터입니다. 질문과 연관성이 높은 내부 뉴스이므로, 외부 정보보다 이 사내 뉴스의 팩트를 최우선 참고하십시오:\n" + json.dumps(matched_news, ensure_ascii=False, indent=2) + "\n\n"
+                has_internal_data = True
+
+        context_str = ""
+        if req.context:
+            filtered_context = {k: v for k, v in req.context.items() if k != "news_data"}
+            if any(v for v in filtered_context.values() if v):
+                has_internal_data = True
+            context_str = f"이하의 지식 베이스(참고 데이터)를 기반으로 답변해 주세요:\n{json.dumps(filtered_context, ensure_ascii=False, indent=2)}\n\n"
+        
+        prompt = (
+            "당신은 사내 BM-Intelligence 데이터와 외부 Web Grounding을 유기적으로 모두 활용하는 최고 지능의 Hybrid 타이어 벤치마킹 AI 분석 에이전트(Gemini 2.5)입니다.\n\n"
+            "**[하이브리드 분석 원칙]**\n"
+            "1. 너는 내부 BM-Intelligence 데이터와 외부 Web Grounding을 모두 활용하는 Hybrid 타이어 벤치마킹 AI다.\n"
+            "2. 내부 데이터에 없는 질문도 즉시 포기하지 말고, 최신성/외부 정보가 필요한 경우 Web Grounding을 사용한다.\n"
+            "3. 내부 데이터, 일반 지식, Web Grounding 결과를 구분해서 사용한다.\n"
+            "4. 제공된 사내 내부 컨텍스트 데이터(RAG 및 매칭된 BI News)에 해당 정보가 존재한다면 최우선 팩트로 삼아 활용하십시오.\n"
+            "5. 절대 내부 데이터에 매칭되는 제품 정보가 없다고 해서 '내부 데이터 기준 확인되지 않습니다'로 끝내거나 성의 없이 답변을 즉시 종료하거나 포기하지 마십시오. 먼저 Gemini 일반 추론 + Web Grounding을 시도하십시오.\n"
+            "6. 공식 확인 정보와 추정 정보를 명확히 구분한다. 사용자가 예상을 물으면 공식 정보가 없는 경우에도 세대교체 주기 등 근거 기반 추정 범위를 제시하되, 추정임을 명확히 표시한다. 단, 근거 없는 숫자나 출시일을 단정하지 않는다.\n\n"
+            "**[엄격한 톤앤매너 및 문체 규칙]**\n"
+            "1. 절대 어떠한 인사말(예: 안녕하세요), 자기소개(예: 'BM-Intelligence Portal의 최고 AI 에이전트입니다' 등)도 포함하지 마십시오.\n"
+            "2. '고객님', '문의해 주세요'와 같은 대고객 상담사 말투는 절대 금지합니다. 철저히 사내 임원 보고 및 전문 연구원 보고용 비즈니스 분석 문서 톤(입니다, 확인됩니다 등)을 사용하십시오.\n"
+            "3. 한 문장을 지나치게 길게 쓰지 말고, 단문 위주로 작성하십시오.\n"
+            "4. 답변 전체의 길이는 불필요한 서술 없이 핵심만 압축하여 기본 8~12줄 이내로 매우 간결하게 제안하십시오.\n"
+            "5. 내부 데이터와 Web Grounding 검색 결과가 충돌하는 경우, 공식 출처 또는 최신 날짜의 자료를 우선하여 답변하되, 자료 작성 기준이나 시점에 따라 차이가 있을 수 있음을 주석 등으로 간결히 명시하십시오.\n\n"
+            "**[질문 유형별 답변 형식 양식]**\n"
+            "사용자의 질문 유형을 판단하여 반드시 아래 4가지 양식 중 하나를 선택해 완벽히 일치하도록 답변을 출력하십시오.\n\n"
+            "--- [형식 1. 단순 수치 질문] ---\n"
+            "(예: 특정 매출액, 점수, 성능, PHR 수치 질문)\n"
+            "- 결론: 질문에 대해 수치와 핵심 사실을 포함한 단 1줄의 문장\n"
+            "- 핵심 수치 표:\n"
+            "  | 구분 | 수치 | 비고 |\n"
+            "  |---|---|---|\n"
+            "  (마크다운 테이블 형태로 핵심 수치를 정리)\n"
+            "- 출처: 1줄 기술 (예: '참고 출처: 내부 데이터 (dashboard_data)' 또는 '참고 출처: Web Grounding (Google Search)')\n\n"
+            "--- [형식 2. 비교 질문] ---\n"
+            "(예: 두 브랜드, 모델, 기술의 차이, 장단점 비교 대조 질문)\n"
+            "- 결론: 두 대상의 핵심 차이점과 강점을 명확히 요약한 1~2문장의 결론\n"
+            "- 비교 요약 표:\n"
+            "  | 구분 | 대상 A | 대상 B |\n"
+            "  |---|---|---|\n"
+            "  (마크다운 테이블 형태로 작성)\n"
+            "- 시사점: 당사에 주는 비즈니스/기술적 제언 1~2문장\n\n"
+            "--- [형식 3. 최신 뉴스/R&D 동향 질문] ---\n"
+            "(예: 최신 트렌드, 시장 동향, 업계 주요 전략 뉴스 질문)\n"
+            "- 결론: 동향 전체를 통찰력 있게 요약한 단 1문장\n"
+            "- 핵심 동향 (딱 3개의 Bullet 포인트로 정리, 각 Bullet은 단 1문장으로 작성):\n"
+            "  * [소재/기술 동향] 내용 1줄\n"
+            "  * [경쟁사 동향] 내용 1줄\n"
+            "  * [시장 트렌드] 내용 1줄\n"
+            "- 당사 시사점: 향후 R&D나 상품 기획 관점의 당사 대응 방안 1~2문장\n"
+            "- 참고 출처: 간략히 표시\n\n"
+            "--- [형식 4. 내부 데이터 및 확실한 근거에 없는 질문] ---\n"
+            "(예: 미출시 제품의 예상 출시일, 미기록 스펙 등 정보가 없거나 불확실할 때)\n"
+            "- 결론: 공식 출시일이 확인되는지 선제적으로 명시하십시오. 공식 출시일이 불확실하다면 단정하지 않되, 기존 세대 모델들의 구체적인 출시 이력 및 라인업 세대교체 주기 흐름을 기반으로 논리적으로 산출된 예상 가능 범위를 합리적으로 기술하십시오.\n"
+            "- 관련 확인된 정보: Web Grounding이나 일반 지식을 통해 확인된 기존 모델의 출시 년도나 최신 동향 1~2개 서술\n"
+            "- 추가 확인이 필요한 데이터: 의사결정이나 팩트 확인을 위해 향후 관찰이 필요한 데이터 유형 명시\n"
+            "- 참고 출처: 구글 검색 등의 참고 문헌 표시\n\n"
+            f"{bi_news_context}"
+            f"{context_str}"
+            f"사용자 질문: {req.query}"
+        )
+        
+        logger.info(f"[LLM CHAT] Forwarding query to Gemini model via llm_client...")
+        print("[FastAPI API_CHAT] Forwarding query to Gemini via llm_client...")
+        
+        res_dict = None
+        try:
+            if is_external_query:
+                logger.info(f"[LLM CHAT] Attempting chat call with Google Search Grounding enabled...")
+                res_dict = call_gemini(prompt, enable_grounding=True, return_dict=True)
+            else:
+                logger.info(f"[LLM CHAT] Attempting chat call with internal RAG context only...")
+                res_dict = call_gemini(prompt, enable_grounding=False, return_dict=True)
+        except Exception as grounding_err:
+            if is_external_query:
+                logger.warning(f"[LLM CHAT] Google Search Grounding failed: {grounding_err}. Bypassing search and falling back to internal context...")
+                print(f"[FastAPI API_CHAT] Search Grounding FAILED. Bypassing search and trying internal fallback...")
+                res_dict = call_gemini(prompt, enable_grounding=False, return_dict=True)
+            else:
+                raise grounding_err
+                
+        response_text = res_dict["text"]
+        logger.info(f"[LLM CHAT] Gemini call successful for query: '{req.query}'")
+        print(f"[FastAPI API_CHAT] Gemini call successful!")
+        print(f"[FastAPI API_CHAT] Response preview: {response_text[:120]}...")
+        print(f"[FastAPI API_CHAT] Grounding used: {res_dict['grounding_used']}, Sources count: {len(res_dict['sources'])}")
+        print(f"[FastAPI API_CHAT] ===============================================\n")
+        
+        badge = "internal"
+        if res_dict.get("grounding_used"):
+            if has_internal_data:
+                badge = "hybrid"
+            else:
+                badge = "web"
+        else:
+            badge = "internal"
+
+        return {
+            "status": "success", 
+            "response": response_text,
+            "grounding_used": res_dict["grounding_used"],
+            "sources": res_dict["sources"],
+            "badge": badge
+        }
+    except Exception as e:
+        logger.error(f"[LLM CHAT] Gemini call failed for query '{req.query}': {e}", exc_info=True)
+        print(f"[FastAPI API_CHAT] Gemini call FAILED: {str(e)}")
+        print(f"[FastAPI API_CHAT] ===============================================\n")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/llm/report")
+async def post_llm_report(req: ReportRequest):
+    from llm_client import call_gemini, is_initialized
+    if not is_initialized:
+        raise HTTPException(status_code=503, detail="Vertex AI is not initialized on the server.")
+    try:
+        prompt = (
+            "당신은 타이어 R&D 및 R&D 마케팅 전략을 통합 분석하는 최고의 AI 전략 컨설턴트입니다.\n"
+            f"대상 브랜드: {req.brand}\n"
+            f"대상 모델: {req.model}\n"
+            "제공된 대시보드 데이터(Tire BM, Comp'd BM, BI News, AI Simulator의 컨텍스트)를 기반으로 임원 보고용 통합 분석 리포트를 정밀하게 작성해 주세요.\n"
+            "절대로 임의의 거짓 정보(hallucination)를 만들어내지 마시고, 반드시 제공된 실제 화면 데이터 기준으로만 작성해야 합니다.\n"
+            "데이터가 부족하거나 없는 영역은 '해당 세그먼트 데이터 부족으로 표기를 생략함' 등 솔직하게 명시하고 억지로 거짓 지표를 창작하지 마십시오.\n\n"
+            f"제공된 데이터 컨텍스트:\n{json.dumps(req.context_data, ensure_ascii=False, indent=2)}\n\n"
+            "출력은 반드시 완벽한 JSON 포맷이어야 합니다. Markdown 블록(```json ... ```)을 사용하지 않고 오직 순수한 JSON 문자열만 반환해야 합니다. "
+            "응답의 구조는 정확히 아래와 같은 JSON 형태여야 하며, 각 필드의 내용을 성실히 한국어로 작성해 주세요.\n"
+            "{\n"
+            '  "title": "통합 벤치마킹 분석 리포트",\n'
+            '  "executive_summary": "현재 대시보드 데이터를 요약한 임원 보고용 핵심 요약 문단 (3~4줄 내외)",\n'
+            '  "key_findings": ["주요 핵심 분석 결과 1", "주요 핵심 분석 결과 2", "주요 핵심 분석 결과 3"],\n'
+            '  "market_insights": ["시장 경쟁 구도 및 브랜드 위치 관련 통찰 1", "시장 경쟁 구도 관련 통찰 2"],\n'
+            '  "technical_insights": ["컴파운드 물성 또는 시뮬레이터 관련 기술적 분석 1", "물성/성능 밸런스 관련 기술적 분석 2"],\n'
+            '  "recommended_actions": ["한국타이어가 경쟁 우위를 확보하기 위해 실행해야 할 구체적인 전략 제언 1", "실행 제언 2"],\n'
+            '  "risk_notes": ["시장 진입 장벽 또는 기술적 한계, 리스크 요인 1", "리스크 요인 2"]\n'
+            "}"
+        )
+        
+        response_text = call_gemini(prompt, json_mode=True)
+        
+        try:
+            report_json = json.loads(response_text)
+            return report_json
+        except json.JSONDecodeError:
+            import re
+            cleaned_text = response_text.strip()
+            if cleaned_text.startswith("```"):
+                cleaned_text = re.sub(r"^```(?:json)?\n?", "", cleaned_text)
+                cleaned_text = re.sub(r"\n?```$", "", cleaned_text)
+            cleaned_text = cleaned_text.strip()
+            report_json = json.loads(cleaned_text)
+            return report_json
+            
+    except Exception as e:
+        import logging
+        logger = logging.getLogger("app")
+        logger.error(f"Error in /api/llm/report: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Serve frontend static assets if available (checks directory existence to avoid startup crash)
