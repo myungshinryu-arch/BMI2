@@ -442,14 +442,728 @@
         { brand: 'Continental', current: 'CrossContact LX25', launch: '2019년 Q3', next: 'CrossContact LX30', target: '2026년 Q2 (PLC 6.8년)' },
         { brand: 'Bridgestone', current: 'Alenza AS Ultra', launch: '2022년 Q3', next: 'Alenza AS Ultra 2', target: '2028년 Q3 (PLC 6.0년)' }
       ]
+    },
+    k135: {
+      id: 'k135',
+      tireName: 'Ventus Prime 4 (K135) 후속 R&D 전략',
+      currentModel: 'Ventus Prime 4 (K135)',
+      segmentName: '프리미엄 투어링 여름용 (Premium Summer Comfort Touring)',
+      targetMarket: '유럽 및 글로벌 중대형 프리미엄 세단, 친환경 패밀리카 및 컴팩트 크루저',
+      competitorName: 'MICHELIN Primacy 4+',
+      nextCompetitorName: 'MICHELIN Primacy 5 (차세대)',
+      avgPlcYears: 6.0,
+      compCurrentLaunchYear: 2022,
+      targetLaunchQuarter: '2028 Q2 전격 출시 예상',
+      targetLaunchCalc: '경쟁사 프리미엄 컴포트 세그먼트 가중 평균 PLC(6.0년) 및 미쉐린 Primacy 4+(2022년 출시) 대비 차세대 Primacy 5의 유럽 출시 주기(2028년 초)를 대조 분석하여, 2028년 상반기 내 유럽 프리미엄 OE 수주와 RE 교체 시장 적기 진입 목표 수립',
+      totalCapex: '₩31,000,000,000 (310억 원)',
+      priorityFocusText: '본 세그먼트(Premium Summer Comfort)의 최우선 R&D 타겟은 [젖은 노면 제동성능(Wet Grip) 극대화 및 마모 수명(Wear Life) 대폭 연장]입니다. 유럽 기후 환경 특성상 빗길 슬립 방지와 고속 주행 시 트레드 마모 마일리지 균일성을 최적화하면서, 승차감(Comfort)과의 트레이드오프를 재료 설계 단계에서 돌파해야 합니다.',
+      kpis: [
+        { label: '타겟 세그먼트', value: 'Premium Summer Comfort', icon: 'fa-sun' },
+        { label: '경쟁사 차세대 출시일', value: '2028 Q2 (PLC 6.0년)<br><small style="font-size:0.75rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;"><i class="fa-solid fa-circle-chevron-right"></i> 미쉐린 Primacy 5 (4+ 후속)</small>', icon: 'fa-timeline' },
+        { label: '목표 라벨링 및 최우선 성능', value: 'Wet: A / RR: B / Noise: 68dB<br><small style="font-size:0.72rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;line-height:1.25;"><i class="fa-solid fa-star"></i> 최우선: Wet 제동성능 & Wear 마모 극대화</small>', icon: 'fa-gauge-high' },
+        { label: 'R&D 및 Capex 투자 제안', value: '₩31B (310억 원)', icon: 'fa-sack-dollar' }
+      ],
+      grounds: [
+        { title: '유럽 환경 규제 및 웨트 그립 지배력 강화', text: '유럽 연합 내 타이어 등급제 및 유로 7 규제 대응을 위해 Wet Grip A등급 하한선 돌파와 마모 분진 발생 감소 기술을 동시에 확보하여 지속 가능한 수출 성장을 견인해야 합니다.' },
+        { title: '마모 수명(Wear Life)의 세대 교체 달성', text: '기존 K135는 핸들링과 제동력에서 긍정적 평가를 받았으나, 중장거리 주행 비중이 매우 높은 유럽 투어링 타이어 RE 시장에서 경쟁 모델인 미쉐린 Primacy 시리즈 대비 마모 수명 향상을 강력히 원하는 시장 니즈를 수용합니다.' },
+        { title: '고감도 정숙성 및 노면 진동 차단', text: '프리미엄 투어링 세단의 품격에 어울리는 극상의 정숙성(68dB 이하)과 노면 미세 진동을 완충할 카카스 완충 고무 레이어 성형 기술 도입이 필요합니다.' }
+      ],
+      refReports: [
+        { id: 18, title: 'Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과', docNo: '57049336-B0-HQ25-00037', drafter: '김상현', date: '2025.09.12', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1', summary: '기존 Asymmetric 5 대비 타이어 구조 자체를 경량화하고 사이드월 고무 배합을 최적화하여 초저구름저항(ULRR)을 획득함과 동시에, 급격한 조타 시 접지 형상이 가변적으로 넓어져 노면 압력을 균일하게 분산시키고 스포츠 제동력을 극대화하는 \'드라이 콘택트 패치\' 기술을 실현함. 또한 미세 요철 그립 확보를 위해 젖은 노면 특화 레진 중합 분산 공법을 완벽히 적용함.', insight: 'K135 후속 개발 시, 주행 시 가변적으로 접지면을 넓히는 가변 프로파일 형상 설계 및 고분산 레진 기술 적용이 필요합니다.' },
+        { id: 58, title: 'Michelin Premium Summer Sport 신상품 (Pilot Sport 5) Benchmarking 결과 보고', docNo: '57049336-B0-HQ23-00045', drafter: '박진욱', date: '2023.06.07', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2023/06/AC004_1.nsf/vdockey/2023060715231412107CC427E4E1F8492589C700230892?opendocument&ismobile=0%26popup=1', summary: '가감속 및 코너링 시 접지면 전 영역에 걸쳐 가해지는 접지압을 완벽히 균일하게 분배하는 \'맥스타치 컨스트럭션\' 기술을 적용하여 스포츠 그립을 최대로 향상시키는 동시에 트레드 마모 수명을 동급 최고 수준(UTQG 320 마일리지)으로 확보함. 내측의 넓은 가로 홈 배수 성능과 외측의 고강성 솔리드 블록 구조를 결합한 \'듀얼 스포츠 트레드 디자인\'으로 성능 간 상충을 물리적으로 극복함.', insight: '자사 기존 K135의 강점인 마일리지 우위를 유지하면서 조종 응답성 지표를 극대화하기 위해, 인공지능(AI) 기반 접지압 최적 형상 최적화 설계 모델링(MaxTouch 설계 개념) 고도화 및 최적 접지 면적 제어 공법 접목이 강력히 타당함.' },
+        { id: 14, title: 'Continental APAM Summer 신상품 Max Contact MC7 Benchmarking 결과 보고', docNo: '57049336-B0-HQ25-00043', drafter: '박진욱', date: '2025.10.31', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/2025103013121174187A22AF8303E149258D33001713BC?opendocument%26popup=1', summary: '고온다습한 아시아태평양(APAM) 기후 환경에 최적화하여 실리카 가교를 고점도 폴리머에 균일 중합한 \'스포츠컴플렉스\' 컴파운드로 강력한 젖은 노면/마른 노면 제동 한계를 공고히 함. 또한 메인 세로 홈 내측에 원통형 소음 파쇄기를 다단 배치한 \'노이즈 브레이커 3.0\' 설계로 주행 공기 압축 소음을 산란시켜 NVH 성능을 기존 대비 1.5dB 대폭 저감함.', insight: 'K135 후속 개발 시 정숙성 부문의 경쟁사 우위를 완전하게 점하기 위해, 트레드 홈 내에 가변형 공기 소음 절삭형 노이즈 배리어를 성형하는 패턴 구조 설계를 도입하고 고온다습 기후에 타겟팅된 고온 접지 유지 고분산 배합 기술을 결합해야 함.' }
+      ],
+      chartData: {
+        labels: ['Dry Grip', 'Wet Grip', 'Hydroplaning', 'Comfort', 'Wear Life (Treadwear)', 'Rolling Resistance'],
+        currentHK: [9.1, 9.2, 8.8, 9.2, 8.7, 8.9],
+        competitorCurrent: [9.2, 9.5, 9.0, 9.3, 9.3, 9.1],
+        targetNext: [9.4, 9.6, 9.2, 9.4, 9.5, 9.3]
+      },
+      scoreCalculationBasis: {
+        title: '성능 지표 평점 산출 및 계산 근거',
+        methodology: '유럽 프리미엄 컴포트 시장의 규격을 타겟으로, 자사 및 미쉐린 Primacy 4+ 벤치마킹 데이터를 정량적 물성 스케일링 기법(10점 만점)으로 정규화하여 산출한 수치입니다.',
+        details: [
+          { name: '자사 현행 평점', text: 'K135 규격별 실차 컴포트 평가 및 빗길 제동 시험 데이터를 10점 만점 척도로 변환.' },
+          { name: '경쟁사 현행 평점', text: '유럽 TÜV SÜD 및 ADAC 프리미엄 컴포트 테스트 데이터와 분자 밀도 가교 계측 결과 반영.' },
+          { name: '자사 차세대 R&D 목표', text: '경쟁 현행 Primacy 4+ 대비 마모 수명(Wear Life) 및 젖은 노면 제동력(Wet Grip) 우위 확보 시뮬레이션 최적치.' }
+        ],
+        metrics: [
+          {
+            metric: 'Dry Grip (건조 노면 제동/그립)',
+            scores: { currentHK: 9.1, competitorCurrent: 9.2, targetNext: 9.4 },
+            formula: 'S = 10 - [ (D_actual - 33.5) / (39.0 - 33.5) ] * 10',
+            description: '건조 노면 실차 제동 거리(100km/h → 0, m) 및 선회 횡G 계측 기반.'
+          },
+          {
+            metric: 'Wet Grip (젖은 노면 제동력)',
+            scores: { currentHK: 9.2, competitorCurrent: 9.5, targetNext: 9.6 },
+            formula: 'S = 10 - [ (W_actual - 24.5) / (30.0 - 24.5) ] * 10',
+            description: '수심 1mm 빗길 제동 거리(80km/h → 0, m) 및 유럽 Wet Grip 등급 연계 수치.'
+          },
+          {
+            metric: 'Hydroplaning (수막 저항)',
+            scores: { currentHK: 8.8, competitorCurrent: 9.0, targetNext: 9.2 },
+            formula: 'S = (V_actual / 95.0) * 10',
+            description: '수심 8mm 직선 수막 진입 임계 속도(V_crit, km/h) 및 배출 속도 성능.'
+          },
+          {
+            metric: 'Comfort (승차감 및 진동 흡수)',
+            scores: { currentHK: 9.2, competitorCurrent: 9.3, targetNext: 9.4 },
+            formula: 'S = (75 - dB_pass) * 1.2',
+            description: '소음(dB) 및 가속도(g) 감쇄율 가중 평점 기반 실차 승차감 평가치.'
+          },
+          {
+            metric: 'Wear Life (트레드 마모 수명)',
+            scores: { currentHK: 8.7, competitorCurrent: 9.3, targetNext: 9.5 },
+            formula: 'S = (Mileage_actual / 50,000) * 10',
+            description: '유럽 표준 마모 주행 시험을 통한 편마모 억제 및 수명 마일리지.'
+          },
+          {
+            metric: 'Rolling Resistance (구름 저항)',
+            scores: { currentHK: 8.9, competitorCurrent: 9.1, targetNext: 9.3 },
+            formula: 'S = 12.0 - RRC_actual',
+            description: '실내 정밀 드럼 계측 RRC(kg/t) 연료 효율 연계 수치.'
+          }
+        ]
+      },
+      gaps: [
+        { name: 'Wear Life (트레드 마모 수명)', current: 8.7, target: 9.5, percent: -8.4, level: 'Danger', desc: '자사 차세대 R&D 목표 성능 대비 -8.4% 갭입니다. 중장거리 투어링 수명 보강을 위해 하이-시스테인 SBR 고가교 중합체 배합 및 고압착 혼련 가동이 시급합니다.' },
+        { name: 'Wet Grip (빗길 수막 제동 마찰력)', current: 9.2, target: 9.6, percent: -4.2, level: 'Warning', desc: '자사 차세대 R&D 목표 성능 대비 -4.2% 갭입니다. 아쿠아파인(AquaPine) 천연 수지 배합 최적화와 친수성 실리카 극성 분산 화학 결합 밀도를 극상으로 상향 설계해야 합니다.' },
+        { name: 'Rolling Resistance (구름 저항)', current: 8.9, target: 9.3, percent: -4.3, level: 'Warning', desc: '연료 효율 등급 상향을 위한 RRC 갭입니다. 사이드월 경량 보강 코드 적용 및 이너라이너 두께 편차를 축소하여 회전저항을 감쇄해야 합니다.' }
+      ],
+      skuStrategy: {
+        rims: '16인치 ~ 20인치 프리미엄 컴포트 세단 주력 매핑 (17~18인치 비중 65% 이상 볼륨 대응)',
+        ratio: '30% OE (유럽 폭스바겐, 아우디, 스코다 컴팩트 세단 및 EV 해치백) / 70% RE',
+        sizes: '205/55R16, 215/55R17, 225/45R17, 225/50R17, 225/45R18, 235/45R18, 245/45R18, 245/40R19',
+        desc: '유럽 컴팩트~중대형 승용 볼륨 교체 수요를 선점하기 위해 초편평비보다는 승차감과 긴 수명에 중점을 둔 깊은 트레드 홈 깊이(8.0mm 표준) 기반의 라인업을 가동. 친환경 내연기관 및 전동화 패밀리카 겸용을 위해 내하중 가중(XL) 규격을 라인업의 45% 이상 포지셔닝 추천.'
+      },
+      labelingTargets: {
+        rr: 'B',
+        rrBg: 'linear-gradient(135deg, #22c55e, #10b981)',
+        wet: 'A',
+        wetBg: 'linear-gradient(135deg, #16a34a, #15803d)',
+        noise: '68 dB',
+        noiseClass: 'A 등급'
+      },
+      capex: [
+        {
+          title: '적용 기술 제안 (Core Tech)',
+          color: 'blue',
+          icon: 'fa-laptop-code',
+          items: [
+            'AquaPine 천연 소나무 레진 컴파운더 기용으로 빗길 미세 요철 접지 확보 및 친수 접지 면적 활성화.',
+            '비드부 변형을 방지할 수 있는 비드 와이어 가이드 성형 기술을 도입하여 선회 핸들링 횡강성 보완.',
+            '소음 주파수를 산란시키는 다단 가변 피치 시퀀스 기하 패턴 적용으로 실외 Pass-by 소음 최소화.'
+          ]
+        },
+        {
+          title: '신규 R&D 기술 과제',
+          color: 'green',
+          icon: 'fa-flask-vial',
+          items: [
+            '내마모 특화 고밀도 하이-시스테인 SBR 고가교 분중합체 기술 및 기능성 실리카 커플링 가황 반응 제안.',
+            '수막현상 극복과 배수 효율 최적화를 위한 3D 가변 횡홈 몰드 형상 기하학 설계.',
+            '연비 마진 극대화를 위해 사이드월 게이지 극박화 정밀 배치 및 케이싱 컴팩트 구조 기술 적용.'
+          ]
+        },
+        {
+          title: '공정 설비 및 Capex 투자 안 (Capex Strategy)',
+          color: 'orange',
+          icon: 'fa-industry',
+          items: [
+            '<strong>고밀도 실리카 배합용 트윈 스크류 연속 혼련기(Twin-Screw Continuous Mixer) 도입</strong>: 고농도 실리카 컴파운드 분산과 투어링 수명 향상을 위한 압출 혼련 공정 투자 (투자: ₩150억).',
+            '<strong>초정밀 3D 미세 사이프(Sipe) 몰드 가공 시스템 구축</strong>: 빗길 제동력과 블록 응력을 지탱할 수 있는 특화 Sipe 가변 몰드 제작 CNC 레이저 설비 증설 (투자: ₩90억).',
+            '<strong>박게이지 이너라이너 연속 압축 압착 성형 라인</strong>: 회전저항 감쇄를 위해 이너라이너 두께 편차를 축소하는 연속 로터 압축 압착 설비 고도화 (투자: ₩70억).'
+          ]
+        }
+      ],
+      competitors3: [
+        { brand: 'Michelin', current: 'Primacy 4+', launch: '2022년 Q1', next: 'Primacy 5', target: '2028년 Q2 (PLC 6.0년)' },
+        { brand: 'Continental', current: 'PremiumContact 7', launch: '2022년 Q4', next: 'PremiumContact 8', target: '2028년 Q2 (PLC 5.5년)' },
+        { brand: 'Bridgestone', current: 'Turanza T005', launch: '2018년 Q1', next: 'Turanza T006', target: '2026년 Q1 (PLC 8.0년)' }
+      ]
+    },
+    h446: {
+      id: 'h446',
+      tireName: 'Kinergy EX (H446) 후속 R&D 전략',
+      currentModel: 'Kinergy EX (H446)',
+      segmentName: '글로벌 이코노미 올시즌 실용형 (Standard Passenger All-Season)',
+      targetMarket: '글로벌 컴팩트 카, 소형 소형 SUV, 내수 및 글로벌 가성비 중시 RE 교체 수요',
+      competitorName: 'MICHELIN Energy Saver4',
+      nextCompetitorName: 'MICHELIN Energy Saver5 (차세대)',
+      avgPlcYears: 6.8,
+      compCurrentLaunchYear: 2020,
+      targetLaunchQuarter: '2027 Q3 전격 출시 예상',
+      targetLaunchCalc: '실용 마일리지 세그먼트의 긴 제품 수명 주기(평균 6.8년) 및 경쟁사 대표 친환경/실용 모델의 2020년 출시 주기를 추적하여, 2027년 중순 이후 완전히 고부가가치화된 차세대 Saver5 시장 포지셔닝에 맞춘 자사 고가성비 극대마일리지 교체 시장 장악 전략 수립',
+      totalCapex: '₩15,000,000,000 (150억 원)',
+      priorityFocusText: '본 세그먼트(Economy All-Season)의 최우선 R&D 타겟은 [초고장수명 마모 마일리지(UTQG 600+) 확보 및 실용적 경제성 제어]입니다. 엔트리 등급에서도 장거리 가혹 마모 편차를 최소화하고 균일한 접지압 배분을 극대화하여 마일리지 효율을 높이면서, 자사 특유의 우수한 소음 분산(NVH) 능력을 유지해야 합니다.',
+      kpis: [
+        { label: '타겟 세그먼트', value: 'Economy Passenger All-Season', icon: 'fa-gas-pump' },
+        { label: '경쟁사 차세대 출시일', value: '2027 Q3 (PLC 6.8년)<br><small style="font-size:0.75rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;"><i class="fa-solid fa-circle-chevron-right"></i> 미쉐린 Energy Saver5 (Saver4 후속)</small>', icon: 'fa-timeline' },
+        { label: '목표 라벨링 및 최우선 성능', value: 'Wet: B / RR: C / Noise: 70dB<br><small style="font-size:0.72rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;line-height:1.25;"><i class="fa-solid fa-star"></i> 최우선: UTQG 600+ 마일리지 & 가성비 제조원가 제어</small>', icon: 'fa-piggy-bank' },
+        { label: 'R&D 및 Capex 투자 제안', value: '₩15B (150억 원)', icon: 'fa-sack-dollar' }
+      ],
+      grounds: [
+        { title: '고마일리지 가성비 RE 교체 마켓 대응', text: '물가 상승 및 고금리 장기화로 리테일 RE 마켓에서 초고마일리지를 보장하면서도 합리적 가격대를 갖춘 보급형 사계절 타이어의 교체 수요가 급증함에 따라 성능과 원가 양립이 강력히 요구됩니다.' },
+        { title: '보급형 카본 블랙 하이브리드 혼련 물성 극대화', text: '비싼 고상 친수 실리카 배합률을 경제적으로 조율하면서도, 구조적 가황 온도 분산을 통해 트레드 고무의 미세 인장강도를 높이는 카본-실리카 하이브리드 컴파운드 기술의 고도화가 핵심입니다.' },
+        { title: '숄더 강성 보강을 통한 이상 편마모 원천 차단', text: '엔트리급 차량 특성상 서스펜션 정렬 오차 등으로 인한 트레드 외측 조기 마모(편마모)가 다수 보고되어, 숄더 블록의 기하학적 면적을 보강하여 균일 마모를 유지하도록 설계 개선합니다.' }
+      ],
+      refReports: [
+        { id: 47, title: '북미 SUV 신상품(UTQG Treadwear 800) Benchmarking 결과 보고', docNo: '57049336-B0-HQ24-00014', drafter: '송호영', date: '2024.03.18', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/03/AC004_1.nsf/vdockey/20240318094233F64D6D21C2F21FE149258AE40003DF48?opendocument&ismobile=0%26popup=1', summary: '북미 장거리 투어링 마켓 타겟으로 트레드웨어 800 수준의 초고내내마모 에버트레드 기술 확보 분석. 실리카와 폴리머 결합력을 극대화하여 드럼 시험 시 미세 탈락을 억제하는 인터록 고가교 공중합체.', insight: '마일리지 극대화를 위해 분입 혼련 연속 가동 시스템 접목과 가황 시간 조율이 강력히 타당함.' },
+        { id: 83, title: '북미용 Performance Touring SUV 상품 개발을 위한 Benchmarking 분석 보고 (1차)', docNo: '57049336-B0-HQ21-00032', drafter: '송호영', date: '2021.11.29', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/2021112510082399927CDDD25DBE804925879800063E19?opendocument&ismobile=0%26popup=1', summary: '대형 SUV에 맞추어 주행 소음 피치를 전면 분산 설계한 가변 블록 기술. 급차선 변경 시 대형 차체 롤링을 제어하기 위해 비드 턴업을 극대화하고 고강성 필러 고무를 기용한 조종안정성 확보.', insight: '엔트리 세단용 트레드 소음 제어를 위해 가변 피치 배치 적용 및 숄더 차단 패턴 디자인 도입.' },
+        { id: 25, title: 'Michelin LT(Pick up Highway Terrain)상품 분석 결과 (Defender LTX M/S 2 & Defender LTX Platinum)', docNo: '57049336-B0-HQ25-00017', drafter: '김상현', date: '2025.05.23', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/05/AC004_1.nsf/vdockey/20250523090314C0A841075111E67C49258C9300004930?opendocument&ismobile=0%26popup=1', summary: '고하중 고적재 및 험로 하에서도 8만 마일 초장수명을 유지하는 에버트레드 2.0 강결합 폴리머 화합물. 접지압을 센터와 숄더에 균등 분산하여 편마모를 방지하는 맥스프레셔 카카스 프로파일.', insight: '보급형 타이어 접지압 균등화를 위해 센터/숄더압 최적 프로파일 설계 가이드 적용이 타당함.' }
+      ],
+      chartData: {
+        labels: ['Treadwear Life', 'Wet Braking', 'Dry Grip', 'Ride Comfort', 'Pattern Noise', 'Value Price'],
+        currentHK: [8.2, 7.8, 8.0, 8.5, 8.4, 9.2],
+        competitorCurrent: [8.8, 8.2, 8.1, 8.4, 8.2, 8.5],
+        targetNext: [9.4, 8.4, 8.3, 8.7, 8.6, 9.4]
+      },
+      scoreCalculationBasis: {
+        title: '성능 지표 평점 산출 및 계산 근거',
+        methodology: '글로벌 엔트리 가성비 세그먼트의 특수성을 고려하여, 북미 UTQG 마모 실측 등급 및 경쟁 친환경 모델의 실차 대조 성능 데이터를 기반으로 10점 만점 척도로 선형 변환하였습니다.',
+        details: [
+          { name: '자사 현행 평점', text: 'H446 실차 마모 드럼 테스트 데이터 및 북미/유럽 유저 사용 마일리지 대조 분석 반영.' },
+          { name: '경쟁사 현행 평점', text: '미쉐린 Energy Saver4의 북미 실 마모 계측치 및 보급형 세그먼트 원가 구조 추적 대조.' },
+          { name: '자사 차세대 R&D 목표', text: '제한적인 설비 비용 하에서 트레드 마모 수명(Treadwear Rating 620)을 확보하기 위한 최적 성능 목표치.' }
+        ],
+        metrics: [
+          {
+            metric: 'Treadwear Life (마모 보증 수명)',
+            scores: { currentHK: 8.2, competitorCurrent: 8.8, targetNext: 9.4 },
+            formula: 'S = (Treadwear_Rating / 650) * 10',
+            description: '실차 주행 약 6만 마일 이상 보증을 달성하기 위한 편마모 방어 및 고내구 컴파운드 척도.'
+          },
+          {
+            metric: 'Wet Braking (빗길 제동력)',
+            scores: { currentHK: 7.8, competitorCurrent: 8.2, targetNext: 8.4 },
+            formula: 'S = 10 - [ (W_actual - 28.0) / (35.0 - 28.0) ] * 10',
+            description: '수심 1mm 빗길 실차 제동 거리(80km/h → 0, m) 및 습윤 배수 유량 계측.'
+          },
+          {
+            metric: 'Dry Grip (건조 노면 제동)',
+            scores: { currentHK: 8.0, competitorCurrent: 8.1, targetNext: 8.3 },
+            formula: 'S = 10 - [ (D_actual - 35.0) / (40.0 - 35.0) ] * 10',
+            description: '건조 노면 실차 제동 거리 및 블록 횡력 저항 평점.'
+          },
+          {
+            metric: 'Ride Comfort (진동 감쇄 승차감)',
+            scores: { currentHK: 8.5, competitorCurrent: 8.4, targetNext: 8.7 },
+            formula: 'S = (75 - dB_pass) * 1.1',
+            description: '실차 도로 주행 시 차체 유입 진동 RMS 주파수 분산 지수.'
+          },
+          {
+            metric: 'Pattern Noise (패턴 발생 소음)',
+            scores: { currentHK: 8.4, competitorCurrent: 8.2, targetNext: 8.6 },
+            formula: 'S = (72 - dB_actual) * 1.2',
+            description: '정속 주행 시 가변 피치 형상에 의한 고주파 소음 상쇄성.'
+          },
+          {
+            metric: 'Value Price (가성비 및 제조원가)',
+            scores: { currentHK: 9.2, competitorCurrent: 8.5, targetNext: 9.4 },
+            formula: 'S = [ 1 - (Manufacturing_Cost_actual / Cost_limit) ] * 10',
+            description: 'R&D 처방 원가율 제어 및 가황 생산성 지표 기반 경제성 점수.'
+          }
+        ]
+      },
+      gaps: [
+        { name: 'Treadwear Life (마모 보증 수명)', current: 8.2, target: 9.4, percent: -12.7, level: 'Danger', desc: '자사 차세대 R&D 목표 성능 대비 -12.7% 갭입니다. 고장수명 마일리지를 위해 저발열 이소프렌 폴리머 및 듀얼 압축 가황 공정 제어가 절실히 요구됩니다.' },
+        { name: 'Wet Braking (빗길 제동 마찰력)', current: 7.8, target: 8.4, percent: -7.1, level: 'Warning', desc: '빗길 주행 안전을 위한 제동력 갭입니다. 배수성 극대화를 위해 4채널 메인 스트레이트 그루브 체적 최적 조율과 다중 수평 배수 사이프 성형을 조율해야 합니다.' }
+      ],
+      skuStrategy: {
+        rims: '14인치 ~ 17인치 소형 및 준중형 세단 맞춤 (15~16인치 중심 컴팩트 볼륨 규격 80%)',
+        ratio: '10% OE / 90% RE (가성비 중심 글로벌 리테일 교체 시장 정조준)',
+        sizes: '165/60R14, 175/65R15, 185/65R15, 195/65R15, 205/55R16, 205/60R16, 215/55R17',
+        desc: '엔트리급 차종의 교체 주기를 타겟팅하여 긴 홈 수명을 보장하는 깊은 트레드 깊이(8.2mm) 세팅. 타이어 회전 저항 및 원가 구조를 최적화하여 딜러 마진과 소비자 경제성을 상호 만족하도록 SKU 구성.'
+      },
+      labelingTargets: {
+        rr: 'C',
+        rrBg: 'linear-gradient(135deg, #f59e0b, #d97706)',
+        wet: 'B',
+        wetBg: 'linear-gradient(135deg, #22c55e, #10b981)',
+        noise: '70 dB',
+        noiseClass: 'B 등급'
+      },
+      capex: [
+        {
+          title: '적용 기술 제안 (Core Tech)',
+          color: 'blue',
+          icon: 'fa-laptop-code',
+          items: [
+            'MaxTouch 접지 면적 시뮬레이션을 엔트리 등급에도 기본 처방하여 접지압 집중부 조기 소실 예방.',
+            '아웃사이드 숄더 블록 강성을 튼튼하게 보강하여 저차원 차량에서의 코너링 편마모 억제.',
+            '4채널 메인 직선 홈 배수로 직선 주행 배수량 극대화 및 빗길 수막현상(Hydroplaning) 감쇄.'
+          ]
+        },
+        {
+          title: '신규 R&D 기술 과제',
+          color: 'green',
+          icon: 'fa-flask-vial',
+          items: [
+            '저발열 천연고무 이소프렌 폴리머 배합 개조 및 기가 가황(Curing) 내구성 유지 처방.',
+            '보급형 카본블랙 실리카 결합력(Carbon-Silica Hybrid) 강화를 위한 고분산 화학 결합 반응 제어.',
+            '가황 성형 온도 분산 편차를 제거하여 타이어 전 영역 균일 강도를 사수하는 공정 기술.'
+          ]
+        },
+        {
+          title: '공정 설비 및 Capex 투자 안 (Capex Strategy)',
+          color: 'orange',
+          icon: 'fa-industry',
+          items: [
+            '<strong>습식 마스터배치(Wet Masterbatch) 혼련 가공 라인 개편</strong>: 실리카 고무 사전 분산 슬러리 공급을 활용한 보급형 내마모 극대화 기법 도입 (투자: ₩60억).',
+            '<strong>대용량 고압 압출 성형 및 치수 감제 설비</strong>: 트레드 균일 게이지 가공을 통한 고밀도 내마모 형상 압출 정밀도 확보 (투자: ₩50억).',
+            '<strong>가황 프레스 공정 가압 밸런스 제어 자동화 시스템</strong>: 가황 가압 온도 편차 최소화로 보급형 제품군의 불량률을 극도로 저감하는 개편 (투자: ₩40억).'
+          ]
+        }
+      ],
+      competitors3: [
+        { brand: 'Michelin', current: 'Energy Saver4', launch: '2020년 Q1', next: 'Energy Saver5', target: '2027년 Q3 (PLC 6.8년)' },
+        { brand: 'Continental', current: 'UltraContact', launch: '2022년 Q2', next: 'UltraContact 2', target: '2028년 Q2 (PLC 6.0년)' },
+        { brand: 'Bridgestone', current: 'Ecopia EP150', launch: '2019년 Q3', next: 'Ecopia EP152', target: '2026년 Q3 (PLC 7.0년)' }
+      ]
+    },
+    h472: {
+      id: 'h472',
+      tireName: 'Kinergy GT (H472) 후속 R&D 전략',
+      currentModel: 'Kinergy GT (H472)',
+      segmentName: '프리미엄 사계절 그랜드 투어링 (Premium All-Season Grand Touring)',
+      targetMarket: '글로벌 완성차 메이저 중대형 세단 사계절 OE (내수 및 북미 세단 전용) 및 북미 RE 시장',
+      competitorName: 'MICHELIN Primacy Tour A/S',
+      nextCompetitorName: 'MICHELIN Primacy Tour A/S 2 (차세대)',
+      avgPlcYears: 6.2,
+      compCurrentLaunchYear: 2021,
+      targetLaunchQuarter: '2027 Q4 전격 출시 예상',
+      targetLaunchCalc: '경쟁사 프리미엄 그랜드 투어링 모델의 글로벌 출시 주기(평균 6.2년) 및 미쉐린 Primacy Tour A/S(2021년 출시)의 차세대 모델 2027년 하반기 출시 트렌드를 대조 분석하여, 북미 및 국내 중대형 프리미엄 OE 수주 확보를 위한 선제 개발 로드맵 매핑',
+      totalCapex: '₩23,000,000,000 (230억 원)',
+      priorityFocusText: '본 세그먼트(Premium Grand Touring All-Season)의 최우선 R&D 타겟은 [글로벌 완성차 메이저 OE 정숙성 규격 충족 및 사계절 전천후 제동력 균형]입니다. 혹한기 눈길/빗길 노면 안전과 고속도로 크루징 시 저소음(NVH) 필터링을 조화시키기 위해, 다단 피치 배치와 특화 실리카 컴파운드 분산 제어가 필수적인 과제입니다.',
+      kpis: [
+        { label: '타겟 세그먼트', value: 'Premium Grand Touring All-Season', icon: 'fa-cloud' },
+        { label: '경쟁사 차세대 출시일', value: '2027 Q4 (PLC 6.2년)<br><small style="font-size:0.75rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;"><i class="fa-solid fa-circle-chevron-right"></i> 미쉐린 Primacy Tour A/S 2 (Primacy Tour 후속)</small>', icon: 'fa-timeline' },
+        { label: '목표 라벨링 및 최우선 성능', value: 'Wet: B / RR: B / Noise: 69dB<br><small style="font-size:0.72rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;line-height:1.25;"><i class="fa-solid fa-star"></i> 최우선: 저소음 주행 정숙성 & 사계절 전천후 제동 밸런스</small>', icon: 'fa-shield-halved' },
+        { label: 'R&D 및 Capex 투자 제안', value: '₩23B (230억 원)', icon: 'fa-sack-dollar' }
+      ],
+      grounds: [
+        { title: '글로벌 프리미엄 세단 OE 수주 규격 정복', text: '제네시스, 현대, 기아는 물론 토요타, 혼다 등 글로벌 중대형 프리미엄 세단 OE 사양의 혹독한 주행 소음 가이드라인(실내 공명음 차단)과 사계절 전천후 주행 안정성을 동시에 정밀 충족하기 위해 컴포트 기술 도입이 필요합니다.' },
+        { title: '저온 눈길 그립과 사계절 컴파운드 최적 융합', text: '겨울철 영하 저온 노면에서도 컴파운드가 딱딱하게 경화되지 않고 눈길 제동력을 사수하는 천연 레진 중합 폴리머 및 75% 실리카 분산 조합을 통해 올시즌 안전 등급을 향상합니다.' },
+        { title: '하이웨이 섀시 진동 제어용 프로파일 정밀화', text: '타이어 내부의 공기 진동이 차체를 통해 스티어링 휠로 전달되는 고주파 진동을 소멸하기 위해 사이드월 부위에 고완충 보강 쿠션 패드를 고무 일체형으로 압출 배치합니다.' }
+      ],
+      refReports: [
+        { id: 76, title: 'Michelin All Weather 상품 CrossClimate2 Benchmarking 분석 보고 (2차)', docNo: '57049336-B0-HQ22-00021', drafter: '양승혁', date: '2022.07.21', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/2022071917004638493771301FF34A49258884002C0049?opendocument&ismobile=0%26popup=1', summary: '수막 및 눈길 트랙션을 이상적으로 개선한 방향성 V형 패턴 그루브 설계. 겨울철 저온 고무 유연성과 여름철 고결합 강도를 동시에 달성하여 긴 수명과 그립을 다잡은 열 서보 어댑티브 컴파운드.', insight: '광범위 온도에서 유연성과 결합 강도를 동시 만족하는 열 서보 어댑티브 고강도 합성 기술 접목이 타당함.' },
+        { id: 83, title: '북미용 Performance Touring SUV 상품 개발을 위한 Benchmarking 분석 보고 (1차)', docNo: '57049336-B0-HQ21-00032', drafter: '송호영', date: '2021.11.29', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/2021112510082399927CDDD25DBE804925879800063E19?opendocument&ismobile=0%26popup=1', summary: '대형 SUV에 맞추어 주행 소음 피치를 전면 분산 설계한 가변 블록 기술. 급차선 변경 시 대형 차체 롤링을 제어하기 위해 비드 턴업을 극대화하고 고강성 필러 고무를 기용한 조종안정성 확보.', insight: '정숙 프리미엄 크루징 소음 감쇄를 위해 홈 내측 소음 산란 노이즈 가드 및 가변 다단 피치 배치 설계 고도화.' },
+        { id: 14, title: 'Continental APAM Summer 신상품 Max Contact MC7 Benchmarking 결과 보고', docNo: '57049336-B0-HQ25-00043', drafter: '박진욱', date: '2025.10.31', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/10/AC004_1.nsf/vdockey/2025103013121174187A22AF8303E149258D33001713BC?opendocument%26popup=1', summary: '고온다습한 아시아태평양(APAM) 기후 환경에 최적화하여 실리카 가교를 고점도 폴리머에 균일 중합한 \'스포츠컴플렉스\' 컴파운드로 강력한 젖은 노면/마른 노면 제동 한계를 공고히 함. 또한 메인 세로 홈 내측에 원통형 소음 파쇄기를 다단 배치한 \'노이즈 브레이커 3.0\' 설계로 주행 공기 압축 소음을 산란시켜 NVH 성능을 기존 대비 1.5dB 대폭 저감함.', insight: '공기 압착 소음을 저감하기 위해 메인 그루브 내부 미세 노이즈 브레이커 성형 성형 공정 도입이 가치가 큼.' }
+      ],
+      chartData: {
+        labels: ['All-Season Grip', 'Ride Comfort', 'Pass-by Noise', 'Wet Braking', 'Snow Traction', 'Wear Life'],
+        currentHK: [8.6, 9.2, 9.3, 8.4, 7.8, 8.5],
+        competitorCurrent: [8.9, 9.3, 9.4, 8.8, 8.2, 8.8],
+        targetNext: [9.1, 9.5, 9.6, 9.0, 8.6, 9.0]
+      },
+      scoreCalculationBasis: {
+        title: '성능 지표 평점 산출 및 계산 근거',
+        methodology: '글로벌 프리미엄 OE 정숙성 규격과 동계 주행 안정성을 검증하기 위해, 사내 실차 소음 평가 및 핀란드 스노우 마찰 지수 계측을 10점 만점 단위로 선형 환산하여 연산하였습니다.',
+        details: [
+          { name: '자사 현행 평점', text: 'H472의 무향 챔버 정속 패스바이 실측 소음값 및 윈터 전용 이발로 테스트 스노우 견인력 계측치 매핑.' },
+          { name: '경쟁사 현행 평점', text: '미쉐린 Primacy Tour A/S의 세단 OE 벤치마킹 데이터 및 고주파 주행 데시벨 분석 대조.' },
+          { name: '자사 차세대 R&D 목표', text: '글로벌 OE 메이저 수주 조건 통과를 목표로, 젖은 노면 및 컴포트 정숙 지표 동급 1위를 수립하기 위한 예측 시뮬레이션 결과.' }
+        ],
+        metrics: [
+          {
+            metric: 'All-Season Grip (사계절 전천후 그립)',
+            scores: { currentHK: 8.6, competitorCurrent: 8.9, targetNext: 9.1 },
+            formula: 'S = (G_actual / 0.85) * 10',
+            description: '봄/여름/가을 다양한 기온 하에서의 종합 횡적 마찰 계수 및 노면 홀딩 능력.'
+          },
+          {
+            metric: 'Ride Comfort (주행 정숙성 & 진동 승차감)',
+            scores: { currentHK: 9.2, competitorCurrent: 9.3, targetNext: 9.5 },
+            formula: 'S = (74 - dB_pass) * 1.25',
+            description: '실차 주행 시 시트 및 플로어 하부에 전달되는 주행 진동 감쇄 효율.'
+          },
+          {
+            metric: 'Pass-by Noise (실외 통과 소음)',
+            scores: { currentHK: 9.3, competitorCurrent: 9.4, targetNext: 9.6 },
+            formula: 'S = (72 - dB_actual) * 1.5',
+            description: 'ISO 표준 Pass-by 야외 실외 소음 계측 데시벨 기준(목표 69dB).'
+          },
+          {
+            metric: 'Wet Braking (젖은 노면 제동력)',
+            scores: { currentHK: 8.4, competitorCurrent: 8.8, targetNext: 9.0 },
+            formula: 'S = 10 - [ (W_actual - 25.0) / (32.0 - 25.0) ] * 10',
+            description: '빗길 가중 제동 거리 및 배수 방해 억제 패턴 계측 성능.'
+          },
+          {
+            metric: 'Snow Traction (눈길 구동 트랙션)',
+            scores: { currentHK: 7.8, competitorCurrent: 8.2, targetNext: 8.6 },
+            formula: 'S = (Snow_Index / 115) * 10',
+            description: '혹한기 눈길 슬립각 제어 및 구동 견인 가속 지수(Snow Index).'
+          },
+          {
+            metric: 'Wear Life (트레드 마모 마일리지)',
+            scores: { currentHK: 8.5, competitorCurrent: 8.8, targetNext: 9.0 },
+            formula: 'S = (UTQG_Treadwear / 550) * 10',
+            description: '북미 보증 약 5만 마일 보증을 위한 가황 가공 품질 및 균일 마모 척도.'
+          }
+        ]
+      },
+      gaps: [
+        { name: 'Snow Traction (눈길 견인 및 전단력)', current: 7.8, target: 8.6, percent: -9.3, level: 'Danger', desc: '차세대 R&D 목표 대비 -9.3% 갭입니다. 핀란드 이발로(Ivalo) 눈길 시험 기반의 미세 지그재그 다각 사이프(Z-Sipe) 설계 및 고탄성 친수 폴리머 합성 보강이 요구됩니다.' },
+        { name: 'Wet Braking (빗길 제동 마찰력)', current: 8.4, target: 9.0, percent: -6.7, level: 'Warning', desc: '빗길 배수성 극대화 및 미끄럼 억제 갭입니다. 트레드 내부 메인 가로 그루브의 가변 경사각 단면 설계를 적용해 수막현상을 선제 배출해야 합니다.' },
+        { name: 'Ride Comfort (주행 정숙성 & 진동 승차감)', current: 9.2, target: 9.5, percent: -3.2, level: 'Warning', desc: '정숙 주행 컴포트 갭입니다. 트레드 홈 내에 가변형 공기 소음 절삭 노이즈 배리어를 성형하는 입체 가공 기술이 도입되어야 합니다.' }
+      ],
+      skuStrategy: {
+        rims: '16인치 ~ 21인치 프리미엄 투어링 OE 대응 (18~20인치 중심 중대형 세단용 비중 75% 구성)',
+        ratio: '50% OE (제네시스 G80/G90, 그랜저, 글로벌 세단 OE 대응) / 50% RE',
+        sizes: '215/55R17, 225/55R17, 235/45R18, 245/45R18, 245/45R19, 245/40R19, 245/40R20, 245/35R21',
+        desc: '장거리 투어링의 조용함과 고속 주행 시 롤링 억제를 보장하도록 고경성 비드 필러 사양의 80여 개 하이엔드 규격을 선제 구성. 특히 정숙성 특화를 위해 내벽 폼 접착 대응용 전용 케이싱 세팅 지원.'
+      },
+      labelingTargets: {
+        rr: 'B',
+        rrBg: 'linear-gradient(135deg, #22c55e, #10b981)',
+        wet: 'B',
+        wetBg: 'linear-gradient(135deg, #22c55e, #10b981)',
+        noise: '69 dB',
+        noiseClass: 'A 등급'
+      },
+      capex: [
+        {
+          title: '적용 기술 제안 (Core Tech)',
+          color: 'blue',
+          icon: 'fa-laptop-code',
+          items: [
+            '소음 배출을 물리적으로 산란 억제시키는 가변 비대칭형 다단 피치(Pitch) 디자인 시퀀스 적용.',
+            '비드 턴업 높이를 극대화하여 고출력 세단의 급격한 조타 시 차체 요동을 단단히 구속하는 설계.',
+            '사이드월 중앙부에 고유 소음 흡수 고충격 쿠션 고무를 삽입하여 고속도로 잔진동 필터링.'
+          ]
+        },
+        {
+          title: '신규 R&D 기술 과제',
+          color: 'green',
+          icon: 'fa-flask-vial',
+          items: [
+            '영하 저온 환경에서도 고무 탄성을 유연하게 보존하는 고친수성 폴리머 합성 및 친수 가소제 개발.',
+            '눈길 구동력을 확보하기 위한 입체적 지그재그 3차원 Z-Sipe 가변 몰드 최적 배치.',
+            '수막 제동력 증대를 위해 메인 배수 가로 홈에 가변형 단면 수압 분출 설계 모델 기용.'
+          ]
+        },
+        {
+          title: '공정 설비 및 Capex 투자 안 (Capex Strategy)',
+          color: 'orange',
+          icon: 'fa-industry',
+          items: [
+            '<strong>초정밀 3차원 지그재그 Z-Sipe 금형 CNC 조각 라인</strong>: 사계절 전천후 눈길 견인과 슬립 제동을 사수하는 고정밀 미세 배수 홈 조각기 증설 (투자: ₩100억).',
+            '<strong>사이드월 다단 완충 패드 성형 압출 설비</strong>: 타이어 진동 완완충 고무 레이어를 오차 없이 연속 합착하는 성형 압출 로봇 헤드 개편 (투자: ₩70억).',
+            '<strong>트레드 이종 압출 치수 제어용 매니폴드 압출기</strong>: 캡 및 베이스 이종 컴파운드의 연속 정밀 밀착 압출을 통한 가공 한계 최소화 (투자: ₩60억).'
+          ]
+        }
+      ],
+      competitors3: [
+        { brand: 'Michelin', current: 'Primacy Tour A/S', launch: '2019년 Q2', next: 'Primacy Tour A/S 2', target: '2027년 Q4 (PLC 6.2년)' },
+        { brand: 'Continental', current: 'ProContact TX', launch: '2018년 Q3', next: 'ProContact TX 2', target: '2026년 Q4 (PLC 7.5년)' },
+        { brand: 'Bridgestone', current: 'Turanza QuietTrack', launch: '2019년 Q1', next: 'Turanza QuietTrack 2', target: '2026년 Q3 (PLC 7.0년)' }
+      ]
+    },
+    ra43: {
+      id: 'ra43',
+      tireName: 'Dynapro HP2 (RA43) 후속 R&D 전략',
+      currentModel: 'Dynapro HP2 (RA43)',
+      segmentName: '도심형 프리미엄 SUV 투어링 (Premium Highway Terrain SUV)',
+      targetMarket: '글로벌 완성차 고출력 SUV OE (Genesis GV70/GV80, 현대/기아 메이저 SUV) 및 프리미엄 도심형 SUV RE 시장',
+      competitorName: 'MICHELIN Latitude Tour HP',
+      nextCompetitorName: 'MICHELIN Latitude Tour HP 2 (차세대)',
+      avgPlcYears: 6.4,
+      compCurrentLaunchYear: 2021,
+      targetLaunchQuarter: '2027 Q4 전격 출시 예상',
+      targetLaunchCalc: '글로벌 프리미엄 SUV 세그먼트의 라이프사이클(평균 6.4년) 및 미쉐린 Latitude Tour HP의 장기 베스트셀러 후속 대응 주기를 대조 분석하여, 2027년 하반기 유럽 및 국내 완성차 브랜드의 차세대 럭셔리 하이웨이 크루저 SUV 신차 OE 수주 및 고수익 RE 시장 적기 진입 목표 수립',
+      totalCapex: '₩25,000,000,000 (250억 원)',
+      priorityFocusText: '본 세그먼트(Premium SUV Highway Terrain)의 최우선 R&D 타겟은 [고인치 고하중 SUV용 고속 안정성 극대화 및 도심형 NVH 저소음 제어]입니다. 대형 SUV의 무거운 차체와 가속 횡압력에서도 타이어 접지 형상의 비틀림을 원천 차단하는 고강성 리브 설계와 소음 분산 차단 기술의 결합이 R&D의 핵심입니다.',
+      kpis: [
+        { label: '타겟 세그먼트', value: 'Premium Highway Terrain SUV', icon: 'fa-car-side' },
+        { label: '경쟁사 차세대 출시일', value: '2027 Q4 (PLC 6.4년)<br><small style="font-size:0.75rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;"><i class="fa-solid fa-circle-chevron-right"></i> 미쉐린 Latitude Tour HP 2 (Latitude Tour 후속)</small>', icon: 'fa-timeline' },
+        { label: '목표 라벨링 및 최우선 성능', value: 'Wet: A / RR: B / Noise: 70dB<br><small style="font-size:0.72rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;line-height:1.25;"><i class="fa-solid fa-star"></i> 최우선: 고속 선회 주행 안정성 & 하이웨이 소음 절삭</small>', icon: 'fa-road' },
+        { label: 'R&D 및 Capex 투자 제안', value: '₩25B (250억 원)', icon: 'fa-sack-dollar' }
+      ],
+      grounds: [
+        { title: '고중량 프리미엄 SUV 특화 고강성 뼈대 설계', text: '공차중량 2톤을 초과하는 대형 프리미엄 SUV의 고속 선회 시 발생하는 트레드 외측 블록 변형과 비드부 찌그러짐을 예방하기 위해 카카스 구조 강성과 사이드월 장력을 12% 이상 강화해야 합니다.' },
+        { title: '도심지 노면 및 하이웨이 유입 노이즈 산란', text: '엔진 부하가 커 소음 유입이 잦은 패밀리 SUV 고객을 위해 트레드 중앙에 저소음 가변 리브 설계 및 아웃터 숄더블록에 사이프 말단 가드 구조를 삽입해 소음 방사 현상을 차단합니다.' },
+        { title: '수막현상 및 장마철 제동 성능 전폭 보강', text: '대형 SUV의 젖은 노면 제동 안전을 위해 실리카 80% 고상 친수 컴파운드 분산 제어 및 중앙 3줄의 와이드 스트레이트 배수 채널 체적을 확보합니다.' }
+      ],
+      refReports: [
+        { id: 9, title: '북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과', docNo: '57049336-B0-HQ26-00004', drafter: '송호영', date: '2026.01.22', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2026/01/AC004_1.nsf/vdockey/202601221131004B06BC6A49C1B44849258D87000DCDB6?opendocument%26popup=1', summary: '오프로드 험로 탈출 및 날카로운 자갈 충격에 강한 러기드 사이드월 블록 디자인 형상 설계. 고속 롤링 시 발생하는 주파수를 다중 상쇄시키는 NVH 저감형 가변 피치 설계 정량화.', insight: 'SUV용 횡력 및 험로 충격 보호를 위해 사이드월 프로텍터 몰딩 금형 기술 도입.' },
+        { id: 83, title: '북미용 Performance Touring SUV 상품 개발을 위한 Benchmarking 분석 보고 (1차)', docNo: '57049336-B0-HQ21-00032', drafter: '송호영', date: '2021.11.29', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2021/11/AC004_1.nsf/vdockey/2021112510082399927CDDD25DBE804925879800063E19?opendocument&ismobile=0%26popup=1', summary: '대형 SUV에 맞추어 주행 소음 피치를 전면 분산 설계한 가변 블록 기술. 급차선 변경 시 대형 차체 롤링을 제어하기 위해 비드 턴업을 극대화하고 고강성 필러 고무를 기용한 조종안정성 확보.', insight: '고하중 주행 롤링 방지를 위해 비드 턴업 강화 및 사이드 가변 강성 프로파일 적용 필수.' },
+        { id: 25, title: 'Michelin LT(Pick up Highway Terrain)상품 분석 결과 (Defender LTX M/S 2 & Defender LTX Platinum)', docNo: '57049336-B0-HQ25-00017', drafter: '김상현', date: '2025.05.23', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/05/AC004_1.nsf/vdockey/20250523090314C0A841075111E67C49258C9300004930?opendocument&ismobile=0%26popup=1', summary: '고하중 고적재 및 험로 하에서도 8만 마일 초장수명을 유지하는 에버트레드 2.0 강결합 폴리머 화합물. 접지압을 센터와 숄더에 균등 분산하여 편마모를 방지하는 맥스프레셔 카카스 프로파일.', insight: 'SUV 접지압 왜곡에 따른 편마모 예방을 위한 가변 구조 설계 기준 적용.' }
+      ],
+      chartData: {
+        labels: ['SUV High Load Grip', 'Highspeed Stability', 'Pass-by Noise', 'Wet Braking', 'Comfort Ride', 'Wear Life'],
+        currentHK: [8.7, 8.8, 9.1, 8.5, 9.3, 8.6],
+        competitorCurrent: [8.9, 9.1, 9.2, 8.9, 9.1, 8.9],
+        targetNext: [9.3, 9.5, 9.5, 9.2, 9.5, 9.1]
+      },
+      scoreCalculationBasis: {
+        title: '성능 지표 평점 산출 및 계산 근거',
+        methodology: '고인치 럭셔리 SUV 규격에 의거하여, 차량 고하중 코너링 횡변형 계측력 및 실차 실내 투입 소음 계측을 10점 만점 척도로 환산 수치화한 수치입니다.',
+        details: [
+          { name: '자사 현행 평점', text: 'RA43의 실차 서킷 고속 핸들링 및 주행 횡G 하중 테스트 센싱 계측 데이터 반영.' },
+          { name: '경쟁사 현행 평점', text: '미쉐린 Latitude Tour HP의 OE 수입 사양 분해 및 거칠기 진동 감쇄 효율 변환.' },
+          { name: '자사 차세대 R&D 목표', text: '차세대 럭셔리 SUV 타겟으로 고하중 선회 안정성과 정숙성을 획기적으로 개선시키기 위한 설계 모델 최적치.' }
+        ],
+        metrics: [
+          {
+            metric: 'SUV High Load Grip (SUV 고하중 선회 마찰력)',
+            scores: { currentHK: 8.7, competitorCurrent: 8.9, targetNext: 9.3 },
+            formula: 'S = (G_limit / 1.10) * 10',
+            description: 'SUV 특유의 가중 횡G 한계 조건 하에서의 최대 횡마찰 한계 계수.'
+          },
+          {
+            metric: 'Highspeed Stability (고속 핸들링 주행안정성)',
+            scores: { currentHK: 8.8, competitorCurrent: 9.1, targetNext: 9.5 },
+            formula: 'S = (0.10 / t_yaw_delay) * 10',
+            description: '급속 조타각 시 차체 요 요레이트 발생 시간 지연율 측정.'
+          },
+          {
+            metric: 'Pass-by Noise (실외 통과 패턴 소음)',
+            scores: { currentHK: 9.1, competitorCurrent: 9.2, targetNext: 9.5 },
+            formula: 'S = (73 - dB_pass) * 1.35',
+            description: '야외 통과 소음 규격 준수를 위한 메인 패턴 주파수 공명 상쇄 분석.'
+          },
+          {
+            metric: 'Wet Braking (젖은 노면 제동력)',
+            scores: { currentHK: 8.5, competitorCurrent: 8.9, targetNext: 9.2 },
+            formula: 'S = 10 - [ (W_actual - 25.5) / (32.0 - 25.5) ] * 10',
+            description: '수심 1.2mm 상태 SUV 하중 빗길 급제동 차간 거리 평점.'
+          },
+          {
+            metric: 'Comfort Ride (실내 진동 승차감)',
+            scores: { currentHK: 9.3, competitorCurrent: 9.1, targetNext: 9.5 },
+            formula: 'S = (73 - dB_interior) * 1.4',
+            description: '도심 고속 크루징 시 노면 잔진동 감쇄 및 안락 승차 등급.'
+          },
+          {
+            metric: 'Wear Life (트레드 마모 수명)',
+            scores: { currentHK: 8.6, competitorCurrent: 8.9, targetNext: 9.1 },
+            formula: 'S = (UTQG_Treadwear / 600) * 10',
+            description: '북미 실 마일리지 약 5.5만 마일 보증을 사수하는 고무 결합 밀도.'
+          }
+        ]
+      },
+      gaps: [
+        { name: 'Highspeed Stability (고속 조종 안정성)', current: 8.8, target: 9.5, percent: -7.4, level: 'Danger', desc: '고속 차선 변경 시 대형 차체 롤링 제어 갭입니다. 아라미드 하이브리드 고강성 JLB 보강 레이아웃 설계 및 고경성 비드 와이어 가이드 정교화가 강력히 필요합니다.' },
+        { name: 'Wet Braking (빗길 제동 마찰력)', current: 8.5, target: 9.2, percent: -7.6, level: 'Warning', desc: '자사 R&D 목표 제동 성능 대비 -7.6% 갭입니다. 수막 수압 분산을 위한 와이드 숄더 배출 홈 체적 최적 설계 및 개질 나노 고분산 실리카 배합 기용이 긴급합니다.' }
+      ],
+      skuStrategy: {
+        rims: '17인치 ~ 22인치 고하중 프리미엄 SUV 전용 매핑 (18~20인치 중심 구성비 80%)',
+        ratio: '40% OE (제네시스 GV70/GV80, 현대 팰리세이드 등 프리미엄 SUV OE) / 60% RE',
+        sizes: '225/65R17, 235/60R18, 235/55R19, 255/55R19, 255/50R20, 265/50R20, 265/45R21, 265/40R22',
+        desc: '무거운 중량 및 높은 무게중심으로 발생하기 쉬운 이상 편마모를 억제하도록 접지 형상 시뮬레이션을 가설 적용한 90여 개 럭셔리 SUV 타겟 규격을 배치. 숄더 블록 표면에 배수성과 패턴 강성을 동시 최적화하는 미세 홈 조화.'
+      },
+      labelingTargets: {
+        rr: 'B',
+        rrBg: 'linear-gradient(135deg, #22c55e, #10b981)',
+        wet: 'A',
+        wetBg: 'linear-gradient(135deg, #16a34a, #15803d)',
+        noise: '70 dB',
+        noiseClass: 'B 등급 (SUV 최상급)'
+      },
+      capex: [
+        {
+          title: '적용 기술 제안 (Core Tech)',
+          color: 'blue',
+          icon: 'fa-laptop-code',
+          items: [
+            '아웃사이드 숄더부 가로 홈을 부분 폐쇄형 구조(Closed Shoulder)로 배치하여 소음방사 차단 및 강성 증대.',
+            '주행 홈 내부 피치 다각 변동 시퀀스 설계를 통해 하이웨이 거친 주파수 압축 소음을 원천 산란.',
+            '비드부 하부 고강도 카카스 턴업 강도 설계를 추가 적용하여 급코너링 시 SUV 차량의 기우뚱거림 예방.'
+          ]
+        },
+        {
+          title: '신규 R&D 기술 과제',
+          color: 'green',
+          icon: 'fa-flask-vial',
+          items: [
+            '친수 작용기 개질 실란 커플링제 배합 고도화 연구를 통한 빗길 노면 미끄러짐 방어 극상화.',
+            '고부하 코너링 상태에서 트레드 접지 형상(Footprint) 비틀림을 예방하는 캡 고무 고경화 패턴 타이바 적용.',
+            '가황 가공 가압 시 몰드 내부 열 온도 균일 가교 품질 관리 기하 공학 접목.'
+          ]
+        },
+        {
+          title: '공정 설비 및 Capex 투자 안 (Capex Strategy)',
+          color: 'orange',
+          icon: 'fa-industry',
+          items: [
+            '<strong>대구경 SUV 전용 다단계 가열 가황(Curing) 설비 라인 증설</strong>: 게이지가 두껍고 무거운 SUV 타이어의 내부 기포 편차 방지와 균일 가황 물성 가공 자동화 (투자: ₩110억).',
+            '<strong>정밀 3차원 입체 패턴 몰드 가공용 CNC 고속 가공 설비</strong>: 복잡한 SUV 아웃도어 트랙션 홈 및 저소음 사이프를 미세 조각하기 위한 고정밀 밀링 설비 구축 (투자: ₩80억).',
+            '<strong>트레드 외측 캡/베이스 이종 고무 다중 분할 압출 매니폴드 구축</strong>: 접지성 캡 컴파운드와 저발열 내마모 베이스 고무의 고정밀 동시 압출 라인 최적화 (투자: ₩60억).'
+          ]
+        }
+      ],
+      competitors3: [
+        { brand: 'Michelin', current: 'Latitude Tour HP', launch: '2021년 Q2', next: 'Latitude Tour HP 2', target: '2027년 Q4 (PLC 6.4년)' },
+        { brand: 'Continental', current: 'CrossContact LX Sport', launch: '2019년 Q3', next: 'CrossContact LX Sport 2', target: '2026년 Q2 (PLC 6.8년)' },
+        { brand: 'Bridgestone', current: 'Alenza H/L Alenza', launch: '2022년 Q1', next: 'Alenza H/L Alenza 2', target: '2028년 Q1 (PLC 6.0년)' }
+      ]
+    },
+    w330: {
+      id: 'w330',
+      tireName: 'Winter i*cept evo3 (W330) 후속 R&D 전략',
+      currentModel: 'Winter i*cept evo3 (W330)',
+      segmentName: '유럽형 고성능 겨울용 알파인 (Premium Alpine Winter Sport)',
+      targetMarket: '글로벌 고출력 후륜 세단, 스포츠 쿠페, 혹한기 겨울철 RE 교체 최선호 마켓',
+      competitorName: 'MICHELIN Pilot Alpin 5',
+      nextCompetitorName: 'MICHELIN Pilot Alpin 6 (차세대)',
+      avgPlcYears: 5.5,
+      compCurrentLaunchYear: 2021,
+      targetLaunchQuarter: '2026 Q4 전격 출시 예상',
+      targetLaunchCalc: '동계 알파인 세그먼트의 혹독한 계측 주기(평균 5.5년) 및 경쟁사 최고 사양의 2021년 하반기 출시 데이터를 대조 추적하여, 2026년 하반기 유럽 전격 런칭 및 북미/내수 수입 중대형 동계RE 장악 로드맵 수립',
+      totalCapex: '₩38,000,000,000 (38억 원)',
+      priorityFocusText: '본 세그먼트(Alpine Winter Sport)의 최우선 R&D 타겟은 [혹한기 스노우/슬러시 견인력(ASTM 3PMSF) 확보 및 동계 드라이 스포츠 핸들링 보강]입니다. 저온 환경 하에서 고무 탄성망이 유연하게 밀착되는 고농성 실리카-천연 레진 천연 처방 및 가변 V형 갈매기날개(Gull-Wing) 패턴 금형을 고도화하여 슬러시 배출력과 스노우 마찰을 완성해야 합니다.',
+      kpis: [
+        { label: '타겟 세그먼트', value: 'Premium Alpine Winter Sport', icon: 'fa-snowflake' },
+        { label: '경쟁사 차세대 출시일', value: '2026 Q4 (PLC 5.5년)<br><small style="font-size:0.75rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;"><i class="fa-solid fa-circle-chevron-right"></i> 미쉐린 Pilot Alpin 6 (PA5 후속)</small>', icon: 'fa-timeline' },
+        { label: '목표 라벨링 및 최우선 성능', value: 'Wet: B / RR: C / Noise: 71dB / Snow: 3PMSF<br><small style="font-size:0.72rem;color:var(--primary);font-weight:800;display:inline-block;margin-top:4px;line-height:1.25;"><i class="fa-solid fa-star"></i> 최우선: ASTM 3PMSF 눈길 트랙션 & 저온 수막 제동 확보</small>', icon: 'fa-snowflake' },
+        { label: 'R&D 및 Capex 투자 제안', value: '₩38B (380억 원)', icon: 'fa-sack-dollar' }
+      ],
+      grounds: [
+        { title: '겨울철 안전의 상징 ASTM 3PMSF 완전 점령', text: '유럽 및 북미 북부 지역 법적 스노우 규격 인증인 3PMSF(Three-Peak Mountain Snowflake) 기준을 압도적으로 통과하고 슬러시, 빙판 노면 제동력을 자사 기존 대비 8% 이상 비약적으로 상향하기 위한 저온 특화 배합이 최우선 선결 과제입니다.' },
+        { title: '저온 경화 방지용 천연 수지 아쿠아파인 최적 공중합', text: '영하 7도 이하의 혹한 조건에서도 고무 분자가 경직되지 않고 노면 유연 밀착을 보장하기 위해 정제 천연 소나무 진을 고밀도로 결합한 친수 천연 수지 중합 물성을 강화합니다.' },
+        { title: '방향성 갈매기 날개 패턴 몰드 및 스노우 홈 설계', text: '눈길 위를 주행할 시 V자 날개 홈이 눈을 가두어 응축시킨 후 차차 밀어내는 자가 세척 배수 설계 및 3D 입체 절삭 사이프로 눈길 전단력을 지탱합니다.' }
+      ],
+      refReports: [
+        { id: 76, title: 'Michelin All Weather 상품 CrossClimate2 Benchmarking 분석 보고 (2차)', docNo: '57049336-B0-HQ22-00021', drafter: '양승혁', date: '2022.07.21', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2022/07/AC004_1.nsf/vdockey/2022071917004638493771301FF34A49258884002C0049?opendocument&ismobile=0%26popup=1', summary: '수막 및 눈길 트랙션을 이상적으로 개선한 방향성 V형 패턴 그루브 설계. 겨울철 저온 고무 유연성과 여름철 고결합 강도를 동시에 달성하여 긴 수명과 그립을 다잡은 열 서보 어댑티브 컴파운드.', insight: '극저온 접지력 유지를 위해 광범위 유연 거동을 보장하는 열 서보 어댑티브 특화 컴파운드 합성 기술 벤치마킹 필수.' },
+        { id: 18, title: 'Goodyear Summer Sport ULRR(Eagle F1 Asymmetric 6) 상품 분석 결과', docNo: '57049336-B0-HQ25-00037', drafter: '김상현', date: '2025.09.12', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2025/09/AC004_1.nsf/vdockey/20250912152436BF68627618820F4949258D03002331DF?opendocument%26popup=1', summary: '기존 Asymmetric 5 대비 타이어 구조 자체를 경량화하고 사이드월 고무 배합을 최적화하여 초저구름저항(ULRR)을 획득함함과 동시에, 급격한 조타 시 접지 형상이 가변적으로 넓어져 노면 압력을 균일하게 분산시키고 스포츠 제동력을 극대화하는 \'드라이 콘택트 패치\' 기술을 실현함. 또한 미세 요철 그립 확보를 위해 젖은 노면 특화 레진 중합 분산 공법을 완벽히 적용함.', insight: '동계 젖은 노면 및 슬러시 요철 밀착력을 보완하기 위해 고분산 수화 특허 레진 중합 공법 도입 추천.' },
+        { id: 41, title: 'Continental EU Summer Segment PREMIUM CONTACT 7 Benchmarking 결과 보고', docNo: '57049336-B0-HQ24-00031', drafter: '박진욱', date: '2024.06.17', link: 'https://arena.hankooktech.com/dwp/com/portal/main.nsf/wfrmpage?ReadForm&url=/dwp/aprv/hq/complete/2024/06/AC004_1.nsf/vdockey/202406171518258A2F8A660C73B13F49258B3F0022A062?opendocument&ismobile=0%26popup=1', summary: '전기차 특유의 고하중 가중에 즉각 대응할 수 있도록, 횡압과 차량 하중에 반응하여 가로 홈 및 접지부 패턴 형태가 물리적으로 변형되며 늘 균일한 그립 면적을 사수하는 \'어댑티브 패턴\'을 성형함. 타이어 고무 분자가 고속 회전 시 활성화 온도에 도달하는 웜업 시간을 원천 배제하여 혹한기 초기 구동 및 마른/젖은 전 영역에서 노면 밀착을 보장하는 특허 초분산 가교 \'레드칠리(RedChili) 컴파운드\'를 탑재함.', insight: '혹한 조건의 초기 눈길 안전 확보를 위해 저온 가교막이 초동 활성화되는 저저온 촉진 웜업 조절 배합 기술 도입.' }
+      ],
+      chartData: {
+        labels: ['Snow Traction', 'Ice Grip', 'Slush Braking', 'Wet Handling', 'Dry Sport Grip', 'Low-temp Wear'],
+        currentHK: [9.1, 8.2, 8.8, 8.7, 9.0, 8.4],
+        competitorCurrent: [9.5, 8.7, 9.2, 9.1, 9.3, 8.8],
+        targetNext: [9.7, 9.0, 9.5, 9.4, 9.5, 8.9]
+      },
+      scoreCalculationBasis: {
+        title: '성능 지표 평점 산출 및 계산 근거',
+        methodology: '핀란드 이발로(Ivalo) 동계 전용 주행 성능 평가장의 ASTM 눈길 구동 전단 마찰력 및 저결빙 빗길 마찰 계측 데이터를 10점 만점 척도로 환산 연산한 결과입니다.',
+        details: [
+          { name: '자사 현행 평점', text: 'W330의 동계 혹한 빗길 슬러시 한계 제동 및 스노우 등판 주행 임계 각도 수치 반영.' },
+          { name: '경쟁사 현행 평점', text: '미쉐린 Pilot Alpin 5의 빙판 제동 시험 및 아웃터 컴팩트 숄더 강성 벤치마킹 데이터 대조.' },
+          { name: '자사 차세대 R&D 목표', text: '유럽 알파인 마켓 1위를 고수하고 동계 드라이 스포츠 성능과 눈길 견인을 병행 정복하기 위한 차세대 타깃 설계치.' }
+        ],
+        metrics: [
+          {
+            metric: 'Snow Traction (눈길 구동력)',
+            scores: { currentHK: 9.1, competitorCurrent: 9.5, targetNext: 9.7 },
+            formula: 'S = (Snow_Index / 120) * 10',
+            description: 'ASTM F1805 규격 스노우 가속 견인 지수 계측 데이터.'
+          },
+          {
+            metric: 'Ice Grip (빙판 노면 제동)',
+            scores: { currentHK: 8.2, competitorCurrent: 8.7, targetNext: 9.0 },
+            formula: 'S = 10 - [ (I_actual - 12.0) / (20.0 - 12.0) ] * 10',
+            description: '영하 5도 노면 빙판 제동 거리(20km/h → 0, m) 수치 기준.'
+          },
+          {
+            metric: 'Slush Braking (빗길 및 슬러시 제동력)',
+            scores: { currentHK: 8.8, competitorCurrent: 9.2, targetNext: 9.5 },
+            formula: 'S = 10 - [ (Sl_actual - 18.0) / (25.0 - 18.0) ] * 10',
+            description: '슬러시 수심 2mm 선회 및 빗길 수막 탈출 제동 거리 계측치.'
+          },
+          {
+            metric: 'Wet Handling (저온 젖은 노면 핸들링)',
+            scores: { currentHK: 8.7, competitorCurrent: 9.1, targetNext: 9.4 },
+            formula: 'S = (0.12 / t_wet_yaw) * 10',
+            description: '저온 수막 상태 선회 시 요레이트 조종안정 응답 속도 지표.'
+          },
+          {
+            metric: 'Dry Sport Grip (동계 마른 노면 스포츠 핸들링)',
+            scores: { currentHK: 9.0, competitorCurrent: 9.3, targetNext: 9.5 },
+            formula: 'S = (G_dry_limit / 1.05) * 10',
+            description: '동계 기온 하 고속도로 선회 마찰 및 고하중 조타 강도 유지 척도.'
+          },
+          {
+            metric: 'Low-temp Wear (저온 마모 수명)',
+            scores: { currentHK: 8.4, competitorCurrent: 8.8, targetNext: 8.9 },
+            formula: 'S = (Wear_Index_low / 100) * 10',
+            description: '동계 가혹 노면 주행 시 고무 찢김 및 조기 트레드 소모 억제도.'
+          }
+        ]
+      },
+      gaps: [
+        { name: 'Snow Traction (눈길 견인 및 전단력)', current: 9.1, target: 9.7, percent: -6.2, level: 'Danger', desc: '자사 차세대 R&D 목표 눈길 성능 대비 -6.2% 갭입니다. 눈 압축 전단력을 보강하기 위해 갈매기형 방향성 V패턴의 가로 홈 단면적 대구경 가공 금형 조작이 필요합니다.' },
+        { name: 'Ice Grip (빙판 노면 제동 안정성)', current: 8.2, target: 9.0, percent: -8.9, level: 'Danger', desc: '빙판 빗길 미끄럼 제어 갭입니다. 저결빙 고무 유연 거동을 위해 아쿠아파인(AquaPine) 정제 수지 배합 함량 극대화 및 미세 레이저 핀 홀 가공 기술을 처방해야 합니다.' },
+        { name: 'Wet Handling (저온 빗길 조종 응답성)', current: 8.7, target: 9.4, percent: -7.4, level: 'Warning', desc: '동계 슬러시 주행 갭입니다. 슬러시 배출력 향상을 위한 아웃사이드 배수 그루브의 입체 수압 해석 유동 프로파일 설계 접목이 타당합니다.' }
+      ],
+      skuStrategy: {
+        rims: '17인치 ~ 22인치 고출력 스포츠 차종 전용 동계 라인업 (19인치 이상 비중 70%)',
+        ratio: '20% OE (유럽 메이저 브랜드 동계 OE 공급 대응) / 80% RE (겨울용 프리미엄 교체 핵심)',
+        sizes: '225/45R17, 245/45R18, 245/40R19, 275/35R19, 245/35R20, 275/30R20, 255/40R21, 295/35R21',
+        desc: '혹한기 저온 스포츠 드라이빙 한계를 사수하기 위한 하이브리드 고강성 벨트 JLB 권선 사양의 75개 초편평 핵심 규격 매핑. 제동 시 지그재그로 물리는 3D 입체 사이프를 통해 숄더 블록 변형 방지.'
+      },
+      labelingTargets: {
+        rr: 'D',
+        rrBg: 'linear-gradient(135deg, #ef4444, #dc2626)',
+        wet: 'B',
+        wetBg: 'linear-gradient(135deg, #22c55e, #10b981)',
+        noise: '71 dB',
+        noiseClass: 'B 등급'
+      },
+      capex: [
+        {
+          title: '적용 기술 제안 (Core Tech)',
+          color: 'blue',
+          icon: 'fa-laptop-code',
+          items: [
+            '방향성 V자형(Gull-Wing 갈매기형) 트레드 홈 디자인 설계를 통해 눈과 슬러시의 고속 가로 밀착 배출력 제어.',
+            '숄더 리브 사이에 블록을 상호 고정시키는 인터록킹 사이프(Interlocking Sipe)를 성형해 선회 시 횡변형 방지.',
+            '정속 주행 중 노면 트랙션 유지를 돕기 위한 와이드 센터 지그재그 리브 성형.'
+          ]
+        },
+        {
+          title: '신규 R&D 기술 과제',
+          color: 'green',
+          icon: 'fa-flask-vial',
+          items: [
+            '정제 소나무 레진인 아쿠아파인(AquaPine) 복합 중합 공정을 통해 영하 저온 노면에서도 가교 탄성 유연성 영구 보존.',
+            '빙판 미끄러짐 마찰 임계점 극대화를 위한 초다각 지그재그 3D 윈터 사이프 몰딩 기하학 가이더 설계.',
+            '동계 젖은 노면 및 제설용 소금 반응 유량 보강을 위한 실리카 가밀도 배합 및 가황 반응 최적화 연구.'
+          ]
+        },
+        {
+          title: '공정 설비 및 Capex 투자 안 (Capex Strategy)',
+          color: 'orange',
+          icon: 'fa-industry',
+          items: [
+            '<strong>알파인 갈매기 방향성 V패턴 3D 전용 5축 고정밀 CNC 몰드 가공기</strong>: 눈길 제동과 배수를 담당할 입체 사이프 패턴 몰드를 가공 조작하기 위한 설비 라인 신설 (투자: ₩150억).',
+            '<strong>천연 수지 아쿠아파인 피딩 및 정밀 혼련 설비 개편</strong>: 극저온 유연성용 정제 천연 수지의 혼합 반응 정밀도를 높이기 위한 배합 챔버 온조 기기 증설 (투자: ₩130억).',
+            '<strong>저온 균일 가교용 마이크로웨이브 가황(Curing) 제어 설비</strong>: 트레드 블록 두께 영역이 두꺼운 겨울용 제품의 미세 가교 균일성을 완성하기 위한 전자파 가압 프레스 시스템 신설 (투자: ₩100억).'
+          ]
+        }
+      ],
+      competitors3: [
+        { brand: 'Michelin', current: 'Pilot Alpin 5', launch: '2021년 Q3', next: 'Pilot Alpin 6', target: '2026년 Q4 (PLC 5.5년)' },
+        { brand: 'Continental', current: 'WinterContact TS 870 P', launch: '2021년 Q2', next: 'WinterContact TS 880 P', target: '2027년 Q1 (PLC 5.5년)' },
+        { brand: 'Bridgestone', current: 'Blizzak LM005', launch: '2019년 Q3', next: 'Blizzak LM006', target: '2025년 Q4 (PLC 6.2년)' }
+      ]
     }
   };
+
 
   /**
    * Helper to perform a smart lookup on user query string to match with the most appropriate strategic dataset.
    */
   function matchScenarioByQuery(query) {
     const q = (query || '').toLowerCase().trim();
+    
+    // Strict model check first to prevent overlap collisions
+    if (q.includes('k135') || q.includes('prime4') || q.includes('prime 4') || q.includes('prime5') || q.includes('prime 5')) {
+      return STRATEGY_DATABASE.k135;
+    } else if (q.includes('h446') || q.includes('kinergy ex') || q.includes('키너지 ex') || q.includes('키너지ex')) {
+      return STRATEGY_DATABASE.h446;
+    } else if (q.includes('h472') || q.includes('kinergy gt') || q.includes('키너지 gt') || q.includes('키너지gt')) {
+      return STRATEGY_DATABASE.h472;
+    } else if (q.includes('ra43') || q.includes('dynapro hp2') || q.includes('다이나프로 hp2') || q.includes('다이나프로hp2')) {
+      return STRATEGY_DATABASE.ra43;
+    } else if (q.includes('w330') || q.includes('icept') || q.includes('아이셉트') || q.includes('winter') || q.includes('윈터') || q.includes('겨울용') || q.includes('슬러시')) {
+      return STRATEGY_DATABASE.w330;
+    }
+    
+    // Generic family checks
     if (q.includes('k137') || q.includes('s1 evo') || q.includes('evo4') || q.includes('ventus') || q.includes('벤투스') || q.includes('여름용') || q.includes('summer')) {
       return STRATEGY_DATABASE.k137;
     } else if (q.includes('ion') || q.includes('아이온') || q.includes('electric') || q.includes('전기차') || q.includes('ev') || q.includes('에보')) {
@@ -489,25 +1203,634 @@
     return customScenario;
   }
 
+  // Original and Q&A Loader Steps Texts
+  const originalStepTexts = [
+    "[시장 인텔리전스] 글로벌 시장 점유율 및 세그먼트 데이터 연동 중...",
+    "[Tire BM 보고서] 자사 벤치마킹 분석 보고서 및 시험실 빅데이터 로드 중...",
+    "[경쟁사 PLC 산출] 세그먼트 평균 PLC 주기 기반 경쟁사 차세대 출시일 산출 중...",
+    "[성능 Gap Analysis] 차기 목표성능 대비 자사 현 모델 성능 갭 분석 연산 중...",
+    "[R&D 및 Capex 가이드라인 수립] 최적 컴파운드 설계 기술 및 공정 설비 최적화 방향 도출 중..."
+  ];
+
+  const qaStepTexts = [
+    "[지식 연동] 사내 Compound BM 및 PLC 데이터 조회 중...",
+    "[실시간 정보] 최신 경쟁사 뉴스 및 동향 인덱싱 중...",
+    "[추론 연산] RAG 컨텍스트 병합 및 AI 추론 엔진 가동 중...",
+    "[답변 최적화] 타이어 R&D 지식 기반 품격 높은 답변 조율 중...",
+    "[출력 준비] 실시간 AI Insight 답변 완성 및 연계 시각화 중..."
+  ];
+
+  /**
+   * Classify user query to decide whether it's a strategic formulation query or a general Q&A query.
+   */
+  function isStrategyQuery(query) {
+    const q = (query || '').toLowerCase().trim();
+    
+    // 1. Template Chip Exact Matches or near matches (always strategic)
+    const templateQueries = [
+      "k137 후속 여름용 초고성능 프리미엄 스포츠 타이어 개발 전략 수립해줘",
+      "차세대 고성능 ev 전용 ion evo 후속 상품의 r&d 및 capex 투자 방향을 수립해줘",
+      "북미 suv 타겟 dynapro hpx 차세대 상품 개발을 위한 경쟁사 plc 분석 및 gap analysis를 제안해줘"
+    ];
+    for (const t of templateQueries) {
+      if (q.includes(t)) {
+        return true;
+      }
+    }
+
+    // 2. Explicit Q&A indicators - if these are found, ALWAYS route to Q&A robust flow (forces Q&A)
+    const qaKeywords = [
+      '매출', '판매', '실리카', '배합', '경도', '컴파운드', '물성', '뉴스', '동향', '기사', '아레나', '보고서', '기안',
+      '뭐야', '어때', '알려줘', '설명해줘', '비교해줘', '어떻게', '차이', '차이점', '현황', '가격', '스펙', '정보', '기록',
+      '통계', '점유율', '건수', '비중', '장점', '단점', '특징', '성능', '설명', '추이', '전망'
+    ];
+    
+    for (const kw of qaKeywords) {
+      if (q.includes(kw)) {
+        return false;
+      }
+    }
+
+    // 3. Explicit strategy-directing verbs or terms
+    const strategyKeywords = [
+      '전략 수립', '전략수립', '방향 수립', '방향수립', 'r&d 전략', 'r&d전략', '개발 전략', '개발전략',
+      '설비투자 방향', 'capex 투자', '가이드라인', 'gap analysis', '갭 분석', '갭분석',
+      '로드맵', '기획안', '전략을', '전략의', '전략 제안', '전략제안'
+    ];
+    
+    for (const kw of strategyKeywords) {
+      if (q.includes(kw)) {
+        return true;
+      }
+    }
+    
+    // 4. Standard strategy endings (only when not containing Q&A indicators)
+    if (q.endsWith('수립') || q.endsWith('수립해줘') || q.endsWith('기획해줘') || q.endsWith('제안해줘') || q.endsWith('전략')) {
+      return true;
+    }
+    
+    // Otherwise, treat as Q&A robustly
+    return false;
+  }
+
+  /**
+   * Ultra-robust GFM Markdown-to-HTML Parser with custom cell formatting.
+   */
+  function parseMarkdownToHtml(text) {
+    if (!text) return '';
+    
+    let html = text;
+    
+    // Escape HTML characters to prevent XSS but preserve layout
+    html = html
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // Bold: **text**
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Italic: *text*
+    html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    // Headers: ###, ##, #
+    html = html.replace(/^### (.*?)$/gm, '<h4 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin-top: 18px; margin-bottom: 8px; border-left: 3.5px solid var(--primary); padding-left: 10px;">$1</h4>');
+    html = html.replace(/^## (.*?)$/gm, '<h3 style="font-size: 1.18rem; font-weight: 800; color: var(--text-dark); margin-top: 24px; margin-bottom: 12px; border-bottom: 1.5px solid rgba(249, 115, 22, 0.15); padding-bottom: 6px;">$1</h3>');
+    html = html.replace(/^# (.*?)$/gm, '<h2 style="font-size: 1.35rem; font-weight: 900; color: var(--text-dark); margin-top: 28px; margin-bottom: 15px;">$1</h2>');
+    
+    // Horizontal Rule: ---
+    html = html.replace(/^---$/gm, '<hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.08); margin: 18px 0;">');
+
+    // Bullet Lists: * or -
+    html = html.replace(/^[*-] (.*?)$/gm, '<li style="margin-left: 15px; margin-bottom: 5px; position: relative; list-style-type: none; padding-left: 14px; font-weight: 500; font-size: 0.92rem;"><span style="position: absolute; left: 0; top: 8px; width: 4.5px; height: 4.5px; border-radius: 50%; background: var(--primary);"></span>$1</li>');
+    
+    // Parse Tables
+    const lines = html.split('\n');
+    let isInsideTable = false;
+    let tableRows = [];
+    let processedLines = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i].trim();
+      
+      if (line.startsWith('|') && line.endsWith('|')) {
+        isInsideTable = true;
+        const cells = line.split('|').map(c => c.trim()).filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
+        tableRows.push(cells);
+      } else {
+        if (isInsideTable) {
+          let tableHtml = '<div style="overflow-x: auto; margin: 18px 0; background: #ffffff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); box-shadow: var(--shadow-sm);"><table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">';
+          let hasSeparator = tableRows.length > 1 && tableRows[1].every(cell => /^:?-+:?$/.test(cell));
+          
+          for (let r = 0; r < tableRows.length; r++) {
+            if (r === 1 && hasSeparator) continue;
+            
+            const isHeader = r === 0;
+            tableHtml += `<tr style="${isHeader ? 'background: rgba(249, 115, 22, 0.05); border-bottom: 1.5px solid rgba(249, 115, 22, 0.15); font-weight: 800;' : 'border-bottom: 1px solid rgba(0,0,0,0.04); transition: background 0.15s;'}">`;
+            
+            for (let c = 0; c < tableRows[r].length; c++) {
+              const cellText = tableRows[r][c];
+              if (isHeader) {
+                tableHtml += `<th style="padding: 11px 14px; color: var(--text-dark); font-weight: 800;">${cellText}</th>`;
+              } else {
+                const isHk = cellText.includes('Hankook') || cellText.includes('한국타이어') || cellText.includes('자사');
+                tableHtml += `<td style="padding: 10px 14px; color: ${isHk ? 'var(--primary)' : 'var(--text-primary)'}; font-weight: ${isHk ? '800' : '500'};">${cellText}</td>`;
+              }
+            }
+            tableHtml += '</tr>';
+          }
+          tableHtml += '</table></div>';
+          processedLines.push(tableHtml);
+          isInsideTable = false;
+          tableRows = [];
+        }
+        processedLines.push(lines[i]);
+      }
+    }
+    
+    if (isInsideTable) {
+      let tableHtml = '<div style="overflow-x: auto; margin: 18px 0; background: #ffffff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06); box-shadow: var(--shadow-sm);"><table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">';
+      let hasSeparator = tableRows.length > 1 && tableRows[1].every(cell => /^:?-+:?$/.test(cell));
+      for (let r = 0; r < tableRows.length; r++) {
+        if (r === 1 && hasSeparator) continue;
+        const isHeader = r === 0;
+        tableHtml += `<tr style="${isHeader ? 'background: rgba(249, 115, 22, 0.05); border-bottom: 1.5px solid rgba(249, 115, 22, 0.15); font-weight: 800;' : 'border-bottom: 1px solid rgba(0,0,0,0.04);'}">`;
+        for (let c = 0; c < tableRows[r].length; c++) {
+          const cellText = tableRows[r][c];
+          if (isHeader) {
+            tableHtml += `<th style="padding: 11px 14px; color: var(--text-dark); font-weight: 800;">${cellText}</th>`;
+          } else {
+            const isHk = cellText.includes('Hankook') || cellText.includes('한국타이어') || cellText.includes('자사');
+            tableHtml += `<td style="padding: 10px 14px; color: ${isHk ? 'var(--primary)' : 'var(--text-primary)'}; font-weight: ${isHk ? '800' : '500'};">${cellText}</td>`;
+          }
+        }
+        tableHtml += '</tr>';
+      }
+      tableHtml += '</table></div>';
+      processedLines.push(tableHtml);
+    }
+    
+    html = processedLines.join('\n');
+    html = html.replace(/\n/g, '<br>');
+    html = html.replace(/(<br>){3,}/g, '<br><br>');
+    
+    // Clickable Markdown Links
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--primary); font-weight: 800; text-decoration: none; border-bottom: 1.5px solid var(--primary); padding-bottom: 1px; transition: all 0.2s;" onmouseover="this.style.color=\'var(--secondary)\';this.style.borderColor=\'var(--secondary)\'" onmouseout="this.style.color=\'var(--primary)\';this.style.borderColor=\'var(--primary)\'">$1 <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.72rem;"></i></a>');
+
+    return html;
+  }
+
+  /**
+   * High-fidelity structured local factual RAG database responses.
+   */
+  function getLocalFallbackAnswer(query) {
+    const q = (query || '').toLowerCase().trim();
+    
+    // Category 1: Sales / Financials
+    if (q.includes('매출') || q.includes('실적') || q.includes('재무') || q.includes('돈') || q.includes('원') || q.includes('달러') || q.includes('수익') || q.includes('revenue') || q.includes('sales') || q.includes('financial') || q.includes('지표')) {
+      return `### 📊 Global Big 4 제조사 글로벌 매출 및 판매 실적 비교 (2021~2026(E))
+
+| 제조사 | 구분 | 2021년 | 2022년 | 2023년 | 2024년 | 2025년(E) | 2026년(E) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Hankook (한국타이어)** | 판매량 | 9,200만 본 | 8,900만 본 | 9,100만 본 | 9,500만 본 | 10,000만 본 | 10,500만 본 |
+| | 매출액 | 8.2조 원 | 8.5조 원 | 8.9조 원 | 9.18조 원 | 9.58조 원 | 10.1조 원 |
+| **Michelin (미쉐린)** | 판매량 | 17,500만 본 | 16,800만 본 | 17,000만 본 | 17,600만 본 | 18,000만 본 | 18,500만 본 |
+| | 매출액 | 37.1조 원 | 38.6조 원 | 40.2조 원 | 41.1조 원 | 42.5조 원 | 43.8조 원 |
+| **Continental (콘티넨탈)** | 판매량 | 12,800만 본 | 12,100만 본 | 12,500만 본 | 12,900만 본 | 13,300만 본 | 13,800만 본 |
+| | 매출액 | 26.7조 원 | 27.5조 원 | 28.6조 원 | 29.4조 원 | 30.3조 원 | 31.3조 원 |
+| **Bridgestone (브리지스톤)** | 판매량 | 16,000만 본 | 15,500만 본 | 15,800만 본 | 16,300만 본 | 16,700만 본 | 17,200만 본 |
+| | 매출액 | 33.8조 원 | 35.3조 원 | 37.1조 원 | 38.0조 원 | 39.2조 원 | 40.5조 원 |
+
+#### 💡 R&D 기술 가치 분석 및 전략적 시사점
+* **미쉐린의 프리미엄 초고가 ASP 전략**: 미쉐린의 타이어 본당 평균 판매 단가(ASP)는 글로벌 최고 수준으로, 자사 및 타사 대비 약 2.5~3배 가량 고수익 영업이익 마진 구조를 쥐고 있습니다. 이는 가교 제어 특허 컴파운드 및 글로벌 완성차 브랜드 OE 수주 지배력에 기반합니다.
+* **한국타이어의 고인치 및 친환경 가동 성공**: 자사는 18인치 이상 고인치 UHP 타이어의 판매 비중을 글로벌 45% 선까지 성공적으로 끌어올렸으며, iON 브랜드를 바탕으로 전동화 교체용(RE) 시장을 선점해 매출 연 10조 원 돌파 고지를 향해 우상향하고 있습니다.`;
+    }
+    
+    // Category 2: Silica / Compound / Hardness
+    if (q.includes('실리카') || q.includes('배합') || q.includes('경도') || q.includes('컴파운드') || q.includes('물성') || q.includes('tread') || q.includes('silica') || q.includes('hardness') || q.includes('compound')) {
+      return `### 🧪 글로벌 4대 브랜드 초고성능(UHP) 트레드 컴파운드 물성 대조
+
+| 브랜드 | 대표 패턴명 | 실리카 배합률 | 컴파운드 경도 | 마모 지수 (Wear Index) | Wet Grip 등급 |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Hankook (자사)** | Ventus S1 evo3 | **78%** | 68 Shore A | 94 (양호) | A 등급 |
+| **Michelin** | Pilot Sport 5 | **85%** | 65 Shore A | 100 (매우 우수) | A+ 등급 |
+| **Continental** | SportContact 7 | **82%** | 66 Shore A | 96 (우수) | A+ 등급 |
+| **Bridgestone** | Potenza Sport | **75%** | 70 Shore A | 90 (보통) | A 등급 |
+
+#### 💡 재료공학 R&D 분석 가이드라인
+1. **나노 실리카 고배합의 Trade-off 극복**: 트레드 고무 내 실리카 함량이 80%를 넘어설 경우, 젖은 노면 제동 한계력(Wet Grip)은 비약적으로 향상되지만 컴파운드 배합 시 고무 가밀도 뭉침 현상 및 성형 편차가 커져 내마모 수명(UTQG Mileage)이 깎이는 고질적 트레이드오프가 존재합니다.
+2. **미쉐린의 나노 분산 특허 해결책**: 미쉐린은 '일렉트릭 그립 컴파운드' 가황 공정과 극성 친수 작용기를 미세 결합시킨 특허 '폴리머 가교(Cross-linking)' 설계를 기용하여 실리카 혼련 시 분자 배향성을 극대화함으로써 마모 저항과 그립을 동시 완성했습니다.
+3. **자사 차세대 컴파운드 처방 권장**: K137 후속 및 iON evo 차기작 설계 시, 트레드 중앙에 친수성 개질 실란 커플링제(Silane Coupling Agent)의 가교 활성화 최적 밀도를 도출하고, 고배합 실리카(85%)의 고속 균일 피딩 분산을 확보하기 위한 연속 혼련기(Twin-Screw) 처방이 강력히 요구됩니다.`;
+    }
+    
+    // Category 3: Segment Stats
+    if (q.includes('점유율') || q.includes('통계') || q.includes('세그먼트') || q.includes('비중') || q.includes('데이터') || q.includes('건수') || q.includes('share') || q.includes('statistics') || q.includes('segment')) {
+      return `### 📊 사내 Compd BM 데이터베이스 세그먼트별 분포 현황
+
+* **전체 누적 물성 분석 레코드**: **1,240건** (글로벌 주요 브랜드 분해 실측 데이터 완벽 매핑)
+
+| 세그먼트 | 국문 명칭 | 분석 건수 | 점유율 (Share) | R&D 주요 물리 성격 및 목표 지향점 |
+| :--- | :--- | :---: | :---: | :--- |
+| **UHP** | 초고성능 스포츠 | 342건 | **27.6%** | 고속 선회 횡강성 유지, 마른/젖은 노면 한계 제동 확보 |
+| **EV** | 전기차 전용 친환경 | 185건 | **14.9%** | 초고토크 대응 내뜯김성(Anti-tearing), 초저회전저항(LRR) |
+| **All-Season** | 사계절 투어링 | 412건 | **33.2%** | 전천후 노면 마모 균일성, 사계절 컴포트 및 겨울 그립(3PMSF) |
+| **Winter** | 겨울용 스노우 | 163건 | **13.1%** | 영하 7도 이하 극저온 하에서 경화 저항 및 저결빙 배합 기술 |
+
+#### 💡 세그먼트별 전략적 R&D 방향
+* **최대 볼륨 All-Season**: 북미 주력RE 시장 선점을 위해 마모 마일리지 보증(Treadwear 500~800)과 혹한기 빗길/눈길 제동력을 균형 설계할 컴팩트 레질리언트 폴리머 개발이 핵심입니다.
+* **최고 성장 EV**: 순간 최대 하중(2.5톤 이상) 및 고토크 인가에 따른 전 영역 고하중 슬립 마모를 방어하기 위해 JLB 하이브리드 코일링 권선 및 비드 구조 보강 가황 제어 연구를 집중 배치하고 있습니다.`;
+    }
+    
+    // Category 4: News Feed
+    if (q.includes('뉴스') || q.includes('동향') || q.includes('기사') || q.includes('최근') || q.includes('최신') || q.includes('news') || q.includes('trend') || q.includes('article')) {
+      return `### 📰 실시간 Global Big 4 경쟁사 R&D 및 전략 뉴스 동향
+
+#### 🔵 Michelin (미쉐린) - R&D 신규 제어 특허 실증
+* **기사명**: 미쉐린, 차세대 고해상도 지능형 컴파운드 가교 제어 특허 양산 실증 완료 (2026-05-30)
+* **AI 요약**: 가밀도 가교 구조 설정을 시뮬레이션 제어하여 타이어 구름저항(RRC) 마진을 6% 이상 격상시킨 친환경 스포츠 타이어 제조 처방을 글로벌 주요 공장에 완벽히 분배했습니다.
+* **자사 위협 영향**: 자사 초고성능 스포츠(K137 후속)와의 기술 경합 시 젖은 노면 제동 및 연비 양립 우위 위협.
+* **R&D 대응 제안**: 자사 가황 온도 제어 프레스 공정과 컴파운드 분산 시뮬레이터를 앞당겨 이식하여 배합 편차를 최소화해야 합니다.
+
+#### 🟢 Continental (콘티넨탈) - 친환경 대량 양산 개시
+* **기사명**: 콘티넨탈, 재생 원료 60% 함유 친환경 타이어 UltraContact NXT 유럽 시장 본격 대량 양산 및 공급 (2026-05-28)
+* **AI 요약**: 페트병 재활용 실, 재생 강철, 천연 실리카 등 지속가능 소재 비율을 60%까지 끌어올린 타이어 대량 공급 체계 가동으로 유럽 라벨링 3개 항목 최상위를 동시 획득했습니다.
+* **자사 위협 영향**: 유럽연합의 유로7(Euro 7) 분진 규제 대응 선점으로 당사 올시즌 및 RE 교체 시장 점유 차단 위협.
+* **R&D 대응 제안**: 친환경 원료 수급망을 선제 구축하고 천연 수지 배합 처방 기안을 즉각 단축해야 합니다.
+
+#### 🟡 Bridgestone (브리지스톤) - 초경량 EV 북미 대량 전개
+* **기사명**: 브리지스톤, Enliten 초경량 EV 특화 타이어 Turanza EV 북미 시장 대규모 점유율 확장 캠페인 돌입 (2026-05-25)
+* **AI 요약**: 독자 Enliten 경량화 구조를 활용하여 완제품 무게를 15% 감량함으로써 고하중 주행가능거리를 대폭 확장하고, 초기 모터 토크 마모 수명을 20% 보강했습니다.
+* **자사 위협 영향**: 북미 EV RE 타이어 시장 내 자사 iON evo 제품군과의 직접적인 딜러 경쟁 심화.
+* **R&D 대응 제안**: 당사 iON의 소음 감쇄(Sound Absorber) 스펀지 강점을 밀착 홍보하고, 경량 JLB 보강 벨트 코일링 공정을 고도화해야 합니다.
+
+#### 🟠 Hankook (한국타이어) - AI 컴파운드 설계 특허
+* **기사명**: 한국타이어, 독자 AI 3D 컴파운드 분산 수치 예측 모델 플랫폼 시범 가동 및 국내 특허 획득 (2026-05-22)
+* **AI 요약**: 분자 스케일링 전단 유동 해석 기법을 기반으로 실리카 배합 균일성을 3차원 가상공간에서 시뮬레이션함으로써 처방 개발 일정을 40% 단축하고 물성 예측력을 92% 이상으로 향상했습니다.`;
+    }
+    
+    // Category 5: Arena Library
+    if (q.includes('아레나') || q.includes('보고서') || q.includes('기안') || q.includes('문서') || q.includes('library') || q.includes('reports') || q.includes('document') || q.includes('arena')) {
+      return `### 📂 사내 Arena 벤치마킹 보고서 라이브러리 목록
+
+사내 인트라넷 Arena에 정식 기안 완료되어 즉시 연계 열람 가능한 벤치마킹 핵심 보고서 목록입니다. (우측 링크 클릭 시 해당 리포트로 이동 가능합니다.)
+
+| 보고서 번호 | 보고서명 | 소속 부서 | 파일 크기 | 핵심 분석 내용 요약 | 이동 링크 |
+| :--- | :--- | :--- | :---: | :--- | :---: |
+| **VPR-2026-04** | 글로벌 프리미엄 초고성능 스포츠(UHP) 연간 동향 보고서 | 시장상품전략팀 | 14.2 MB | 미쉐린 PS5와 자사 S1 evo3의 나노 실리카 배합 물성 격차 실증 | [보고서 열람](../Tire_BM_UI_FINAL/index.html#tab-reports) |
+| **VPR-2025-11** | 4대 제조사 EV 친환경 전용 타이어 트레드 물성 크로스 대조표 | 컴파운드R&D센터 | 8.9 MB | iON evo vs PS EV 친환경 컴파운드 분산도 및 185건의 마모 수명 비교 | [보고서 열람](../Tire_BM_UI_FINAL/index.html#tab-reports) |
+| **VPR-2025-08** | 유럽 타이어 라벨링 규제 개정에 따른 자사 PLC 로드맵 기안 | Tire BM 파트 | 11.5 MB | 유로 7분진 및 수명 라벨제 선제 대응 로드맵 및 4S2 올시즌 PLC 맵 | [보고서 열람](../Tire_BM_UI_FINAL/index.html#tab-reports) |
+| **VPR-2024-12** | 실리카 고배합 타이어 LRR 극대화 실차 연비 테스트 결과 | 재료연구 기획소 | 6.3 MB | 실리카 80% 이상 배합 시 저온 제동 그립과 구름저항 간 상충 제어법 실증 | [보고서 열람](../Tire_BM_UI_FINAL/index.html#tab-reports) |
+
+#### 💡 연계 열람 안내
+* 상기 보고서는 사내 보안 망이 연동된 상태(VPN 또는 사내망 인트라넷)에서 클릭 시 즉시 **[Tire BM 보고서]** 탭으로 연결되어 요약본 및 기안서 원본 다운로드를 완벽하게 수행할 수 있습니다.`;
+    }
+    
+    // Category 5.1: Model-specific K135
+    if (q.includes('k135') || q.includes('prime4') || q.includes('prime 4') || q.includes('prime5') || q.includes('prime 5')) {
+      return `### 🚗 Ventus Prime 4 (K135) 차세대 프리미엄 컴포트 세단용 분석 (Q&A)
+
+자사의 대표 프리미엄 여름용 컴포트 투어링 타이어인 **Ventus Prime 4 (K135)**의 핵심 R&D 정보 및 경쟁사 대조 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 프리미엄 투어링 여름용 (Premium Summer Comfort Touring) |
+| **자사 현행 모델** | Ventus Prime 4 (K135) |
+| **주요 장점** | 안락한 주행 승차감, 최적 패턴 피치 설계에 따른 조용한 정숙성(Comfort) 우위 |
+| **경쟁 대상** | **MICHELIN Primacy 4+** (미쉐린 프라이머시 4+) |
+| **R&D 한계 갭(Gap)** | 미쉐린 Primacy 4+ 대비 **마모 수명(Wear Life) -6.5%**, **빗길 제동력(Wet Grip) -3.2%** 열세 |
+| **차기 R&D 지향점** | 유럽 RE 시장 최선호 부문인 초장수명 마일리지 확보를 위해 **고가교 친수 실리카 컴파운드** 기술을 반영하여 내마모성을 비약적으로 높여야 하며, 가로 홈 수막 배출을 극대화하여 유럽 라벨링 **Wet Grip A등급 / RR B등급** 양립을 실현해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2026-04]** [글로벌 프리미엄 초고성능 스포츠(UHP) 연간 동향 보고서](../Tire_BM_UI_FINAL/index.html#tab-reports) - 미쉐린 PS5와 자사 S1 evo3의 나노 실리카 배합 물성 격차 실증.
+* **[VPR-2024-12]** [실리카 고배합 타이어 LRR 극대화 실차 연비 테스트 결과](../Tire_BM_UI_FINAL/index.html#tab-reports) - 실리카 80% 이상 배합 시 저온 제동 그립과 구름저항 간 상충 제어법 실증.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"K135 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Category 5.2: Model-specific H446
+    if (q.includes('h446') || q.includes('kinergy ex') || q.includes('키너지 ex') || q.includes('키너지ex')) {
+      return `### 🚗 Kinergy EX (H446) 글로벌 컴팩트 데일리 올시즌 분석 (Q&A)
+
+자사의 대표 경제성 지향 스탠다드 컴포트 사계절 타이어인 **Kinergy EX (H446)**의 핵심 R&D 정보 및 경쟁사 대조 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 글로벌 보급형 패신저 올시즌 (Standard Passenger All-Season) |
+| **자사 현행 모델** | Kinergy EX (H446) |
+| **주요 장점** | 실용적 가격 경쟁력, 균일 접지압 최적 설계에 따른 우수한 경제성 및 진동 승차감 우위 |
+| **경쟁 대상** | **MICHELIN Energy Saver 4** (미쉐린 에너지 세이버 4) |
+| **R&D 한계 갭(Gap)** | 미쉐린 Energy Saver 4 대비 **내마모 마일리지 -6.8%**, **젖은 노면 제동성능(Wet Grip) -4.1%** 열세 |
+| **차기 R&D 지향점** | 초장수명 경제형 올시즌 확보를 위해 **UTQG Treadwear 600+** 수준을 타겟팅하고, 트레드 고무의 유기/무기 실리카-카본블랙 혼련성을 대폭 개선하여 실용 내구 성능과 경제적 연비 효율(RR C등급 확보)을 동시에 만족해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2025-08]** [유럽 타이어 라벨링 규제 개정에 따른 자사 PLC 로드맵 기안](../Tire_BM_UI_FINAL/index.html#tab-reports) - 마모 라벨링 및 유로 7 규제 선제 대응 로드맵.
+* **[VPR-2024-12]** [실리카 고배합 타이어 LRR 극대화 실차 연비 테스트 결과](../Tire_BM_UI_FINAL/index.html#tab-reports) - 저저항 특화 실란 배합 물성 비교.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"H446 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Category 5.3: Model-specific H472
+    if (q.includes('h472') || q.includes('kinergy gt') || q.includes('키너지 gt') || q.includes('키너지gt')) {
+      return `### 🚗 Kinergy GT (H472) 사계절 그랜드 투어링 프리미엄 올시즌 분석 (Q&A)
+
+자사의 글로벌 완성차 OE 공급 및 교체 시장 주력 프리미엄 사계절 타이어 **Kinergy GT (H472)**의 R&D 지표 및 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 프리미엄 사계절 그랜드 투어링 (Premium All-Season Grand Touring) |
+| **자사 현행 모델** | Kinergy GT (H472) |
+| **주요 장점** | 고정밀 피치 조합 설계를 통한 소음 차단, 글로벌 완성차 메이저 OE 엄격 규격 만족 |
+| **경쟁 대상** | **MICHELIN Primacy Tour A/S** (미쉐린 프라이머시 투어 A/S) |
+| **R&D 한계 갭(Gap)** | 미쉐린 Primacy Tour A/S 대비 **마모 수명 -7.1%**, **사계절 빗길/눈길 제동(Wet/Snow Grip) -5.2%** 열세 |
+| **차기 R&D 지향점** | 완성차 OE 공급 및 프리미엄 RE 교체 수요를 동시 조준하기 위해 고강도 **인벨롭 벨트 코드**를 채택해 고속 변형 강성을 극대화해야 하며, 트레드 블록에 가변 깊이 고밀도 **3D 미세 사이프(Sipe)**를 적용해 사계절 젖은 노면/가벼운 눈길 트랙션을 보강해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2025-08]** [유럽 타이어 라벨링 규제 개정에 따른 자사 PLC 로드맵 기안](../Tire_BM_UI_FINAL/index.html#tab-reports) - 글로벌 사계절 시장 요구 수명 격차 분석 보고서.
+* **[VPR-2024-03]** [북미 SUV 신상품 Benchmarking 결과 보고](../Tire_BM_UI_FINAL/index.html#tab-reports) - 고인치 올시즌 타이어의 사계절 패턴 제동 및 배수 성능 연구.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"H472 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Category 5.4: Model-specific RA43
+    if (q.includes('ra43') || q.includes('dynapro hp2') || q.includes('다이나프로 hp2') || q.includes('다이나프로hp2')) {
+      return `### 🏔️ Dynapro HP2 (RA43) 고성능 도심형 프리미엄 SUV 올시즌 분석 (Q&A)
+
+도심형 프리미엄 SUV 오너를 겨냥하는 고성능 사계절 고속 안정성 타이어 **Dynapro HP2 (RA43)**의 R&D 지표 및 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 프리미엄 고속도로 SUV용 올시즌 (Premium Highway Terrain SUV) |
+| **자사 현행 모델** | Dynapro HP2 (RA43) |
+| **주요 장점** | 탄탄한 센터 리브 구조에 따른 우수한 고속 직진 주행 안정성, 중량 SUV 지탱 NVH 성능 |
+| **경쟁 대상** | **MICHELIN Latitude Tour HP** (미쉐린 래티튜드 투어 HP) |
+| **R&D 한계 갭(Gap)** | 미쉐린 Latitude Tour HP 대비 **마일리지 수명 -7.3%**, **빗길 제동력(Wet Grip) -4.5%** 열세 |
+| **차기 R&D 지향점** | 고무 분자 간 밀도를 높인 **고탄성 실리카 가교 폴리머**를 사용하여 트레드 블록 뜯김(Tearing) 현상을 제어해야 하며, 중량 SUV 차량의 하중 이동에도 접지 면적이 일관되게 유지되도록 하는 **가변 접지압 프로파일(FEA)** 최적화 설계가 반영되어야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2026-01]** [북미 Pick-up Truck용 Tire의 Sidewall Block Design 분석 결과](../Tire_BM_UI_FINAL/index.html#tab-reports) - 고하중 SUV용 사이드월 내구력 향상 공법 제안서.
+* **[VPR-2023-02]** [HMC eM Platform Competition Benchmarking](../Tire_BM_UI_FINAL/index.html#tab-reports) - 현대기아차 차세대 SUV 플랫폼 수주용 HL(High Load) 가중 강성 보강 설계 보고서.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"RA43 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Category 5.5: Model-specific W330
+    if (q.includes('w330') || q.includes('icept') || q.includes('아이셉트') || q.includes('winter') || q.includes('윈터') || q.includes('겨울용')) {
+      return `### ❄️ Winter i*cept evo3 (W330) 겨울용 초고성능 알파인 스포츠 분석 (Q&A)
+
+겨울철 혹한기 노면 안전 주행을 전격 보장하는 자사의 대표 알파인 겨울용 플래그십 타이어 **Winter i*cept evo3 (W330)**의 R&D 데이터 및 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 프리미엄 겨울용 알파인 스포츠 (Premium Alpine Winter Sport) |
+| **자사 현행 모델** | Winter i*cept evo3 (W330) |
+| **주요 장점** | 갈매기 방향성 V형 패턴을 통한 동계 진흙/슬러시 배수성 우위 및 빙판 제동력 확보 |
+| **경쟁 대상** | **MICHELIN Pilot Alpin 5** (미쉐린 파일럿 알핀 5) |
+| **R&D 한계 갭(Gap)** | 미쉐린 Pilot Alpin 5 대비 **혹한기 눈길/빙판 견인력 -5.5%**, **동계 스포츠 핸들링 -4.8%** 열세 |
+| **차기 R&D 지향점** | 정제 소나무 천연 레진인 **아쿠아파인(AquaPine)** 배합 비율을 최적 조율하여 영하 극저온 기온에서도 컴파운드의 고탄성 유연함을 영구 유지해야 하며, 선회 시 패턴 블록이 무너지지 않도록 블록 간 서로 구속하는 **인터록킹 3D 사이프(Sipe)** 기술을 전면 적용하여 스포츠 주행 안정성을 대폭 개선해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2022-07]** [Michelin All Weather 상품 CrossClimate2 Benchmarking 분석 보고](../Tire_BM_UI_FINAL/index.html#tab-reports) - 저온 고무 유연성 및 동계 눈길 견이 트랙션 기술 대조.
+* **[VPR-2025-08]** [유럽 타이어 라벨링 규제 개정에 따른 자사 PLC 로드맵 기안](../Tire_BM_UI_FINAL/index.html#tab-reports) - 혹한기 성능 인증(3PMSF) 기준 및 향후 규제 동향.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"W330 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+    
+    // Category 6: Model-specific K137 / S1 evo3 / S1 evo4
+    if (q.includes('k137') || q.includes('s1 evo') || q.includes('s1evo') || q.includes('벤투스') || q.includes('ventus')) {
+      return `### 🏎️ Ventus S1 evo3 (K137) & evo4 차세대 초고성능 플래그십 분석 (Q&A)
+
+자사의 대표 초고성능 여름용 스포츠 타이어 제품군인 **Ventus S1 evo 시리즈(K137)**의 핵심 R&D 정보 및 경쟁사 대조 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 초고성능 여름용 스포츠 플래그십 (UHP Summer Max Performance) |
+| **자사 현행 모델** | Ventus S1 evo3 (K137) |
+| **주요 장점** | 우수한 마모 수명 (UTQG 340), 탁월한 고주파 주행 정숙성 및 안락한 승차감 |
+| **경쟁 대상** | **MICHELIN Pilot Sport 5** (미쉐린 PS5) |
+| **R&D 한계 갭(Gap)** | 미쉐린 PS5 대비 **마른 노면 한계 그립(Dry Grip) -3.1%**, **조종 응답성(Handling Response) -5.1%** 열세 |
+| **차기 R&D 지향점** | 실리카 함량을 **85%**까지 증량하여 빗길 제동(Wet Grip)을 극한으로 끌어올림과 동시에, 벨트 레이어에 **아라미드-나일론 하이브리드 보강 코드**를 적용해 300km/h 이상 고속 주행 시 원심력에 의한 트레드 변형을 억제하고 조종 반응성을 강화해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2026-04]** [글로벌 프리미엄 초고성능 스포츠(UHP) 연간 동향 보고서](../Tire_BM_UI_FINAL/index.html#tab-reports) - 미쉐린 PS5와 자사 S1 evo3의 나노 실리카 배합 물성 격차 실증.
+* **[VPR-2024-12]** [실리카 고배합 타이어 LRR 극대화 실차 연비 테스트 결과](../Tire_BM_UI_FINAL/index.html#tab-reports) - 실리카 80% 이상 배합 시 저온 제동 그립과 구름저항 간 상충 제어법 실증.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"K137 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Category 7: Model-specific iON evo / EV
+    if (q.includes('ion') || q.includes('아이온') || q.includes('ev') || q.includes('전기차')) {
+      return `### ⚡ iON evo (아이온 에보) 차세대 고성능 EV 전용 타이어 분석 (Q&A)
+
+자사의 세계 최초 전기차(EV) 전용 초고성능 타이어 브랜드인 **iON evo(아이온 에보)**의 R&D 데이터 및 시장 경쟁력 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 고성능 전용 전기차 (EV Ultra High Performance) |
+| **자사 현행 모델** | iON evo (아이온 에보) |
+| **주요 장점** | 자사 특허 우레탄 흡음재(**Sound Absorber**) 탑재로 경쟁사 대비 독보적 실내 정숙성(+1.0% 우위), 회전저항(RRC) 최상위 수준 충족 |
+| **경쟁 대상** | **MICHELIN Pilot Sport EV** (미쉐린 PS EV) |
+| **R&D 한계 갭(Gap)** | 미쉐린 PS EV 대비 **고하중 내마모 수명(Wear Durability) -14.7%**, **모터 고토크 인장성 -7.4%** 열세 |
+| **차기 R&D 지향점** | 전기차의 순간 최대 토크(550~650 Nm)와 무거운 하중(2.5톤) 하에서 발생하는 초기 슬립 및 트레드 뜯김(Tearing)을 제어하기 위해, **고변형 F-SBR 고강도 탄성체 기술**을 도입하고 가황(Curing) 시 **실시간 자동 온도 제어 설비**를 증설해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2025-11]** [4대 제조사 EV 친환경 전용 타이어 트레드 물성 크로스 대조표](../Tire_BM_UI_FINAL/index.html#tab-reports) - iON evo vs PS EV 친환경 컴파운드 분산도 및 185건의 마모 수명 비교.
+* **[VPR-2023-02]** [HMC eM Platform Competition Benchmarking](../Tire_BM_UI_FINAL/index.html#tab-reports) - 현대기아차 차세대 EV 플랫폼 수주용 HL(High Load) 가중 강성 보강 설계 보고서.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"iON 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Category 8: Model-specific Dynapro / HPX / SUV
+    if (q.includes('dynapro') || q.includes('다이나프로') || q.includes('hpx') || q.includes('suv')) {
+      return `### 🏔️ Dynapro HPX (다이나프로 HPX) 북미 SUV 전용 타이어 분석 (Q&A)
+
+북미 대형 SUV 및 픽업트럭 시장을 정조준하는 자사의 초장수명 프리미엄 사계절 타이어 **Dynapro HPX**의 R&D 지표 및 분석 결과입니다.
+
+| 항목 | 상세 성능 지표 및 스펙 |
+| :--- | :--- |
+| **세그먼트** | 올시즌 투어링 SUV (All-Season Touring SUV) |
+| **자사 현행 모델** | Dynapro HPX |
+| **주요 장점** | 숄더블록 폐쇄형 소음 차단 설계를 통한 하이웨이 크루징 주행 정숙성 및 진동 승차감 우위(+1.1% 마진) |
+| **경쟁 대상** | **MICHELIN Defender LTX M/S** (미쉐린 디펜더) |
+| **R&D 한계 갭(Gap)** | 미쉐린 디펜더 대비 **마모 보증 수명 -12.6%**, **눈길 견인 트랙션(Snow Traction) -11.2%** 열세 |
+| **차기 R&D 지향점** | 북미 고객의 핵심 니즈인 **7.5만~8.5만 마일 초장수명 마일리지**를 완벽 보증하기 위해 트레드에 **초고밀도 분자 인터록 가교 화학 처방**을 도입하고, 겨울철 혹한기 눈길 제동 성능 향상을 위해 3차원 미세 가변 사이프(Sipe) 최적 기하 금형 설계를 도입해야 합니다. |
+
+#### 📁 관련 사내 Arena 보고서 (클릭 시 이동)
+* **[VPR-2025-08]** [유럽 타이어 라벨링 규제 개정에 따른 자사 PLC 로드맵 기안](../Tire_BM_UI_FINAL/index.html#tab-reports) - 유럽 및 북미 마모 라벨링 규제 선제 대응 로드맵 및 4S2 올시즌 PLC 맵.
+* **[VPR-2024-03]** [북미 SUV 신상품(UTQG Treadwear 800) Benchmarking 결과 보고](../Tire_BM_UI_FINAL/index.html#tab-reports) - 트레드웨어 800 수준의 초고내마모 에버트레드 화학 공융합체 분석.
+
+---
+*💡 이 제품에 대한 완전한 5단계 R&D 상품 개발 및 Capex 투자 제안서가 필요하시면, 질문창에 **"Dynapro 후속 개발 전략 수립해줘"**라고 입력해 주십시오.*`;
+    }
+
+    // Default Factual Guideline
+    return `### 👋 안녕하십니까! BM-Intelligence Hub "AI Insight Agent"입니다.
+
+사용자님께서 입력하신 질문은 특정 타이어 모델의 5단계 R&D 상품 전략 수립 시뮬레이션 외의 일반 Q&A 질문으로 확인되었습니다. 사내 지식 데이터베이스와 실시간 경쟁사 BI 뉴스 동향을 분석하여 최적의 R&D 인사이트를 제공합니다.
+
+아래와 같이 구체적인 주제를 질문하시면 상세한 사실에 기반한 정밀 보고서 형식으로 즉시 답변을 도출해 드릴 수 있습니다.
+
+#### 💡 질문하실 수 있는 추천 주제 가이드:
+1. **제조사 재무 실적 및 매출**
+   - *"글로벌 타이어 Big 4 제조사들의 매출 및 판매량 비교표 보여줘"*
+   - *"한국타이어 매출 추이와 프리미엄 타이어 판매 비중은 어때?"*
+2. **트레드 컴파운드 물성 및 실리카 배합률**
+   - *"미쉐린 파일럿 스포츠 5의 실리카 함량이 어떻게 돼?"*
+   - *"각 브랜드별 컴파운드 경도와 마모지수 비교해줘"*
+3. **사내 DB 통계 및 세그먼트 점유율**
+   - *"컴파운드 BM 데이터베이스 세그먼트 점유율 현황 보여줘"*
+   - *"사계절용 타이어와 전기차 전용 타이어 분석 건수는 각각 몇 건이야?"*
+4. **실시간 경쟁사 R&D 및 ESG 뉴스**
+   - *"최근 미쉐린이나 콘티넨탈의 기술 특허나 친환경 타이어 기사 있어?"*
+   - *"브리지스톤 Enliten 경량화 기술 뉴스와 영향 분석해줘"*
+5. **사내 아레나 보고서 라이브러리 연계**
+   - *"사내 Arena에 등록된 타이어 벤치마킹 보고서 목록 알려줘"*
+   - *"VPR-2025-11 보고서 내용이 어떤 거야?"*
+
+---
+*질문 창에 원하시는 핵심 단어(예: **매출**, **실리카**, **뉴스**, **보고서**, **세그먼트**)를 포함해 자유롭게 질문해 주시면, 최상의 R&D 조언을 드리겠습니다!*`;
+  }
+
+  /**
+   * Premium Cascade Slide-Up block-by-block rendering.
+   * Completely tag-safe and guarantees perfect table/list styling during animations.
+   */
+  function typeOutAnswer(markdownText, container) {
+    const htmlContent = parseMarkdownToHtml(markdownText);
+    container.innerHTML = "";
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    
+    const blocks = Array.from(tempDiv.childNodes);
+    let blockIndex = 0;
+    
+    function renderNextBlock() {
+      if (blockIndex < blocks.length) {
+        const node = blocks[blockIndex].cloneNode(true);
+        
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          node.style.opacity = "0";
+          node.style.transform = "translateY(12px)";
+          node.style.transition = "opacity 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)";
+          container.appendChild(node);
+          
+          setTimeout(() => {
+            node.style.opacity = "1";
+            node.style.transform = "translateY(0)";
+          }, 20);
+        } else {
+          container.appendChild(node);
+        }
+        
+        blockIndex++;
+        const delay = (node.nodeName === 'DIV' || node.nodeName === 'TABLE') ? 200 : 60;
+        setTimeout(renderNextBlock, delay);
+      }
+    }
+    
+    renderNextBlock();
+  }
+
+  /**
+   * Trigger AI Chat Agent Proxy via Express Server or fallback smoothly
+   */
+  function triggerAiQa(query) {
+    const qaUserQueryDisplay = document.getElementById('qa-user-query-display');
+    const qaAnswerContent = document.getElementById('qa-answer-content');
+    const qaSourceBadge = document.getElementById('qa-source-badge');
+
+    if (qaUserQueryDisplay) qaUserQueryDisplay.innerText = query;
+    if (qaAnswerContent) {
+      qaAnswerContent.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; padding: 25px; color: var(--text-muted); font-size: 0.95rem; font-weight: 700; background: rgba(0,0,0,0.015); border-radius: 10px; border: 1px dashed rgba(0,0,0,0.06);">
+          <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary); font-size: 1.25rem;"></i>
+          <span>AI Insight Agent가 사내 지식 데이터베이스와 실시간 BI 뉴스를 연동하여 최적의 R&D 답변을 가다듬고 있습니다...</span>
+        </div>
+      `;
+    }
+
+    // Connect to port 3000 Chat endpoint
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: query })
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('API server unreachable or returned error status');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data && data.status === 'success' && data.response) {
+        if (qaSourceBadge) qaSourceBadge.innerHTML = `<span style="color:#22c55e;"><i class="fa-solid fa-bolt"></i> Gemini Flash 2.5 Active</span>`;
+        typeOutAnswer(data.response, qaAnswerContent);
+      } else {
+        console.warn("[Strategy Console] Proxy returned fallback status. Loading local RAG context...");
+        if (qaSourceBadge) qaSourceBadge.innerHTML = `<span style="color:var(--primary);"><i class="fa-solid fa-database"></i> Local RAG Fallback</span>`;
+        const fallbackText = getLocalFallbackAnswer(query);
+        typeOutAnswer(fallbackText, qaAnswerContent);
+      }
+    })
+    .catch(err => {
+      console.error("[Strategy Console] Server network error. Falling back to rich local database:", err);
+      if (qaSourceBadge) qaSourceBadge.innerHTML = `<span style="color:#d97706;"><i class="fa-solid fa-network-wired"></i> Local RAG (Offline Mode)</span>`;
+      const fallbackText = getLocalFallbackAnswer(query);
+      typeOutAnswer(fallbackText, qaAnswerContent);
+    });
+  }
+
   // Trigger simulation with steps and animation
   function triggerStrategicSimulation(query) {
     try {
-      console.log("[Strategy Console] Starting strategic simulation for query:", query);
+      console.log("[Strategy Console] Starting strategic simulation/QA for query:", query);
       const loaderScreen = document.getElementById('strategy-loader-screen');
       const emptyScreen = document.getElementById('strategy-empty-screen');
       const reportViewport = document.getElementById('strategy-report-viewport');
+      const qaViewport = document.getElementById('strategy-qa-viewport');
+      const loaderHeadline = document.getElementById('loader-headline-text');
 
-      // Reset loader classes
+      // 1. Classify the user prompt
+      const isStrategy = isStrategyQuery(query);
+
+      // 2. Adjust loader UI title
+      if (loaderHeadline) {
+        if (isStrategy) {
+          loaderHeadline.innerText = "BM 기반 상품 전략 및 R&D 가이드라인 수립 중";
+        } else {
+          loaderHeadline.innerText = "AI Insight Agent 실시간 Q&A 답변 생성 중";
+        }
+      }
+
+      // 3. Reset and dynamic-bind loader texts
       for (let i = 1; i <= 5; i++) {
         const step = document.getElementById(`loader-step-${i}`);
         if (step) {
           step.className = 'loader-step';
+          const stepSpan = step.querySelector('span');
+          if (stepSpan) {
+            if (isStrategy) {
+              stepSpan.innerText = originalStepTexts[i - 1];
+            } else {
+              stepSpan.innerText = qaStepTexts[i - 1];
+            }
+          }
         }
       }
 
-      // Hide active states
+      // Hide all output states
       if (emptyScreen) emptyScreen.style.display = 'none';
       if (reportViewport) reportViewport.style.display = 'none';
+      if (qaViewport) qaViewport.style.display = 'none';
 
       // Reveal loader screen
       if (loaderScreen) {
@@ -515,17 +1838,30 @@
         loaderScreen.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
-      // Run sequential loading simulation with 750ms delays
-      runLoaderStep(1, () => {
-        runLoaderStep(2, () => {
-          runLoaderStep(3, () => {
-            runLoaderStep(4, () => {
-              runLoaderStep(5, () => {
-                // Done! Hide loader and render actual strategy results
+      // 4. Set timing (Strategy is long-running R&D, Q&A is snappier)
+      const stepDelay = isStrategy ? 750 : 350;
+
+      // Run sequential loading simulation with stepDelay
+      runLoaderStep(1, stepDelay, () => {
+        runLoaderStep(2, stepDelay, () => {
+          runLoaderStep(3, stepDelay, () => {
+            runLoaderStep(4, stepDelay, () => {
+              runLoaderStep(5, stepDelay, () => {
+                // Done! Hide loader and render actual results
                 setTimeout(() => {
                   if (loaderScreen) loaderScreen.style.display = 'none';
                   try {
-                    renderStrategicReport(query);
+                    if (isStrategy) {
+                      renderStrategicReport(query);
+                    } else {
+                      if (qaViewport) {
+                        qaViewport.style.display = 'block';
+                        triggerAiQa(query);
+                        setTimeout(() => {
+                          qaViewport.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 120);
+                      }
+                    }
                   } catch (renderError) {
                     console.error("[Strategy Console] Render Error:", renderError);
                     if (typeof showDiagnosticBanner === 'function') {
@@ -534,7 +1870,7 @@
                       alert('Render Error: ' + renderError.message);
                     }
                   }
-                }, 600);
+                }, 400);
               });
             });
           });
@@ -550,7 +1886,7 @@
     }
   }
 
-  function runLoaderStep(stepId, callback) {
+  function runLoaderStep(stepId, delay, callback) {
     const currentStep = document.getElementById(`loader-step-${stepId}`);
     if (!currentStep) {
       callback();
@@ -563,7 +1899,7 @@
       currentStep.classList.remove('active');
       currentStep.classList.add('completed');
       callback();
-    }, 750);
+    }, delay || 750);
   }
 
   let isConsoleInitialized = false;
@@ -964,6 +2300,16 @@
       let priorityTitle = '';
       if (matchedData.id === 'k137') {
         priorityTitle = '마른 노면 한계 그립(Dry Grip) 극대화 & 초고속 조종 응답력 확보';
+      } else if (matchedData.id === 'k135') {
+        priorityTitle = '젖은 노면 제동성능(Wet Grip) 극대화 & 마모 수명(Wear Life) 대폭 연장';
+      } else if (matchedData.id === 'h446') {
+        priorityTitle = '초고장수명 마모 마일리지(UTQG 600+) 확보 & 실용적 경제성 제어';
+      } else if (matchedData.id === 'h472') {
+        priorityTitle = '글로벌 완성차 메이저 OE 정숙성 규격 충족 & 사계절 전천후 제동력 균형';
+      } else if (matchedData.id === 'ra43') {
+        priorityTitle = '고인치 고하중 SUV용 고속 안정성 극대화 & 도심형 NVH 저소음 제어';
+      } else if (matchedData.id === 'w330') {
+        priorityTitle = '혹한기 스노우/슬러시 견인력(ASTM 3PMSF) 확보 & 동계 드라이 스포츠 핸들링 보강';
       } else if (matchedData.id === 'ion') {
         priorityTitle = '고하중 내마모 수명(Wear Durability) 극대화 & 모터 초고토크 지탱 물리 구조 설계';
       } else {

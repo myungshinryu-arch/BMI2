@@ -922,6 +922,38 @@
         <div class="empty-desc">개발하고자 하는 후속 타이어 기획안에 대해 질문해 주세요. 내장된 Global Top4 매출/판매 데이터, 6000여 건의 타이어 PLC 로드맵 및 컴파운드 물성 빅데이터를 종합 대조하여 초정밀 R&D 제안서를 실시간으로 도출합니다.</div>
       </section>
       
+      <!-- OUTPUT GENERAL Q&A DASHBOARD -->
+      <section class="report-dashboard" id="strategy-qa-viewport" style="display: none; transition: all 0.3s ease-in-out;">
+        <div class="strategy-widget-panel" style="margin-bottom: 30px; padding: 25px 30px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1.5px solid rgba(249, 115, 22, 0.15); border-radius: 20px; box-shadow: var(--shadow-premium);">
+          <div class="panel-heading-row" style="border-bottom: 1.5px solid rgba(249, 115, 22, 0.1); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <div class="panel-heading-title" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 10px;">
+              <div style="width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 10px rgba(249,115,22,0.2);">
+                <i class="fa-solid fa-comment-dots" style="font-size: 1.15rem;"></i>
+              </div>
+              <span id="qa-query-title">AI Insight Agent 실시간 Q&A 답변</span>
+            </div>
+            <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-muted); display: flex; align-items: center; gap: 8px; background: rgba(249, 115, 22, 0.05); padding: 5px 12px; border-radius: 30px; border: 1px solid rgba(249, 115, 22, 0.12);">
+              <span class="pulse-dot" style="background: var(--accent-green); width: 8px; height: 8px;"></span>
+              <span id="qa-source-badge" style="color: var(--primary);">Realtime Engine Active</span>
+            </div>
+          </div>
+          
+          <div style="background: rgba(249, 115, 22, 0.02); border-left: 4px solid var(--primary); padding: 12px 18px; border-radius: 0 10px 10px 0; margin-bottom: 20px;">
+            <div style="font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-circle-question"></i>
+              <span>입력된 질문 (User Query)</span>
+            </div>
+            <div id="qa-user-query-display" style="font-size: 1.02rem; font-weight: 800; color: var(--text-dark); line-height: 1.35;">
+              -
+            </div>
+          </div>
+
+          <div id="qa-answer-content" class="qa-answer-body" style="font-size: 0.95rem; line-height: 1.65; color: var(--text-primary); min-height: 150px; text-align: justify;">
+            <!-- Content filled by JS -->
+          </div>
+        </div>
+      </section>
+
       <!-- OUTPUT STRATEGIC REPORT DASHBOARD -->
       <section class="report-dashboard" id="strategy-report-viewport">
         <!-- Section A: KPI 핵심 요약 (두괄식 Summary) -->

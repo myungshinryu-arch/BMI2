@@ -867,7 +867,7 @@ class TireDashboard {
         } else if (this.currentMarket === 'eu') {
             this.sourceSelect.innerHTML = `
                 <option value="combined">유럽 종합 평점</option>
-                <option value="adac">유럽 ADAC 테스트 (독일 학교식)</option>
+                <option value="adac">유럽 ADAC 테스트 (독일 등급, 낮을수록 우수)</option>
                 <option value="autobild">유럽 Auto Bild 테스트 (정성 등급)</option>
             `;
             if (['combined', 'adac', 'autobild'].includes(prevValue)) {
@@ -1628,12 +1628,20 @@ class TireDashboard {
         const activeSegment = this.segmentSelect ? this.segmentSelect.value : 'all';
         const isNA = this.currentMarket === 'na';
 
-        // 대표 시즌 판단
-        let targetSeason = 'Summer';
-        if (activeSegment === 'Winter / Snow' || activeSegment === 'Winter') {
-            targetSeason = 'Winter';
-        } else if (isNA) {
-            targetSeason = 'All-Season';
+        // 대표 시즌 판단 (시장 및 세그먼트 정합 완벽 매칭)
+        let targetSeason = 'All-Season';
+        if (this.currentMarket === 'eu') {
+            // 유럽 시장은 세그먼트 이름이 곧 시즌명입니다 ('Summer', 'Winter', 'All-Season')
+            targetSeason = activeSegment === 'all' ? 'Summer' : activeSegment;
+        } else {
+            // 북미 시장
+            if (activeSegment === 'Winter / Snow' || activeSegment === 'Winter') {
+                targetSeason = 'Winter';
+            } else if (activeSegment === 'Summer') {
+                targetSeason = 'Summer';
+            } else {
+                targetSeason = 'All-Season';
+            }
         }
         const isSummer = (targetSeason === 'Summer');
 
@@ -1693,14 +1701,18 @@ class TireDashboard {
                 'Grand Touring (All-Season) - SUV': '투어링 SUV 사계절 (Grand Touring SUV)',
                 'All-Season Passenger': '일반 승용 사계절 (All-Season)',
                 'Winter / Snow': '겨울용 스노우 (Winter/Snow)',
-                'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)'
+                'All-Terrain (SUV/Truck)': '온/오프로드 SUV (All-Terrain)',
+                'Summer': '여름용 (Summer)',
+                'Winter': '겨울용 (Winter)',
+                'All-Season': '사계절용 (All-Season)'
             };
 
             const brandText = brandNamesKo[selectedBrandVal] || selectedBrandVal;
             const segmentText = segmentNamesKo[selectedSegmentVal] || selectedSegmentVal;
 
             if (targetModels.length === 0) {
-                subtitleEl.innerHTML = `⚠️ <span style="color: var(--color-red);">선택된 조건에 부합하는 분석 데이터가 없습니다. 필터를 조정해주세요.</span>`;
+                const currentMarketText = this.currentMarket === 'na' ? '북미' : '유럽';
+                subtitleEl.innerHTML = `⚠️ <span style="color: var(--color-red); font-weight:700;">[데이터 매칭 없음] ${currentMarketText} 시장의 '${segmentText}' 세그먼트에 속하는 '${brandText}' 제품 중 타겟 시즌필터('${targetSeason}')에 정밀 매칭되는 데이터가 존재하지 않습니다. 필터링 조건을 다시 확인해 주십시오.</span>`;
             } else if (selectedBrandVal !== 'all') {
                 if (targetModels.length === 1) {
                     subtitleEl.innerHTML = `분석 대상: <strong style="color: var(--color-hankook);">${targetModels[0].brand} ${targetModels[0].model}</strong> (단일 상품 실측 점수 추이)`;
@@ -2136,21 +2148,21 @@ class TireDashboard {
         const allHankookInSegment = segmentModels.filter(item => item.brand === 'Hankook');
         if (allHankookInSegment.length === 0) return null;
 
-        // 2. 현재 선택된 R&D 시장 영역('na' 또는 'eu')에 어울리는 대표 시즌 판단 및 한국타이어 비교 대상 선정
-        let selectedHankookModel = null;
-        if (activeSegment === 'Winter / Snow' || activeSegment === 'Winter') {
-            selectedHankookModel = allHankookInSegment.find(item => item.season === 'Winter') || allHankookInSegment[0];
+        // 2. 현재 선택된 R&D 시장 영역('na' 또는 'eu') 및 세그먼트에 맞는 정확한 시즌 판정
+        let targetSeason = 'All-Season';
+        if (this.currentMarket === 'eu') {
+            // 유럽 시장은 세그먼트 자체가 시즌명입니다: 'Summer', 'Winter', 'All-Season'
+            targetSeason = activeSegment === 'all' ? 'Summer' : activeSegment;
         } else {
-            if (this.currentMarket === 'na') {
-                // 북미용 상품 비교는 사계절용 제품 위주
-                selectedHankookModel = allHankookInSegment.find(item => item.season === 'All-Season') || allHankookInSegment[0];
+            // 북미 시장
+            if (activeSegment === 'Winter / Snow' || activeSegment === 'Winter') {
+                targetSeason = 'Winter';
+            } else if (activeSegment === 'Summer') {
+                targetSeason = 'Summer';
             } else {
-                // 유럽용 상품 비교는 여름용 제품 위주
-                selectedHankookModel = allHankookInSegment.find(item => item.season === 'Summer') || allHankookInSegment[0];
+                targetSeason = 'All-Season';
             }
         }
-
-        const targetSeason = selectedHankookModel.season;
 
         // 3. 한국타이어 대표 모델과 '완벽히 같은 시즌'을 갖는 제품군끼리만 엄격하게 매칭 (횡비교 왜곡 원천 차단)
         const selectedBrand = this.brandSelect ? this.brandSelect.value : 'all';
@@ -2160,26 +2172,52 @@ class TireDashboard {
             competitorModels = competitorModels.filter(item => item.brand === selectedBrand);
         }
 
-        // 한국타이어 모델 중 해당 연도/시즌에서 가장 평점이 높은 '최우수 대표 상품' 선정
+        // 한국타이어 모델 중 해당 연도/시즌에서 가장 적합한 '최우수 대표 상품' 선정
         let bestHankook = null;
         let bestHankookScore = -1;
+        let selectedHankookModel = null;
+
         hankookModels.forEach(model => {
             const rec = model.yearlyData[selectedYear];
-            const avg = rec ? this.calculateModelScore(rec, model.season) : 0;
-            if (avg > bestHankookScore) {
-                bestHankookScore = avg;
+            let score = rec ? this.calculateModelScore(rec, model.season) : 0;
+            
+            // 유럽 시장 사계절용(All-Season) 세그먼트의 경우, 
+            // 메인스트림 승용 올웨더 타이어인 'Kinergy 4S2'가 핵심 비교 대조군이 되도록 우선순위를 보장합니다.
+            if (this.currentMarket === 'eu' && targetSeason === 'All-Season') {
+                if (model.model === 'Kinergy 4S2') {
+                    score += 5.0; // Kinergy 4S2 우선 선택 보장
+                }
+            }
+            
+            if (score > bestHankookScore) {
+                bestHankookScore = score;
                 bestHankook = model;
             }
         });
         if (bestHankook) {
             selectedHankookModel = bestHankook;
+        } else {
+            selectedHankookModel = allHankookInSegment[0];
         }
 
         // 한국타이어 모델과 완벽히 동일한 세그먼트 제품들만 비교되도록 필터링 (승용/SUV 오비교 전격 방지)
         if (selectedHankookModel) {
-            const sameSegmentCompetitors = competitorModels.filter(item => item.segment === selectedHankookModel.segment);
-            if (sameSegmentCompetitors.length > 0) {
-                competitorModels = sameSegmentCompetitors;
+            if (this.currentMarket === 'na') {
+                // 북미 시장: 상세 세그먼트명이 일치해야 함
+                const sameSegmentCompetitors = competitorModels.filter(item => item.segment === selectedHankookModel.segment);
+                if (sameSegmentCompetitors.length > 0) {
+                    competitorModels = sameSegmentCompetitors;
+                }
+            } else {
+                // 유럽 시장: SUV 제품군 여부에 맞춰 정교한 이중 매칭
+                const isHkSUV = selectedHankookModel.segment.includes('SUV') || (selectedHankookModel.model && selectedHankookModel.model.includes('SUV'));
+                const sameTypeCompetitors = competitorModels.filter(item => {
+                    const isCompSUV = item.segment.includes('SUV') || (item.model && item.model.includes('SUV'));
+                    return isHkSUV === isCompSUV;
+                });
+                if (sameTypeCompetitors.length > 0) {
+                    competitorModels = sameTypeCompetitors;
+                }
             }
         }
 
@@ -2188,9 +2226,17 @@ class TireDashboard {
         
         competitorModels.forEach(model => {
             const rec = model.yearlyData[selectedYear];
-            const avg = rec ? this.calculateModelScore(rec, model.season) : 0;
-            if (avg > bestCompetitorScore) {
-                bestCompetitorScore = avg;
+            let score = rec ? this.calculateModelScore(rec, model.season) : 0;
+            
+            // 유럽 All-Season 세그먼트 벤치마크 1위인 Michelin CrossClimate 2가 확실하게 1순위 대조군으로 선발되도록 보증
+            if (this.currentMarket === 'eu' && targetSeason === 'All-Season') {
+                if (model.brand === 'Michelin' && model.model === 'CrossClimate 2') {
+                    score += 5.0; // CrossClimate 2 우선 선택 보장
+                }
+            }
+            
+            if (score > bestCompetitorScore) {
+                bestCompetitorScore = score;
                 bestCompetitor = model;
             }
         });
@@ -2528,7 +2574,7 @@ class TireDashboard {
                 th6.innerHTML = `CR 성능 점수 <span class="sort-arrow"></span>`;
             } else {
                 th5.setAttribute('data-sort', 'adac');
-                th5.innerHTML = `ADAC 독일 평점 <span class="sort-arrow"></span>`;
+                th5.innerHTML = `ADAC 독일 평점 (낮을수록 우수) <span class="sort-arrow"></span>`;
                 th6.setAttribute('data-sort', 'autobild');
                 th6.innerHTML = `Auto Bild 등급 <span class="sort-arrow"></span>`;
             }
@@ -2679,18 +2725,21 @@ class TireDashboard {
             if (source === 'adac') {
                 const adacGrade = row.adac;
                 badgeText = `ADAC ${adacGrade.toFixed(1)}`;
-                if (adacGrade <= 2.0) {
+                if (adacGrade <= 1.5) {
                     badgeClass = 'badge-excellent';
-                    badgeText += ' (Vorbildlich)';
-                } else if (adacGrade <= 3.0) {
+                    badgeText += ' (Sehr Gut / 아주 우수)';
+                } else if (adacGrade <= 2.5) {
                     badgeClass = 'badge-good';
-                    badgeText += ' (Gut)';
-                } else if (adacGrade <= 4.0) {
+                    badgeText += ' (Gut / 우수)';
+                } else if (adacGrade <= 3.5) {
                     badgeClass = 'badge-fair';
-                    badgeText += ' (Befriedigend)';
+                    badgeText += ' (Befriedigend / 보통)';
+                } else if (adacGrade <= 4.5) {
+                    badgeClass = 'badge-poor';
+                    badgeText += ' (Ausreichend / 충분)';
                 } else {
                     badgeClass = 'badge-poor';
-                    badgeText += ' (Ausreichend)';
+                    badgeText += ' (Mangelhaft / 미흡)';
                 }
             } else if (source === 'autobild') {
                 const score = row.autobild;
@@ -2737,12 +2786,19 @@ class TireDashboard {
                 else if (row.autobild >= 75) abLabel = '만족';
                 else if (row.autobild >= 65) abLabel = '충분';
                 
+                let adacLabel = '미흡';
+                if (row.adac <= 1.5) adacLabel = '아주 우수';
+                else if (row.adac <= 2.5) adacLabel = '우수';
+                else if (row.adac <= 3.5) adacLabel = '보통';
+                else if (row.adac <= 4.5) adacLabel = '충분';
+                else adacLabel = '미흡';
+                
                 tr.innerHTML = `
                     <td><strong>${brandNamesKo[row.brand] || row.brand}</strong></td>
                     <td>${row.model}</td>
                     <td><span style="font-size: 0.8rem; color: #000000; background: var(--color-hankook); padding: 4px 10px; border-radius: 4px; font-weight: 800;">${segmentNamesKo[row.segment] || row.segment}</span></td>
                     <td class="numeric">${salesFormatted}</td>
-                    <td class="numeric" style="color: var(--color-blue); font-weight: 500;">${row.adac.toFixed(1)} 학점</td>
+                    <td class="numeric" style="color: var(--color-blue); font-weight: 500;" title="독일 ADAC 등급은 1.0에 가까울수록(낮을수록) 우수함을 의미합니다.">${row.adac.toFixed(1)} (${adacLabel})</td>
                     <td class="numeric" style="color: var(--color-gold); font-weight: 500;">${abLabel}</td>
                     <td class="numeric">
                         <span class="score-badge ${badgeClass}">${badgeText}</span>
