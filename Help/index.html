@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BM-Intelligence Hub | 사용 설명서</title>
+    <!-- Premium Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Help CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=3.3.0">
+</head>
+<body>
+    <div class="help-app-container">
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="help-sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-book brand-logo"></i>
+                <div class="brand-text-wrapper">
+                    <span class="logo-text">BM Hub Manual</span>
+                    <span class="logo-badge">Premium v1.5</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <div class="menu-section">
+                    <span class="section-title">포털 메인 조작 가이드</span>
+                    <ul>
+                        <li class="menu-item active" data-target="sec-portal">
+                            <i class="fa-solid fa-house-laptop"></i>
+                            <span>1. 통합 포털 홈 사용법</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <span class="section-title">하위 개별 시스템 조작법</span>
+                    <ul>
+                        <li class="menu-item" data-target="sec-strategy">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>2. 시장/상품전략 사용법</span>
+                        </li>
+                        <li class="menu-item" data-target="sec-tire">
+                            <i class="fa-solid fa-ring"></i>
+                            <span>3. Tire BM Report 사용법</span>
+                        </li>
+                        <li class="menu-item" data-target="sec-compound">
+                            <i class="fa-solid fa-flask-vial"></i>
+                            <span>4. Comp'd BM Report 사용법</span>
+                        </li>
+                        <li class="menu-item" data-target="sec-binews">
+                            <i class="fa-solid fa-newspaper"></i>
+                            <span>5. 경쟁사 BI News 사용법</span>
+                        </li>
+                        <li class="menu-item" data-target="sec-ai">
+                            <i class="fa-solid fa-robot"></i>
+                            <span>6. AI Simulator 사용법</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu-section">
+                    <span class="section-title">종합 연동 및 AI 챗봇</span>
+                    <ul>
+                        <li class="menu-item" data-target="sec-report">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span>7. 경쟁사 상품 Report 작성법</span>
+                        </li>
+                        <li class="menu-item" data-target="sec-chatbot">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>8. AI에게 질문하기 사용법</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu-section">
+                    <span class="section-title">오류 대처 및 활용 팁</span>
+                    <ul>
+                        <li class="menu-item" data-target="sec-faq">
+                            <i class="fa-solid fa-circle-question"></i>
+                            <span>9. FAQ 및 오류 대처</span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>© 2026 BM-Intelligence Hub</p>
+                <p class="footer-sub-text">Hybrid AI Agent Enabled</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Panel -->
+        <main class="help-main-content">
+            <!-- Sticky Header Bar -->
+            <header class="help-header">
+                <div class="header-left">
+                    <h1 class="header-main-title">BM-Intelligence Hub 사용 설명서</h1>
+                    <span class="header-subtitle">BM-Intelligence Hub의 주요 메뉴, AI Agent, Report, Simulator 사용 방법을 안내합니다.</span>
+                </div>
+                <div class="header-right">
+                    <!-- Global Help Search Bar -->
+                    <div class="help-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="help-search-input" placeholder="조작 키워드 검색 (예: 드롭다운, 슬라이더, 인쇄)...">
+                        <button id="help-search-clear" class="search-clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <a href="../index.html" class="btn-portal-back" title="포털 메인 홈으로 돌아가기">
+                        <i class="fa-solid fa-chevron-left"></i> 포털 홈으로
+                    </a>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Viewport -->
+            <div class="help-content-viewport">
+                
+                <!-- Section 1: Portal Home Usage -->
+                <section id="sec-portal" class="manual-section active-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 01</span>
+                        <h2 class="section-main-title">1. 통합 포털 홈 사용법</h2>
+                        <p class="section-subtitle">통합 포털 홈은 BM-Intelligence의 주요 분석 모듈로 이동하고, R&D 전략 가이드를 직접 관제하며, 통합 검색과 AI 기능을 실행하는 메인 화면입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-circle-play" style="color: var(--color-hankook); margin-right: 8px;"></i> 메인 화면 핵심 구성 및 사용 방법</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>통합 검색 기능 활용</h4>
+                                <p>• <strong>설명</strong>: 화면 중앙의 검색창을 통해 타이어명, 제조사, 브랜드, 세그먼트, 컴파운드 원료, PLC 등 벤치마킹 관련 핵심 키워드를 기입해 탐색할 수 있습니다.
+                                <br>• <strong>조작법</strong>:
+                                <br>1. 검색 입력창을 선택한 후 키워드(예: <code>Michelin</code>, <code>Silica</code>)를 입력합니다.
+                                <br>2. 입력 조건에 대응하는 타이어 BM 및 컴파운드 BM 데이터 검색 결과 목록이 드롭다운 형태로 하단에 실시간으로 표시됩니다.
+                                <br>3. 검색 목록에서 원하는 항목을 클릭하면 해당 분석 페이지의 상세 영역으로 즉시 연동되어 이동합니다.
+                                <br>4. 검색어가 명확하지 않은 경우에는 관련성이 높은 분석 모듈을 우선하여 추천해 줍니다.
+                                <br>5. 우측의 <strong>[X]</strong> 버튼을 누르면 입력한 텍스트가 모두 제거됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>헤더 내 주요 통합 연동 버튼 활용</h4>
+                                <p>• <strong>설명</strong>: 우측 상단에 배치된 연동용 바로가기 버튼들을 통해 신속하게 특정 핵심 기능들을 수행할 수 있습니다.
+                                <br>• <strong>기능별 정의</strong>: 
+                                <br>- <strong>[경쟁사 상품 Report 작성]</strong>: 현재 화면 데이터와 분석 context를 바탕으로 임원 보고용 경쟁사 상품 비교 리포트를 실시간으로 작성 및 인쇄하는 시스템 페이지로 이동합니다.
+                                <br>- <strong>[AI에게 질문하기]</strong>: 내부 데이터, BI News, Web Grounding을 유기적으로 교차 활용하는 Hybrid AI Agent와 실시간 질의응답을 수행할 수 있는 대화방으로 이동합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>핵심 분석 모듈 바로가기 링크 제어</h4>
+                                <p>• <strong>설명</strong>: 통합 검색 패널 하단에 가로로 나열된 5대 핵심 분석 카드 영역입니다.
+                                <br>• <strong>사용법</strong>: 시장/상품전략, Tire BM Report, Comp'd BM Report, 경쟁사 BI News, AI Simulator 등 카드 내 수록된 개별 메뉴 링크(예: <code>[기술 경쟁력 Overview]</code>, <code>[EV 친환경 특화 보드]</code>, <code>[컴파운드 탐색기]</code>, <code>[전체 뉴스 피드]</code> 등)를 선택하면 해당 분석 서브 탭이 바로 활성화된 상태로 즉시 연결됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>R&D 상품 전략 및 설비 투자 제안 콘솔 (R&D Strategic Console)</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 화면 하단의 필터 영역에서 **제조사** 및 **대상 제품군** 드롭다운을 변경하여 실시간 분석을 가동합니다.
+                                <br>2. 조건 변경 시 우측의 <strong>6대 성능 지표 비교 레이더 차트</strong>와 성능 상관관계 분석 수치가 실시간 렌더링됩니다.
+                                <br>3. 하단에 **성능 Gap Analysis**, **SKU 라인업 전략**, **글로벌 규제 대응 라벨링 목표**, **R&D 공정 설비 Capex 가이드라인**이 자동 수립되어 임원 및 의사결정권자에게 적합한 최적의 투자 방향을 제시합니다.
+                                <br>4. 헤더 최상단의 **[BM-Intelligence]** 브랜드 로고를 클릭하면 전체 동기화 연혁과 시스템 기획 로드맵이 수록된 프리미엄 **연혁(History) 팝업 모달**이 호출되며, 우측 상단 <strong>[✕]</strong> 아이콘 및 하단 닫기 단추로 종료할 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Market Strategy Usage -->
+                <section id="sec-strategy" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 02</span>
+                        <h2 class="section-main-title">2. 시장/상품전략 사용법</h2>
+                        <p class="section-subtitle">글로벌 Top4 제조사의 세그먼트별 매출, 판매량 정보 및 점유율 비중, 대표 타이어 세대별 성능 진화 궤적을 비교하여 중장기 로드맵을 확인하는 전략 가이드입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-list-ol" style="color: var(--color-hankook); margin-right: 8px;"></i> 주요 탭 및 기능별 상세 조작 방법</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>[Market & Sales Overview] 탭 조작</h4>
+                                <p>• <strong>기능 및 위치</strong>: 글로벌 거시 동향 및 주요 4대 제조사의 점유율을 확인하는 화면입니다.
+                                <br>• <strong>조작법</strong>:
+                                <br>1. 상단의 필터 영역에서 분석 연도(Year)와 세그먼트 드롭다운을 설정합니다.
+                                <br>2. 하위 권역별 선택 탭(예: <code>[북미 시장]</code>, <code>[유럽 시장]</code>)을 상호 클릭하여 타깃 시장을 지정합니다.
+                                <br>3. 조건 변경에 맞춰 제조사별 매출 점유율 비중 및 연도별 판매량 추이 곡선 그래프가 실시간으로 재구성되는 것을 확인합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>[기술 경쟁력 Overview] 탭 조작</h4>
+                                <p>• <strong>기능 및 위치</strong>: 제조사 간의 성능 평점 지표를 레이더 차트로 교차 탐색하는 영역입니다.
+                                <br>• <strong>조작법</strong>:
+                                <br>1. 화면 내 거대한 6대 성능 분석 레이더 차트에서 상단의 범례(예: <code>Michelin</code>, <code>Continental</code>)를 마우스로 클릭하여 특정 선을 표시하거나 숨깁니다.
+                                <br>2. 성능 꼭짓점 좌표 영역에 마우스를 호버하면 자사 타이어와 경쟁 모델 간의 구체적 타깃 평점 지수 격차를 툴팁 수치로 즉시 확인할 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>[대표 상품 세대별 성능] 탭 조작</h4>
+                                <p>• <strong>기능 및 위치</strong>: 주요 브랜드 타이어의 역사적 세대교체에 따르는 성능 변화 추이를 분석하는 영역입니다.
+                                <br>• <strong>조작법</strong>:
+                                <br>1. 테이블 상에서 세대별(1세대 ➡️ 2세대 ➡️ 3세대) 진화 항목을 정렬 대조합니다.
+                                <br>2. 점탄성 핵심 지표 및 마모 효율 변화 추이에 대한 시각화 그래프를 확인하여 경쟁사 기술 발달 방향성을 확인합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>[경쟁사 R&D 전략] 및 [대응 전략 & 로드맵] 탭 조작</h4>
+                                <p>• <strong>기능 및 위치</strong>: 당사의 2026~2030 중장기 실행 로드맵 및 기술 보강 대안을 확인하는 장표입니다.
+                                <br>• <strong>조작법</strong>:
+                                <br>1. <strong>[대응 전략 & 로드맵]</strong> 내부 탭을 선택한 후 마우스 스크롤이나 가로 슬라이드를 통하여 시기별 대응 맵을 검토합니다.
+                                <br>2. 상단의 <strong>[단기 보강 과제]</strong>, <strong>[중기 개발 과제]</strong> 등의 컬러 뱃지를 선택하면 연동되는 실행 기술의 요약 상세 위치로 화면 포커스가 자동으로 미끄러져 정렬됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: Tire BM Usage -->
+                <section id="sec-tire" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 03</span>
+                        <h2 class="section-main-title">3. Tire BM Report 사용법</h2>
+                        <p class="section-subtitle">경쟁사 완성 타이어의 실측 성능 사양, PLC(제품수명주기) 타임라인 맵, EV 특화 친환경 타이어 필터 정보 및 사내 보고서 아카이브를 활용하는 조작법을 다룹니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-sliders" style="color: var(--color-hankook); margin-right: 8px;"></i> 4대 핵심 하위메뉴 및 실무 조작 절차</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>[종합 분석 대시보드] 탭 통계 지표 및 최근 리포트 조회</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 화면 상단의 **실시간 요약 통계 카드** 영역을 통해 총 벤치마킹 타이어 모델 수, EV 특화 모델 수, 완료된 EV 정밀 분석 수, 연계 Arena VPR 보고서 총합을 한눈에 관제합니다.
+                                <br>2. **카테고리 구성 비율** 리스트를 통해 세그먼트별(Summer, SUV, Winter-Alpin, All Weather) 비중을 실시간 파악합니다.
+                                <br>3. 하단 **최근 벤치마킹 리포트 핵심 리스트** 테이블에서 사내 승인이 완료된 최신 5대 보고서 목록의 부서, 기안자, 일자를 검토하고, [바로가기] 아이콘 단추를 클릭해 결재 완료 장표 원본으로 동적 연결합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>[PLC Timeline Map] 2차원 매트릭스 필터링 및 서랍(Drawer) 열기</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 화면 상단의 다단 서브 탭(Summer, Winter-Alpin, All Weather 등)을 선택해 수명 주기 시트를 활성화합니다.
+                                <br>2. 엑셀 스타일의 **세그먼트 및 제조사 멀티 선택 필터**를 조작하여 원하는 범위의 타이어만을 선택적으로 화면에 정밀 필터링합니다. [필터 초기화] 버튼으로 모든 조건을 원클릭 복구할 수 있습니다.
+                                <br>3. 가로 축(출시 연도: 2021년~2028년 이후)과 세로 축(세그먼트 및 브랜드 모델)으로 이루어진 다이어그램 타임라인에서 타이어 블록을 마우스 클릭합니다.
+                                <br>4. 화면 우측에서 **디테일 정보 서랍(Detail Drawer)**이 미려하게 호출됩니다. 서랍 내에서 **실물 트레드 패턴 이미지**, 제조사 뱃지, **제품 특이 기술 분석 소견**, 연계 승인 품의 보고서 상세 정보 및 [보고서 링크] 바로가기를 확인하고 검증합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>[EV 친환경 특화 보드] 칸반 카드 제어</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 친환경 전기자동차 전용 타이어들의 설계 벤치마킹 상태를 보여주는 전용 탭입니다.
+                                <br>2. 각 제조사별 EV 카드(예: Hankook iON, Michelin e.Primacy 등)의 특화 분석 사양을 칸반 열 형태로 추적합니다.
+                                <br>3. 개별 EV 타이어 카드를 좌클릭하면 마찬가지로 우측 **디테일 정보 서랍**이 슬라이딩 기동하여 전기차 전용 흡음재 장착 여부, 고하중 지수, 회전저항 등 특화 소견 및 연계 문서를 발췌 제공합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>[보고서 라이브러리] 81 EA Arena 연계 검색 및 PDF 뷰어</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 전체 81개에 달하는 벤치마킹 완료 기안 보고서 전수 아카이브 영역입니다.
+                                <br>2. **보고서 정밀 고속 필터링** 제어판을 활용하여 기안 부서, 기안자 드롭다운을 설정하고 제목/상품 키워드를 실시간 검색 기입해 대상을 필터링합니다.
+                                <br>3. 테이블의 보고서 제목 행을 클릭하거나 우측 [바로가기] 아이콘 단추를 누르면, Arena 전결 시스템에 등재된 PDF 장표 및 결재 원본 웹 문서로 안전하게 이동하여 열람이 가능합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Compound BM Usage -->
+                <section id="sec-compound" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 04</span>
+                        <h2 class="section-main-title">4. Comp'd BM Report 사용법</h2>
+                        <p class="section-subtitle">고무 컴파운드의 실측 물성 빅데이터를 비교 분석하고, 화학적 구성 성분 및 정량 엑셀 데이터를 바탕으로 메이커별 배합 설계 차이를 규명하는 분석기입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-flask-vial" style="color: var(--color-hankook); margin-right: 8px;"></i> 4대 핵심 하위메뉴별 세부 가이드</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>[제품 성능 비교] 탭 및 동적 대시보드 필터 활용</h4>
+                                <p>• <strong>사용 가이드 (Premium v1.5 기준)</strong>:
+                                <br>1. 화면 상단의 **[Season]** 및 **[Segment / 차종]** 드롭다운 필터를 선택하면 조건에 매칭되는 데이터셋으로 전체 카드가 재정렬됩니다. (사용 편의성을 위해 필터 드롭다운과 텍스트 크기가 52px 높이, 1.15rem으로 상향되어 시인성이 우수합니다.)
+                                <br>2. 글로벌 타이어 트렌드를 반영하여 기존 메이커 외에 **9번째 독립 제조사로 금호타이어(KUMHO)**가 공식적으로 추가 정렬되어 있으며, 각 메이커는 개별 카드 형태로 구분 제공됩니다.
+                                <br>3. 불필요한 선택 가이드 문구 없이 각 브랜드 타이틀(1.95rem)과 패턴명, 샘플 수량, 가교밀도 텍스트가 대폭 확대 적용되어 한눈에 명확히 들어옵니다.
+                                <br>4. 폴리머 블렌드 분석 내에서 **합성고무(SBR) 고유 컬러가 파란색(Blue, #2563eb)으로 지정**되어 타 원료(NR, BR)와의 구분이 용이합니다.
+                                <br>5. 마우스 커서로 점탄성 온도 스윕 차트 상단의 개별 범례명을 클릭하여 특정 곡선만을 실시간 온/오프 필터링할 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>[컴파운드 탐색기] 탭 조작</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 데이터 소스 드롭다운 메뉴를 좌클릭합니다.
+                                <br>2. 리스트에서 **[트레드 컴파운드]**, **[케이스 컴파운드]**, **[TBR 벤치마킹]** 중 원하는 영역을 선택합니다.
+                                <br>3. 선택 즉시 하단의 원천 성분 함량 표 및 실리카Phr, 가교밀도 비교 테이블이 해당 데이터베이스 영역으로 자동 교체됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>[BM Report 생성기] 탭 개편 적용 가이드</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 제조사 선택 및 구체적 타이어 모델 선택 드롭다운을 설정합니다.
+                                <br>2. **[BM Report 생성]** 버튼을 선택하면 고무 컴파운드의 정밀 물성 리포트가 드로잉됩니다.
+                                <br>3. 리포트는 좌측 주황색 바가 장착된 2대 대형 분석 섹션으로 체계화되어 있습니다:
+                                <br>- **[섹션 1] Comp'd 물성 분석**: 레이더 차트, ARES 곡선 및 물성 상관관계 분석 시뮬레이터 수평 통합 연동.
+                                <br>- **[섹션 2] Comp'd 배합제 분석**: Polymer Blend 비율, Styrene/Vinyl 비율, 보강제, 가류제/촉진제 정량 분석 차트가 하나의 박스로 깔끔하게 통합 그룹화되어 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>[Maker 상품 비교] 탭 오버레이 제어</h4>
+                                <p>• <strong>사용법</strong>: 다자간 밸런스 레이더 차트 탭입니다. 성능을 대조할 복수의 메이커 체크박스를 활성화하면, 꼭짓점이 중첩된 기하학적 차트 영역이 오버레이 출력되어 각사 제품 성능 방향성의 전반적인 팽창/수축 격차를 시각적으로 직접 판단할 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Competitor BI News Usage -->
+                <section id="sec-binews" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 05</span>
+                        <h2 class="section-main-title">5. 경쟁사 BI News 사용법</h2>
+                        <p class="section-subtitle">실시간 수집된 글로벌 메이커(Michelin, Continental, Bridgestone, Goodyear 등)의 최신 특허, R&D 기술 뉴스 및 감성 분석을 확인하고 AI 기반의 핵심 요약을 활용하는 조작법입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-list-ol" style="color: var(--color-hankook); margin-right: 8px;"></i> 3대 핵심 서브 메뉴별 조작 방법</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>[전체 뉴스 피드] 탭 및 브랜드 필터링</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 화면 상단에 정렬된 제조사 필터 단추(예: <code>[Michelin]</code>, <code>[Continental]</code> 등)를 개별 선택하여 특정 제조사의 뉴스만을 분류 및 필터링할 수 있습니다.
+                                <br>2. 기사 카드 항목을 좌클릭하면 가독성이 확보된 상세 정보 팝업창이 표출되어 기사 원문 및 수집 메타데이터를 정독할 수 있으며, 우측 상단 <strong>[X]</strong> 버튼을 누르면 팝업이 소거됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>[제조사 트렌드 분석] 탭 차트 탐색</h4>
+                                <p>• <strong>사용법</strong>: 자연어 처리를 통해 산정된 메이커별 뉴스 긍정/부정 비율과 월간 뉴스 노출 빈도를 차트화하여 보여줍니다. 그래프의 막대 기둥이나 데이터 포인트 상에 마우스 커서를 올리면 월별 기사 수량 및 백분율 지수가 실시간 툴팁으로 반환되어 정확한 통계를 확인할 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>[AI 핵심 동향 요약] 브리핑 활용</h4>
+                                <p>• <strong>사용법</strong>: 수집된 벌크 데이터를 바탕으로 AI가 요약 분석한 3개 카드를 정독할 수 있습니다. 각 카드는 <code>[1. 핵심 기술 동향 요약]</code>, <code>[2. 자사 비즈니스 위협 영향]</code>, <code>[3. 당사 대응 전략 권고안]</code> 등 기획 업무 및 전략 수립에 필요한 알짜 정보들로 체계화되어 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 6: AI Simulator Usage -->
+                <section id="sec-ai" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 06</span>
+                        <h2 class="section-main-title">6. AI Simulator 사용법</h2>
+                        <p class="section-subtitle">벤치마크 타이어의 고무 원재료 슬라이더를 마우스로 직접 조절하여 가상 레시피를 가공 설계하고, AI가 예측 연산한 점탄성 차트 및 6대 성질 지수를 실시간 비교 추적하는 엔지니어링 패널입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-microchip" style="color: var(--color-hankook); margin-right: 8px;"></i> 가상 배합 설계 및 시뮬레이션 상세 프로시저</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>벤치마크 타이어 선택</h4>
+                                <p>• <strong>조작법</strong>: 화면 좌측 상단의 벤치마크 드롭다운 메뉴를 선택하여 대조 대상이 될 기준 경쟁사 모델(예: Michelin PS5 등)을 지정합니다. 지정 시 해당 타이어의 실제 계측 물리 정보가 초기 기준값으로 로드됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Virtual 레시피 디자인 (원료 함량 슬라이더 튜닝)</h4>
+                                <p>• <strong>조작법</strong>:
+                                <br>1. 좌측 배합 제어부의 **Silica (phr)**, **TESPT (%)**, **Oil (phr)** 등 함량 조절 슬라이더 노브를 좌우로 드래그하여 가상의 신규 배합안(Virtual Recipe)을 실시간으로 설계합니다.
+                                <br>2. 더 정밀하게 소수점 단위 미세 조정을 수행하고 싶을 때에는, 슬라이더 노브를 1회 마우스 클릭하여 선택한 후 키보드 <strong>좌우 방향키(←, ➡️)</strong>를 누르면 <code>0.1 phr / 0.1%</code> 간격으로 수치 미세 튜닝이 구동됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>ARES tanδ Temperature Sweep 분석</h4>
+                                <p>• <strong>사용법</strong>: 배합 슬라이더의 변경 위치에 연동되어 우측 차트 내 가상 예측선(점선 형태)이 실시간으로 갱신 렌더링됩니다. 온도별 tanδ 곡선의 변동 거동(예: 0℃ 회전저항 특성, 60℃ 연비/제동 밸런스 등)을 눈으로 면밀하게 추적 비교할 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>성능 비교 분석 보드 (정량 지표 점수 대조)</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 화면 우측 영역의 6대 성능 밸런스 레이더 차트와 상세 스코어 보드를 확인합니다.
+                                <br>2. 사용자가 설계한 Virtual 배합과 실제 Benchmark 타이어 간의 **Wet 제동 성능, 연비(RR), 내마모 점수** 등 주요 6성 지수 격차를 100점 만점 평점으로 대조 관제하여 배합 최적 지점을 도출해 냅니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <h4>AI 레시피 개선 가이드 실행</h4>
+                                <p>• <strong>사용법</strong>: 가상 배합 튜닝 도중 성능을 더욱 비약적으로 극복하기 위해, 제어판 하단의 **[AI 레시피 개선 가이드]** 버튼을 선택합니다. 인공지능이 내장 데이터 기반으로 현 슬라이더 조건의 임계점을 분석하여 우수한 목표 성능 평점에 도달할 수 있는 추천 개선 후보 배합안 리스트를 연출해 줍니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">6</div>
+                            <div class="step-content">
+                                <h4>추천 배합 적용 및 반영</h4>
+                                <p>• <strong>사용법</strong>: 개선 가이드 팝업창에서 추천된 AI 후보 배합 조건들 중 적합한 설계안을 선택하고 **[배합 적용]** 버튼을 클릭합니다. 즉시 해당 가이드 배합 수치가 좌측 가상 슬라이더 노브 위치로 정합 자동 세팅되며 차트 분석값이 즉각 일체 재반영됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 7: Report Generator Usage -->
+                <section id="sec-report" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 07</span>
+                        <h2 class="section-main-title">7. 경쟁사 상품 Report 작성법</h2>
+                        <p class="section-subtitle">현재 사용자의 분석 맥락(context)과 데이터베이스 실측값들을 종합적으로 취합하여, LLM 엔진을 통해 비즈니스 의사결정용 하이엔드 보고서 장표를 자동 작성하고 출력하는 기능 가이드입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-file-invoice" style="color: var(--color-hankook); margin-right: 8px;"></i> 임원 보고용 지능형 리포트 빌드 프로세스</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>데이터 연동 조건 설정</h4>
+                                <p>• <strong>사용법</strong>: 보고서 생성기 페이지 상단의 타깃 제조사 및 대상 타이어 제품군 명칭을 드롭다운에서 설정해 지정합니다. 시스템은 선택값에 최적화하여 1:1 대응하는 자사(한국타이어)의 매칭 타이어 데이터 정보를 로딩할 준비 상태를 마칩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>지능형 리포트 자동 생성 단추 클릭</h4>
+                                <p>• <strong>사용법</strong>:
+                                <br>1. 드롭다운 지정 후 우측의 **[BM Report 생성]** 단추를 누릅니다.
+                                <br>2. Gemini LLM 엔진이 현재 대시보드 맥락과 내부 실측 데이터들을 완벽히 정적/동적으로 수집 파악하여 실무 6대 보고서 장표 영역에 데이터를 안전하게 로드합니다.
+                                <br>3. 수치 정보와 명칭들은 모두 실제 보관 데이터에 기반하여 정확하고 일관되게 채워지며, 임원 보고 목적에 알맞은 핵심 요약 브리핑 및 권고 추진 과제 등의 시사점 문안이 자동으로 정밀하게 렌더링됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Fallback 안정성 탑재</h4>
+                                <p>• <strong>설명</strong>: 만일의 외부 네트워크 일시 단절, Cloud Run 또는 Vertex AI 호출 장애 등으로 인해 실시간 LLM 답변 전송에 지연이나 에러가 유발될 경우, 사전에 로컬에 세팅된 고품질 고정 데이터셋 기반의 <strong>Local Fallback 분석 시나리오 데이터</strong>로 즉시 교체 대체되어 보고서 레이아웃의 안전성이 유지됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>보고서 인쇄 및 PDF 저장 조작 (매우 중요)</h4>
+                                <p>• <strong>조작법</strong>:
+                                <br>1. 화면 최상단 우측의 **[Report 인쇄 및 PDF 저장]** 단추를 선택합니다.
+                                <br>2. 표준 웹브라우저 인쇄 설정 가이드 팝업창이 기동되면 다음과 같이 설정값을 변경해 주어야 완벽히 출력됩니다:
+                                <br>- 인쇄 용지 방향: 반드시 **[가로(Landscape)]**로 변경 선택합니다.
+                                <br>- 설정 더보기 옵션: **[배경 그래픽(Background Graphics)] 항목을 마우스로 체크해 켭니다.** (이 옵션이 활성화되지 않으면 보고서의 미려한 카드 배경색 그라데이션 및 그리드 선이 출력에서 누락될 수 있으므로 사전에 필히 체크해 주십시오.)
+                                <br>3. 미리보기에서 다크 테마 인포그래픽 정렬 정합성을 최종 확인하고 인쇄 또는 PDF 저장 버튼을 선택합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 8: AI Chatbot Usage -->
+                <section id="sec-chatbot" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 08</span>
+                        <h2 class="section-main-title">8. AI에게 질문하기 사용법</h2>
+                        <p class="section-subtitle">내부 지식 데이터베이스(RAG), 실시간 수집된 최신 경쟁사 기술 뉴스, Web Grounding 기술을 유기적으로 하이브리드 교차 구동하여 정교한 자연어 답변을 반환하는 AI Insight Agent 대화방입니다.</p>
+                    </div>
+
+                    <div class="step-details-wrapper">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px;"><i class="fa-solid fa-comments" style="color: var(--color-hankook); margin-right: 8px;"></i> Hybrid AI Agent 전송 및 식별 뱃지 판독법</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>질문 유형에 따른 지능형 하이브리드 라우팅 자동 연동</h4>
+                                <p>• <strong>조작법</strong>: 챗방 하단 텍스트 창에 타이어 성능, 컴파운드 설계, 경쟁사 최근 출시 일정, R&D 트렌드 등에 관한 궁금한 사항을 자유롭게 자연어로 입력하고 전송 버튼을 누릅니다.
+                                <br>• <strong>라우팅 작동 구조</strong>:
+                                <br>- **내부 데이터 질문**: 대시보드 물성 정보나 내부 저장 자료(RAG context)를 최우선 매핑하여 팩트 중심의 정량 수치로 정밀하게 답변합니다.
+                                <br>- **최신 출시/뉴스/동향 질문**: 내부 데이터에 수록되지 않은 최신성/외부 시장 정보는 실시간 구글 웹 검색을 가동해 Web Grounding 기반의 가장 공신력 있는 내용으로 발췌하여 기술해 줍니다.
+                                <br>- **하이브리드 결합 질문**: 자사 수치와 외부 최신 동향을 통합 대조하는 질문의 경우, 내부 수치 데이터셋과 실시간 외부 웹 기사 정보를 일련적으로 조합해 하이브리드 분석으로 명쾌히 풀어내 줍니다.
+                                <br>- **시뮬레이터 관련 질문**: 가상 배합 설계나 tanδ 분석 시, 현재 튜닝 중인 내부 Simulator context 값을 우선 활용하여 대답을 완성합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>답변 근거 구분용 5대 시스템 식별 뱃지 확인 요령</h4>
+                                <p>• <strong>설명</strong>: 대화형 버블 상단 또는 우측 영역에 출력되는 컬러풀한 시스템 전용 뱃지를 활용해 인공지능이 생성한 답변의 원천 근거를 한눈에 신뢰 및 검증할 수 있습니다.
+                                <br><br>
+                                <span class="badge-accent" style="background:#10b981; display:inline-block; margin-bottom:6px;">Gemini LLM</span> : Google Vertex AI의 최상위 Gemini LLM 추론 모델을 사용했음을 인증하는 표식입니다.<br>
+                                <span class="badge-accent" style="background:#3b82f6; display:inline-block; margin-bottom:6px;">내부 데이터 기반</span> : 답변이 외부 추정이 아니라 엄선된 사내 벤치마킹 데이터베이스(RAG) 원천 수치를 참조해 구성되었음을 보증합니다.<br>
+                                <span class="badge-accent" style="background:#f59e0b; display:inline-block; margin-bottom:6px;">Web Grounding 사용</span> : 실시간 웹서치 기술(Google Search Grounding)과 교차 검증을 수반하여 도출된 신뢰할 만한 외부 팩트 정보임을 뜻합니다.<br>
+                                <span class="badge-accent" style="background:#8b5cf6; display:inline-block; margin-bottom:6px;">Hybrid 분석</span> : 내부 정밀 물성 수치와 외부 시장 트레이드 동향 기사를 하나의 논리로 동적 결합했음을 표기합니다.<br>
+                                <span class="badge-accent" style="background:#ef4444; display:inline-block; margin-bottom:6px;">Local Fallback</span> : 네트워크 정체나 API 에러 유발 시 오답을 임의 추론(Hallucination)하는 대신, 로컬에 저장 보관된 기본 지식 시나리오로 대체하여 정답을 안전하게 대체 표출한 상태를 나타냅니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 9: FAQ & Troubleshooting -->
+                <section id="sec-faq" class="manual-section">
+                    <div class="section-header-card">
+                        <span class="badge-accent">Menu 09</span>
+                        <h2 class="section-main-title">9. FAQ 및 오류 대처</h2>
+                        <p class="section-subtitle">플랫폼 주요 모듈을 이용하시다 예기치 못한 작동 정지나 데이터 누락 현상 마주 시 현업 연구원이 신속히 조치할 수 있는 트러블슈팅 매뉴얼입니다.</p>
+                    </div>
+
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q1</span>
+                                <h4>Q. 분석 화면이나 대시보드 내 특정 영역에 그래프나 정량 수치 표 데이터가 전혀 노출되지 않습니다.</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>원인</strong>: 데이터베이스 API 커넥터 모듈의 순시적 응답 지연 또는 로컬 웹브라우저 리소스 로딩 캐시 꼬임이 주 원인입니다.
+                                <br>• <strong>해결 조치 단계</strong>:
+                                <br>1. 사용 중인 브라우저 화면에서 **[Ctrl + F5]** 키를 동시에 입력하여 강력하게 강제 캐시 초기화 및 새로고침을 실행해 줍니다.
+                                <br>2. 새로고침 후에도 문제가 지속되면, 로컬 네트워크의 연결 상태와 시스템 백엔드 API 서버 포트 통신망이 가동 중인지 IT 부서나 인프라 관리자에게 연결 상태 점검을 조율하십시오.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q2</span>
+                                <h4>Q. AI에게 질문하기 및 경쟁사 상품 Report 생성 도중 답변 근거 뱃지에 'Local Fallback' 상태만 표시됩니다.</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>원인</strong>: 백엔드 uvicorn API 서비스 장애, Vertex AI Cloud 인증 계정 토큰 만료, 또는 허용 IP 이탈 등이 원인입니다.
+                                <br>• <strong>해결 조치 단계</strong>:
+                                <br>1. FastAPI 서버 엔진(`app:app`)이 백그라운드에서 정상 가동되고 있는지 CLI 명령창 상태를 진입 조회합니다.
+                                <br>2. Cloud Run API 주소 상태 및 Vertex AI 프로젝트(`hk-hackathon-01`), 리전(`global`)에 대한 로컬 ADC(Application Default Credentials) 권한 자격 증명 활성화 상태를 면밀히 점검하십시오.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q3</span>
+                                <h4>Q. 메인 통합 검색창에 검색어를 기입했는데 결과 없음 상태만 표출되어 이동이 불가능합니다.</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>원인</strong>: 오탈자가 있거나 너무 축약된 기호를 입력했을 경우 시스템 매핑 범위를 초과하게 됩니다.
+                                <br>• <strong>해결 조치 단계</strong>:
+                                <br>1. 입력어를 조금 더 대중적인 제조사명(예: <code>Michelin</code>, <code>Kumho</code>), 모델명(예: <code>PS5</code>, <code>Ventus</code>), 세그먼트명, 혹은 특정 고무 원재료 키워드로 풀네임을 더 구체적으로 정밀하게 기입해 보시면 정상 추천 필터가 즉각 되살아납니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="q-badge">Q4</span>
+                                <h4>Q. AI Simulator에서 원재료 함량 슬라이더 바를 분명 이동했는데도 오른쪽 tanδ 예측 그래프가 변동하지 않고 정지해 있습니다.</h4>
+                            </div>
+                            <div class="faq-answer">
+                                <p>• <strong>원인</strong>: 벤치마크 대상 타이어 모델이 정상적으로 체크 지정되지 않았거나, 브라우저 스크립트 실행 스레드의 일시 지연 상태입니다.
+                                <br>• <strong>해결 조치 단계</strong>:
+                                <br>1. 좌측 최상단의 대조 벤치마크 타이어 드롭다운 선택 메뉴에서 정확한 비교 모델이 유효하게 로딩 지정되어 있는지 다시 한 번 명확하게 체크 기입하십시오.
+                                <br>2. 슬라이더 노브를 살짝 클릭하여 마우스 포커스를 준 뒤, 키보드 방향키를 톡톡 쳐서 입력 상태 이벤트를 강제로 재호출하시면 그래프 선이 실시간으로 부드럽게 다시 동기화 갱신됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script imports -->
+    <script src="app.js?v=3.3.0"></script>
+</body>
+</html>

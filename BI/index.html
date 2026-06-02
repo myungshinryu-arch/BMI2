@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="글로벌 Top 4 경쟁사 비즈니스 인텔리전스(BI) 및 R&D, 시장 동향 실시간 뉴스 리포트 분석 시스템">
+    <title>Global Top 4 BI News Intelligence</title>
+    <!-- Premium Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="sidebar" id="sidebar-nav">
+            <div class="sidebar-brand">
+                <div class="logo-icon"><i class="fa-solid fa-square-rss"></i></div>
+                <div class="logo-text">경쟁사 BI News</div>
+            </div>
+            
+            <!-- 통합 포털 홈 바로가기 (연한 파란색 통일) -->
+            <div style="padding: 0 16px; margin: 10px 0 15px 0;">
+              <a href="../index.html" class="portal-home-btn" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 10px; text-decoration: none; font-size: 0.95rem; font-weight: 700; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; box-sizing: border-box;">
+                <i class="fa-solid fa-house-laptop" style="font-size: 1.1rem;"></i>
+                <span>통합 포털 홈</span>
+              </a>
+            </div>
+            
+            <p class="sidebar-section-title" style="padding: 15px 16px 4px 16px; margin: 0; font-weight: 800; text-transform: uppercase; font-size: 0.95rem;">분석 뷰 네비게이션</p>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-tab="all-news">
+                    <i class="fa-solid fa-newspaper" style="width: 20px; text-align: center;"></i>
+                    <span>전체 뉴스 피드</span>
+                </li>
+                <li class="menu-item" data-tab="brand-analytics">
+                    <i class="fa-solid fa-chart-pie" style="width: 20px; text-align: center;"></i>
+                    <span>제조사 트렌드 분석</span>
+                </li>
+                <li class="menu-item" data-tab="ai-digest">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="width: 20px; text-align: center;"></i>
+                    <span>AI 핵심 동향 요약</span>
+                </li>
+                
+                <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 15px 0; list-style: none;"></li>
+                
+                <li class="menu-title" style="padding: 0 16px; font-size: 0.95rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+                  글로벌 시스템 이동
+                </li>
+                
+                <li style="list-style: none; padding: 0 16px; margin-top: 5px;">
+                  <div class="global-nav-links" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                      <a href="../Market_Strategy/index.html" class="nav-shortcut-btn" title="시장/상품전략" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--card-border);">
+                          <i class="fa-solid fa-globe" style="font-size: 15px; color: #f97316;"></i>
+                          <span>시장/전략</span>
+                      </a>
+                      <a href="../Tire_BM_UI_FINAL/index.html" class="nav-shortcut-btn" title="Tire BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--card-border);">
+                          <i class="fa-solid fa-chart-line" style="font-size: 15px; color: #3b82f6;"></i>
+                          <span>Tire BM</span>
+                      </a>
+                      <a href="../Compd BM/index.html" class="nav-shortcut-btn" title="Compound BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--card-border);">
+                          <i class="fa-solid fa-flask-vial" style="font-size: 15px; color: #10b981;"></i>
+                          <span>Comp'd BM</span>
+                      </a>
+                      <a href="../BI/index.html" class="nav-shortcut-btn active" title="경쟁사 BI News" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: #f97316; color: #fff; border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #f97316;">
+                          <i class="fa-solid fa-square-rss" style="font-size: 15px; color: #fff;"></i>
+                          <span>BI News</span>
+                      </a>
+                  </div>
+                </li>
+        
+                <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 15px 0; list-style: none;"></li>
+                
+                <li class="menu-item-link" style="list-style: none;">
+                  <a href="../AI_Simulator/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: 0.3s ease;">
+                    <i class="fa-solid fa-robot" style="width: 20px; text-align: center; font-size: 1.05rem; color: #a855f7;"></i>
+                    <span>AI Simulator</span>
+                  </a>
+                </li>
+
+                <li class="menu-item-link" style="list-style: none;">
+                  <a href="../Report/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: 0.3s ease;">
+                    <i class="fa-solid fa-file-invoice" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--primary);"></i>
+                    <span>경쟁사 상품 Report 작성</span>
+                  </a>
+                </li>
+                
+                <li class="menu-item-link" style="list-style: none;">
+                  <a href="../chat-bot/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: 0.3s ease;">
+                    <i class="fa-solid fa-comments" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--primary);"></i>
+                    <span>AI에게 질문하기</span>
+                  </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <p>© 2026 Tire Benchmarking</p>
+                <p style="font-size: 0.7rem; margin-top: 4px; color: var(--primary); font-weight: 700;">BI Intelligence v1.0</p>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- Top Sticky Header Section -->
+            <header class="main-header">
+                <div style="display: flex; align-items: center;">
+                    <button class="sidebar-toggle-btn" id="btn-sidebar-toggle" title="메뉴 열기/닫기">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="header-title">
+                        <h1 class="header-app-title">글로벌 Top 4 R&D & BI News</h1>
+                        <h2 id="header-title-text">글로벌 경쟁사 핵심 정보 실시간 파이프라인</h2>
+                    </div>
+                </div>
+                <div class="header-right-controls">
+                    <div class="header-status">
+                        <span class="status-pulse-green"></span>
+                        <span class="status-text">글로벌 비즈니스 인텔리전스 동기화 완료</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area Viewport -->
+            <div class="content-viewport">
+                
+                <!-- ==================== TAB 1: ALL NEWS FEED ==================== -->
+                <div id="tab-content-all-news" class="tab-panel active-panel">
+                    
+                    <!-- AI Insight Briefing Card -->
+                    <div class="ai-briefing-banner card-premium">
+                        <div class="briefing-header">
+                            <div class="briefing-title-group">
+                                <i class="fa-solid fa-brain briefing-logo"></i>
+                                <div>
+                                    <h3>AI 비즈니스 인텔리전스 오버뷰 브리핑</h3>
+                                    <p>실시간으로 수집된 글로벌 Top 4(Michelin, Bridgestone, Continental, Goodyear) 뉴스를 머신러닝 모델이 분석한 요약본입니다.</p>
+                                </div>
+                            </div>
+                            <span class="sentiment-indicator positive"><i class="fa-solid fa-chart-line"></i> R&D 투자지수 강화세</span>
+                        </div>
+                        <div class="briefing-grid">
+                            <div class="briefing-col">
+                                <h4><i class="fa-solid fa-lightbulb"></i> 금일 핵심 비즈니스 요약</h4>
+                                <p>미쉐린과 굿이어가 <strong>지속가능한 원자재(친환경 친화 실리카 및 식물성 고무)</strong> 비중을 45% 이상으로 대폭 상향 적용한 친환경 EV 타이어 양산 경쟁에 돌입했습니다. 콘티넨탈의 민들레 추출 천연고무 'Taraxagum' 상용화 승인은 천연원자재 공급망 다변화 기폭제가 될 것입니다.</p>
+                            </div>
+                            <div class="briefing-col">
+                                <h4><i class="fa-solid fa-bolt"></i> 당사 대응 보강 제안</h4>
+                                <p>경쟁사들이 EV 전용 마모수명 연장 실리카 배합 R&D에 천문학적 투자를 가속화하고 있습니다. 당사는 <strong>iON 시리즈의 고가교밀도 폴리머 시스템 특허 기술</strong> 브랜딩을 더욱 공고히 하고 차세대 천연원자재 수급선을 사전에 안전 확보해야 합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter & Search Controls Panel -->
+                    <div class="controls-panel card-premium">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="news-search-input" placeholder="제조사명, 키워드, 기술명 검색 (예: 실리카, Michelin)...">
+                            <button id="search-clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        
+                        <div class="brand-filters">
+                            <span class="filter-label">제조사 필터:</span>
+                            <div class="chip-group" id="brand-chip-filters">
+                                <button class="filter-chip active" data-brand="all">전체</button>
+                                <button class="filter-chip" data-brand="michelin"><span class="brand-color-dot michelin"></span>Michelin</button>
+                                <button class="filter-chip" data-brand="bridgestone"><span class="brand-color-dot bridgestone"></span>Bridgestone</button>
+                                <button class="filter-chip" data-brand="continental"><span class="brand-color-dot continental"></span>Continental</button>
+                                <button class="filter-chip" data-brand="goodyear"><span class="brand-color-dot goodyear"></span>Goodyear</button>
+                            </div>
+                        </div>
+
+                        <div class="category-filters">
+                            <span class="filter-label">카테고리:</span>
+                            <div class="chip-group" id="category-chip-filters">
+                                <button class="filter-chip active" data-cat="all">전체</button>
+                                <button class="filter-chip" data-cat="R&D"><i class="fa-solid fa-flask"></i> R&D/기술</button>
+                                <button class="filter-chip" data-cat="실적"><i class="fa-solid fa-file-invoice-dollar"></i> 실적/경영</button>
+                                <button class="filter-chip" data-cat="M&A"><i class="fa-solid fa-handshake"></i> 투자/M&A</button>
+                                <button class="filter-chip" data-cat="ESG"><i class="fa-solid fa-seedling"></i> ESG/친환경</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Cards Grid Section -->
+                    <div class="news-grid" id="news-cards-container">
+                        <!-- News items will be dynamically rendered by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- ==================== TAB 2: BRAND ANALYTICS ==================== -->
+                <div id="tab-content-brand-analytics" class="tab-panel">
+                    <div class="analytics-row">
+                        <!-- Chart Card 1: Category Distribution -->
+                        <div class="chart-container-card card-premium">
+                            <div class="chart-header">
+                                <h3><i class="fa-solid fa-chart-bar"></i> 글로벌 경쟁사별 BI 뉴스 점유율</h3>
+                                <p>각사별 미디어 언급량 및 주요 이슈 트래킹 비중 정보입니다.</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="brandShareChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart Card 2: Sentiment Score Trend -->
+                        <div class="chart-container-card card-premium">
+                            <div class="chart-header">
+                                <h3><i class="fa-solid fa-chart-line"></i> 카테고리별 뉴스 발행 및 감성 분포</h3>
+                                <p>R&D, 경영 실적, 투자, ESG 등 카테고리별 비즈니스 인텔리전스 활동 추이입니다.</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="categoryDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 4 Brand Quick Cards (Sentiment Dashboard) -->
+                    <div class="brand-cards-row">
+                        <!-- Michelin Card -->
+                        <div class="brand-status-card card-premium">
+                            <div class="brand-card-header">
+                                <span class="brand-badge michelin">Michelin</span>
+                                <span class="sentiment-score-badge positive">감성 88점</span>
+                            </div>
+                            <h4>미쉐린 (프랑스)</h4>
+                            <p class="brand-metric"> R&D 및 ESG 투자 집중</p>
+                            <p class="brand-desc">친환경 원료 고배합 EV 타이어 및 공기 없는 타이어 'Uptis' 등 하이테크 미래 타이어 선도에 초점을 두고 비즈니스 뉴스 점유율 1위 고수 중.</p>
+                        </div>
+
+                        <!-- Bridgestone Card -->
+                        <div class="brand-status-card card-premium">
+                            <div class="brand-card-header">
+                                <span class="brand-badge bridgestone">Bridgestone</span>
+                                <span class="sentiment-score-badge positive">감성 82점</span>
+                            </div>
+                            <h4>브리지스톤 (일본)</h4>
+                            <p class="brand-metric"> 디지털 솔루션 & 스마트 센싱</p>
+                            <p class="brand-desc">빅데이터 및 센서 융합 시스템 'Tirematics' 물류 플릿 연동을 통해 하드웨어를 넘어서는 고부가가치 타이어 솔루션 미디어 분석에서 호평.</p>
+                        </div>
+
+                        <!-- Continental Card -->
+                        <div class="brand-status-card card-premium">
+                            <div class="brand-card-header">
+                                <span class="brand-badge continental">Continental</span>
+                                <span class="sentiment-score-badge neutral">감성 74점</span>
+                            </div>
+                            <h4>콘티넨탈 (독일)</h4>
+                            <p class="brand-metric"> 원자재 다변화 특화 R&D</p>
+                            <p class="brand-desc">민들레 기반 고무 'Taraxagum' R&D 집중 및 지속가능한 무소음 타이어 상용화. 유럽 자동차 제조사 전력 공급망 최적화 이슈 부각.</p>
+                        </div>
+
+                        <!-- Goodyear Card -->
+                        <div class="brand-status-card card-premium">
+                            <div class="brand-card-header">
+                                <span class="brand-badge goodyear">Goodyear</span>
+                                <span class="sentiment-score-badge positive">감성 80점</span>
+                            </div>
+                            <h4>굿이어 (미국)</h4>
+                            <p class="brand-metric"> 지능형 섀시 통합 타이어</p>
+                            <p class="brand-desc">왕겨 실리카 친환경 타이어의 대량 생산 및 자율주행 차량용 비공기식 타이어 섀시 통합 제어 솔루션 테스팅 기사 위주로 미디어 노출 활발.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== TAB 3: AI DIGEST ==================== -->
+                <div id="tab-content-ai-digest" class="tab-panel">
+                    <div class="digest-container">
+                        <!-- AI Digest Card 1 -->
+                        <div class="digest-card card-premium">
+                            <div class="digest-icon"><i class="fa-solid fa-leaf"></i></div>
+                            <div class="digest-body">
+                                <span class="digest-meta">핵심 트렌드 01 • ESG/R&D 융합</span>
+                                <h3>천연 고무 대체 원료 및 바이오 실리카 상용화 선점 경쟁</h3>
+                                <p class="digest-text">유럽 및 북미의 강력한 환경 규제(Euro 7 및 탄소 중립 공시 의무)에 대비하여, 미쉐린의 재생 가능 카본블랙 확보 협약, 콘티넨탈의 민들레 추출 천연고무 대량 정제 설비 가동, 굿이어의 가열 왕겨 재를 정제한 바이오 고분산 실리카 등 원자재 수급 다각화 경쟁이 핵심 BI 뉴스로 잡히고 있습니다.</p>
+                                <div class="digest-radar">
+                                    <div class="radar-tag"><i class="fa-solid fa-shield"></i> 당사 위협 수준: <strong>보통</strong></div>
+                                    <div class="radar-tag"><i class="fa-solid fa-star"></i> 자사 기술 격차: <strong>1년 미만 우위 (지속 투자 요망)</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Digest Card 2 -->
+                        <div class="digest-card card-premium">
+                            <div class="digest-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <div class="digest-body">
+                                <span class="digest-meta">핵심 트렌드 02 • 디지털 전환 (DX)</span>
+                                <h3>지능형 스마트 타이어 센서와 플릿 솔루션의 소프트웨어화</h3>
+                                <p class="digest-text">브리지스톤이 AI 기반 모빌리티 솔루션 개발사 Webfleet 인수 및 Tirematics 고도화를 주도하며 단순 타이어 제조에서 'SaaS 모빌리티 프로바이더'로 체질 개선을 공식 표방하고 있습니다. 굿이어 또한 자율주행 통합 제어 알고리즘인 'Sightline' 기술을 완성차 메이커에 납품하며 생태계를 확장하고 있습니다.</p>
+                                <div class="digest-radar">
+                                    <div class="radar-tag"><i class="fa-solid fa-shield"></i> 당사 위협 수준: <strong>높음</strong></div>
+                                    <div class="radar-tag"><i class="fa-solid fa-star"></i> 자사 기술 격차: <strong>SW 아키텍처 연동 긴급 강화 필요</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Digest Card 3 -->
+                        <div class="digest-card card-premium">
+                            <div class="digest-icon"><i class="fa-solid fa-globe"></i></div>
+                            <div class="digest-body">
+                                <span class="digest-meta">핵심 트렌드 03 • 시장/M&A 통합</span>
+                                <h3>글로벌 경기 침체 방어를 위한 하이엔드 UHP 및 EV 전용 타이어 올인 전략</h3>
+                                <p class="digest-text">중저가 저가 타이어의 공세를 차단하기 위해 글로벌 Top 4 기업들은 보급형 생산 라인을 통폐합(미쉐린 유럽 공장 일부 폐쇄 결정 등)하고 있습니다. 대신 고수익이 보장되는 고성능 UHP, 18인치 이상 대구경 타이어, 프리미엄 EV 전용 라인업에 R&D 및 마케팅 가용 예산을 극대화하는 경향이 뚜렷하게 관찰됩니다.</p>
+                                <div class="digest-radar">
+                                    <div class="radar-tag"><i class="fa-solid fa-shield"></i> 당사 위협 수준: <strong>중간</strong></div>
+                                    <div class="radar-tag"><i class="fa-solid fa-star"></i> 자사 기술 격차: <strong>iON 시리즈를 통한 프리미엄 마케팅 정합성 우수</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- News Details Premium Modal Overlay -->
+    <div class="modal-overlay" id="news-detail-modal">
+        <div class="modal-container card-premium">
+            <button class="modal-close-btn" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-body-content" id="modal-detail-content">
+                <!-- Will be dynamically injected by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- App Script Import -->
+    <script src="news_data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

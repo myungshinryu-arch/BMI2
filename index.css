@@ -1,0 +1,2540 @@
+/* ==========================================================================
+   BM-Intelligence Portal v3.1 - Premium Hybrid Portal Stylesheet
+   Design Paradigm: Neumorphic Glassmorphism with Cyber Orange Accents
+   ========================================================================== */
+
+:root {
+  --bg-primary: #fffcf9;          /* Warm light cream canvas */
+  --bg-secondary: rgba(255, 255, 255, 0.45); 
+  --card-bg: rgba(255, 255, 255, 0.6);       /* Translucent frosted glass fill */
+  --card-border: rgba(249, 115, 22, 0.1);    /* Frosted soft orange border */
+  --card-hover-border: rgba(249, 115, 22, 0.45);
+  
+  /* Cyber Vibrant Orange Glow Accents */
+  --primary: #f97316;             /* Vibrant Orange */
+  --secondary: #fd974f;           /* Warm Soft Peach */
+  --accent-green: #10b981;        /* Eco Mint Green */
+  --accent-blue: #3b82f6;         /* Cyber Blue */
+  --accent-orange: #ea580c;       /* Point Deep Orange */
+  --danger: #ef4444;              /* Rose Red */
+  
+  /* Typography Colors */
+  --text-primary: #1e293b;        /* Slate 800 */
+  --text-muted: #64748b;          /* Slate 500 */
+  --text-dark: #0f172a;           /* Slate 900 */
+  
+  /* Layout Dimensions */
+  --portal-max-width: 1800px;
+  
+  /* Dynamic Grid Layout Calculation for exact 5 years view */
+  --sticky-col-width: 270px;
+  --year-col-width: max(calc((100% - var(--sticky-col-width)) / 5), 180px);
+  
+  /* Effects & Motion */
+  --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.02);
+  --shadow-premium: 0 20px 45px rgba(249, 115, 22, 0.07), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  --glow-orange: 0 0 25px rgba(249, 115, 22, 0.22);
+  --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --font-sans: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Outfit', 'Inter', 'Pretendard', sans-serif;
+}
+
+/* Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.12);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Dynamic Blurred Background Blobs */
+.glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(130px);
+  z-index: -1;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.blob-1 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, var(--primary), var(--secondary));
+  top: -100px;
+  left: -150px;
+}
+
+.blob-2 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #fecdd3, var(--secondary));
+  bottom: -150px;
+  right: -200px;
+}
+
+.blob-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #fef08a, var(--primary));
+  top: 35%;
+  left: 30%;
+}
+
+/* ==========================================================================
+   PORTAL 3.1 MAIN CONTAINER & HEADER (슬림 모던 헤더)
+   ========================================================================== */
+.portal-container {
+  max-width: var(--portal-max-width);
+  margin: 0 auto;
+  padding: 0 24px 60px 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.portal-header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.08);
+  margin-bottom: 12px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.brand-logo:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25);
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  background: linear-gradient(90deg, var(--primary), var(--accent-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   PORTAL HERO INTEGRATED SEARCH AREA (네이버 대형 가로 검색 영역)
+   ========================================================================== */
+.portal-hero {
+  padding: 38px 0 48px 0;
+  text-align: center;
+  position: relative;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--text-dark), #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 28px auto;
+}
+
+/* Search Bar Wrapper */
+.search-bar-wrapper {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  z-index: 100;
+}
+
+.search-main-icon {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  transition: var(--transition);
+}
+
+.search-bar-wrapper input {
+  width: 100%;
+  padding: 18px 60px 18px 64px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(249, 115, 22, 0.15);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), inset 0 1px 1px #fff;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  outline: none;
+  transition: var(--transition);
+  font-family: var(--font-sans);
+}
+
+.search-bar-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.search-bar-wrapper input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 15px 45px rgba(249, 115, 22, 0.12), 0 0 0 4px rgba(249, 115, 22, 0.08);
+  transform: scale(1.015);
+}
+
+.search-bar-wrapper input:focus + .search-main-icon {
+  color: var(--primary);
+  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.3));
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1.1rem;
+  transition: var(--transition);
+}
+
+.search-clear-btn:hover {
+  color: var(--danger);
+}
+
+/* Integrated Search Dropdown (Centered under input) */
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(249, 115, 22, 0.15);
+  z-index: 999;
+  text-align: left;
+  overflow: hidden;
+  max-height: 440px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+.results-category {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.08);
+}
+
+.results-category:last-child {
+  border-bottom: none;
+}
+
+.cat-header {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  padding: 0 24px 6px 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.results-list li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: var(--transition);
+  font-size: 0.9rem;
+}
+
+.results-list li a:hover {
+  background: rgba(249, 115, 22, 0.05);
+  padding-left: 30px;
+}
+
+.res-title {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.res-brand {
+  font-size: 0.72rem;
+  background: rgba(249, 115, 22, 0.08);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.res-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.no-results-msg {
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   NEW: HORIZONTAL PORTAL MODULES BAND (수평형 바로가기 가로 밴드)
+   ========================================================================== */
+.portal-modules-band {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px; /* 갭을 기존 20px에서 12px로 압축하여 1줄 수평 유지율을 상승시킴 */
+  width: 100%;
+  margin-bottom: 32px;
+  align-items: start; /* 개별 카드의 독립적인 세로 확장(커튼식 아코디언) 허용 */
+}
+
+.sidebar-section-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  grid-column: span 5; /* 가로 전체 폭 사용 */
+}
+
+/* Compact Card Styling */
+.module-compact-card {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(249, 115, 22, 0.08);
+  border-radius: 18px;
+  padding: 12px 14px; /* 기존 16px 24px 패딩을 최적 축소하여 세련된 수평 크기 확보 */
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* 평소에는 하부 메뉴 간격 제로 */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* 프리미엄 커튼 모션 트랜지션 */
+  position: relative;
+  overflow: hidden;
+  min-height: 52px; /* 기본 높이를 보다 슬림하게 유지 */
+  box-sizing: border-box;
+}
+
+.module-compact-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(249, 115, 22, 0.08),
+    transparent 45%
+  );
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.module-compact-card:hover {
+  background: #fff;
+  border-color: var(--card-hover-border);
+  box-shadow: var(--shadow-premium);
+  transform: translateY(-2px); /* 부드러운 리프트 효과 */
+}
+
+.module-compact-card:hover::before {
+  opacity: 1;
+}
+
+.module-compact-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Disabled Cards Styling */
+.module-compact-card.card-disabled {
+  background: rgba(241, 245, 249, 0.35);
+  border: 1px dashed rgba(100, 116, 139, 0.18);
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.coming-soon-tag {
+  font-size: 0.65rem;
+  background: rgba(100, 116, 139, 0.06);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  border: 1px solid rgba(100, 116, 139, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.m-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.m-title {
+  font-family: var(--font-display);
+  font-size: 1.22rem; /* 1.1rem에서 가독성 향상을 위해 1.22rem으로 적절히 상향 */
+  font-weight: 800;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+  white-space: nowrap; /* 한 줄에 깔끔히 고정 */
+}
+
+.m-title i {
+  color: var(--primary);
+}
+
+.m-arrow {
+  color: var(--text-muted);
+  font-size: 0.85rem; /* 기존 0.95rem에서 비례 축소 */
+  transition: var(--transition);
+}
+
+.m-title-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.m-title-link:hover .m-title {
+  color: var(--primary);
+}
+
+.m-title-link:hover .m-arrow {
+  color: var(--primary);
+  transform: scale(1.15);
+}
+
+/* Premium Submenu Layout within Portal Module Cards */
+.m-submenus {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 0; /* 평소에는 완벽하게 접어 숨김 */
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  border-top: 1px dashed transparent; /* 호버 시에만 나타나도록 설정 */
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.3s ease, 
+              margin-top 0.45s, 
+              padding-top 0.45s, 
+              border-top-color 0.45s;
+  pointer-events: none; /* 접힌 상태에서 마우스 상호작용 비활성화 */
+}
+
+/* 마우스오버 시 커튼이 열리며 내려오듯 서서히 노출 */
+.module-compact-card:hover .m-submenus {
+  max-height: 280px; /* 메뉴 높이에 맞춰 완전 노출 */
+  opacity: 1;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  padding-top: 12px;
+  border-top-color: rgba(249, 115, 22, 0.16);
+  pointer-events: auto;
+}
+
+.m-submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: var(--transition);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.m-submenu-item i {
+  font-size: 0.95rem;
+  color: var(--primary);
+  opacity: 0.65;
+  transition: var(--transition);
+}
+
+.m-submenu-item:hover {
+  background: rgba(249, 115, 22, 0.05);
+  color: var(--primary);
+  padding-left: 18px;
+}
+
+.m-submenu-item:hover i {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.m-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  height: 2.8em; /* 가로 높이 균일 정렬 유지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.m-stats-row {
+  display: flex;
+  gap: 8px;
+  border-top: 1px dashed rgba(249, 115, 22, 0.08);
+  padding-top: 8px;
+  margin-top: auto;
+}
+
+.m-stat {
+  flex: 1;
+  background: rgba(249, 115, 22, 0.03);
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.m-stat .lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.m-stat .val {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  font-family: var(--font-display);
+}
+
+.m-stat .val.ev-color {
+  color: var(--accent-green);
+}
+
+/* ==========================================================================
+   PORTAL MAIN CONSOLE LAYOUT (웅장한 1단 풀-너비 관제 대시보드)
+   ========================================================================== */
+.portal-main-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.dashboard-widget-section {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.widget-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.widget-title {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.widget-title i {
+  color: var(--primary);
+}
+
+.widget-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Sheet Tab Controls */
+.plc-sheet-tabs {
+  display: flex;
+  background: rgba(249, 115, 22, 0.04);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  padding: 4px;
+  border-radius: 14px;
+}
+
+.sheet-tab {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.sheet-tab:hover {
+  color: var(--primary);
+}
+
+.sheet-tab.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.08);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   PLC MATRIX TABLE STYLE (2D 관제 테이블)
+   ========================================================================== */
+.plc-table-viewport-wrapper {
+  overflow-x: auto;
+  position: relative;
+  border-radius: 18px;
+  border: 1px solid rgba(249, 115, 22, 0.08);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.plc-table-loading {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.plc-table-loading i {
+  font-size: 1.35rem;
+  color: var(--primary);
+}
+
+/* Timeline Matrix Table */
+.plc-matrix-table {
+  width: calc(var(--sticky-col-width) + var(--year-col-width) * var(--year-count, 5));
+  min-width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+  table-layout: fixed;
+}
+
+.plc-matrix-table th, 
+.plc-matrix-table td {
+  padding: 14px 12px;
+  border: 1px solid rgba(249, 115, 22, 0.06);
+  vertical-align: top;
+  word-break: break-all;
+}
+
+/* 연도별 열 고정 가로폭 설정: 대화면 뷰포트 내에 첫 열을 제외하고 정확히 5개 연도가 꽉 차도록 동적 비율 설정 */
+.plc-matrix-table th:not(.segment-col):not(.maker-col), 
+.plc-matrix-table td:not(.segment-col):not(.maker-col) {
+  width: var(--year-col-width);
+  min-width: var(--year-col-width);
+  max-width: var(--year-col-width);
+}
+
+.plc-matrix-table th {
+  background: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--text-dark);
+  text-align: center;
+  padding: 14px;
+}
+
+.plc-matrix-table th.active-year {
+  background: rgba(249, 115, 22, 0.06);
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Sticky First Column */
+.plc-matrix-table .sticky-col {
+  position: sticky;
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 5;
+  width: var(--sticky-col-width);
+  min-width: var(--sticky-col-width);
+  max-width: var(--sticky-col-width);
+  border-right: 2px solid rgba(249, 115, 22, 0.12);
+  vertical-align: middle;
+}
+
+.plc-matrix-table th.sticky-col {
+  background: rgba(255, 255, 255, 0.97);
+  z-index: 6;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Segment Row Headers */
+.plc-segment-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plc-segment-label .seg-name {
+  font-weight: 800;
+  color: var(--text-dark);
+  font-size: 0.98rem;
+}
+
+.plc-segment-label .seg-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Cell Matrix Content */
+.plc-matrix-cell {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.plc-cell-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Cell Tire Card */
+.plc-tire-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(249, 115, 22, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.plc-tire-card:hover {
+  background: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.1);
+  transform: translateY(-2px);
+}
+
+.plc-card-title {
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plc-card-maker {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.plc-card-icons {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+  justify-content: flex-end;
+}
+
+.plc-icon-indicator {
+  font-size: 0.65rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.plc-icon-indicator.img {
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--accent-blue);
+}
+
+.plc-icon-indicator.rep {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--accent-green);
+}
+
+/* ==========================================================================
+   MAKER PROPERTY COMPARE GAUGE CHART STYLE (제조사 수평 분석기)
+   ========================================================================== */
+.maker-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 8대 브랜드를 위해 4열 2행 구조로 정돈 */
+  gap: 20px;
+}
+
+.maker-compare-card {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(249, 115, 22, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.maker-compare-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(249, 115, 22, 0.08),
+    transparent 45%
+  );
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.maker-compare-card:hover {
+  background: #fff;
+  border-color: var(--card-hover-border);
+  box-shadow: var(--shadow-premium);
+  transform: translateY(-4px);
+}
+
+.maker-compare-card:hover::before {
+  opacity: 1;
+}
+
+.maker-compare-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.mc-brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mc-brand-name {
+  font-family: var(--font-display);
+  font-size: 1.95rem;
+  font-weight: 900;
+  color: var(--text-dark);
+}
+
+.mc-brand-name.hankook { color: var(--primary); }
+.mc-brand-name.michelin { color: var(--accent-blue); }
+.mc-brand-name.continental { color: #854d0e; }
+.mc-brand-name.goodyear { color: #0284c7; }
+.mc-brand-name.bridgestone { color: #ef4444; }
+.mc-brand-name.pirelli { color: #d97706; }      /* 피렐리 시그니처 골드/앰버 */
+.mc-brand-name.toyo { color: #06b6d4; }         /* 토요 시그니처 시안 */
+.mc-brand-name.vredestein { color: #ec4899; }   /* 브레데스타인 시그니처 핫핑크 */
+
+.mc-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(249, 115, 22, 0.05);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Pattern명 단독 극적 강조 드롭다운 디자인 (v3.5) */
+.mc-pattern-select-container {
+  width: 100%;
+  position: relative;
+  margin-top: -2px;
+  margin-bottom: 6px;
+}
+
+.mc-pattern-lbl {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 3px;           /* 조밀한 공간 최적화를 위해 여백 축소 */
+  display: block;
+}
+
+.mc-pattern-dropdown-large {
+  width: 100%;
+  height: 48px;
+  padding: 10px 30px 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(249, 115, 22, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text-dark);
+  font-size: 1.35rem;
+  font-weight: 800;             /* 볼드 처리하여 세련된 시각적 존재감 유지 */
+  font-family: var(--font-display);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f97316' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;         
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.mc-pattern-dropdown-large option {
+  font-size: 1.2rem;           /* 옵션 드롭다운 내부 텍스트 크기도 동기화 */
+  font-weight: 600;
+  color: var(--text-dark);
+  background-color: #fff;
+  padding: 8px 12px;
+}
+
+.mc-pattern-dropdown-large:hover {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.08);
+  transform: translateY(-1px);
+}
+
+.mc-pattern-dropdown-large:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+/* Ingredients Section Styling */
+.mc-ingredients-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px dashed rgba(249, 115, 22, 0.08);
+  border-bottom: 1px dashed rgba(249, 115, 22, 0.08);
+  padding: 12px 0;
+}
+
+.mc-ingredients-section .section-title,
+.mc-gauge-section .section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+/* Rubber Triple Ratio Bar */
+.mini-ratio-bar-wrapper,
+.ingredient-item-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ratio-info,
+.ing-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.ratio-info .ratio-val {
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.triple-ratio-bar,
+.reinf-ratio-bar {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  background: rgba(249, 115, 22, 0.03);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ratio-segment {
+  height: 100%;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ratio-segment.nr { background: var(--accent-green); }
+.ratio-segment.sbr { background: var(--accent-blue); }
+.ratio-segment.br { background: var(--primary); }
+
+.ratio-segment.cb { background: #475569; }
+.ratio-segment.sil { background: #94a3b8; }
+
+/* Grid Meta Ing */
+.ingredient-grid-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.meta-ing {
+  background: rgba(249, 115, 22, 0.02);
+  border: 1px solid rgba(249, 115, 22, 0.05);
+  border-radius: 8px;
+  padding: 4px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.meta-ing .lbl {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.meta-ing .val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  font-family: var(--font-display);
+}
+
+/* Progress-Bar Gauges */
+.mc-gauge-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mc-gauge-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mc-gauge-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.mc-gauge-info .val {
+  font-weight: 800;
+  color: var(--text-dark);
+  font-family: var(--font-display);
+}
+
+.mc-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(249, 115, 22, 0.03);
+  border: 1px solid rgba(249, 115, 22, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mc-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.mc-progress-fill.tg {
+  background: linear-gradient(90deg, var(--accent-green), #059669);
+}
+
+.mc-progress-fill.g0 {
+  background: linear-gradient(90deg, #a855f7, #6366f1);
+}
+
+/* ==========================================================================
+   PORTAL FOOTER AREA
+   ========================================================================== */
+.portal-footer {
+  margin-top: 40px;
+  border-top: 1px solid rgba(249, 115, 22, 0.08);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.portal-footer strong {
+  color: var(--text-dark);
+}
+
+.system-meta {
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* Portal Help Button Styling */
+.btn-portal-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #000000 !important; /* 글씨색 검정색 변경 */
+  border-radius: 20px;
+  font-weight: 800; /* 가독성을 위해 800으로 두껍게 조정 */
+  font-size: 0.85rem;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-portal-help:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.45);
+  filter: brightness(1.1);
+  color: #000000 !important; /* 호버시에도 글씨색 검정색 유지 */
+}
+
+.btn-portal-help:active {
+  transform: translateY(0);
+}
+
+.btn-portal-help i {
+  font-size: 1rem;
+  color: #000000 !important; /* 아이콘 색상도 검정색 통일 */
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--accent-green);
+  font-size: 0.85rem;
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+/* Base Pulse Dot Keyframes */
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* ==========================================================================
+   CORS WARNING FLOATING TOAST (PREMIUM GLASSMORPHISM)
+   ========================================================================== */
+.cors-floating-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(254, 243, 199, 0.88); /* Warm light amber */
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #78350f; /* Dark amber text */
+  padding: 18px 24px;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(245, 158, 11, 0.18), 0 1px 2px rgba(255, 255, 255, 0.6) inset;
+  z-index: 10000;
+  max-width: 440px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  transition: var(--transition);
+}
+
+.cors-floating-toast i.warning-icon {
+  color: #d97706;
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+.cors-floating-toast .toast-content {
+  flex: 1;
+}
+
+.cors-floating-toast .toast-title {
+  font-weight: 800;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+}
+
+.cors-floating-toast .toast-close-btn {
+  background: none;
+  border: none;
+  color: #b45309;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 0.95rem;
+  opacity: 0.6;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+}
+
+.cors-floating-toast .toast-close-btn:hover {
+  opacity: 1;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (모바일 및 태블릿 대응)
+   ========================================================================== */
+@media (max-width: 768px) { /* 브레이크포인트를 950px에서 768px로 과감히 축소하여 태블릿/PC 환경에서 5열 가로 한줄 유지 강화 */
+  .portal-modules-band {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .sidebar-section-title {
+    grid-column: span 2;
+  }
+  .plc-matrix-table {
+    table-layout: auto; /* 좁은 화면에서는 내용이 찌그러지지 않고 자연스럽게 스크롤되도록 자동 레이아웃으로 변경 */
+  }
+  .plc-matrix-table th, 
+  .plc-matrix-table td {
+    min-width: 135px; /* 모바일/태블릿에서 최소 가독 너비 보장 */
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 769px) {
+  /* 769px ~ 1200px 구간 중간 랩톱 및 태블릿 가로 해상도 대응 카드 초슬림 초컴팩트 압축 */
+  .portal-modules-band {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 8px !important;
+  }
+  .module-compact-card {
+    padding: 8px 8px !important;
+    border-radius: 12px !important;
+  }
+  .m-title {
+    font-size: 0.82rem !important;
+    gap: 4px !important;
+  }
+  .m-submenu-item {
+    font-size: 0.72rem !important;
+    padding: 5px 6px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .portal-modules-band {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .sidebar-section-title {
+    grid-column: span 1;
+  }
+  .portal-header {
+    flex-direction: column;
+    height: auto;
+    padding: 16px 0;
+    gap: 8px;
+  }
+  .hero-title {
+    font-size: 2rem;
+  }
+  .portal-footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
+   HISTORY POPUP MODAL STYLES (프리미엄 글래스모피즘 팝업)
+   ========================================================================== */
+.portal-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6); /* Slate 900 기반 반투명 */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+.portal-modal-content {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 20px;
+  width: 96%;
+  max-width: 1350px;
+  box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.15), 0 0 40px rgba(249, 115, 22, 0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: zoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1);
+  padding-bottom: 12px;
+}
+
+.portal-modal-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.modal-close-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.modal-close-icon:hover {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--primary);
+  transform: rotate(90deg);
+}
+
+.portal-modal-body {
+  max-height: 86vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #f8fafc; /* 밝은 회색 캔버스 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.popup-history-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.portal-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(249, 115, 22, 0.1);
+  padding-top: 14px;
+}
+
+.dont-show-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.dont-show-btn:hover {
+  color: var(--primary);
+  background: rgba(249, 115, 22, 0.05);
+}
+
+.dont-show-btn .fa-square-check {
+  color: var(--primary);
+}
+
+.close-btn {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  color: #fff;
+  padding: 8px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+  transition: var(--transition);
+}
+
+.close-btn:hover {
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   PORTAL STRATEGY DASHBOARD (시장/상품전략 2x2 쿼드 관제 대시보드)
+   ========================================================================== */
+.portal-strategy-dashboard {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0%, rgba(15, 23, 42, 0.04) 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.18) !important;
+  box-shadow: var(--shadow-premium) !important;
+  position: relative;
+  overflow: hidden;
+  padding: 24px !important;
+  border-radius: 24px !important;
+}
+
+.portal-strategy-dashboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+}
+
+/* 프리미엄 숏컷 바로가기 링크 스타일 (전체 분석 시스템 이동) */
+.strategy-shortcut-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary) !important;
+  background: rgba(249, 115, 22, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  padding: 8px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+}
+
+.strategy-shortcut-link:hover {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: var(--primary);
+  color: var(--primary) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.1);
+}
+
+.strategy-shortcut-link i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.strategy-shortcut-link:hover i {
+  transform: translateX(3px);
+}
+
+.strategy-quad-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.panel-global-market, .panel-product-competitiveness {
+  grid-column: span 5;
+}
+
+#panel-generation-trends {
+  grid-column: span 10;
+}
+
+.quad-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(249, 115, 22, 0.08);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quad-panel:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.25);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.06), 0 1px 2px rgba(255, 255, 255, 0.5) inset;
+}
+
+.quad-panel .panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.08);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.quad-panel .panel-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quad-panel .panel-title i {
+  color: var(--primary);
+}
+
+.quad-panel .panel-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.quad-panel .chart-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+}
+
+/* 필터 및 버튼 소스 스타일 */
+.trend-header-filters {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+}
+
+.trend-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  background: rgba(249, 115, 22, 0.03);
+  border: 1px solid rgba(249, 115, 22, 0.06);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-select {
+  background: #fff;
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-select:hover, .filter-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.performance-source-group {
+  margin-left: auto;
+}
+
+/* 버튼식 성능 데이터 소스 */
+.btn-group-performance {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 3px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.btn-source {
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-source:hover {
+  color: var(--text-dark);
+}
+
+.btn-source.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* R&D 탭 스타일 */
+.rd-mfg-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.rd-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rd-tab-btn:hover {
+  color: var(--text-dark);
+}
+
+.rd-tab-btn.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+}
+
+/* BI Report 최신 기사 스크랩 컨테이너 */
+.news-ticker-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+.news-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse 1.2s infinite;
+}
+
+.news-scrap-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* 뉴스 카드 개별 스타일 */
+.news-card-scrap {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.news-card-scrap:hover {
+  border-color: rgba(249, 115, 22, 0.25);
+  background: #fffbf7;
+  transform: translateX(3px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.04);
+}
+
+.news-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.news-mfg-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.news-mfg-badge.hankook { background: rgba(249, 115, 22, 0.08); color: var(--primary); }
+.news-mfg-badge.michelin { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+.news-mfg-badge.continental { background: rgba(234, 179, 8, 0.08); color: #ca8a04; }
+.news-mfg-badge.bridgestone { background: rgba(220, 38, 38, 0.08); color: #dc2626; }
+
+.news-date {
+  color: var(--text-muted);
+}
+
+.news-title-scrap {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.news-snippet-scrap {
+  font-size: 0.76rem;
+  color: #64748b;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.news-source-link {
+  font-size: 0.7rem;
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+  .strategy-quad-grid {
+    grid-template-columns: 1fr;
+  }
+  .panel-global-market, .panel-trend-performance, .panel-product-competitiveness, .panel-rd-priority {
+    grid-column: auto;
+  }
+  .performance-source-group {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   NEW: 상품 기술 경쟁력 비교 패널 & 3대 핵심 분석 카드 스타일
+   ========================================================================== */
+.panel-product-competitiveness {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(249, 115, 22, 0.12) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.tech-split-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 280px;
+  gap: 16px;
+}
+
+.tech-chart-area {
+  flex: 0 0 55%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech-chart-area canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 280px;
+}
+
+.tech-info-area {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Premium Glassmorphic Cards */
+.tech-info-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(249, 115, 22, 0.04);
+  border-radius: 14px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+  cursor: default;
+}
+
+.tech-info-card:hover {
+  transform: translateX(6px);
+  border-color: rgba(249, 115, 22, 0.25);
+  background: #fffbf7;
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.06), 0 1px 2px rgba(255, 255, 255, 0.8) inset;
+}
+
+.t-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+/* Icons styling by purpose */
+.best-product .t-card-icon {
+  background: rgba(245, 158, 11, 0.08);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.market-position .t-card-icon {
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.priority-enhancement .t-card-icon {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.t-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.t-card-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.t-card-value {
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-sans);
+}
+
+/* Responsive Overrides for Tech Grid inside Quad Grid */
+@media (max-width: 1400px) {
+  .tech-split-container {
+    gap: 12px;
+  }
+  .tech-chart-area {
+    flex: 0 0 50%;
+  }
+  .tech-info-area {
+    flex: 0 0 50%;
+  }
+  .t-card-value {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .tech-split-container {
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+  }
+  .tech-chart-area {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 240px;
+  }
+  .tech-info-area {
+    flex: 0 0 100%;
+    width: 100%;
+    gap: 10px;
+  }
+  .tech-info-card {
+    padding: 10px 14px;
+  }
+}
+
+/* ==========================================================================
+   Tire BM Matrix 이중 고정 열 및 행 병합 스타일 (PLC Timeline Map 양식 이식)
+   ========================================================================== */
+.plc-matrix-table th.segment-col,
+.plc-matrix-table td.segment-col {
+  position: sticky;
+  left: 0;
+  background: #ffffff !important;
+  z-index: 10;
+  min-width: 135px;
+  max-width: 135px;
+  color: var(--text-primary);
+  border-right: 1px solid rgba(249, 115, 22, 0.08) !important;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.12) !important;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
+  
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 14px 8px !important;
+}
+
+.plc-matrix-table th.maker-col,
+.plc-matrix-table td.maker-col {
+  position: sticky;
+  left: 135px;
+  background: #ffffff !important;
+  z-index: 10;
+  min-width: 100px;
+  max-width: 100px;
+  color: var(--text-primary);
+  border-right: 2px solid rgba(249, 115, 22, 0.15) !important;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.12) !important;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.04);
+  
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 14px 8px !important;
+}
+
+.plc-matrix-table th.segment-col {
+  z-index: 12 !important;
+  background: #fdfcf9 !important;
+}
+
+.plc-matrix-table th.maker-col {
+  z-index: 12 !important;
+  background: #fdfcf9 !important;
+}
+
+.plc-segment-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.plc-segment-label .seg-name {
+  font-size: 0.95rem !important;
+  color: #1e293b !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  word-break: keep-all;
+  white-space: normal;
+}
+
+.plc-maker-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.plc-maker-label .maker-name {
+  font-size: 0.85rem !important;
+  color: #1e293b !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  word-break: keep-all;
+  white-space: normal;
+}
+
+/* 자사 Hankook 행/셀 특화 강조 (Premium Orange-Peach Highlight System) */
+.plc-matrix-table tr.hankook-row td {
+  background-color: rgba(254, 215, 170, 0.32) !important;
+}
+
+.plc-matrix-table tr.hankook-row:hover td {
+  background-color: rgba(254, 215, 170, 0.45) !important;
+}
+
+.plc-matrix-table tr.hankook-row td.segment-col,
+.plc-matrix-table tr.hankook-row td.maker-col {
+  background: linear-gradient(90deg, #ffffff, #ffe9d6) !important;
+}
+
+.plc-maker-label.hankook-label .maker-name {
+  color: #ff5d00 !important;
+  font-weight: 900 !important;
+  text-shadow: 0 0 12px rgba(255, 93, 0, 0.15);
+}
+
+/* ==========================================================================
+   PLC Timeline 매트릭스 - 커스텀 프리미엄 멀티셀렉트 스타일
+   ========================================================================== */
+.plc-multiselect-dropdown {
+  box-sizing: border-box;
+}
+.plc-multiselect-option {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  user-select: none !important;
+  background: transparent !important;
+}
+.plc-multiselect-option:hover {
+  background: rgba(249, 115, 22, 0.08) !important;
+  color: var(--primary) !important;
+}
+.plc-multiselect-option input[type="checkbox"] {
+  width: 15px !important;
+  height: 15px !important;
+  accent-color: var(--primary) !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* AI Header Link Action Button Styles */
+.ai-ask-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(249, 115, 22, 0.04);
+  border: 1.5px solid rgba(249, 115, 22, 0.25);
+  color: var(--primary);
+  padding: 10px 20px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-ask-link-btn:hover {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(234, 88, 12, 0.1));
+  border-color: rgba(249, 115, 22, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.18);
+}
+
+.ai-ask-link-btn:active {
+  transform: translateY(1px);
+}
+
+.pulse-icon {
+  font-size: 1rem;
+  animation: pulseIcon 2s infinite ease-in-out;
+}
+
+.ai-pulse-light {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981; /* Green status */
+  border-radius: 50%;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(249, 115, 22, 0)); }
+  50% { transform: scale(1.18); filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.5)); }
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 4px #10b981; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #10b981; }
+  100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 4px #10b981; }
+}
+
+
+/* ==========================================================================
+   대표 상품 세대별 성능 변화 페이지 전용 프리미엄 스타일 (GT Portal Styles)
+   ========================================================================== */
+
+/* 1. 세대별 메인 그리드 및 좌우 컬럼 레이아웃 */
+.gt-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .gt-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 2. 세대별 소제목 데코 */
+.gt-section-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  border-left: 5px solid var(--primary, #ff6b00) !important;
+  padding-left: 12px !important;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+/* 3. 브로셔 리플렛 덱 및 카드 디자인 */
+.gt-brochure-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gt-brochure-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 252, 249, 0.8) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gt-brochure-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.25);
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.08);
+}
+
+.gt-brochure-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--theme-color, #ff6b00);
+}
+
+.gt-brochure-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.15) !important;
+  padding-bottom: 8px;
+}
+
+.gt-brochure-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1.02rem !important;
+  font-weight: 800 !important;
+  color: var(--theme-color, #ff6b00) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+.gt-brochure-year {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  background: rgba(249, 115, 22, 0.08);
+  color: var(--primary, #ff6b00) !important;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(249, 115, 22, 0.15);
+}
+
+.gt-brochure-slogan {
+  font-style: italic;
+  font-size: 0.85rem !important;
+  color: #000000 !important;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 3px solid var(--theme-color, #ff6b00) !important;
+}
+
+.gt-brochure-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem !important;
+}
+
+.gt-brochure-detail-item {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.4;
+}
+
+.gt-brochure-detail-label {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+.gt-brochure-detail-val {
+  color: #000000 !important;
+  font-weight: 500 !important;
+  text-align: right;
+  max-width: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 4. R&D 혁신 포커스 및 인사이트 박스 */
+.gt-insights-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gt-insight-box {
+  background: rgba(254, 215, 170, 0.35) !important;
+  border: 1px solid rgba(249, 115, 22, 0.25) !important;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.gt-insight-box-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  color: var(--primary, #ff6b00) !important;
+  border-bottom: 2px solid rgba(249, 115, 22, 0.15) !important;
+  padding-bottom: 4px !important;
+}
+
+.gt-insight-box-text {
+  font-size: 0.85rem !important;
+  line-height: 1.55 !important;
+  color: #000000 !important;
+  margin: 0;
+}
+
+/* 5. 세대별 필터 바 디자인 (프리미엄 소프트 오렌지) */
+#panel-generation-trends .panel-filter-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 24px !important;
+  background-color: rgba(249, 115, 22, 0.03) !important;
+  border: 1px solid rgba(249, 115, 22, 0.06) !important;
+  padding: 12px 20px !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-bar-group {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-bar-title {
+  font-family: 'Pretendard', sans-serif !important;
+  font-size: 0.78rem !important;
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0px !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+}
+
+/* 드롭다운 필터 (Select) - 화이트 배경 & 가벼운 볼드체로 전체매출 필터와 정교하게 통일 */
+#panel-generation-trends .panel-filter-bar .filter-select {
+  background-color: #ffffff !important;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  background-size: 8px auto !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  color: var(--text-dark) !important;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+  padding: 5px 26px 5px 12px !important;
+  height: 32px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  font-family: 'Pretendard', sans-serif !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-select option {
+  background-color: #ffffff !important;
+  color: var(--text-dark) !important;
+}
+
+#panel-generation-trends .panel-filter-bar .filter-select:focus {
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  box-shadow: none !important;
+}
+
+/* 필터 내 탭 버튼 그룹 (Tab Button Group) - 슬림하고 플랫한 디자인 */
+#panel-generation-trends .panel-filter-bar .tab-btn-group {
+  background-color: rgba(249, 115, 22, 0.02) !important;
+  border: 1px solid rgba(249, 115, 22, 0.1) !important;
+  padding: 3px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  gap: 3px !important;
+}
+
+/* 탭 버튼 기본 (비활성) */
+#panel-generation-trends .panel-filter-bar .tab-toggle-btn {
+  background-color: transparent !important;
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  padding: 5px 14px !important;
+  cursor: pointer;
+  transition: all 0.2s ease !important;
+  font-family: 'Pretendard', sans-serif !important;
+}
+
+#panel-generation-trends .panel-filter-bar .tab-toggle-btn:hover {
+  color: var(--text-dark) !important;
+  background-color: rgba(249, 115, 22, 0.05) !important;
+}
+
+/* 탭 버튼 Active: 볼드체 제거 및 차분한 한한국 컬러 소프트 매칭 */
+#panel-generation-trends .panel-filter-bar .tab-toggle-btn.active {
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  color: #ff6b00 !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+

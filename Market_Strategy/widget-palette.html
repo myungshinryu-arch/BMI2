@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국타이어 상품 전략 인텔리전스 - 통합 모듈러 파렛트</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0d13;
+            --card-bg: rgba(22, 26, 37, 0.65);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-orange: #ff6b00;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --font-main: 'Inter', -apple-system, sans-serif;
+            --font-title: 'Outfit', sans-serif;
+            --shadow-premium: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 107, 0, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        header {
+            margin-bottom: 35px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left h1 {
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 40%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Live Controller inside Header */
+        .market-controller {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .market-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-title);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .market-btn.active {
+            background: var(--accent-orange);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        /* Grid Palette System (Naver-style Widget Layout) */
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        /* Base Widget Style (Modular Rectangles) */
+        .widget-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            backdrop-filter: blur(16px);
+            padding: 24px;
+            box-shadow: var(--shadow-premium);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .widget-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 0, 0.25);
+            box-shadow: 0 15px 35px rgba(255, 107, 0, 0.1);
+        }
+
+        /* Grid Sizing Variables */
+        .col-4 { grid-column: span 4; }
+        .col-5 { grid-column: span 5; }
+        .col-6 { grid-column: span 6; }
+        .col-7 { grid-column: span 7; }
+        .col-8 { grid-column: span 8; }
+        .col-12 { grid-column: span 12; }
+
+        @media (max-width: 1024px) {
+            .col-4, .col-5, .col-6, .col-7, .col-8 { grid-column: span 12; }
+        }
+
+        /* Widget Header */
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .widget-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .widget-title .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-orange);
+            font-size: 1.1rem;
+        }
+
+        .widget-title h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .widget-badge {
+            background: rgba(255, 107, 0, 0.1);
+            color: var(--accent-orange);
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-family: var(--font-title);
+        }
+
+        /* Widget 1: YoY Performance Multi-Line Chart */
+        .chart-container {
+            height: 250px;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Widget 2: 1:1 Product Match Radar */
+        .match-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .match-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .match-brand.left { align-items: flex-start; }
+        .match-brand.right { align-items: flex-end; }
+
+        .brand-lbl {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: var(--font-title);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .model-val {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .vs-badge {
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Widget 3: Live SWOT Core Strategy Matrix */
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .swot-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s;
+        }
+
+        .swot-box:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 107, 0, 0.15);
+        }
+
+        .swot-box.s { border-left: 4px solid var(--accent-green); }
+        .swot-box.w { border-left: 4px solid var(--accent-orange); }
+        .swot-box.o { border-left: 4px solid var(--accent-blue); }
+        .swot-box.t { border-left: 4px solid var(--accent-purple); }
+
+        .swot-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-title);
+        }
+
+        .swot-box.s .swot-name { color: var(--accent-green); }
+        .swot-box.w .swot-name { color: var(--accent-orange); }
+        .swot-box.o .swot-name { color: var(--accent-blue); }
+        .swot-box.t .swot-name { color: var(--accent-purple); }
+
+        .swot-content {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Widget 4: Competitor Intelligence Card */
+        .comp-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .comp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 14px;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .comp-item:hover {
+            transform: translateX(3px);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 107, 0, 0.1);
+        }
+
+        .comp-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .comp-desc {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .comp-name-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .comp-brand-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .comp-action-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .comp-strategy {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        /* Widget 5: R&D Priority Alert Card */
+        .rnd-alert-card {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(22, 26, 37, 0.65) 100%);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+        }
+
+        .gap-indicator {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .gap-num {
+            font-family: var(--font-title);
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ff4d4d;
+        }
+
+        .gap-lbl {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .alert-desc {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px;
+            border-radius: 10px;
+            border-left: 3px solid #ff4d4d;
+            margin-bottom: 15px;
+        }
+
+        .alert-action-step {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-action-step::before {
+            content: "•";
+            color: var(--accent-orange);
+            font-size: 1.3rem;
+        }
+
+        /* Footer & Navigation Back Button */
+        .footer-action {
+            margin-top: 35px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Palette Header -->
+        <header>
+            <div class="header-left">
+                <h1>HANKOOK TIRE | Intelligence Modular Palette</h1>
+                <p>차세대 통합 포털 연계를 위한 초고화질 전사 상품 전략 모듈형 위젯 보드</p>
+            </div>
+            <!-- Dynamic Interactive Switcher -->
+            <div class="market-controller">
+                <button class="market-btn active" id="btn-na" onclick="switchMarket('na')">NORTH AMERICA (NA)</button>
+                <button class="market-btn" id="btn-eu" onclick="switchMarket('eu')">EUROPE (EU)</button>
+            </div>
+        </header>
+
+        <!-- Widgets Layout (Palette Grid) -->
+        <div class="palette-grid">
+            <!-- Widget 1: YoY Multi-Brand performance Line Chart (Grid Span: 8) -->
+            <div class="widget-card col-8">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="icon">📈</span>
+                        <h3>연도별 핵심 실적 비교 트렌드</h3>
+                    </div>
+                    <span class="widget-badge">YoY Line Trend</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="palette-yoy-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Widget 5: R&D Priority Alert (Grid Span: 4) -->
+            <div class="widget-card col-4 rnd-alert-card">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="icon" style="color: #ff4d4d; background: rgba(255,77,77,0.1);">⚠️</span>
+                        <h3>실시간 R&D 극복 최우선 과제</h3>
+                    </div>
+                    <span class="widget-badge" style="color:#ff4d4d; background: rgba(255,77,77,0.1);">R&D Gap Alert</span>
+                </div>
+                <div>
+                    <div class="gap-indicator">
+                        <span class="gap-num" id="alert-gap-val">-0.7</span>
+                        <span class="gap-lbl">점 기술 격차 (vs 벤치마크 최고성능)</span>
+                    </div>
+                    <div class="alert-desc" id="alert-desc-text">
+                        초고성능 세그먼트에서 미쉐린 대비 <strong>습윤 노면 제동</strong> 그립 격차가 -0.7점으로 가장 크게 포착되었습니다.
+                    </div>
+                    <div class="alert-action-step" id="alert-action-step-text">
+                        차세대 EV 전용 고그립 컴파운드 배합 연구 투입 시급
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget 2: 1:1 Product Match & Gap Analysis (Grid Span: 4) -->
+            <div class="widget-card col-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="icon">🎯</span>
+                        <h3>대표 플래그십 1:1 매치그라피</h3>
+                    </div>
+                    <span class="widget-badge">1:1 Radar Gap</span>
+                </div>
+                <div>
+                    <div class="match-summary">
+                        <div class="match-brand left">
+                            <span class="brand-lbl">HANKOOK</span>
+                            <span class="model-val" id="val-hankook-model">iON evo AS</span>
+                        </div>
+                        <span class="vs-badge">VS</span>
+                        <div class="match-brand right">
+                            <span class="brand-lbl" id="val-comp-brand">MICHELIN</span>
+                            <span class="model-val" id="val-comp-model">CrossClimate 2</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="palette-radar-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget 3: Live SWOT Core Strategy Matrix (Grid Span: 5) -->
+            <div class="widget-card col-5">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="icon">💡</span>
+                        <h3>실시간 글로벌 시장 SWOT & 전략 가이드</h3>
+                    </div>
+                    <span class="widget-badge">SWOT Strategy</span>
+                </div>
+                <div class="swot-grid">
+                    <div class="swot-box s">
+                        <div class="swot-name">💪 STRENGTHS</div>
+                        <div class="swot-content" id="swot-s">EV 전용 타이어 iON 라인업 선제 구축으로 독보적 저소음/저저항 가치 획득</div>
+                    </div>
+                    <div class="swot-box w">
+                        <div class="swot-name">📈 OPPORTUNITIES</div>
+                        <div class="swot-content" id="swot-o">글로벌 완성차 프리미엄 세그먼트 고인치 타이어 OE 수주 기회 확대</div>
+                    </div>
+                    <div class="swot-box o">
+                        <div class="swot-name">⚠️ WEAKNESSES</div>
+                        <div class="swot-content" id="swot-w">초고온/극한 기후 한계 속 그립 성능 유지 및 습윤 노면 안전성 지표 보완 필요</div>
+                    </div>
+                    <div class="swot-box t">
+                        <div class="swot-name">🔥 THREATS</div>
+                        <div class="swot-content" id="swot-t">경쟁사 미쉐린/브리지스톤의 초경량 친환경 컴파운드 가속화 및 가격 공세</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget 4: Competitor Intelligence Card (Grid Span: 3) -->
+            <div class="widget-card col-3">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="icon">📡</span>
+                        <h3>경쟁 타사 최신 특허/마케팅 인텔리전스</h3>
+                    </div>
+                    <span class="widget-badge">Competitor Move</span>
+                </div>
+                <div class="comp-feed">
+                    <div class="comp-item">
+                        <div class="comp-logo" style="background-color: #5cb2ff;">M</div>
+                        <div class="comp-desc">
+                            <div class="comp-name-row">
+                                <span class="comp-brand-name">미쉐린</span>
+                                <span class="comp-action-badge">특허 수명 집중</span>
+                            </div>
+                            <p class="comp-strategy">자가 재생 트레드 패널 특허 R&D 고착화, 마모 한계 시그니처 1.6mm 도달 수명 무결점 제동 안전성 극대화.</p>
+                        </div>
+                    </div>
+                    <div class="comp-item">
+                        <div class="comp-logo" style="background-color: #ffd043; color: #111;">B</div>
+                        <div class="comp-desc">
+                            <div class="comp-name-row">
+                                <span class="comp-brand-name">브리지스톤</span>
+                                <span class="comp-action-badge">ENLITEN 패키지</span>
+                            </div>
+                            <p class="comp-strategy">ENLITEN 초경량 구조 컴파운딩 기술을 바탕으로 회전 저항 15% 경감, 중량 20% 축소로 차세대 순정 OE 전량 수주 공세.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Link to Main Dashboard -->
+        <div class="footer-action">
+            <a href="index.html" class="back-btn">
+                <span>◀</span> 상세 대시보드로 돌아가기
+            </a>
+        </div>
+    </div>
+
+    <!-- Live Logic Script using data.js -->
+    <script src="data.js"></script>
+    <script>
+        let currentMarket = 'na';
+        let charts = {};
+
+        // Hardcoded localized swot & alert strategies for live mockup
+        const marketData = {
+            na: {
+                hankookModel: "iON evo AS",
+                compBrand: "MICHELIN",
+                compModel: "CrossClimate 2",
+                gapVal: "-0.5",
+                gapAttr: "눈길 제동 성능",
+                gapDesc: "올시즌 고성능 세그먼트에서 북미 시장 벤치마크 최고 성능 대비 자사 신제품 <strong>눈길 제동</strong> 성능 격차가 -0.5점으로 최대치로 나타났습니다.",
+                gapAction: "북미 맞춤형 사계절 초밀착 시페 및 겨울 홈 각도 최적화 설계 요구",
+                swot: {
+                    s: "EV 전용 초고성능 All-Season 타이어인 'iON evo AS'의 뛰어난 침묵성 및 마일리지 우수성",
+                    w: "북미 대륙의 극심한 폭설 기후 대응을 위한 습윤 노면 및 초저온 그립 유지 바인딩 컴파운드 고도화",
+                    o: "북미 대형 플릿 및 테슬라/리비안 등 최신 고하중 전기차 맞춤형 교체용 타이어 수주 확대 기회",
+                    t: "브리지스톤 ENLITEN 경량화 패키지 및 굿이어 SightLine 구독 IoT 인프라의 순정 장착 선점 가속화"
+                },
+                radarLabels: ['마른 제동', '젖은 제동', '수막 저항', '승차감/소음', '수명 웨어', '눈길 트랙션', '연비 효율'],
+                hankookStats: [9.1, 8.7, 8.6, 9.3, 8.5, 6.5, 9.1],
+                compStats: [9.2, 9.3, 9.1, 8.8, 8.9, 8.5, 8.0]
+            },
+            eu: {
+                hankookModel: "iON evo",
+                compBrand: "MICHELIN",
+                compModel: "Pilot Sport 4S",
+                gapVal: "-0.6",
+                gapAttr: "젖은 제동 성능",
+                gapDesc: "유럽 고성능 여름용 세그먼트에서 미쉐린 최고 등급의 플래그십 여름 타이어 대비 자사의 <strong>습윤 제동 안전성</strong> 지표 격차가 -0.6점 차이로 포착되었습니다.",
+                gapAction: "유럽 친환경 가황 신소재 실리카 바인더 및 고배수 하이브리드 비대칭 그루브 패턴 적용 필요",
+                swot: {
+                    s: "유럽 ADAC/Auto Bild 최우수 등급 획득 및 친환경 저회전저항 컴파운딩 기반 주행거리 극대화",
+                    w: "고온 건조 노면 및 고속 배수 시의 한계 횡마찰 횡비교 안전 마진 다소 제한",
+                    o: "유럽 환경 규제 미세 마모 먼지 배출 규제 만족을 통한 메이저 유럽 완성차 OE 신규 진입 우세",
+                    t: "미쉐린 자가 재생 실시간 가변 트레드 마모 수명 제동 기술 및 친환경 바이오 소재 마케팅 공세 가중"
+                },
+                radarLabels: ['건조 안정성', '습윤 제동성', '수막 저항력', '고속 승차감', '마모 마일리지', '연비 극대화'],
+                hankookStats: [9.2, 8.9, 8.7, 9.2, 8.0, 9.0],
+                compStats: [9.6, 9.4, 9.2, 8.5, 8.5, 7.5]
+            }
+        };
+
+        // Initialize Charts on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            initYoYChart();
+            initRadarChart();
+            switchMarket('na');
+        });
+
+        // 1. YoY Performance Multi-line Chart Setup (Static mock logic to show premium integration)
+        function initYoYChart() {
+            const ctx = document.getElementById('palette-yoy-chart').getContext('2d');
+            charts.yoy = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024', '2025', '2026'],
+                    datasets: [
+                        {
+                            label: '한국타이어',
+                            data: [74.5, 76.8, 81.2, 89.4, 98.2, 108.5],
+                            borderColor: '#ff6b00',
+                            backgroundColor: 'rgba(255, 107, 0, 0.08)',
+                            borderWidth: 4,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 6,
+                            pointHoverRadius: 9,
+                            pointBackgroundColor: '#ff6b00',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2
+                        },
+                        {
+                            label: '미쉐린',
+                            data: [195.4, 181.7, 182.0, 205.8, 235.3, 268.1],
+                            borderColor: '#3b82f6',
+                            borderWidth: 2.5,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#3b82f6'
+                        },
+                        {
+                            label: '브리지스톤',
+                            data: [164.7, 152.2, 150.3, 172.5, 198.0, 225.1],
+                            borderColor: '#ffd043',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 3,
+                            pointBackgroundColor: '#ffd043'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#f3f4f6',
+                                font: { family: 'Inter', size: 11, weight: 600 }
+                            }
+                        },
+                        tooltip: {
+                            padding: 12,
+                            bodyFont: { family: 'Inter' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: { color: '#9ca3af', font: { family: 'Outfit' } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: { color: '#9ca3af', font: { family: 'Outfit' } },
+                            title: {
+                                display: true,
+                                text: '종합 글로벌 매출 지표',
+                                color: '#9ca3af',
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. 1:1 Product Match Radar Chart
+        function initRadarChart() {
+            const ctx = document.getElementById('palette-radar-chart').getContext('2d');
+            charts.radar = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Hankook',
+                            data: [],
+                            backgroundColor: 'rgba(255, 107, 0, 0.25)',
+                            borderColor: '#ff6b00',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#ff6b00',
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Competitor',
+                            data: [],
+                            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#3b82f6',
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255,255,255,0.05)' },
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            pointLabels: {
+                                color: '#9ca3af',
+                                font: { family: 'Inter', size: 9, weight: 600 }
+                            },
+                            ticks: {
+                                display: false,
+                                maxTicksLimit: 5
+                            },
+                            suggestedMin: 5,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        // 3. Switch Market Tab & Recalculate Live Content
+        function switchMarket(market) {
+            currentMarket = market;
+            
+            // Toggle Buttons Class
+            document.querySelectorAll('.market-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${market}`).classList.add('active');
+
+            const data = marketData[market];
+
+            // 1. Text Changes
+            document.getElementById('val-hankook-model').textContent = data.hankookModel;
+            document.getElementById('val-comp-brand').textContent = data.compBrand;
+            document.getElementById('val-comp-model').textContent = data.compModel;
+
+            document.getElementById('alert-gap-val').textContent = data.gapVal;
+            document.getElementById('alert-desc-text').innerHTML = data.gapDesc;
+            document.getElementById('alert-action-step-text').textContent = data.gapAction;
+
+            // SWOT Update
+            document.getElementById('swot-s').textContent = data.swot.s;
+            document.getElementById('swot-w').textContent = data.swot.w;
+            document.getElementById('swot-o').textContent = data.swot.o;
+            document.getElementById('swot-t').textContent = data.swot.t;
+
+            // 2. Radar Chart Update
+            charts.radar.data.labels = data.radarLabels;
+            charts.radar.data.datasets[0].label = data.hankookModel;
+            charts.radar.data.datasets[0].data = data.hankookStats;
+            charts.radar.data.datasets[1].label = data.compModel;
+            charts.radar.data.datasets[1].data = data.compStats;
+            charts.radar.update();
+        }
+    </script>
+</body>
+</html>

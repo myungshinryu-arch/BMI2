@@ -1,0 +1,686 @@
+[
+  {
+    "CODE": "AAD342A",
+    "name": "US 7000 Gr",
+    "type": "FILLER_SILICA",
+    "frequency": 8152,
+    "max_phr": 172.34,
+    "mean_phr": 113.39753802747792,
+    "score": 924416.73
+  },
+  {
+    "CODE": "AAT231A",
+    "name": "Opera383",
+    "type": "ADDITIVE_RESIN",
+    "frequency": 7676,
+    "max_phr": 80.0,
+    "mean_phr": 38.55253256904638,
+    "score": 295929.24
+  },
+  {
+    "CODE": "AAT107A",
+    "name": "Impera1503",
+    "type": "ADDITIVE_RESIN",
+    "frequency": 10366,
+    "max_phr": 65.0,
+    "mean_phr": 12.666620683002122,
+    "score": 131302.2
+  },
+  {
+    "CODE": "AAE325A",
+    "name": "HPR621",
+    "type": "POLYMER_SBR",
+    "frequency": 2391,
+    "max_phr": 125.00000000000001,
+    "mean_phr": 69.69480149306304,
+    "score": 166640.27036991372
+  },
+  {
+    "CODE": "AAQ233A",
+    "name": "KBR 820T",
+    "type": "POLYMER_BR",
+    "frequency": 4769,
+    "max_phr": 100.0,
+    "mean_phr": 34.44582228519018,
+    "score": 164272.126478072
+  },
+  {
+    "CODE": "AAD362A",
+    "name": "200MP",
+    "type": "FILLER_SILICA",
+    "frequency": 1273,
+    "max_phr": 155.55,
+    "mean_phr": 107.18341712490182,
+    "score": 136444.49000000002
+  },
+  {
+    "CODE": "AAE326A",
+    "name": "F 1038",
+    "type": "POLYMER_SBR",
+    "frequency": 2728,
+    "max_phr": 105.0,
+    "mean_phr": 45.85534586981443,
+    "score": 125093.38353285375
+  },
+  {
+    "CODE": "AAR722A",
+    "name": "TSR-20",
+    "type": "POLYMER_NR",
+    "frequency": 1783,
+    "max_phr": 100.0,
+    "mean_phr": 50.97345575624586,
+    "score": 90885.67161338637
+  },
+  {
+    "CODE": "AAQ201A",
+    "name": "KBR 01",
+    "type": "POLYMER_BR",
+    "frequency": 2955,
+    "max_phr": 100.0,
+    "mean_phr": 27.277783820578776,
+    "score": 80605.85118981029
+  },
+  {
+    "CODE": "AAD113A",
+    "name": "Si 69",
+    "type": "COUPLING_SILANE",
+    "frequency": 7632,
+    "max_phr": 23.4,
+    "mean_phr": 9.37088312368973,
+    "score": 71518.58000000002
+  },
+  {
+    "CODE": "AAQ213A",
+    "name": "CB 24",
+    "type": "POLYMER_BR",
+    "frequency": 1973,
+    "max_phr": 100.0,
+    "mean_phr": 30.940983394354053,
+    "score": 61046.56023706055
+  },
+  {
+    "CODE": "AAP501A",
+    "name": "Soybean Oil",
+    "type": "ADDITIVE_OIL",
+    "frequency": 5378,
+    "max_phr": 35.89,
+    "mean_phr": 11.17090182223875,
+    "score": 60077.11
+  },
+  {
+    "CODE": "AAE323A",
+    "name": "H1713",
+    "type": "POLYMER_SBR",
+    "frequency": 936,
+    "max_phr": 110.0,
+    "mean_phr": 52.53835438687665,
+    "score": 49175.89970611654
+  },
+  {
+    "CODE": "AAC141A",
+    "name": "HP1107",
+    "type": "FILLER_CARBON_BLACK",
+    "frequency": 3780,
+    "max_phr": 83.0,
+    "mean_phr": 12.75276455026455,
+    "score": 48205.45
+  },
+  {
+    "CODE": "AAC332A",
+    "name": "N330",
+    "type": "FILLER_CARBON_BLACK",
+    "frequency": 5642,
+    "max_phr": 75.0,
+    "mean_phr": 8.300281814959233,
+    "score": 46830.18999999999
+  },
+  {
+    "CODE": "AAE333A",
+    "name": "F 3440",
+    "type": "POLYMER_SBR",
+    "frequency": 1033,
+    "max_phr": 137.5,
+    "mean_phr": 38.493502225246246,
+    "score": 39763.787798679376
+  },
+  {
+    "CODE": "AAK304A",
+    "name": "EF44",
+    "type": "ADDITIVE_PROCESS_AID",
+    "frequency": 8969,
+    "max_phr": 10.0,
+    "mean_phr": 4.403708328687702,
+    "score": 39496.86
+  },
+  {
+    "CODE": "AAE403A",
+    "name": "XB120",
+    "type": "POLYMER_SBR",
+    "frequency": 420,
+    "max_phr": 100.0,
+    "mean_phr": 82.92888522897293,
+    "score": 34830.13179616863
+  },
+  {
+    "CODE": "AAC421A",
+    "name": "GPF  N660",
+    "type": "FILLER_CARBON_BLACK",
+    "frequency": 919,
+    "max_phr": 95.0,
+    "mean_phr": 37.337540805223064,
+    "score": 34313.2
+  },
+  {
+    "CODE": "AAE413A",
+    "name": "HS263",
+    "type": "POLYMER_SBR",
+    "frequency": 693,
+    "max_phr": 100.0,
+    "mean_phr": 46.47654640514127,
+    "score": 32208.246658762902
+  },
+  {
+    "CODE": "AAP105A",
+    "name": "TDAE",
+    "type": "ADDITIVE_OIL",
+    "frequency": 2563,
+    "max_phr": 50.0,
+    "mean_phr": 12.471802575107295,
+    "score": 31965.23
+  },
+  {
+    "CODE": "AAE412A",
+    "name": "S215",
+    "type": "POLYMER_SBR",
+    "frequency": 571,
+    "max_phr": 100.0,
+    "mean_phr": 53.17805941922711,
+    "score": 30364.67192837868
+  },
+  {
+    "CODE": "AAE132A",
+    "name": "SBR 1723",
+    "type": "POLYMER_SBR",
+    "frequency": 328,
+    "max_phr": 116.87574997272826,
+    "mean_phr": 80.65745714882529,
+    "score": 26455.645944814692
+  },
+  {
+    "CODE": "AAX202A",
+    "name": "CZ(CBS) - Granule type",
+    "type": "CURING_ACCELERATOR",
+    "frequency": 10076,
+    "max_phr": 3.5,
+    "mean_phr": 2.3620206431123463,
+    "score": 23799.72
+  },
+  {
+    "CODE": "AAX901A",
+    "name": "DPG",
+    "type": "CURING_ACCELERATOR",
+    "frequency": 9459,
+    "max_phr": 5.0,
+    "mean_phr": 2.466054551221059,
+    "score": 23326.41
+  },
+  {
+    "CODE": "AAA101A",
+    "name": "6PPD",
+    "type": "ADDITIVE_ANTI_DEGRADANT",
+    "frequency": 10683,
+    "max_phr": 4.15,
+    "mean_phr": 2.1530206870729196,
+    "score": 23000.72
+  },
+  {
+    "CODE": "AAY106A",
+    "name": "아연화 (Granule, FRENCH)",
+    "type": "ADDITIVE_ACTIVATOR",
+    "frequency": 20971,
+    "max_phr": 130.0,
+    "mean_phr": 2.725429879357208,
+    "score": 57154.99000000001
+  },
+  {
+    "CODE": "AAY307A",
+    "name": "St.Acid",
+    "type": "ADDITIVE_ACTIVATOR",
+    "frequency": 23561,
+    "max_phr": 4.0,
+    "mean_phr": 1.336093119986418,
+    "score": 31479.69
+  },
+  {
+    "CODE": "AAA121A",
+    "name": "RD",
+    "type": "ADDITIVE_ANTI_DEGRADANT",
+    "frequency": 21544,
+    "max_phr": 4.0,
+    "mean_phr": 1.929928518380988,
+    "score": 41578.380000000005
+  },
+  {
+    "CODE": "AAA207A",
+    "name": "Ozoace",
+    "type": "ADDITIVE_ANTI_DEGRADANT",
+    "frequency": 18995,
+    "max_phr": 3.17,
+    "mean_phr": 1.1163785206633325,
+    "score": 21205.61
+  },
+  {
+    "CODE": "AAS106A",
+    "name": "Oil Coating Sulfur(1% Mineral Oil or Napthenic Oil)",
+    "type": "CURING_SULFUR",
+    "frequency": 20982,
+    "max_phr": 6.4,
+    "mean_phr": 1.1275555237822896,
+    "score": 23658.370000000003
+  },
+  {
+    "CODE": "AAX500A",
+    "name": "ZBEC - Oil coated - Powder Type",
+    "type": "CURING_ACCELERATOR",
+    "frequency": 13544,
+    "max_phr": 3.0,
+    "mean_phr": 0.2447910513880685,
+    "score": 3315.45
+  },
+  {
+    "CODE": "AAD134A",
+    "name": "NXT",
+    "type": "COUPLING_SILANE",
+    "frequency": 2446,
+    "max_phr": 130.0,
+    "mean_phr": 10.541426819296811,
+    "score": 25784.33
+  },
+  {
+    "CODE": "AAE131A",
+    "name": "E-SBR 1723",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE138A",
+    "name": "E-SBR 1793",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE181A",
+    "name": "E-SBR 1739",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE202A",
+    "name": "SL553",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE212A",
+    "name": "SOL-5220M",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE324A",
+    "name": "M 1525",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE327A",
+    "name": "M 2520",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE336A",
+    "name": "M 3626",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE353A",
+    "name": "VSL 5025-2HM",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE354A",
+    "name": "SOL C6270L",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE355A",
+    "name": "SLR 4630",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE401A",
+    "name": "HPR 840",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE402A",
+    "name": "SLR 3402",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE404A",
+    "name": "5132H",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE452A",
+    "name": "NS116",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE461A",
+    "name": "SLR 4602",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE463A",
+    "name": "HPR 850",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE471A",
+    "name": "HPR 350R",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE512A",
+    "name": "SLR 6430",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE515A",
+    "name": "VSL 2438-2HM",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE521A",
+    "name": "T. 4850",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE524A",
+    "name": "XF354",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAE523A",
+    "name": "F 3520 (S202)",
+    "type": "POLYMER_SBR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAQ202A",
+    "name": "BR 1208",
+    "type": "POLYMER_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAQ204A",
+    "name": "BR 9000",
+    "type": "POLYMER_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAQ208A",
+    "name": "BR150L(Co-BR)",
+    "type": "POLYMER_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAQ321A",
+    "name": "CB 22",
+    "type": "POLYMER_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAQ333A",
+    "name": "CB 29 MES",
+    "type": "POLYMER_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAQ335A",
+    "name": "CB 29 TDAE",
+    "type": "POLYMER_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAC181A",
+    "name": "Propel X14",
+    "type": "FILLER_CARBON_BLACK",
+    "frequency": 100,
+    "max_phr": 120.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAC241A",
+    "name": "HP130",
+    "type": "FILLER_CARBON_BLACK",
+    "frequency": 100,
+    "max_phr": 120.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAC341A",
+    "name": "N339",
+    "type": "FILLER_CARBON_BLACK",
+    "frequency": 100,
+    "max_phr": 120.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAD111A",
+    "name": "X50-S",
+    "type": "COUPLING_SILANE",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "XAD14006",
+    "name": "NXT Z45",
+    "type": "COUPLING_SILANE",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAD241A",
+    "name": "Z-175",
+    "type": "FILLER_SILICA",
+    "frequency": 100,
+    "max_phr": 120.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAD341A",
+    "name": "RHS",
+    "type": "FILLER_SILICA",
+    "frequency": 100,
+    "max_phr": 120.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAY105A",
+    "name": "ZnO",
+    "type": "ADDITIVE_ACTIVATOR",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAK301A",
+    "name": "A60",
+    "type": "ADDITIVE_PROCESS_AID",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAT102A",
+    "name": "C10",
+    "type": "ADDITIVE_RESIN",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAT303A",
+    "name": "KORESIN",
+    "type": "ADDITIVE_RESIN",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAT311A",
+    "name": "Koretack",
+    "type": "ADDITIVE_RESIN",
+    "frequency": 100,
+    "max_phr": 20.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAU422A",
+    "name": "STE60",
+    "type": "POLYMER_LIQUID_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  },
+  {
+    "CODE": "AAU412A",
+    "name": "FBR746",
+    "type": "POLYMER_LIQUID_BR",
+    "frequency": 100,
+    "max_phr": 100.0,
+    "mean_phr": 0.0,
+    "score": 1000.0
+  }
+]

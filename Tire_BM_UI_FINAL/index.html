@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tire BM System - 자사 벤치마킹 & EV 현황 대시보드</title>
+  <meta name="description" content="자사 타이어 출시 타임라인 PLC Map 및 친환경 EV 완성차 벤치마킹 분석 현황 전용 프리미엄 대시보드">
+  <!-- Google Fonts (Inter, Roboto, Source Sans 3) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&family=Source+Sans+3:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <!-- Pretendard Premium Korean Font -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Core stylesheet -->
+  <link rel="stylesheet" href="index.css?v=2.2.0">
+</head>
+<body>
+ 
+  <!-- Safety Local CORS Banner -->
+  <div id="cors-warning-banner" style="display: none; background: linear-gradient(90deg, #ff1744, #ff9100); color: #fff; padding: 12px 24px; font-weight: bold; text-align: center; font-size: 0.9rem; z-index: 10000; position: sticky; top: 0; box-shadow: 0 4px 15px rgba(255, 23, 68, 0.3);">
+    <i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i>
+    로컬 파일 브라우징 감지: index.html 파일을 더블클릭하여 실행하면 브라우저 보안 규정상 내부 데이터를 가져올 수 없습니다. 
+    반드시 가동 중인 웹 서버 주소로 접속해 주세요 👉 
+    <a href="http://localhost:3000" target="_blank" style="color: #fff; text-decoration: underline; margin-left: 8px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 4px;">http://localhost:3000 으로 이동하기</a>
+  </div>
+ 
+  <div class="app-container">
+    
+    <!-- Sidebar Left Navigation -->
+    <aside class="sidebar" id="sidebar-nav">
+      <div class="sidebar-brand">
+        <div class="logo-icon"><i class="fa-solid fa-ring"></i></div>
+        <div class="logo-text">Tire BM Report</div>
+      </div>
+      
+      <!-- 통합 포털 홈 바로가기 (최상단 우선 배치) -->
+      <div style="padding: 0 16px; margin: 10px 0 15px 0;">
+        <a href="../index.html" class="portal-home-btn" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 10px; text-decoration: none; font-size: 0.95rem; font-weight: 700; transition: var(--transition); width: 100%; box-sizing: border-box;">
+          <i class="fa-solid fa-house-laptop" style="font-size: 1.1rem;"></i>
+          <span>통합 포털 홈</span>
+        </a>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="menu-title" style="padding: 15px 16px 4px 16px; font-size: 0.95rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+          분석 뷰 네비게이션
+        </li>
+        <li class="menu-item active" data-tab="tab-dashboard" id="menu-dashboard">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>종합 분석 대시보드</span>
+        </li>
+        <li class="menu-item" data-tab="tab-timeline" id="menu-timeline">
+          <i class="fa-solid fa-timeline"></i>
+          <span>PLC Timeline Map</span>
+        </li>
+        <li class="menu-item" data-tab="tab-ev" id="menu-ev">
+          <i class="fa-solid fa-leaf"></i>
+          <span>EV 친환경 특화 보드</span>
+        </li>
+        <li class="menu-item" data-tab="tab-reports" id="menu-reports">
+          <i class="fa-solid fa-book-bookmark"></i>
+          <span>보고서 라이브러리</span>
+        </li>
+        
+        <!-- 시스템 간 빠른 연동 파이프라인 -->
+        <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
+        
+        <li class="menu-title" style="padding: 0 16px 4px 16px; font-size: 0.95rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; list-style: none;">
+          글로벌 시스템 이동
+        </li>
+        
+        <li style="list-style: none; padding: 0 10px;">
+          <div class="global-nav-links" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px;">
+              <a href="../Market_Strategy/index.html" class="nav-shortcut-btn" title="시장/상품전략" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-globe" style="font-size: 15px; color: #f97316;"></i>
+                  <span style="color: var(--text-primary);">시장/전략</span>
+              </a>
+              <a href="../Tire_BM_UI_FINAL/index.html" class="nav-shortcut-btn active" title="Tire BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: #f97316; color: #fff; border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid #f97316;">
+                  <i class="fa-solid fa-chart-line" style="font-size: 15px; color: #fff;"></i>
+                  <span>Tire BM</span>
+              </a>
+              <a href="../Compd BM/index.html" class="nav-shortcut-btn" title="Compound BM" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-flask-vial" style="font-size: 15px; color: #10b981;"></i>
+                  <span style="color: var(--text-primary);">Comp'd BM</span>
+              </a>
+              <a href="../BI/index.html" class="nav-shortcut-btn" title="경쟁사 BI News" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255, 255, 255, 0.4); color: var(--text-primary); border-radius: 10px; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-square-rss" style="font-size: 15px; color: #f97316;"></i>
+                  <span style="color: var(--text-primary);">BI News</span>
+              </a>
+          </div>
+        </li>
+
+        <li class="menu-divider" style="height: 1px; background: rgba(249, 115, 22, 0.15); margin: 12px 10px; list-style: none;"></li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../AI_Simulator/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: var(--transition);">
+            <i class="fa-solid fa-robot" style="width: 20px; text-align: center; font-size: 1.05rem; color: #a855f7;"></i>
+            <span>AI Simulator</span>
+          </a>
+        </li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../Report/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: var(--transition);">
+            <i class="fa-solid fa-file-invoice" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--primary);"></i>
+            <span>경쟁사 상품 Report 작성</span>
+          </a>
+        </li>
+
+        <li class="menu-item-link" style="list-style: none;">
+          <a href="../chat-bot/index.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: 'Outfit', sans-serif; transition: var(--transition);">
+            <i class="fa-solid fa-comments" style="width: 20px; text-align: center; font-size: 1.05rem; color: var(--primary);"></i>
+            <span>AI에게 질문하기</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <p>© 2026 Tire Benchmarking</p>
+        <p style="font-size: 0.7rem; margin-top: 4px; color: var(--primary);">Premium V1.2.0 Stable</p>
+      </div>
+    </aside>
+ 
+    <!-- Main Content Right Container -->
+    <main class="main-content">
+      
+      <!-- Top Sticky Header Bar -->
+      <header class="main-header">
+        <div style="display: flex; align-items: center;">
+          <button class="sidebar-toggle-btn" id="btn-sidebar-toggle" title="메뉴 열기/닫기">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="header-title" style="display: flex; flex-direction: column; gap: 4px;">
+            <h1 class="header-app-title" style="font-size: 1.45rem; font-weight: 800; color: var(--text-dark); margin: 0; font-family: var(--font-display);">Tire BM Report</h1>
+            <h2 id="header-title-text" style="font-size: 1.05rem; font-weight: 600; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">종합 분석 대시보드</h2>
+          </div>
+        </div>
+        
+        <div class="header-controls">
+          <!-- Realtime Quick Highlight Search Bar -->
+          <div class="search-box-wrapper" id="global-search-container" style="display: none;">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="global-search-input" placeholder="실시간 제품명 / 제조사 검색 및 강조...">
+            <button id="global-search-clear" class="search-clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+      </header>
+ 
+      <!-- Central Scroll Content Area -->
+      <div class="content-body">
+        
+        <!-- ========================================== -->
+        <!-- 1. DASHBOARD OVERVIEW TAB -->
+        <!-- ========================================== -->
+        <section id="tab-dashboard" class="tab-content active">
+          
+          <!-- Stat Cards Grid -->
+          <div class="stats-row" style="margin-bottom: 24px;">
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3>총 벤치마킹 모델</h3>
+                <div class="stat-value" id="stat-total-tires">0</div>
+              </div>
+              <div class="stat-icon">
+                <i class="fa-solid fa-circle-nodes"></i>
+              </div>
+            </div>
+            
+            <div class="stat-card card-ev-glow">
+              <div class="stat-info">
+                <h3>EV 특화 모델</h3>
+                <div class="stat-value" id="stat-ev-tires">0</div>
+              </div>
+              <div class="stat-icon" style="color: var(--accent-green);">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3>EV 정밀분석 완료</h3>
+                <div class="stat-value" id="stat-ev-completed">0</div>
+              </div>
+              <div class="stat-icon">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3>연계 Arena 보고서</h3>
+                <div class="stat-value" id="stat-total-reports">0</div>
+              </div>
+              <div class="stat-icon" style="color: var(--secondary);">
+                <i class="fa-solid fa-file-invoice"></i>
+              </div>
+            </div>
+          </div>
+ 
+          <!-- Welcome Board & Dynamic Widget Layout -->
+          <div class="dashboard-grid">
+            
+            <div class="card col-8 welcome-card-gradient">
+              <div class="card-body welcome-body" style="padding: 32px;">
+                <div class="welcome-badge">SYSTEM INSIGHT</div>
+                <h1 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin: 16px 0 10px 0; font-family: 'Outfit', sans-serif;">
+                  Tire Benchmark System (Tire BM)
+                </h1>
+                <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; line-height: 1.6; max-width: 650px; margin-bottom: 20px;">
+                  본 시스템은 자사의 최신 완성 타이어 규격 및 수명 주기 데이터를 정밀 분석하고, 수백 장의 실물 패턴 미디어 자산과 Arena VPR 기안 보고서를 실시간 크로싱하여 직관적인 2차원 매트릭스로 가시화합니다. 전기차 세그먼트 전용 제품군의 상태를 실시간 트래킹해 업무 시너지를 극대화합니다.
+                </p>
+                <div class="welcome-guide-links">
+                  <button class="btn-guide-primary" id="btn-quick-timeline">
+                    <i class="fa-solid fa-circle-play"></i> PLC 타임라인 열기
+                  </button>
+                  <button class="btn-guide-secondary" id="btn-quick-reports">
+                    <i class="fa-solid fa-magnifying-glass"></i> 보고서 라이브러리 조회
+                  </button>
+                </div>
+              </div>
+            </div>
+ 
+            <!-- Category Summary Card -->
+            <div class="card col-4">
+              <div class="card-header">
+                <div class="card-title">
+                  <h3><i class="fa-solid fa-chart-pie"></i> 카테고리 구성 비율</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="category-distribution-list" id="category-distribution-container">
+                  <!-- Dynamic categories listed here -->
+                  <div class="category-dist-item">
+                    <span class="cat-label">Summer</span>
+                    <div class="cat-progress-bar"><div class="cat-progress-fill" style="width: 45%;"></div></div>
+                    <span class="cat-count-badge">45%</span>
+                  </div>
+                  <div class="category-dist-item">
+                    <span class="cat-label">SUV</span>
+                    <div class="cat-progress-bar"><div class="cat-progress-fill" style="width: 25%; background: var(--secondary);"></div></div>
+                    <span class="cat-count-badge">25%</span>
+                  </div>
+                  <div class="category-dist-item">
+                    <span class="cat-label">Winter-Alpin</span>
+                    <div class="cat-progress-bar"><div class="cat-progress-fill" style="width: 15%; background: var(--accent-orange);"></div></div>
+                    <span class="cat-count-badge">15%</span>
+                  </div>
+                  <div class="category-dist-item">
+                    <span class="cat-label">All Weather</span>
+                    <div class="cat-progress-bar"><div class="cat-progress-fill" style="width: 15%; background: var(--primary);"></div></div>
+                    <span class="cat-count-badge">15%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+ 
+            <!-- Recent Reports Summary Widget -->
+            <div class="card col-12" style="margin-top: 10px;">
+              <div class="card-header">
+                <div class="card-title">
+                  <h3><i class="fa-solid fa-star"></i> 최근 벤치마킹 리포트 핵심 리스트</h3>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">* 최신 승인 보고서 TOP 5 우선 출력</div>
+              </div>
+              <div class="card-body" style="padding: 0;">
+                <div class="table-wrapper">
+                  <table class="data-table" id="dashboard-recent-reports-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 180px;">부서</th>
+                        <th style="width: 100px;">기안자</th>
+                        <th>보고서 제목</th>
+                        <th style="width: 120px;">완료일자</th>
+                        <th style="width: 100px; text-align: center;">바로가기</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboard-recent-reports-tbody">
+                      <!-- Dynamic Rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+ 
+          </div>
+        </section>
+ 
+        <!-- ========================================== -->
+        <!-- 2. PLC TIMELINE MATRIX TAB -->
+        <!-- ========================================== -->
+        <section id="tab-timeline" class="tab-content">
+          
+          <!-- Matrix Sheet Navigation Sub-Tabs -->
+          <div class="plc-sub-tabs-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-radius: 12px;">
+            <button class="plc-sub-tab active" data-plc-sheet="Summer" id="subtab-summer">
+              <i class="fa-solid fa-sun" style="color: #ff9100; margin-right: 6px;"></i> Summer
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Winter-Alpin" id="subtab-winter-alpin">
+              <i class="fa-solid fa-snowflake" style="color: #38bdf8; margin-right: 6px;"></i> Winter-Alpin
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Winter-Nordic" id="subtab-winter-nordic">
+              <i class="fa-solid fa-icicles" style="color: #0ea5e9; margin-right: 6px;"></i> Winter-Nordic
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="All Weather" id="subtab-all-weather">
+              <i class="fa-solid fa-cloud-sun" style="color: #10b981; margin-right: 6px;"></i> All Weather
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="NA All season" id="subtab-na-all-season">
+              <i class="fa-solid fa-globe" style="color: #6366f1; margin-right: 6px;"></i> NA All Season
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="Pick Up" id="subtab-pick-up">
+              <i class="fa-solid fa-truck-pickup" style="color: #f97316; margin-right: 6px;"></i> Pick Up
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="SUV" id="subtab-suv">
+              <i class="fa-solid fa-mountain-sun" style="color: #84cc16; margin-right: 6px;"></i> SUV
+            </button>
+            <button class="plc-sub-tab" data-plc-sheet="VAN" id="subtab-van">
+              <i class="fa-solid fa-shuttle-space" style="color: #a855f7; margin-right: 6px;"></i> Van
+            </button>
+          </div>
+ 
+          <!-- Timeline Matrix Table Card -->
+          <div class="card col-12 plc-map-card" style="margin-top: 16px;">
+            <div class="card-header" style="background: rgba(255,255,255,0.01); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px;">
+              <div class="card-title">
+                <h3 id="plc-map-board-title" style="font-size: 1.25rem;"><i class="fa-solid fa-timeline"></i> 2차원 연도별 제품 출시 현황</h3>
+              </div>
+              
+              <!-- 엑셀 스타일 실시간 대화형 멀티셀렉트 필터 조작반 -->
+              <div class="plc-matrix-filters" style="display: flex; align-items: center; gap: 16px; background: rgba(249, 115, 22, 0.05); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(249, 115, 22, 0.2); position: relative; flex-wrap: wrap;">
+                
+                <!-- 세그먼트 멀티 필터 -->
+                <div class="plc-multiselect-container" id="container-filter-segment" style="position: relative; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.9rem; font-weight: 800; color: #1e293b;">세그먼트</span>
+                  <div class="plc-multiselect-wrapper" style="position: relative;">
+                    <button type="button" id="btn-filter-segment" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.3); border-radius: 8px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; outline: none; min-width: 180px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition);">
+                      <span class="btn-text">전체 세그먼트</span>
+                      <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                    </button>
+                    <!-- 드롭다운 레이어 -->
+                    <div id="dropdown-filter-segment" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 10px; min-width: 240px; max-height: 280px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                      <!-- 체크박스 옵션들이 js에 의해 동적으로 여기에 삽입됨 -->
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 제조사 멀티 필터 -->
+                <div class="plc-multiselect-container" id="container-filter-maker" style="position: relative; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.9rem; font-weight: 800; color: #1e293b;">제조사</span>
+                  <div class="plc-multiselect-wrapper" style="position: relative;">
+                    <button type="button" id="btn-filter-maker" style="background: #ffffff; border: 1.5px solid rgba(249, 115, 22, 0.3); border-radius: 8px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; outline: none; min-width: 170px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition);">
+                      <span class="btn-text">전체 제조사</span>
+                      <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+                    </button>
+                    <!-- 드롭다운 레이어 -->
+                    <div id="dropdown-filter-maker" class="plc-multiselect-dropdown" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #ffffff; border: 1px solid rgba(249, 115, 22, 0.25); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 10px; min-width: 220px; max-height: 280px; overflow-y: auto; z-index: 1000; animation: fadeIn 0.15s ease;">
+                      <!-- 체크박스 옵션들이 js에 의해 동적으로 여기에 삽입됨 -->
+                    </div>
+                  </div>
+                </div>
+                
+                <button id="btn-reset-plc-filters" style="background: rgba(255,255,255,0.9); border: 1.5px solid rgba(249, 115, 22, 0.25); padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 800; color: #1e293b; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                  <i class="fa-solid fa-rotate-left"></i> 필터 초기화
+                </button>
+              </div>
+
+              <div id="plc-map-legend" class="plc-legend" style="margin-left: 0;">
+                <span class="legend-item"><span class="legend-dot dot-img"><i class="fa-solid fa-image"></i></span> 실물 이미지 연동</span>
+                <span class="legend-item"><span class="legend-dot dot-rep"><i class="fa-solid fa-file-lines"></i></span> 보고서 연계</span>
+              </div>
+            </div>
+            <div class="card-body" style="padding: 16px;">
+              <!-- 2D Timeline Grid Matrix -->
+              <div id="plc-timeline-viewport" class="plc-timeline-viewport">
+                <!-- PLC Timeline grid dynamically rendered here -->
+              </div>
+            </div>
+          </div>
+        </section>
+ 
+        <!-- ========================================== -->
+        <!-- 3. EV GREEN BOARD TAB -->
+        <!-- ========================================== -->
+        <section id="tab-ev" class="tab-content">
+          
+          <div class="card col-12" style="background: linear-gradient(135deg, rgba(0, 230, 118, 0.05), rgba(0, 242, 254, 0.02)); border-color: rgba(0, 230, 118, 0.15); margin-bottom: 20px;">
+            <div class="card-body" style="padding: 24px; display: flex; align-items: center; gap: 20px;">
+              <div class="ev-header-icon-badge">
+                <i class="fa-solid fa-car-battery" style="font-size: 2rem; color: var(--accent-green); filter: drop-shadow(0 0 10px rgba(0,230,118,0.5));"></i>
+              </div>
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 6px;">친환경 전기자동차 타이어 벤치마킹 현황 보드</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
+                  각 제조사별 EV 전용 및 고호환성 타이어 제품군들의 분석 진척률 및 출시 상황을 칸반 보드 형식으로 신속 조율합니다. 개별 카드를 클릭하면 실물 트레드 설계도와 특이 비고 사항 및 연계 보고서를 열 수 있습니다.
+                </p>
+              </div>
+            </div>
+          </div>
+ 
+          <!-- EV Board Container Columns Grid -->
+          <div id="plc-ev-board-viewport" class="plc-ev-board-viewport">
+            <!-- EV Columns rendered dynamically -->
+          </div>
+        </section>
+ 
+        <!-- ========================================== -->
+        <!-- 4. REPORTS ARCHIVE LIBRARY TAB -->
+        <!-- ========================================== -->
+        <section id="tab-reports" class="tab-content">
+          
+          <!-- Library Search Panel Card -->
+          <div class="card filter-card" style="margin-bottom: 20px;">
+            <div class="card-header">
+              <div class="card-title">
+                <h3><i class="fa-solid fa-filter"></i> 보고서 정밀 고속 필터링</h3>
+              </div>
+            </div>
+            <div class="card-body" style="padding: 20px;">
+              <div class="filter-grid" style="grid-template-columns: 2fr 1fr 1fr auto; gap: 16px;">
+                <div class="filter-group">
+                  <label for="report-search-input">보고서 제목 / 연계 상품 키워드</label>
+                  <input type="text" id="report-search-input" class="filter-control" placeholder="검색어를 입력해 주세요...">
+                </div>
+                <div class="filter-group">
+                  <label for="report-filter-maker">기안부서</label>
+                  <select id="report-filter-maker" class="filter-control">
+                    <option value="">전체 부서</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="report-filter-type">기안자</label>
+                  <select id="report-filter-type" class="filter-control">
+                    <option value="">전체 기안자</option>
+                  </select>
+                </div>
+                <button id="btn-report-reset" class="btn-reset" style="align-self: flex-end; height: 42px;">
+                  <i class="fa-solid fa-rotate-left"></i>
+                  <span>초기화</span>
+                </button>
+              </div>
+            </div>
+          </div>
+ 
+          <!-- Reports Grid Card -->
+          <div class="card col-12">
+            <div class="card-header">
+              <div class="card-title">
+                <h3><i class="fa-solid fa-folder-open"></i> 전수 기안 보고서 라이브러리 (81 EA Arena 연계)</h3>
+              </div>
+            </div>
+            <div class="card-body" style="padding: 0;">
+              <div class="table-wrapper">
+                <table class="data-table" id="reports-library-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 150px;">기안부서</th>
+                      <th style="width: 100px;">기안자</th>
+                      <th>보고서 제목</th>
+                      <th style="width: 110px;">기안일자</th>
+                      <th style="width: 110px;">완료일자</th>
+                      <th style="width: 100px; text-align: center;">Arena 링크</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reports-library-tbody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <!-- Pagination -->
+              <div class="pagination" style="padding: 20px 24px;">
+                <div id="reports-pagination-info">검색 결과: 1 - 20 / 전체 81개 항목</div>
+                <div class="pagination-buttons">
+                  <button id="btn-rep-prev-page" class="btn-page" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                  <button id="btn-rep-next-page" class="btn-page" disabled><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+ 
+      </div>
+    </main>
+ 
+  </div>
+ 
+  <!-- ========================================== -->
+  <!-- PREMIUM RIGHT SLIDING GLASSMORPHIC DRAWER -->
+  <!-- ========================================== -->
+  <div class="drawer-overlay" id="plc-drawer-overlay"></div>
+  
+  <div class="detail-drawer" id="plc-detail-drawer">
+    <div class="drawer-close" id="plc-drawer-close" title="닫기">
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+    
+    <!-- Drawer visual image banner -->
+    <div class="drawer-image-banner">
+      <img src="" id="plc-drawer-img" alt="Tire Tread pattern" style="display: none;">
+      <div class="drawer-img-fallback" id="plc-drawer-img-fallback">
+        <i class="fa-solid fa-circle-nodes" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.3;"></i>
+        <span>실물 트레드 설계 다이어그램이 없는 품목입니다</span>
+      </div>
+      <div class="drawer-banner-title">
+        <h2 id="plc-drawer-tire-name">Tire Product Name</h2>
+        <span class="badge-maker" id="plc-drawer-tire-maker">MAKER</span>
+      </div>
+    </div>
+ 
+    <!-- Drawer Content Scroll -->
+    <div class="drawer-content">
+      
+      <!-- Specifications Segment -->
+      <div class="drawer-section">
+        <div class="section-title">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>상세 규격 및 출시 정보</span>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="spec-label">소속 시트</span>
+            <span class="spec-val" id="plc-spec-sheet">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">제품 세그먼트</span>
+            <span class="spec-val" id="plc-spec-category">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">제조사 구분</span>
+            <span class="spec-val" id="plc-spec-division">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">제품 출시 연도</span>
+            <span class="spec-val" id="plc-spec-year">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">구분</span>
+            <span class="spec-val" id="plc-spec-type">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">분석 여부</span>
+            <span class="spec-val" id="plc-spec-status">-</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Technical Comments Segment -->
+      <div class="drawer-section">
+        <div class="section-title">
+          <i class="fa-solid fa-comment-medical"></i>
+          <span>기술 분석 비고</span>
+        </div>
+        <div class="comment-box" id="plc-drawer-comment">
+          기재된 특이 기술 비고 사항이 없습니다.
+        </div>
+      </div>
+ 
+      <!-- PDF / Reports link action buttons -->
+      <div class="drawer-section" style="margin-top: 10px; margin-bottom: 20px;">
+        <a href="#" target="_blank" class="btn-report-link" id="plc-report-link-btn" style="display: none;">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span>Arena 기술 분석 보고서 즉시 조회</span>
+        </a>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- Toast Notification Wrapper -->
+  <div id="toast" class="toast">
+    <i class="fa-solid fa-circle-info"></i>
+    <span id="toast-message">알림 메시지</span>
+  </div>
+ 
+  <!-- BTS Easter Egg Popup Modal -->
+  <div id="bts-popup-modal" class="portal-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.3s ease;">
+    <div class="portal-modal-content" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 20px; width: 96%; max-width: 1350px; box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.15), 0 0 40px rgba(168, 85, 247, 0.05); padding: 20px; display: flex; flex-direction: column; gap: 16px; animation: zoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div class="portal-modal-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(168, 85, 247, 0.1); padding-bottom: 12px;">
+        <h3 style="font-family: var(--font-display); font-size: 1.55rem; font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center;">
+          <i class="fa-solid fa-heart" style="color: #a855f7; margin-right: 10px; font-size: 1.45rem;"></i>만든이 : Team BTS (AI기술연구팀)
+        </h3>
+        <button id="close-bts-modal-btn" class="modal-close-icon" title="닫기" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; transition: var(--transition);"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="portal-modal-body" style="max-height: 80vh; overflow-y: auto; border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.05); background: #f8fafc; display: flex; gap: 24px; padding: 20px; flex-wrap: wrap; justify-content: center; align-items: center;">
+        <div style="flex: 1; min-width: 280px; text-align: center;">
+          <h4 style="margin-bottom: 14px; color: var(--text-dark); font-weight: 800; font-size: 1.35rem; letter-spacing: 0.5px;">정강일</h4>
+          <img src="../JKI.png" alt="정강일" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid rgba(168, 85, 247, 0.1);">
+        </div>
+        <div style="flex: 1; min-width: 280px; text-align: center;">
+          <h4 style="margin-bottom: 14px; color: var(--text-dark); font-weight: 800; font-size: 1.35rem; letter-spacing: 0.5px;">류명신</h4>
+          <img src="../RMS.png" alt="류명신" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid rgba(168, 85, 247, 0.1);">
+        </div>
+        <div style="flex: 1; min-width: 280px; text-align: center;">
+          <h4 style="margin-bottom: 14px; color: var(--text-dark); font-weight: 800; font-size: 1.35rem; letter-spacing: 0.5px;">권준</h4>
+          <img src="../KJ.png" alt="권준" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid rgba(168, 85, 247, 0.1);">
+        </div>
+      </div>
+      <div class="portal-modal-footer" style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(168, 85, 247, 0.1); padding-top: 14px;">
+        <button id="dont-show-bts-btn" class="dont-show-btn" style="background: transparent; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; transition: var(--transition);">
+          <i class="fa-regular fa-square" id="dont-show-bts-checkbox" style="margin-right: 6px;"></i>
+          <span>팝업 다시 뜨지 않기</span>
+        </button>
+        <button id="close-bts-modal-bottom-btn" class="close-btn" style="background: linear-gradient(135deg, #a855f7, #c084fc); border: none; color: #fff; padding: 10px 28px; border-radius: 10px; font-weight: 600; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2); transition: var(--transition);">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client App Logic Script -->
+  <script src="data/plc_data.js"></script>
+  <script src="data/plc_images_map.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

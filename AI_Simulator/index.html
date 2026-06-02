@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BM-Intelligence AI Simulator</title>
+  <meta name="description" content="AI 기반 트레드 컴파운드 가상 배합 설계 및 실시간 점탄성 거동 예측 시뮬레이터">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Pretendard Korean Font -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Core Simulator Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Safety CORS Local File Floating Toast (Premium style, 우측 하단 배치) -->
+  <div id="cors-warning-banner" class="cors-floating-toast" style="display: none;">
+    <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+    <div class="toast-content">
+      <div class="toast-title">CORS 로컬 실행 환경 감지</div>
+      <p>브라우저 보안 제한으로 정적 파일 fetch 기능이 제한됩니다. 대신 기본 제공되는 신뢰할 수 있는 모형 데이터를 연계하여 대시보드를 안정적으로 기동합니다.</p>
+    </div>
+    <button class="toast-close-btn" id="toast-close-btn" title="알림 닫기"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <!-- Decorative Glow Background Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <!-- Main Portal Centered Container -->
+  <div class="portal-container">
+    
+    <!-- HEADER AREA -->
+    <header class="portal-header">
+      <div class="brand-logo" onclick="location.href='../index.html'">
+        <div class="logo-icon"><i class="fa-solid fa-robot"></i></div>
+        <div class="logo-text-wrapper">
+          <h1 class="logo-text">AI Simulator</h1>
+          <span class="logo-subtitle">Virtual Compound Performance Designer</span>
+        </div>
+      </div>
+      <div class="header-controls" style="display: flex; align-items: center; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; white-space: nowrap; letter-spacing: 0.5px;">글로벌 시스템 이동</span>
+          <div class="global-nav-links" style="display: flex; align-items: center; gap: 8px;">
+              <a href="../Market_Strategy/index.html" class="nav-shortcut-btn" title="시장/상품전략" style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: rgba(255, 255, 255, 0.5); color: var(--text-primary); border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 700; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-globe" style="color: #f97316; font-size: 13px;"></i>
+                  <span>시장/전략</span>
+              </a>
+              <a href="../Tire_BM_UI_FINAL/index.html" class="nav-shortcut-btn" title="Tire BM" style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: rgba(255, 255, 255, 0.5); color: var(--text-primary); border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 700; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-chart-line" style="color: #3b82f6; font-size: 13px;"></i>
+                  <span>Tire BM</span>
+              </a>
+              <a href="../Compd BM/index.html" class="nav-shortcut-btn" title="Compound BM" style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: rgba(255, 255, 255, 0.5); color: var(--text-primary); border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 700; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-flask-vial" style="color: #10b981; font-size: 13px;"></i>
+                  <span>Comp'd BM</span>
+              </a>
+              <a href="../AI_Simulator/index.html" class="nav-shortcut-btn active" title="AI Simulator" style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #f97316; color: #fff; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 700; transition: var(--transition); border: 1px solid #f97316;">
+                  <i class="fa-solid fa-robot" style="color: #fff; font-size: 13px;"></i>
+                  <span>AI 시뮬</span>
+              </a>
+              <a href="../BI/index.html" class="nav-shortcut-btn" title="경쟁사 BI News" style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: rgba(255, 255, 255, 0.5); color: var(--text-primary); border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 700; transition: var(--transition); border: 1px solid var(--card-border);">
+                  <i class="fa-solid fa-square-rss" style="color: #f97316; font-size: 13px;"></i>
+                  <span>BI News</span>
+              </a>
+          </div>
+        </div>
+        
+        <button class="back-home-btn" onclick="location.href='../index.html'">
+          <i class="fa-solid fa-house-laptop"></i> 통합 홈
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Horizontal Reference Selector Panel -->
+    <section class="reference-panel glass-panel">
+      <div class="panel-header-row">
+        <div class="panel-title-group">
+          <h2 class="panel-main-title"><i class="fa-solid fa-crosshairs"></i> 비교 대상 벤치마크 컴파운드 선택</h2>
+          <p class="panel-sub-desc">선택한 벤치마크를 기준으로 Virtual 레시피, ARES 곡선, 성능 밸런스를 실시간 비교합니다.</p>
+        </div>
+        <div class="vcd-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="vcd-ref-search" placeholder="제조사, 패턴, 규격 검색..." autocomplete="off">
+        </div>
+      </div>
+      <div class="vcd-ref-list-scroll" id="vcd-ref-list">
+        <!-- 레퍼런스 컴파운드 리스트가 자바스크립트로 동적 로딩됩니다 -->
+        <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> 벤치마크 데이터셋 연산 중...</div>
+      </div>
+    </section>
+
+    <!-- MAIN CONSOLE LAYOUT (2-Column Grid) -->
+    <div class="vcd-dashboard-grid">
+      
+      <!-- Left Side: Interactive Recipe Sliders -->
+      <section class="recipe-panel glass-panel">
+        <div class="panel-title-row">
+          <div class="title-text-group">
+            <h2 class="panel-sec-title"><i class="fa-solid fa-sliders"></i> Virtual 레시피 디자인</h2>
+            <p class="panel-sub-desc">원료 함량을 조절해 가상 컴파운드 배합을 실시간으로 설계합니다.</p>
+          </div>
+          <button class="btn-reset" id="btn-reset-recipe" title="초기 기본 배합으로 원복">
+            <i class="fa-solid fa-rotate-left"></i> 초기화
+          </button>
+        </div>
+
+        <!-- Polymers Constraints Notice Banner -->
+        <div id="polymer-constraint-notice" class="constraint-banner normal-state">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Polymer 합산 PHR: <strong id="polymer-sum-val">100.00</strong></span>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="category-tabs">
+          <button class="tab-btn active" data-category="ALL">ALL</button>
+          <button class="tab-btn" data-category="POLYMER">POLYMERS</button>
+          <button class="tab-btn" data-category="FILLER">FILLERS</button>
+          <button class="tab-btn" data-category="COUPLING">COUPLINGS</button>
+          <button class="tab-btn" data-category="ADDITIVE">ADDITIVES</button>
+          <button class="tab-btn" data-category="CURING">CURINGS</button>
+        </div>
+
+        <!-- Sliders Container -->
+        <div class="sliders-scroll" id="sliders-container">
+          <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> 대표 레시피 데이터를 로드하는 중...</div>
+        </div>
+      </section>
+
+      <!-- Right Side: Visualization and AI Recommendation Panels -->
+      <div class="vcd-right-panels-wrapper">
+        
+        <!-- Part A: Interactive ARES Curves Chart -->
+        <section class="chart-panel glass-panel">
+          <div class="panel-title-row">
+            <div class="title-text-group">
+              <h2 class="panel-sec-title"><i class="fa-solid fa-chart-line"></i> ARES tanδ Temperature Sweep</h2>
+              <p class="panel-sub-desc">온도별 tanδ 곡선을 통해 Wet Grip과 RR 성능 밸런스를 비교합니다.</p>
+            </div>
+            <div class="legend-container">
+              <span class="legend-item legend-sim">
+                <span class="legend-dot bg-sim"></span><span>HK Virtual 배합</span>
+              </span>
+              <span class="legend-item legend-ref" id="chart-legend-ref" style="display: none;">
+                <span class="legend-dot bg-ref"></span><span id="chart-legend-ref-name">BENCHMARK</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Chart Viewport -->
+          <div class="vcd-chart-container">
+            <canvas id="aresChart"></canvas>
+          </div>
+        </section>
+
+        <!-- Part B: Dynamic Properties and Comparison Gauges -->
+        <section class="analysis-panel glass-panel">
+          <div class="panel-title-row" style="border-bottom: 1px dashed rgba(249,115,22,0.12); padding-bottom: 14px; margin-bottom: 14px;">
+            <div class="title-text-group">
+              <h2 class="panel-sec-title" style="color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> 성능 비교 분석 보드</h2>
+              <p class="panel-sub-desc">HK Virtual 배합과 벤치마크 제품의 핵심 성능 비교</p>
+            </div>
+          </div>
+
+          <div class="comparison-dashboard-layout">
+            
+            <!-- Left Column: Spider Radar Chart -->
+            <div class="radar-chart-section">
+              <div class="legend-container radar-legend-container">
+                <span class="legend-item legend-sim" style="display: flex; align-items: center; gap: 6px;">
+                  <span class="legend-dot bg-sim" style="flex-shrink: 0; width: 10px; height: 10px;"></span><span>HK Virtual 배합</span>
+                </span>
+                <span class="legend-item legend-ref" id="radar-legend-ref" style="display: none; align-items: center; gap: 6px;">
+                  <span class="legend-dot bg-ref" style="flex-shrink: 0; width: 10px; height: 10px;"></span>
+                  <span id="radar-legend-ref-name" style="max-width: 280px; display: inline-block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; vertical-align: middle; cursor: help;" title="">BENCHMARK</span>
+                </span>
+              </div>
+              <div class="radar-chart-wrapper">
+                <canvas id="vcdRadarChart"></canvas>
+                
+                <!-- HTML Overlay Mini Score Cards for Radar Chart Axes -->
+                <div class="radar-overlay-card" id="overlay-label-wear" title="내마모성 지수 (높을수록 우수)">
+                  <div class="overlay-card-title">내마모</div>
+                  <div class="overlay-card-values">
+                    <span class="overlay-val-sim" id="overlay-wear-sim">--</span>
+                    <span class="overlay-val-vs">vs</span>
+                    <span class="overlay-val-ref" id="overlay-wear-ref">--</span>
+                    <span class="radar-overlay-diff" id="overlay-wear-diff" style="display: none;">--</span>
+                  </div>
+                </div>
+
+                <div class="radar-overlay-card" id="overlay-label-wet" title="Wet 제동 성능 지수 (높을수록 우수)">
+                  <div class="overlay-card-title">Wet 제동</div>
+                  <div class="overlay-card-values">
+                    <span class="overlay-val-sim" id="overlay-wet-sim">--</span>
+                    <span class="overlay-val-vs">vs</span>
+                    <span class="overlay-val-ref" id="overlay-wet-ref">--</span>
+                    <span class="radar-overlay-diff" id="overlay-wet-diff" style="display: none;">--</span>
+                  </div>
+                </div>
+
+                <div class="radar-overlay-card" id="overlay-label-rr" title="회전저항(연비) 지수 (높을수록 우수)">
+                  <div class="overlay-card-title">연비</div>
+                  <div class="overlay-card-values">
+                    <span class="overlay-val-sim" id="overlay-rr-sim">--</span>
+                    <span class="overlay-val-vs">vs</span>
+                    <span class="overlay-val-ref" id="overlay-rr-ref">--</span>
+                    <span class="radar-overlay-diff" id="overlay-rr-diff" style="display: none;">--</span>
+                  </div>
+                </div>
+              </div>
+              <p class="chart-caption"><i class="fa-solid fa-circle-info"></i> 모든 점수는 높을수록 우수한 방향으로 정규화</p>
+            </div>
+
+            <!-- Right Column: Gauge Cards -->
+            <div class="comparison-cards-section">
+              <div class="comparison-legend">
+                <span class="legend-badge sim-badge">
+                  <span class="legend-dot bg-sim"></span><span>HK Virtual 배합</span>
+                </span>
+                <span class="legend-badge ref-badge" id="ref-legend-badge" style="display: none; align-items: center; gap: 6px;">
+                  <span class="legend-dot bg-ref" style="width: 8px; height: 8px; border-radius: 50%;"></span>
+                  <span id="ref-legend-name" class="legend-label" style="max-width: 220px; display: inline-block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; vertical-align: middle; cursor: help;" title="">COMPETITOR</span>
+                </span>
+              </div>
+
+              <!-- Cards Grid -->
+              <div class="comparison-cards-grid">
+                
+                <!-- Card 1: Wet 제동 -->
+                <div class="comparison-card" id="card-wet">
+                  <div class="card-header-row">
+                    <span class="card-icon"><i class="fa-solid fa-cloud-showers-heavy"></i></span>
+                    <span class="card-label">Wet 제동</span>
+                    <span class="card-status" id="status-wet">대기중</span>
+                  </div>
+                  <div class="card-values-row">
+                    <div class="value-item sim-val">
+                      <span class="value-num" id="comp-wet-sim">--</span>
+                      <span class="value-label">HK Virtual 배합</span>
+                    </div>
+                    <div class="value-divider">vs</div>
+                    <div class="value-item ref-val">
+                      <span class="value-num" id="comp-wet-ref">--</span>
+                      <span class="value-label" id="comp-wet-ref-label" title="Benchmark" style="cursor: help;">Benchmark</span>
+                    </div>
+                    <div class="value-diff" id="diff-wet">--</div>
+                  </div>
+                </div>
+
+                <!-- Card 2: 연비 -->
+                <div class="comparison-card" id="card-handling">
+                  <div class="card-header-row">
+                    <span class="card-icon"><i class="fa-solid fa-gas-pump"></i></span>
+                    <span class="card-label">연비</span>
+                    <span class="card-status" id="status-handling">대기중</span>
+                  </div>
+                  <div class="card-values-row">
+                    <div class="value-item sim-val">
+                      <span class="value-num" id="comp-handling-sim">--</span>
+                      <span class="value-label">HK Virtual 배합</span>
+                    </div>
+                    <div class="value-divider">vs</div>
+                    <div class="value-item ref-val">
+                      <span class="value-num" id="comp-handling-ref">--</span>
+                      <span class="value-label" id="comp-handling-ref-label" title="Benchmark" style="cursor: help;">Benchmark</span>
+                    </div>
+                    <div class="value-diff" id="diff-handling">--</div>
+                  </div>
+                </div>
+
+                <!-- Card 3: 내마모 -->
+                <div class="comparison-card" id="card-wear">
+                  <div class="card-header-row">
+                    <span class="card-icon"><i class="fa-solid fa-road"></i></span>
+                    <span class="card-label">내마모</span>
+                    <span class="card-status" id="status-wear">대기중</span>
+                  </div>
+                  <div class="card-values-row">
+                    <div class="value-item sim-val">
+                      <span class="value-num" id="comp-wear-sim">--</span>
+                      <span class="value-label">HK Virtual 배합</span>
+                    </div>
+                    <div class="value-divider">vs</div>
+                    <div class="value-item ref-val">
+                      <span class="value-num" id="comp-wear-ref">--</span>
+                      <span class="value-label" id="comp-wear-ref-label" title="Benchmark" style="cursor: help;">Benchmark</span>
+                    </div>
+                    <div class="value-diff" id="diff-wear">--</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Quick Insight Commentary Box -->
+              <div class="comparison-insight-box">
+                <i class="fa-solid fa-circle-info"></i>
+                <p id="comparison-insight-text">왼쪽 벤치마크 목록에서 대조할 타사 타이어를 선택해 주시면 가상 시뮬레이터 배합에 따른 상대 성능 편차 인사이트가 실시간 연산됩니다.</p>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Part C: AI formulation Optimization Advisor -->
+        <section class="ai-advisor-panel glass-panel">
+          <div class="ai-advisor-header">
+            <div class="ai-title-row">
+              <span class="ai-glow-icon"><i class="fa-solid fa-brain"></i></span>
+              <div class="ai-title-text-group">
+                <h2 class="ai-main-title">AI 레시피 개선 가이드</h2>
+                <p class="ai-sub-desc">벤치마크 대비 부족한 성능을 분석하고, 원료 조정 방향과 개선 후보 레시피를 제안합니다.</p>
+              </div>
+            </div>
+            <div class="ai-btn-group">
+              <button id="btn-run-ai-advisor" class="premium-ai-btn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI 레시피 분석 실행
+              </button>
+              <button id="btn-apply-ai-recipe" class="premium-ai-btn apply-btn" style="display: none;">
+                <i class="fa-solid fa-circle-check"></i> 추천 배합 적용
+              </button>
+            </div>
+          </div>
+          
+          <div id="ai-advisor-content" class="ai-advisor-content empty">
+            <div class="ai-placeholder-view">
+              <i class="fa-solid fa-microchip placeholder-icon"></i>
+              <p class="placeholder-text">비교 대상 벤치마크 타이어를 선택하신 후 <strong>[AI 레시피 분석 실행]</strong> 버튼을 누르시면 AI 추천 배합안 분석 결과가 활성화됩니다.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+    <!-- PORTAL FOOTER -->
+    <footer class="portal-footer">
+      <div class="footer-meta">
+        <p>© 2026 <strong>BM-Intelligence Hub</strong></p>
+        <p class="system-meta">AI PREDICTIVE SIMULATOR MODULE • CONNECTIVITY OK</p>
+      </div>
+      <div class="status-indicator">
+        <span class="pulse-dot"></span> AI Prediction Server Active
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast Notification Wrapper -->
+  <div id="toast" class="toast">
+    <i class="fa-solid fa-circle-info"></i>
+    <span id="toast-message">알림 메시지</span>
+  </div>
+
+  <!-- AI Formulation Multi-Candidate Popup Modal -->
+  <div id="ai-candidates-modal" class="ai-modal-overlay" style="display: none;">
+    <div class="ai-modal-container">
+      
+      <!-- Modal Header -->
+      <div class="ai-modal-header">
+        <div class="ai-header-title-row">
+          <div class="ai-header-glow-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div>
+            <h3 class="modal-main-title">AI 추천 레시피 후보 3안</h3>
+            <p class="modal-sub-title">현재 성능 차이를 기준으로 리스크와 개선 방향이 다른 3가지 배합 후보를 비교합니다.</p>
+          </div>
+        </div>
+        <button id="btn-close-ai-modal" class="modal-close-btn" title="닫기"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="ai-modal-body">
+        <div id="ai-candidates-list" class="candidates-grid">
+          <!-- 3 Scenarios rendered dynamically here -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="ai-modal-footer">
+        <span class="footer-notice">* 각 배합 후보 적용 시 가상 배합 슬라이더 및 예측 물성 결과 차트가 즉시 동기화됩니다.</span>
+        <button id="btn-cancel-ai-modal" class="modal-cancel-btn">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core App JS -->
+  <script src="app.js"></script>
+</body>
+</html>
