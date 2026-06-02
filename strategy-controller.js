@@ -2418,19 +2418,19 @@
       skuContainer.innerHTML = `
         <div class="strategy-list">
           <div style="display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.04); align-items: flex-start;">
-            <div style="width: 120px; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-arrows-left-right-to-line" style="color: var(--primary); margin-right: 6px;"></i> 림경 구성</div>
+            <div style="width: 140px; flex-shrink: 0; white-space: nowrap; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-arrows-left-right-to-line" style="color: var(--primary); margin-right: 6px;"></i> 림경 구성</div>
             <div style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.45;">${sku.rims}</div>
           </div>
           <div style="display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.04); align-items: flex-start;">
-            <div style="width: 120px; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-scale-balanced" style="color: var(--primary); margin-right: 6px;"></i> OE / RE 비율</div>
+            <div style="width: 140px; flex-shrink: 0; white-space: nowrap; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-scale-balanced" style="color: var(--primary); margin-right: 6px;"></i> OE / RE 비율</div>
             <div style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.45;">${sku.ratio}</div>
           </div>
           <div style="display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.04); align-items: flex-start;">
-            <div style="width: 120px; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-ring" style="color: var(--primary); margin-right: 6px;"></i> 주요 규격 예시</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.45; font-family: monospace; font-weight: 700; background: rgba(0,0,0,0.02); padding: 4px 8px; border-radius: 4px;">${sku.sizes}</div>
+            <div style="width: 140px; flex-shrink: 0; white-space: nowrap; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-ring" style="color: var(--primary); margin-right: 6px;"></i> 주요 규격 예시</div>
+            <div style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.45; font-weight: 500; background: rgba(0,0,0,0.02); padding: 4px 8px; border-radius: 4px;">${sku.sizes}</div>
           </div>
           <div style="display: flex; gap: 15px; padding: 12px; align-items: flex-start;">
-            <div style="width: 120px; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-circle-nodes" style="color: var(--primary); margin-right: 6px;"></i> 세팅 전략 핵심</div>
+            <div style="width: 140px; flex-shrink: 0; white-space: nowrap; font-weight: 800; color: var(--text-dark); font-size: 0.9rem;"><i class="fa-solid fa-circle-nodes" style="color: var(--primary); margin-right: 6px;"></i> 세팅 전략 핵심</div>
             <div style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.45; font-weight: 500;">${sku.desc}</div>
           </div>
         </div>
