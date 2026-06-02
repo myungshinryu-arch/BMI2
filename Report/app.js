@@ -1838,8 +1838,8 @@ function buildIntegratedReport(brandKey, modelKey) {
     }
   };
 
-  // API Failure Logger conforming to Requirement 6
-  async function logApiFailure(url, response, error, fallbackUsed) {
+  // API Failure Logger conforming to Requirement 8
+  async function logApiFailure(url, response, error, fallbackUsed, payload) {
     let statusCode = "N/A";
     let responseText = "N/A";
     if (response) {
@@ -1856,20 +1856,30 @@ function buildIntegratedReport(brandKey, modelKey) {
     console.error("- Request URL:", url);
     console.error("- HTTP Status Code:", statusCode);
     console.error("- Response Text:", responseText);
+    console.error("- Payload:", JSON.stringify(payload));
     console.error("- Fallback Used:", fallbackUsed ? "Yes" : "No");
     console.error("========================");
   }
 
   // 7. Make the POST request to local/Cloud Run FastAPI LLM gateway
-  const MAIN_PROD_API_BASE = "https://bmi2-api-235631437371.asia-northeast3.run.app";
+  const CLOUD_RUN_API_BASE = "https://bmi2-api-235631437371.asia-northeast3.run.app";
   const RENDER_FALLBACK_API_BASE = "https://bmi2-api.onrender.com";
 
-  const isLocal = window.location.hostname.includes("localhost") || 
-                  window.location.hostname.includes("127.0.0.1") || 
-                  window.location.protocol === "file:";
+  function getApiBase() {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "http://localhost:8000";
+    }
+    return CLOUD_RUN_API_BASE;
+  }
 
-  let API_BASE = isLocal ? "http://localhost:8000" : MAIN_PROD_API_BASE;
-  const targetUrl = API_BASE + '/api/llm/report';
+  const API_BASE = getApiBase();
+  const targetUrl = `${API_BASE}/api/llm/report`;
+  const reportPayload = {
+    brand: brandKey,
+    model: modelKey,
+    context_data: contextDataObj
+  };
 
   async function performReportFetch() {
     try {
@@ -1877,37 +1887,30 @@ function buildIntegratedReport(brandKey, modelKey) {
       const res = await fetch(targetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          brand: brandKey,
-          model: modelKey,
-          context_data: contextDataObj
-        })
+        body: JSON.stringify(reportPayload)
       });
 
       if (!res.ok) {
-        await logApiFailure(targetUrl, res, null, isLocal);
+        await logApiFailure(targetUrl, res, null, API_BASE !== CLOUD_RUN_API_BASE, reportPayload);
         throw new Error('Primary API failed');
       }
 
       const llmReport = await res.json();
       completeRender(llmReport, true);
     } catch (err) {
-      if (isLocal) {
-        const fallbackUrl = MAIN_PROD_API_BASE + '/api/llm/report';
+      const isLocalEnv = (API_BASE === "http://localhost:8000");
+      if (isLocalEnv) {
+        const fallbackUrl = `${CLOUD_RUN_API_BASE}/api/llm/report`;
         console.warn(`Local API failed. Retrying with Cloud Run fallback: ${fallbackUrl}`);
         try {
           const resFallback = await fetch(fallbackUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              brand: brandKey,
-              model: modelKey,
-              context_data: contextDataObj
-            })
+            body: JSON.stringify(reportPayload)
           });
 
           if (!resFallback.ok) {
-            await logApiFailure(fallbackUrl, resFallback, null, true);
+            await logApiFailure(fallbackUrl, resFallback, null, true, reportPayload);
             throw new Error('Cloud Run fallback failed');
           }
 
@@ -1915,56 +1918,48 @@ function buildIntegratedReport(brandKey, modelKey) {
           completeRender(llmReport, true);
         } catch (fbErr) {
           // Retry with Render fallback
-          const renderUrl = RENDER_FALLBACK_API_BASE + '/api/llm/report';
+          const renderUrl = `${RENDER_FALLBACK_API_BASE}/api/llm/report`;
           console.warn(`Cloud Run fallback failed. Retrying with Render fallback: ${renderUrl}`);
           try {
             const resRender = await fetch(renderUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                brand: brandKey,
-                model: modelKey,
-                context_data: contextDataObj
-              })
+              body: JSON.stringify(reportPayload)
             });
 
             if (!resRender.ok) {
-              await logApiFailure(renderUrl, resRender, null, true);
+              await logApiFailure(renderUrl, resRender, null, true, reportPayload);
               throw new Error('Render fallback failed');
             }
 
             const llmReport = await resRender.json();
             completeRender(llmReport, true);
           } catch (renderErr) {
-            await logApiFailure(renderUrl, null, renderErr, true);
+            await logApiFailure(renderUrl, null, renderErr, true, reportPayload);
             console.error('LLM Report fetch error, executing local fallback:', renderErr);
             completeRender(null, false);
           }
         }
       } else {
         // We are on production, try Render fallback
-        const renderUrl = RENDER_FALLBACK_API_BASE + '/api/llm/report';
+        const renderUrl = `${RENDER_FALLBACK_API_BASE}/api/llm/report`;
         console.warn(`Cloud Run API failed. Retrying with Render fallback: ${renderUrl}`);
         try {
           const resRender = await fetch(renderUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              brand: brandKey,
-              model: modelKey,
-              context_data: contextDataObj
-            })
+            body: JSON.stringify(reportPayload)
           });
 
           if (!resRender.ok) {
-            await logApiFailure(renderUrl, resRender, null, true);
+            await logApiFailure(renderUrl, resRender, null, true, reportPayload);
             throw new Error('Render fallback failed');
           }
 
           const llmReport = await resRender.json();
           completeRender(llmReport, true);
         } catch (renderErr) {
-          await logApiFailure(renderUrl, null, renderErr, true);
+          await logApiFailure(renderUrl, null, renderErr, true, reportPayload);
           console.error('LLM Report fetch error, executing local fallback:', renderErr);
           completeRender(null, false);
         }
