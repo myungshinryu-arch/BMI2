@@ -736,7 +736,7 @@ const TIRE_EVOLUTION_DATABASE = {
             {
                 year: "2010",
                 compYear: "2010",
-                hkYear: "2007",
+                hkYear: "2012",
                 compModel: "Pilot Sport 3 (PS3)",
                 compSlogan: "The absolute reference in wet safety and handling efficiency",
                 compBrochure: {
@@ -746,29 +746,6 @@ const TIRE_EVOLUTION_DATABASE = {
                     focus: "Wet braking distances and energy-saving rolling resistance"
                 },
                 compScores: { dry_grip: 8.4, wet_grip: 8.6, hydro_resist: 8.5, comfort_noise: 8.1, tread_life: 7.5, efficiency: 8.0 },
-                hkModel: "Ventus S1 evo (K107)",
-                hkSlogan: "Optimal wet performance and high speed stability",
-                hkBrochure: {
-                    compound: "Highly dispersible Silica compound",
-                    tech: "Wave-type outer block (파도형 외측 숄더 블록 압력 분산)",
-                    treadwear: "UTQG 280 / A A",
-                    focus: "High-speed cornering stability and short dry braking distance"
-                },
-                hkScores: { dry_grip: 8.2, wet_grip: 7.8, hydro_resist: 7.6, comfort_noise: 7.8, tread_life: 6.8, efficiency: 7.2 }
-            },
-            {
-                year: "2016",
-                compYear: "2016",
-                hkYear: "2012",
-                compModel: "Pilot Sport 4 (PS4)",
-                compSlogan: "From track to road - instant steering response and stability",
-                compBrochure: {
-                    compound: "Functional Elastomers & Hydrophobic Silica Compound",
-                    tech: "Dynamic Response Technology (아라미드/나일론 하이브리드 벨트)",
-                    treadwear: "UTQG 320 / AA A",
-                    focus: "Optimized handling footprint and rapid steering responsiveness"
-                },
-                compScores: { dry_grip: 9.1, wet_grip: 8.9, hydro_resist: 8.6, comfort_noise: 8.3, tread_life: 7.8, efficiency: 7.9 },
                 hkModel: "Ventus S1 evo2 (K117)",
                 hkSlogan: "Prestige handling with innovative cooling block technology",
                 hkBrochure: {
@@ -778,6 +755,29 @@ const TIRE_EVOLUTION_DATABASE = {
                     focus: "OE custom prestige matching and cooling block longevity"
                 },
                 hkScores: { dry_grip: 8.8, wet_grip: 8.4, hydro_resist: 8.1, comfort_noise: 8.2, tread_life: 7.4, efficiency: 7.6 }
+            },
+            {
+                year: "2016",
+                compYear: "2016",
+                hkYear: "2019",
+                compModel: "Pilot Sport 4 (PS4)",
+                compSlogan: "From track to road - instant steering response and stability",
+                compBrochure: {
+                    compound: "Functional Elastomers & Hydrophobic Silica Compound",
+                    tech: "Dynamic Response Technology (아라미드/나일론 하이브리드 벨트)",
+                    treadwear: "UTQG 320 / AA A",
+                    focus: "Optimized handling footprint and rapid steering responsiveness"
+                },
+                compScores: { dry_grip: 9.1, wet_grip: 8.9, hydro_resist: 8.6, comfort_noise: 8.3, tread_life: 7.8, efficiency: 7.9 },
+                hkModel: "Ventus S1 evo3 (K127)",
+                hkSlogan: "Highly-refined control precision at ultra-high speeds",
+                hkBrochure: {
+                    compound: "HSSC (Highly Enriched Synthetic Silica Compound) - 고인장 가황 합성 실리카 컴파운드",
+                    tech: "Aramid hybrid reinforcement belt (아라미드 하이브리드 보강 벨트 설계)",
+                    treadwear: "UTQG 300 / AA A",
+                    focus: "Ultra-precise high-speed steering and optimized footprint pressure"
+                },
+                hkScores: { dry_grip: 9.2, wet_grip: 8.9, hydro_resist: 8.5, comfort_noise: 8.4, tread_life: 8.0, efficiency: 7.8 }
             },
             {
                 year: "2024",
@@ -804,8 +804,8 @@ const TIRE_EVOLUTION_DATABASE = {
             }
         ],
         evolutionDirection: {
-            gen1_to_gen2: "미쉐린은 PS3에서 고하중 제동에 최적화된 컴파운드를 적용한 후, PS4로 넘어오며 포뮬러 E 레이싱 기술인 '아라미드 하이브리드 벨트'를 본격 도입해 마른 노면 조종 정밀성을 급격히 끌어올렸습니다. 반면 한국타이어는 Ventus S1 evo에서 evo2로 모델 체인지를 거치며 메르세데스-벤츠, BMW 등 독일 프리미엄 OE 공급 규격을 획득하기 위한 균일 접지압 및 '속도 감응형 복합 수막 배수 설계'에 집중했습니다.",
-            gen2_to_gen3: "PS4에서 PS5로 체인지되며 미쉐린은 '마모 한계까지 균일한 성능(MaxTouch)'과 '수명 15% 증대'라는 ESG 친환경 효율 확보로 기조를 전환했습니다. 이에 대응하여 한국타이어는 3세대 evo3를 거쳐 최신 4세대 Ventus S1 evo4(K137)를 출시하며 AI 기반 실리카 초고분산 배합 기술을 적용, 마른 노면 조종 정밀성을 극대화함과 동시에 이전 대비 수명을 32% 극적으로 연장하여 미쉐린 PS5의 일관된 성능과 마일리지를 뛰어넘는 획기적인 기술 진보를 이룩했습니다.",
+            gen1_to_gen2: "미쉐린은 PS3에서 고하중 제동에 최적화된 컴파운드를 적용한 후, PS4로 넘어오며 포뮬러 E 레이싱 기술인 '아라미드 하이브리드 벨트'를 도입해 조종 정밀성을 극대화했습니다. 이에 대응하여 한국타이어 역시 Ventus S1 evo2(K117)의 프리미엄 유럽 OE 믹스 구도에서 S1 evo3(K127)로 체인지하며 아라미드 하이브리드 보강 벨트 설계 및 고유성 합성 고인장 컴파운드(HSSC)를 적용해 초고속 영역에서의 횡하중 지지력과 정밀 조향성을 비약적으로 발전시켰습니다.",
+            gen2_to_gen3: "PS4에서 PS5로 이행하며 미쉐린은 '마모 한계까지 균일한 접지압(MaxTouch)' 설계와 지속가능 수명 15% 보강으로 ESG 흐름에 밀착했습니다. 한국타이어 역시 S1 evo3(K127)를 넘어 차세대 플래그십 기술력의 집약체인 Ventus S1 evo4(K137)를 내놓으며 AI 시뮬레이션 활용 패턴 접지압 고도화 공법을 결합, 마일리지를 32% 극대화함과 동시에 미쉐린 PS5의 균일한 그립 마진 성능을 극적으로 추월하는 기술 혁신을 이루었습니다.",
             comparisonSummary: "미쉐린 Pilot Sport는 마모 한계점까지 일관되게 이어지는 실질 제동력의 균일성에 설계 역량을 투입하는 반면, 한국타이어 Ventus S1 evo 시리즈는 고속 선회 강성을 보장하는 아라미드 벨트 하이브리드 보강 및 열방출 쿨링 시스템을 연동한 스포츠 주행 마진 확보에 엔지니어링 포커스를 맞추고 있습니다."
         },
         insights: {

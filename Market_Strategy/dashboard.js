@@ -3144,7 +3144,7 @@ class TireDashboard {
                         GEN ${idx + 1} 세대별 비교
                     </div>
                     <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700;">
-                        ${idx === 2 ? '🔥 최신 플래그십 매칭' : idx === 1 ? '⚡ 2세대 볼륨 매칭' : '❄️ 1세대 히스토리 매칭'}
+                        ${idx === 2 ? '🔥 최신 플래그십 매칭' : idx === 1 ? '⚡ 2세대' : '❄️ 1세대'}
                     </div>
                 `;
                 row.appendChild(rowHeader);
