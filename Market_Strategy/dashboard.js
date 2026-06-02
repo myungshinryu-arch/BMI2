@@ -3755,3 +3755,4 @@ class TireDashboard {
 window.addEventListener('load', () => {
     window.TireDashboardApp = new TireDashboard();
 });
+// Redeploy Trigger: Force Cloud & CDN re-deployment with clean cache propagation
